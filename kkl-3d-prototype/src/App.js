@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { Stage, OrbitControls } from '@react-three/drei';
 import { Suspense } from 'react';
-import Model from './components/models/PrototypeHouse';
+import Model from './components/models/Model';
 
 function App() {
 	const [meshList, setMeshList] = useState([]);
