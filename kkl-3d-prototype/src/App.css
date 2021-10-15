@@ -1,38 +1,110 @@
-.App {
-  text-align: center;
+.product-button-container {
+	display: flex;
+	/* flex-direction: row; */
+	flex-flow: row wrap;
+	justify-content: flex-start;
+	align-items: flex-start;
+	width: 100%;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.card-heading {
+	height: auto;
+	text-align: center;
+	width: 100%;
+	color: #000520;
+	font-family: 'Lyon Text', sans-serif;
+	font-size: 46px;
+	font-weight: 900;
+	line-height: 60px;
+	/* padding-top: 40px; */
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.card-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	padding: 50px 100px 0 100px;
+	top: 400px;
+	width: 850px;
+	height: 480px;
+	position: absolute;
+	background: #fff;
+	z-index: 1;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.product-button {
+	background-color: #ffef00;
+	display: block;
+	padding: 13px 15px;
+	text-transform: uppercase;
+	font-size: 12px;
+	font-weight: 300;
+	line-height: 14px;
+	text-align: center;
+	color: #000520;
+	font-family: 'Circular Std', sans-serif;
+	box-shadow: none;
+	text-transform: uppercase;
+	margin: 1rem 0 0 1rem;
+	padding: 13px 15px;
+	width: 243.2px;
+	border: none;
+	cursor: pointer;
+
+	/* 
+	Adjust 4px margin on each flex item for it to wrap prosperly
+	Use flex: 0 1 calc(20% - 8px) -> item won't grow beyond 20% of width (adjusting for margin) 
+	and can shrink based on the container width 
+	*/
+
+	margin: 4px;
+	flex: 0 1 calc(20% - 8px); /* <-- adjusting for margin */
+}
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	padding-bottom: 25px !important;
+	padding-top: 20px !important;
+	margin-bottom: 371px;
+	color: #000520;
+	font-family: 'Circular Std', sans-serif;
+	font-size: 14px;
+	font-weight: 300;
+	line-height: 25px;
+	overflow: hidden;
+	width: 100%;
 }
 
-.App-link {
-  color: #61dafb;
+.inner-container {
+	box-sizing: border-box;
+	margin: 0 auto;
+	max-width: 1280px;
+	padding: 0 60px !important;
+	width: 100% !important;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.canvas-wrapper {
+	cursor: pointer;
+	height: 420px;
+	width: 100%;
+	border: 0;
+	background: whitesmoke;
+}
+
+#video {
+	margin: auto;
+	position: absolute;
+	z-index: -1;
+	top: 0;
+	left: 0;
+	visibility: visible;
+	opacity: 1;
+	width: 100%;
 }

@@ -1,25 +1,34 @@
-import logo from './logo.svg';
 import './App.css';
+import { Canvas } from '@react-three/fiber';
+import { Stage, OrbitControls } from '@react-three/drei';
+import { Suspense } from 'react';
+import Model from './components/models/PrototypeHouse';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	return (
+		<div className='container'>
+			<Canvas
+				style={{ height: 100 + 'vh', width: 100 + '%' }}
+				camera={{ position: [0, -40, 0], fov: 40 }}
+			>
+				<spotLight
+					intensity={0.5}
+					angle={0.1}
+					penumbra={1}
+					position={[10, 15, 10]}
+					castShadow
+				/>
+				{/* create Loader UI as fallback before useLoader promise is returned */}
+				<Suspense fallback={null}>
+					{/* <Stage> will center and light the contents, create ground-shadows, and zoom the camera */}
+					<Stage environment={null} intensity={0.25} contactShadowOpacity={0}>
+						<Model />
+					</Stage>
+				</Suspense>
+				<OrbitControls />
+			</Canvas>
+		</div>
+	);
 }
 
 export default App;
