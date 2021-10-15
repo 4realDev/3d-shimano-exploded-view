@@ -103,7 +103,17 @@ const Model = ({
 						material-opacity={
 							selectedMesh !== null && selectedMesh !== meshObject.name ? opacityValue : meshObject.opacity
 						}
-					/>
+					>
+						{selectedMesh !== null && selectedMesh !== meshObject.name ? (
+							''
+						) : (
+							<lineSegments renderOrder={100}>
+								<edgesGeometry attach='geometry' args={[meshObject.geometry]} />
+								{/* Due limitations of OpenGL Core Profile with WebGL renderer on most platforms linewidth will always be 1 regardless of set value.  */}
+								<lineBasicMaterial color='black' attach='material' />
+							</lineSegments>
+						)}
+					</mesh>
 				);
 			})}
 		</group>
