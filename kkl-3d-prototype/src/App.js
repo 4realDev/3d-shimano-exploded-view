@@ -14,7 +14,7 @@ function App() {
 		<div className='container'>
 			<div className='inner-container'>
 				<div className='canvas-wrapper'>
-					<Canvas camera={{ position: [0, -40, 0], fov: 40 }}>
+					<Canvas camera={{ position: [0, -40, 0], fov: 30, far: 150 }}>
 						{/* create Loader UI as fallback before useLoader promise is returned */}
 						<Suspense fallback={null}>
 							{/* <Stage> will center and light the contents, create ground-shadows, and zoom the camera */}
@@ -31,7 +31,12 @@ function App() {
 								/>
 							</Stage>
 						</Suspense>
-						<OrbitControls />
+						<OrbitControls
+							enableZoom={false}
+							enablePan={false}
+							// minPolarAngle={Math.PI / 2}
+							maxPolarAngle={Math.PI / 2}
+						/>
 					</Canvas>
 				</div>
 			</div>
