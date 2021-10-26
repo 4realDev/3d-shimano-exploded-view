@@ -25,7 +25,7 @@ const Model = ({
 
 	const opacityValue = 0.25;
 	const opacityValueOutline = 0.05;
-	const hoverColor = 'tomato';
+	const hoverColor = '#FF7F7F';
 
 	const initialMeshList = [];
 
@@ -68,7 +68,13 @@ const Model = ({
 	}, []);
 
 	return (
-		<group scale='0.01' rotation={[deg2rad(0), deg2rad(-90), deg2rad(0)]} ref={group} dispose={null}>
+		<group
+			scale='0.01'
+			position={[0, 0, 0]}
+			rotation={[deg2rad(0), deg2rad(-90), deg2rad(0)]}
+			ref={group}
+			dispose={null}
+		>
 			{meshList.map((meshObject) => {
 				return (
 					<mesh
