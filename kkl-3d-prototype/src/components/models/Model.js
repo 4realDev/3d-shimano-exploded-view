@@ -71,7 +71,7 @@ const Model = ({
 		<group
 			scale='0.01'
 			position={[0, 0, 0]}
-			rotation={[deg2rad(0), deg2rad(-90), deg2rad(0)]}
+			// rotation={[deg2rad(0), deg2rad(-90), deg2rad(0)]}
 			ref={group}
 			dispose={null}
 		>

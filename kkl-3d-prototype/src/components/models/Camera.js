@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -9,12 +10,6 @@ const Camera = ({ cameraPosition, cameraRotation, cameraAnimation, mouseDown, fo
 
 	const deg2rad = (degrees) => degrees * (Math.PI / 180);
 
-	// useThree(({ camera }) => {
-	// 	console.log(camera);
-	// 	camera.rotation.set(deg2rad(30) + 4, 0, 0);
-	// 	console.log(camera.rotation);
-	// });
-
 	const damp = (target, to, step, delta, v = new THREE.Vector3()) => {
 		if (target instanceof THREE.Vector3) {
 			target.x = THREE.MathUtils.damp(target.x, to[0], step, delta);
@@ -23,6 +18,17 @@ const Camera = ({ cameraPosition, cameraRotation, cameraAnimation, mouseDown, fo
 		}
 	};
 
+	// INITIAL SETUP OF CAMERA
+	useEffect(() => {
+		// camera.position.x = 10;
+		// camera.position.y = 10;
+		// camera.position.z = 10;
+		camera.position.set(cameraPosition[0], cameraPosition[1], cameraPosition[2]);
+		camera.fov = fov;
+		camera.far = far;
+	}, []);
+
+	// ANIMATED UPDATE FOR CAMERA MOVEMENT ONCLICK/ONSELECT
 	useFrame((state, delta) => {
 		// console.log(camera.rotation.x, camera.rotation.y, camera.rotation.z);
 		if (!mouseDown && cameraAnimation) {
@@ -35,7 +41,11 @@ const Camera = ({ cameraPosition, cameraRotation, cameraAnimation, mouseDown, fo
 		}
 		state.camera.updateProjectionMatrix();
 	});
-	return null;
+
+	// SETTING PROPS INSIDE <perspectiveCamera /> SEEMS NOT TO WORK
+	// INSTEAD SET PROPS ON useEffect HOOK
+	return <perspectiveCamera makeDefault />;
+
 	// return (
 	// 	<PerspectiveCamera
 	// 		makeDefault
