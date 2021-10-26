@@ -26,11 +26,18 @@ function App() {
 
 	useEffect(() => {
 		if (clickedMesh) {
-			setIdleState(false);
-			setCameraAnimation(true);
-			setCameraPosition([0, 25, 2]);
-			setSelectedMeshes(clickedMesh);
-			setInvisibleMesh('roof');
+			if (clickedMesh === 'roof') {
+				setIdleState(false);
+				setCameraAnimation(true);
+				setInvisibleMesh('roof');
+				setCameraPosition([0, 25, 2]);
+			} else {
+				setIdleState(false);
+				setCameraAnimation(true);
+				setCameraPosition([0, 25, 2]);
+				setSelectedMeshes(clickedMesh);
+				setInvisibleMesh('roof');
+			}
 		}
 	}, [clickedMesh]);
 
@@ -79,24 +86,172 @@ function App() {
 	return (
 		<div className='container'>
 			<div className='inner-container'>
+				<div className='card-container'>
+					<div className='card'>
+						<div
+							style={{
+								overflowWrap: 'break-word',
+								display: 'flex',
+								flexDirection: 'column',
+								justifyContent: 'center',
+								alignItems: 'flex-start',
+								width: 100 + '%',
+							}}
+						>
+							<h1>Wähle einen Hauptraum</h1>
+							<p style={{ lineHeight: 0 }}>hovered: {hoveredMesh ? hoveredMesh : ''}</p>
+							<p style={{ lineHeight: 0 }}>clicked: {clickedMesh ? clickedMesh : ''}</p>
+							<p style={{ lineHeight: 0, marginBottom: 50 }}>selected: {selectedMeshes ? selectedMeshes : ''}</p>
+						</div>
+						{/* <div className='card-heading'>
+					<h1>{clickedMesh ? clickedMesh.replace('_', ' ') : ''}</h1>
+				</div> */}
+
+						{/* <div className='product-button-container'> */}
+						{/* {meshList.map((mesh) => {
+						return (
+							<button
+								className='product-button'
+								onClick={() => {
+									setSelectedMesh(mesh.name);
+									mesh.name.startsWith('room') && setInvisibleMesh('roof');
+								}}
+							>
+								{mesh.name.replace('_', ' ')}
+							</button>
+						);
+					})} */}
+						<button
+							className={`product-button ${selectedMeshes.includes('room_1') ? 'active' : ''}`}
+							onClick={() => {
+								setIdleState(false);
+								setCameraAnimation(true);
+								setSelectedMeshes('room_1');
+								setInvisibleMesh('roof');
+								setCameraPosition([0, 25, 2]);
+							}}
+						>
+							ROOM 1
+						</button>
+						<button
+							className={`product-button ${selectedMeshes.includes('room_2') ? 'active' : ''}`}
+							onClick={() => {
+								setIdleState(false);
+								setCameraAnimation(true);
+								setSelectedMeshes('room_2');
+								setInvisibleMesh('roof');
+								setCameraPosition([0, 25, 2]);
+							}}
+						>
+							ROOM 2
+						</button>
+						<button
+							className={`product-button ${selectedMeshes.includes('room_3') ? 'active' : ''}`}
+							onClick={() => {
+								setIdleState(false);
+								setCameraAnimation(true);
+								setSelectedMeshes('room_3');
+								setInvisibleMesh('roof');
+								setCameraPosition([0, 25, 2]);
+							}}
+						>
+							ROOM 3
+						</button>
+						<button
+							className={`product-button ${selectedMeshes.includes('room_4') ? 'active' : ''}`}
+							onClick={() => {
+								setIdleState(false);
+								setCameraAnimation(true);
+								setSelectedMeshes('room_4');
+								setInvisibleMesh('roof');
+								setCameraPosition([0, 25, 2]);
+							}}
+						>
+							ROOM 4
+						</button>
+						<button
+							className={`product-button ${selectedMeshes.includes('room_5') ? 'active' : ''}`}
+							onClick={() => {
+								setIdleState(false);
+								setCameraAnimation(true);
+								setSelectedMeshes('room_5');
+								setInvisibleMesh('roof');
+								setCameraPosition([0, 25, 2]);
+							}}
+						>
+							ROOM 5
+						</button>
+						<button
+							className={`product-button ${selectedMeshes.includes('room_6') ? 'active' : ''}`}
+							onClick={() => {
+								setIdleState(false);
+								setCameraAnimation(true);
+								setSelectedMeshes('room_6');
+								setInvisibleMesh('roof');
+								setCameraPosition([0, 25, 2]);
+							}}
+						>
+							ROOM 6
+						</button>
+						<button
+							className={`product-button ${selectedMeshes.includes('room_7') ? 'active' : ''}`}
+							onClick={() => {
+								setIdleState(false);
+								setCameraAnimation(true);
+								setSelectedMeshes('room_7');
+								setInvisibleMesh('roof');
+								setCameraPosition([0, 25, 2]);
+							}}
+						>
+							ROOM 7
+						</button>
+						<button
+							className='product-button'
+							onClick={() => {
+								// setCameraAnimation(true);
+								// setCameraPosition(defaultCameraPosition);
+								setCameraAnimation(false);
+								setSelectedMeshes([]);
+								setInvisibleMesh(null);
+							}}
+						>
+							RESET
+						</button>
+						<button
+							className='product-button'
+							onClick={() => {
+								setIdleState(false);
+								setCameraAnimation(true);
+								setInvisibleMesh('roof');
+								// const newSelectedMeshes = selectedMeshes.concat(roomList);
+								setSelectedMeshes(roomList);
+								setCameraPosition([0, 25, 2]);
+							}}
+						>
+							SHOW ALL ROOMS
+						</button>
+					</div>
+				</div>
+				{/* </div> */}
 				<div
 					className='canvas-wrapper'
 					onMouseDown={() => {
 						setIdleState(false);
-						setCameraAnimation(false);
+						// setCameraAnimation(false);
 						setMouseDown(true);
 					}}
 					onMouseUp={() => setMouseDown(false)}
 				>
-					<Canvas camera={{ position: [0, -10, 0], fov: 40, far: 150 }}>
+					{/* only fov and far are adjustable, position and rotation does not work - is overwritten by Stage */}
+					<Canvas camera={{ position: [0, -10, 0], fov: 45, far: 200 }}>
 						<Camera
-							ref={ref}
+							ref={camera}
 							cameraPosition={cameraPosition}
 							cameraRotation={cameraRotation}
 							cameraAnimation={cameraAnimation}
 							mouseDown={mouseDown}
-							fov={40}
-							far={150}
+							fov={45}
+							far={200}
 						/>
 						{/* create Loader UI as fallback before useLoader promise is returned */}
 						<Suspense fallback={null}>
@@ -117,147 +272,17 @@ function App() {
 							</Stage>
 						</Suspense>
 						<OrbitControls
+							ref={controls}
 							enableZoom={true}
 							enablePan={true}
 							// minPolarAngle={Math.PI / 2}
 							maxPolarAngle={Math.PI / 2}
 							autoRotate={idleState}
 							autoRotateSpeed={1.5}
+							minDistance={3}
+							maxDistance={20}
 						/>
 					</Canvas>
-				</div>
-			</div>
-			<div className='card-container'>
-				<h1>Debug Console:</h1>
-				<p style={{ lineHeight: 0 }}>hovered: {hoveredMesh ? hoveredMesh : ''}</p>
-				<p style={{ lineHeight: 0 }}>clicked: {clickedMesh ? clickedMesh : ''}</p>
-				<p style={{ lineHeight: 0, marginBottom: 50 }}>selected: {selectedMeshes ? selectedMeshes : ''}</p>
-				{/* <div className='card-heading'>
-					<h1>{clickedMesh ? clickedMesh.replace('_', ' ') : ''}</h1>
-				</div> */}
-
-				<div className='product-button-container'>
-					{/* {meshList.map((mesh) => {
-						return (
-							<button
-								className='product-button'
-								onClick={() => {
-									setSelectedMesh(mesh.name);
-									mesh.name.startsWith('room') && setInvisibleMesh('roof');
-								}}
-							>
-								{mesh.name.replace('_', ' ')}
-							</button>
-						);
-					})} */}
-					<button
-						className='product-button'
-						onClick={() => {
-							setIdleState(false);
-							setCameraAnimation(true);
-							setSelectedMeshes('room_1');
-							setInvisibleMesh('roof');
-							setCameraPosition([0, 25, 2]);
-						}}
-					>
-						ROOM 1
-					</button>
-					<button
-						className='product-button'
-						onClick={() => {
-							setIdleState(false);
-							setCameraAnimation(true);
-							setSelectedMeshes('room_2');
-							setInvisibleMesh('roof');
-							setCameraPosition([0, 25, 2]);
-						}}
-					>
-						ROOM 2
-					</button>
-					<button
-						className='product-button'
-						onClick={() => {
-							setIdleState(false);
-							setCameraAnimation(true);
-							setSelectedMeshes('room_3');
-							setInvisibleMesh('roof');
-							setCameraPosition([0, 25, 2]);
-						}}
-					>
-						ROOM 3
-					</button>
-					<button
-						className='product-button'
-						onClick={() => {
-							setIdleState(false);
-							setCameraAnimation(true);
-							setSelectedMeshes('room_4');
-							setInvisibleMesh('roof');
-							setCameraPosition([0, 25, 2]);
-						}}
-					>
-						ROOM 4
-					</button>
-					<button
-						className='product-button'
-						onClick={() => {
-							setIdleState(false);
-							setCameraAnimation(true);
-							setSelectedMeshes('room_5');
-							setInvisibleMesh('roof');
-							setCameraPosition([0, 25, 2]);
-						}}
-					>
-						ROOM 5
-					</button>
-					<button
-						className='product-button'
-						onClick={() => {
-							setIdleState(false);
-							setCameraAnimation(true);
-							setSelectedMeshes('room_6');
-							setInvisibleMesh('roof');
-							setCameraPosition([0, 25, 2]);
-						}}
-					>
-						ROOM 6
-					</button>
-					<button
-						className='product-button'
-						onClick={() => {
-							setIdleState(false);
-							setCameraAnimation(true);
-							setSelectedMeshes('room_7');
-							setInvisibleMesh('roof');
-							setCameraPosition([0, 25, 2]);
-						}}
-					>
-						ROOM 7
-					</button>
-					<button
-						className='product-button'
-						onClick={() => {
-							setCameraAnimation(true);
-							setCameraPosition(defaultCameraPosition);
-							setSelectedMeshes([]);
-							setInvisibleMesh(null);
-						}}
-					>
-						RESET
-					</button>
-					<button
-						className='product-button'
-						onClick={() => {
-							setIdleState(false);
-							setCameraAnimation(true);
-							setInvisibleMesh('roof');
-							// const newSelectedMeshes = selectedMeshes.concat(roomList);
-							setSelectedMeshes(roomList);
-							setCameraPosition([0, 25, 2]);
-						}}
-					>
-						SHOW ALL ROOMS
-					</button>
 				</div>
 			</div>
 		</div>
