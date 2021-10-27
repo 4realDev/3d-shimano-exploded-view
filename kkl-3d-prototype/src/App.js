@@ -1,17 +1,14 @@
 import './App.css';
 import { useState, useRef, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { Stage, OrbitControls } from '@react-three/drei';
 import { Suspense } from 'react';
 import Model from './components/models/Model';
-import Camera from './components/models/Camera';
+import CameraControls from './components/models/CameraControls';
 
 function App() {
 	const roomList = ['room_1', 'room_2', 'room_3', 'room_4', 'room_5', 'room_6', 'room_7'];
 
-	const ref = useRef(); // Does not work yet
 	const defaultCameraPosition = [20, 15, 0];
-	const defaultCameraRotation = [0, 0, 0];
 
 	const [meshList, setMeshList] = useState([]);
 	const [hoveredMesh, setHoveredMesh] = useState(null);
@@ -19,8 +16,7 @@ function App() {
 	const [selectedMeshes, setSelectedMeshes] = useState([]);
 	const [invisibleMesh, setInvisibleMesh] = useState(null);
 	const [cameraPosition, setCameraPosition] = useState(defaultCameraPosition);
-	const [cameraRotation, setCameraRotation] = useState(defaultCameraRotation);
-	const [cameraAnimation, setCameraAnimation] = useState(false);
+	const [hasAnimation, setHasAnimation] = useState(false);
 	const [mouseDown, setMouseDown] = useState(false);
 	const [idleState, setIdleState] = useState(true);
 
@@ -28,12 +24,12 @@ function App() {
 		if (clickedMesh) {
 			if (clickedMesh === 'roof') {
 				setIdleState(false);
-				setCameraAnimation(true);
+				setHasAnimation(true);
 				setInvisibleMesh('roof');
 				setCameraPosition([0, 25, 2]);
 			} else {
 				setIdleState(false);
-				setCameraAnimation(true);
+				setHasAnimation(true);
 				setCameraPosition([0, 25, 2]);
 				setSelectedMeshes(clickedMesh);
 				setInvisibleMesh('roof');
@@ -41,6 +37,16 @@ function App() {
 		}
 	}, [clickedMesh]);
 
+	// TODO: Create logic to access stored zoomOnPositions of the meshes
+	// const getSelectedMeshObjects = (selectedMeshes) => {
+	// 	const selectedMeshObjects = meshList.filter((mesh) => selectedMeshes.includes(mesh.name));
+	// 	console.log(selectedMeshObjects);
+	// 	return selectedMeshObjects;
+	// };
+
+	// getSelectedMeshObjects(selectedMeshes);
+
+	// TODO: Add cursor with current hovered on mesh
 	// useEffect(() => {
 	// 	// const hoveredMeshIndex = meshList.findIndex(hoveredMesh);
 	// 	// console.log(meshList[hoveredMeshIndex]);
@@ -84,7 +90,7 @@ function App() {
 	// <rect x="120" width="100" height="100" rx="15" stroke="black" stroke-width="3" fill="black"/>
 
 	return (
-		<div className='container'>
+		<div className='container' style={{ backgroundImage: `url(${'/images/waves.png'})` }}>
 			<div className='inner-container'>
 				<div className='card-container'>
 					<div className='card'>
@@ -125,7 +131,7 @@ function App() {
 							className={`product-button ${selectedMeshes.includes('room_1') ? 'active' : ''}`}
 							onClick={() => {
 								setIdleState(false);
-								setCameraAnimation(true);
+								setHasAnimation(true);
 								setSelectedMeshes('room_1');
 								setInvisibleMesh('roof');
 								setCameraPosition([0, 25, 2]);
@@ -137,7 +143,7 @@ function App() {
 							className={`product-button ${selectedMeshes.includes('room_2') ? 'active' : ''}`}
 							onClick={() => {
 								setIdleState(false);
-								setCameraAnimation(true);
+								setHasAnimation(true);
 								setSelectedMeshes('room_2');
 								setInvisibleMesh('roof');
 								setCameraPosition([0, 25, 2]);
@@ -149,7 +155,7 @@ function App() {
 							className={`product-button ${selectedMeshes.includes('room_3') ? 'active' : ''}`}
 							onClick={() => {
 								setIdleState(false);
-								setCameraAnimation(true);
+								setHasAnimation(true);
 								setSelectedMeshes('room_3');
 								setInvisibleMesh('roof');
 								setCameraPosition([0, 25, 2]);
@@ -161,7 +167,7 @@ function App() {
 							className={`product-button ${selectedMeshes.includes('room_4') ? 'active' : ''}`}
 							onClick={() => {
 								setIdleState(false);
-								setCameraAnimation(true);
+								setHasAnimation(true);
 								setSelectedMeshes('room_4');
 								setInvisibleMesh('roof');
 								setCameraPosition([0, 25, 2]);
@@ -173,7 +179,7 @@ function App() {
 							className={`product-button ${selectedMeshes.includes('room_5') ? 'active' : ''}`}
 							onClick={() => {
 								setIdleState(false);
-								setCameraAnimation(true);
+								setHasAnimation(true);
 								setSelectedMeshes('room_5');
 								setInvisibleMesh('roof');
 								setCameraPosition([0, 25, 2]);
@@ -185,7 +191,7 @@ function App() {
 							className={`product-button ${selectedMeshes.includes('room_6') ? 'active' : ''}`}
 							onClick={() => {
 								setIdleState(false);
-								setCameraAnimation(true);
+								setHasAnimation(true);
 								setSelectedMeshes('room_6');
 								setInvisibleMesh('roof');
 								setCameraPosition([0, 25, 2]);
@@ -197,7 +203,7 @@ function App() {
 							className={`product-button ${selectedMeshes.includes('room_7') ? 'active' : ''}`}
 							onClick={() => {
 								setIdleState(false);
-								setCameraAnimation(true);
+								setHasAnimation(true);
 								setSelectedMeshes('room_7');
 								setInvisibleMesh('roof');
 								setCameraPosition([0, 25, 2]);
@@ -208,9 +214,9 @@ function App() {
 						<button
 							className='product-button'
 							onClick={() => {
-								// setCameraAnimation(true);
-								// setCameraPosition(defaultCameraPosition);
-								setCameraAnimation(false);
+								setHasAnimation(true);
+								setCameraPosition(defaultCameraPosition);
+								// setCameraAnimation(false);
 								setSelectedMeshes([]);
 								setInvisibleMesh(null);
 							}}
@@ -221,7 +227,7 @@ function App() {
 							className='product-button'
 							onClick={() => {
 								setIdleState(false);
-								setCameraAnimation(true);
+								setHasAnimation(true);
 								setInvisibleMesh('roof');
 								// const newSelectedMeshes = selectedMeshes.concat(roomList);
 								setSelectedMeshes(roomList);
@@ -237,51 +243,44 @@ function App() {
 					className='canvas-wrapper'
 					onMouseDown={() => {
 						setIdleState(false);
-						// setCameraAnimation(false);
+						// setHasAnimation(false);
 						setMouseDown(true);
 					}}
 					onMouseUp={() => setMouseDown(false)}
 				>
-					{/* only fov and far are adjustable, position and rotation does not work - is overwritten by Stage */}
-					<Canvas camera={{ position: [0, -10, 0], fov: 45, far: 200 }}>
-						<Camera
-							ref={camera}
+					<Canvas>
+						<CameraControls
 							cameraPosition={cameraPosition}
-							cameraRotation={cameraRotation}
-							cameraAnimation={cameraAnimation}
+							controlsIdleState={idleState}
+							selectedMeshes={selectedMeshes}
+							hasAnimation={hasAnimation}
 							mouseDown={mouseDown}
 							fov={45}
 							far={200}
 						/>
+
 						{/* create Loader UI as fallback before useLoader promise is returned */}
 						<Suspense fallback={null}>
 							{/* <Stage> will center and light the contents, create ground-shadows, and camerazoom the camera */}
-							<Stage environment={null} intensity={0.25} contactShadowOpacity={0}>
-								<Model
-									meshList={meshList}
-									setMeshList={setMeshList}
-									hoveredMesh={hoveredMesh}
-									setHoveredMesh={setHoveredMesh}
-									clickedMesh={clickedMesh}
-									setClickedMesh={setClickedMesh}
-									selectedMeshes={selectedMeshes}
-									setSelectedMeshes={setSelectedMeshes}
-									invisibleMesh={invisibleMesh}
-									setInvisibleMesh={setInvisibleMesh}
-								/>
-							</Stage>
+							{/* <Stage environment={null} intensity={0.25} contactShadowOpacity={0}> */}
+							<Model
+								meshList={meshList}
+								setMeshList={setMeshList}
+								hoveredMesh={hoveredMesh}
+								setHoveredMesh={setHoveredMesh}
+								clickedMesh={clickedMesh}
+								setClickedMesh={setClickedMesh}
+								selectedMeshes={selectedMeshes}
+								setSelectedMeshes={setSelectedMeshes}
+								invisibleMesh={invisibleMesh}
+								setInvisibleMesh={setInvisibleMesh}
+							/>
+							<mesh position={[-6, 3, 6]} scale={1}>
+								<boxGeometry args={[1, 1, 1]} />
+								<meshStandardMaterial color={'black'} />
+							</mesh>
+							{/* </Stage> */}
 						</Suspense>
-						<OrbitControls
-							ref={controls}
-							enableZoom={true}
-							enablePan={true}
-							// minPolarAngle={Math.PI / 2}
-							maxPolarAngle={Math.PI / 2}
-							autoRotate={idleState}
-							autoRotateSpeed={1.5}
-							minDistance={3}
-							maxDistance={20}
-						/>
 					</Canvas>
 				</div>
 			</div>
