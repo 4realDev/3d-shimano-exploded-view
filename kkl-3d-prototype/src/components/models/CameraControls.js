@@ -3,6 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
+import { AxesHelper } from 'three';
 
 const CameraControls = ({ cameraPosition, controlsIdleState, hasAnimation, mouseDown, fov, far }) => {
 	// const [ref, camera] = useResource();
@@ -18,11 +19,11 @@ const CameraControls = ({ cameraPosition, controlsIdleState, hasAnimation, mouse
 
 	const deg2rad = (degrees) => degrees * (Math.PI / 180);
 
-	const damp = (target, to, step, delta, v = new THREE.Vector3()) => {
+	const damp = (target, to, step, delta, heightOffset) => {
 		if (target instanceof THREE.Vector3) {
-			target.x = THREE.MathUtils.damp(target.x, to[0], step, delta);
-			target.y = THREE.MathUtils.damp(target.y, to[1], step, delta);
-			target.z = THREE.MathUtils.damp(target.z, to[2], step, delta);
+			target.x = THREE.MathUtils.damp(target.x, to.x, step, delta);
+			target.y = THREE.MathUtils.damp(target.y, to.y + heightOffset, step, delta);
+			target.z = THREE.MathUtils.damp(target.z, to.z, step, delta);
 		}
 	};
 
@@ -63,21 +64,14 @@ const CameraControls = ({ cameraPosition, controlsIdleState, hasAnimation, mouse
 
 	// ANIMATED UPDATE FOR CAMERA MOVEMENT ONCLICK/ONSELECT
 	useFrame((state, delta) => {
-		// console.log(camera.rotation.x, camera.rotation.y, camera.rotation.z);
 		if (!mouseDown && hasAnimation) {
-			// state.camera.rotation.set([0.2 + 1, 0, 0]);
-			damp(camera.current.position, cameraPosition, dampSpeed, delta);
-
-			// camera.fov = THREE.MathUtils.damp(camera.fov, 30, dampSpeed, delta);
-			// camera.rotation.set(THREE.MathUtils.damp(camera.rotation, (0, 0, 1.0 + 1.0), dampSpeed, delta));
-			camera.current.lookAt(cameraPosition);
+			damp(camera.current.position, cameraPosition, dampSpeed, delta, 10);
+			damp(controls.current.target, cameraPosition, delta, dampSpeed, 0);
 		}
-		camera.current.updateProjectionMatrix();
 		controls.current.update();
+		camera.current.updateProjectionMatrix();
 	});
 
-	// SETTING PROPS INSIDE <perspectiveCamera /> SEEMS NOT TO WORK
-	// INSTEAD SET PROPS ON useEffect HOOK
 	return (
 		<>
 			{/* <perspectiveCamera makeDefault onUpdate={(self) => self.updateProjectionMatrix()} />
@@ -103,6 +97,7 @@ const CameraControls = ({ cameraPosition, controlsIdleState, hasAnimation, mouse
 				minDistance={3}
 				maxDistance={20}
 			/>
+			<primitive object={new THREE.AxesHelper(100)} />
 		</>
 	);
 };

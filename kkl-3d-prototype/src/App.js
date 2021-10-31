@@ -1,14 +1,26 @@
 import './App.css';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
+import * as THREE from 'three';
 import { Suspense } from 'react';
 import Model from './components/models/Model';
 import CameraControls from './components/models/CameraControls';
+import RoomPositionMarkers from './components/models/RoomPositionMarkers';
 
 function App() {
 	const roomList = ['room_1', 'room_2', 'room_3', 'room_4', 'room_5', 'room_6', 'room_7'];
 
-	const defaultCameraPosition = [20, 15, 0];
+	const roomPositionMarkers = [
+		new THREE.Vector3(-3.8, -0.5, 4), // Room 1
+		new THREE.Vector3(-3.8, -0.5, 0), // Room 2
+		new THREE.Vector3(-3.8, -0.5, -4), // Room 3
+		new THREE.Vector3(0.4, -0.5, 4), // Room 4
+		new THREE.Vector3(0.4, -0.5, 0), // Room 5
+		new THREE.Vector3(0.4, -0.5, -4), // Room 6
+		new THREE.Vector3(3.9, -0.5, -4), // Room 7
+	];
+
+	const defaultCameraPosition = new THREE.Vector3(20, 15, 0);
 
 	const [meshList, setMeshList] = useState([]);
 	const [hoveredMesh, setHoveredMesh] = useState(null);
@@ -26,11 +38,11 @@ function App() {
 				setIdleState(false);
 				setHasAnimation(true);
 				setInvisibleMesh('roof');
-				setCameraPosition([0, 25, 2]);
+				setCameraPosition(new THREE.Vector3(0, 25, 2));
 			} else {
 				setIdleState(false);
 				setHasAnimation(true);
-				setCameraPosition([0, 25, 2]);
+				setCameraPosition(new THREE.Vector3(0, 25, 2));
 				setSelectedMeshes(clickedMesh);
 				setInvisibleMesh('roof');
 			}
@@ -134,7 +146,7 @@ function App() {
 								setHasAnimation(true);
 								setSelectedMeshes('room_1');
 								setInvisibleMesh('roof');
-								setCameraPosition([0, 25, 2]);
+								setCameraPosition(roomPositionMarkers[0]);
 							}}
 						>
 							ROOM 1
@@ -146,7 +158,7 @@ function App() {
 								setHasAnimation(true);
 								setSelectedMeshes('room_2');
 								setInvisibleMesh('roof');
-								setCameraPosition([0, 25, 2]);
+								setCameraPosition(roomPositionMarkers[1]);
 							}}
 						>
 							ROOM 2
@@ -158,7 +170,7 @@ function App() {
 								setHasAnimation(true);
 								setSelectedMeshes('room_3');
 								setInvisibleMesh('roof');
-								setCameraPosition([0, 25, 2]);
+								setCameraPosition(roomPositionMarkers[2]);
 							}}
 						>
 							ROOM 3
@@ -170,7 +182,7 @@ function App() {
 								setHasAnimation(true);
 								setSelectedMeshes('room_4');
 								setInvisibleMesh('roof');
-								setCameraPosition([0, 25, 2]);
+								setCameraPosition(roomPositionMarkers[3]);
 							}}
 						>
 							ROOM 4
@@ -182,7 +194,7 @@ function App() {
 								setHasAnimation(true);
 								setSelectedMeshes('room_5');
 								setInvisibleMesh('roof');
-								setCameraPosition([0, 25, 2]);
+								setCameraPosition(roomPositionMarkers[4]);
 							}}
 						>
 							ROOM 5
@@ -194,7 +206,7 @@ function App() {
 								setHasAnimation(true);
 								setSelectedMeshes('room_6');
 								setInvisibleMesh('roof');
-								setCameraPosition([0, 25, 2]);
+								setCameraPosition(roomPositionMarkers[5]);
 							}}
 						>
 							ROOM 6
@@ -206,7 +218,7 @@ function App() {
 								setHasAnimation(true);
 								setSelectedMeshes('room_7');
 								setInvisibleMesh('roof');
-								setCameraPosition([0, 25, 2]);
+								setCameraPosition(roomPositionMarkers[6]);
 							}}
 						>
 							ROOM 7
@@ -231,7 +243,7 @@ function App() {
 								setInvisibleMesh('roof');
 								// const newSelectedMeshes = selectedMeshes.concat(roomList);
 								setSelectedMeshes(roomList);
-								setCameraPosition([0, 25, 2]);
+								setCameraPosition(new THREE.Vector3(0, 25, 2));
 							}}
 						>
 							SHOW ALL ROOMS
@@ -239,50 +251,47 @@ function App() {
 					</div>
 				</div>
 				{/* </div> */}
-				<div
-					className='canvas-wrapper'
-					onMouseDown={() => {
-						setIdleState(false);
-						// setHasAnimation(false);
-						setMouseDown(true);
-					}}
-					onMouseUp={() => setMouseDown(false)}
-				>
-					<Canvas>
-						<CameraControls
-							cameraPosition={cameraPosition}
-							controlsIdleState={idleState}
-							selectedMeshes={selectedMeshes}
-							hasAnimation={hasAnimation}
-							mouseDown={mouseDown}
-							fov={45}
-							far={200}
-						/>
+			</div>
+			<div
+				className='canvas-wrapper'
+				onMouseDown={() => {
+					setIdleState(false);
+					// setHasAnimation(false);
+					setMouseDown(true);
+				}}
+				onMouseUp={() => setMouseDown(false)}
+			>
+				<Canvas>
+					<CameraControls
+						cameraPosition={cameraPosition}
+						controlsIdleState={idleState}
+						selectedMeshes={selectedMeshes}
+						hasAnimation={hasAnimation}
+						mouseDown={mouseDown}
+						fov={45}
+						far={200}
+					/>
 
-						{/* create Loader UI as fallback before useLoader promise is returned */}
-						<Suspense fallback={null}>
-							{/* <Stage> will center and light the contents, create ground-shadows, and camerazoom the camera */}
-							{/* <Stage environment={null} intensity={0.25} contactShadowOpacity={0}> */}
-							<Model
-								meshList={meshList}
-								setMeshList={setMeshList}
-								hoveredMesh={hoveredMesh}
-								setHoveredMesh={setHoveredMesh}
-								clickedMesh={clickedMesh}
-								setClickedMesh={setClickedMesh}
-								selectedMeshes={selectedMeshes}
-								setSelectedMeshes={setSelectedMeshes}
-								invisibleMesh={invisibleMesh}
-								setInvisibleMesh={setInvisibleMesh}
-							/>
-							<mesh position={[-6, 3, 6]} scale={1}>
-								<boxGeometry args={[1, 1, 1]} />
-								<meshStandardMaterial color={'black'} />
-							</mesh>
-							{/* </Stage> */}
-						</Suspense>
-					</Canvas>
-				</div>
+					{/* create Loader UI as fallback before useLoader promise is returned */}
+					<Suspense fallback={null}>
+						{/* <Stage> will center and light the contents, create ground-shadows, and camerazoom the camera */}
+						{/* <Stage environment={null} intensity={0.25} contactShadowOpacity={0}> */}
+						<Model
+							meshList={meshList}
+							setMeshList={setMeshList}
+							hoveredMesh={hoveredMesh}
+							setHoveredMesh={setHoveredMesh}
+							clickedMesh={clickedMesh}
+							setClickedMesh={setClickedMesh}
+							selectedMeshes={selectedMeshes}
+							setSelectedMeshes={setSelectedMeshes}
+							invisibleMesh={invisibleMesh}
+							setInvisibleMesh={setInvisibleMesh}
+						/>
+						<RoomPositionMarkers />
+						{/* </Stage> */}
+					</Suspense>
+				</Canvas>
 			</div>
 		</div>
 	);

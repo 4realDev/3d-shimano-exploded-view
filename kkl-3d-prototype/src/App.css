@@ -1,7 +1,7 @@
 .container {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	align-items: flex-start;
 	justify-content: center;
 	color: #000520;
 	font-family: 'Circular Std', sans-serif;
@@ -17,8 +17,8 @@
 	position: relative;
 	box-sizing: border-box;
 	/* margin: 0 auto; */
-	width: 1600px;
-	padding: 0 60px !important;
+	/* width: 1600px; */
+	padding: 0 150px !important;
 	/* width: 100% !important; */
 	display: flex;
 	justify-content: space-between;
@@ -27,7 +27,6 @@
 
 .canvas-wrapper {
 	position: absolute;
-	right: 0;
 	left: 15%;
 	width: 100vw;
 	height: 100vh;
