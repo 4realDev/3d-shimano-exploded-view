@@ -1,29 +1,34 @@
-import { useEffect, useRef } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
-import { AxesHelper } from 'three';
 
-const CameraControls = ({ cameraPosition, controlsIdleState, hasAnimation, mouseDown, fov, far }) => {
+const CameraControls = ({
+	camera,
+	controls,
+	cameraPosition,
+	cameraTarget,
+	controlsIdleState,
+	hasAnimation,
+	mouseDown,
+	fov,
+	far,
+}) => {
 	// const [ref, camera] = useResource();
 	// const camera = useThree((state) => state.camera);
 
 	// https://codesandbox.io/s/orbitcontrols-react-three-fiber-9iotf?file=/src/index.js:488-545
 	// const { camera, gl } = useThree();
 
-	const controls = useRef();
-	const camera = useRef();
-
 	const dampSpeed = 2;
 
 	const deg2rad = (degrees) => degrees * (Math.PI / 180);
 
-	const damp = (target, to, step, delta, heightOffset) => {
+	const damp = (target, to, speed, delta) => {
 		if (target instanceof THREE.Vector3) {
-			target.x = THREE.MathUtils.damp(target.x, to.x, step, delta);
-			target.y = THREE.MathUtils.damp(target.y, to.y + heightOffset, step, delta);
-			target.z = THREE.MathUtils.damp(target.z, to.z, step, delta);
+			target.x = THREE.MathUtils.damp(target.x, to.x, speed, delta);
+			target.y = THREE.MathUtils.damp(target.y, to.y, speed, delta);
+			target.z = THREE.MathUtils.damp(target.z, to.z, speed, delta);
 		}
 	};
 
@@ -65,8 +70,8 @@ const CameraControls = ({ cameraPosition, controlsIdleState, hasAnimation, mouse
 	// ANIMATED UPDATE FOR CAMERA MOVEMENT ONCLICK/ONSELECT
 	useFrame((state, delta) => {
 		if (!mouseDown && hasAnimation) {
-			damp(camera.current.position, cameraPosition, dampSpeed, delta, 10);
-			damp(controls.current.target, cameraPosition, delta, dampSpeed, 0);
+			damp(camera.current.position, cameraPosition, dampSpeed, delta);
+			damp(controls.current.target, cameraTarget, dampSpeed, delta);
 		}
 		controls.current.update();
 		camera.current.updateProjectionMatrix();
@@ -92,8 +97,8 @@ const CameraControls = ({ cameraPosition, controlsIdleState, hasAnimation, mouse
 				enablePan={true}
 				// minPolarAngle={Math.PI / 2}
 				maxPolarAngle={Math.PI / 2}
-				autoRotate={controlsIdleState}
-				autoRotateSpeed={1.5}
+				// autoRotate={controlsIdleState}
+				// autoRotateSpeed={1.5}
 				minDistance={3}
 				maxDistance={20}
 			/>

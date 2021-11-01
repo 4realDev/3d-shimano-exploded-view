@@ -1,5 +1,5 @@
 import './App.css';
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import * as THREE from 'three';
 import { Suspense } from 'react';
@@ -8,19 +8,47 @@ import CameraControls from './components/models/CameraControls';
 import RoomPositionMarkers from './components/models/RoomPositionMarkers';
 
 function App() {
-	const roomList = ['room_1', 'room_2', 'room_3', 'room_4', 'room_5', 'room_6', 'room_7'];
-
-	const roomPositionMarkers = [
-		new THREE.Vector3(-3.8, -0.5, 4), // Room 1
-		new THREE.Vector3(-3.8, -0.5, 0), // Room 2
-		new THREE.Vector3(-3.8, -0.5, -4), // Room 3
-		new THREE.Vector3(0.4, -0.5, 4), // Room 4
-		new THREE.Vector3(0.4, -0.5, 0), // Room 5
-		new THREE.Vector3(0.4, -0.5, -4), // Room 6
-		new THREE.Vector3(3.9, -0.5, -4), // Room 7
-	];
-
 	const defaultCameraPosition = new THREE.Vector3(20, 15, 0);
+	const defaultCameraFocusPosition = new THREE.Vector3(0, 0, 0);
+	const camHeightOffset = 8;
+
+	const roomList = [
+		{
+			name: 'room_1',
+			camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, 4),
+			camTarget: new THREE.Vector3(-3.8, -0.5, 4),
+		},
+		{
+			name: 'room_2',
+			camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, 0),
+			camTarget: new THREE.Vector3(-3.8, -0.5, 0),
+		},
+		{
+			name: 'room_3',
+			camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, -4),
+			camTarget: new THREE.Vector3(-3.8, -0.5, -4),
+		},
+		{
+			name: 'room_4',
+			camPos: new THREE.Vector3(0.4, -0.5 + camHeightOffset, 4),
+			camTarget: new THREE.Vector3(0.4, -0.5, 4),
+		},
+		{
+			name: 'room_5',
+			camPos: new THREE.Vector3(0.4, -0.5 + camHeightOffset, 0),
+			camTarget: new THREE.Vector3(0.4, -0.5, 0),
+		},
+		{
+			name: 'room_6',
+			camPos: new THREE.Vector3(0.4, -0.5 + camHeightOffset, -4),
+			camTarget: new THREE.Vector3(0.4, -0.5, -4),
+		},
+		{
+			name: 'room_7',
+			camPos: new THREE.Vector3(3.9, -0.5 + camHeightOffset, -4),
+			camTarget: new THREE.Vector3(3.9, -0.5, -4),
+		},
+	];
 
 	const [meshList, setMeshList] = useState([]);
 	const [hoveredMesh, setHoveredMesh] = useState(null);
@@ -28,6 +56,8 @@ function App() {
 	const [selectedMeshes, setSelectedMeshes] = useState([]);
 	const [invisibleMesh, setInvisibleMesh] = useState(null);
 	const [cameraPosition, setCameraPosition] = useState(defaultCameraPosition);
+	// TODO: Add new prop in CameraControls called CameraFocusPosition
+	const [cameraTarget, setCameraTarget] = useState(defaultCameraFocusPosition);
 	const [hasAnimation, setHasAnimation] = useState(false);
 	const [mouseDown, setMouseDown] = useState(false);
 	const [idleState, setIdleState] = useState(true);
@@ -42,21 +72,21 @@ function App() {
 			} else {
 				setIdleState(false);
 				setHasAnimation(true);
-				setCameraPosition(new THREE.Vector3(0, 25, 2));
-				setSelectedMeshes(clickedMesh);
+				const clickedRoom = roomList.find((room) => {
+					if (room.name === clickedMesh) return room;
+				});
+				if (typeof clickedRoom != 'undefined') {
+					setCameraPosition(clickedRoom.camPos);
+					setCameraTarget(clickedRoom.camTarget);
+					setSelectedMeshes(clickedRoom.name); // would through error for undefined clickable meshes
+				}
 				setInvisibleMesh('roof');
 			}
 		}
 	}, [clickedMesh]);
 
-	// TODO: Create logic to access stored zoomOnPositions of the meshes
-	// const getSelectedMeshObjects = (selectedMeshes) => {
-	// 	const selectedMeshObjects = meshList.filter((mesh) => selectedMeshes.includes(mesh.name));
-	// 	console.log(selectedMeshObjects);
-	// 	return selectedMeshObjects;
-	// };
-
-	// getSelectedMeshObjects(selectedMeshes);
+	const controlsRef = useRef();
+	const cameraRef = useRef();
 
 	// TODO: Add cursor with current hovered on mesh
 	// useEffect(() => {
@@ -146,7 +176,8 @@ function App() {
 								setHasAnimation(true);
 								setSelectedMeshes('room_1');
 								setInvisibleMesh('roof');
-								setCameraPosition(roomPositionMarkers[0]);
+								setCameraPosition(roomList[0].camPos);
+								setCameraTarget(roomList[0].camTarget);
 							}}
 						>
 							ROOM 1
@@ -158,7 +189,8 @@ function App() {
 								setHasAnimation(true);
 								setSelectedMeshes('room_2');
 								setInvisibleMesh('roof');
-								setCameraPosition(roomPositionMarkers[1]);
+								setCameraPosition(roomList[1].camPos);
+								setCameraTarget(roomList[1].camTarget);
 							}}
 						>
 							ROOM 2
@@ -170,7 +202,8 @@ function App() {
 								setHasAnimation(true);
 								setSelectedMeshes('room_3');
 								setInvisibleMesh('roof');
-								setCameraPosition(roomPositionMarkers[2]);
+								setCameraPosition(roomList[2].camPos);
+								setCameraTarget(roomList[2].camTarget);
 							}}
 						>
 							ROOM 3
@@ -182,7 +215,8 @@ function App() {
 								setHasAnimation(true);
 								setSelectedMeshes('room_4');
 								setInvisibleMesh('roof');
-								setCameraPosition(roomPositionMarkers[3]);
+								setCameraPosition(roomList[3].camPos);
+								setCameraTarget(roomList[3].camTarget);
 							}}
 						>
 							ROOM 4
@@ -194,7 +228,8 @@ function App() {
 								setHasAnimation(true);
 								setSelectedMeshes('room_5');
 								setInvisibleMesh('roof');
-								setCameraPosition(roomPositionMarkers[4]);
+								setCameraPosition(roomList[4].camPos);
+								setCameraTarget(roomList[4].camTarget);
 							}}
 						>
 							ROOM 5
@@ -206,7 +241,8 @@ function App() {
 								setHasAnimation(true);
 								setSelectedMeshes('room_6');
 								setInvisibleMesh('roof');
-								setCameraPosition(roomPositionMarkers[5]);
+								setCameraPosition(roomList[5].camPos);
+								setCameraTarget(roomList[5].camTarget);
 							}}
 						>
 							ROOM 6
@@ -218,7 +254,8 @@ function App() {
 								setHasAnimation(true);
 								setSelectedMeshes('room_7');
 								setInvisibleMesh('roof');
-								setCameraPosition(roomPositionMarkers[6]);
+								setCameraPosition(roomList[6].camPos);
+								setCameraTarget(roomList[6].camTarget);
 							}}
 						>
 							ROOM 7
@@ -227,10 +264,16 @@ function App() {
 							className='product-button'
 							onClick={() => {
 								setHasAnimation(true);
-								setCameraPosition(defaultCameraPosition);
-								// setCameraAnimation(false);
+								setCameraPosition(controlsRef.current.position0);
+								setCameraTarget(controlsRef.current.target0);
 								setSelectedMeshes([]);
 								setInvisibleMesh(null);
+
+								// TODO: Figure out how to deactivate hasAnimation after the position as damped to the defaultCameraPosition
+								// setTimeout(() => {
+								// 	setIdleState(true);
+								// 	setHasAnimation(false);
+								// }, 2000);
 							}}
 						>
 							RESET
@@ -242,8 +285,9 @@ function App() {
 								setHasAnimation(true);
 								setInvisibleMesh('roof');
 								// const newSelectedMeshes = selectedMeshes.concat(roomList);
-								setSelectedMeshes(roomList);
-								setCameraPosition(new THREE.Vector3(0, 25, 2));
+								setSelectedMeshes(roomList.map((room) => room.name));
+								setCameraPosition(new THREE.Vector3(0, 25 + camHeightOffset, 2));
+								setCameraTarget(defaultCameraFocusPosition);
 							}}
 						>
 							SHOW ALL ROOMS
@@ -263,7 +307,10 @@ function App() {
 			>
 				<Canvas>
 					<CameraControls
+						camera={cameraRef}
+						controls={controlsRef}
 						cameraPosition={cameraPosition}
+						cameraTarget={cameraTarget}
 						controlsIdleState={idleState}
 						selectedMeshes={selectedMeshes}
 						hasAnimation={hasAnimation}
