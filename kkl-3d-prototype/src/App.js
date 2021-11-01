@@ -56,7 +56,6 @@ function App() {
 	const [selectedMeshes, setSelectedMeshes] = useState([]);
 	const [invisibleMesh, setInvisibleMesh] = useState(null);
 	const [cameraPosition, setCameraPosition] = useState(defaultCameraPosition);
-	// TODO: Add new prop in CameraControls called CameraFocusPosition
 	const [cameraTarget, setCameraTarget] = useState(defaultCameraFocusPosition);
 	const [hasAnimation, setHasAnimation] = useState(false);
 	const [mouseDown, setMouseDown] = useState(false);
@@ -78,7 +77,7 @@ function App() {
 				if (typeof clickedRoom != 'undefined') {
 					setCameraPosition(clickedRoom.camPos);
 					setCameraTarget(clickedRoom.camTarget);
-					setSelectedMeshes(clickedRoom.name); // would through error for undefined clickable meshes
+					setSelectedMeshes(clickedRoom.name);
 				}
 				setInvisibleMesh('roof');
 			}
@@ -284,7 +283,6 @@ function App() {
 								setIdleState(false);
 								setHasAnimation(true);
 								setInvisibleMesh('roof');
-								// const newSelectedMeshes = selectedMeshes.concat(roomList);
 								setSelectedMeshes(roomList.map((room) => room.name));
 								setCameraPosition(new THREE.Vector3(0, 25 + camHeightOffset, 2));
 								setCameraTarget(defaultCameraFocusPosition);
@@ -321,8 +319,6 @@ function App() {
 
 					{/* create Loader UI as fallback before useLoader promise is returned */}
 					<Suspense fallback={null}>
-						{/* <Stage> will center and light the contents, create ground-shadows, and camerazoom the camera */}
-						{/* <Stage environment={null} intensity={0.25} contactShadowOpacity={0}> */}
 						<Model
 							meshList={meshList}
 							setMeshList={setMeshList}
@@ -336,7 +332,6 @@ function App() {
 							setInvisibleMesh={setInvisibleMesh}
 						/>
 						<RoomPositionMarkers />
-						{/* </Stage> */}
 					</Suspense>
 				</Canvas>
 			</div>
