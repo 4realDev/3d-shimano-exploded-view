@@ -1,30 +1,50 @@
 import React from 'react';
+import { Line } from '@react-three/drei';
 
-const RoomPositionMarkers = () => {
-	const roomPositionMarkers = [
-		[-3.8, -0.5, 4], // Room 1
-		[-3.8, -0.5, 0], // Room 2
-		[-3.8, -0.5, -4], // Room 3
-		[0.4, -0.5, 4], // Room 4
-		[0.4, -0.5, 0], // Room 5
-		[0.4, -0.5, -4], // Room 6
-		[3.9, -0.5, -4], // Room 7
-	];
-
+const RoomPositionMarkers = ({ markerPositions, targetPoints }) => {
 	const renderRoomPositionMarkers = () => {
-		return roomPositionMarkers.map((markerPos) => {
+		return markerPositions.map((markerPos) => {
 			return (
-				<>
-					<mesh position={markerPos} scale={1}>
-						<boxGeometry />
-						<meshStandardMaterial />
-					</mesh>
-				</>
+				<mesh position={markerPos} scale={0.5}>
+					<boxGeometry />
+					<meshStandardMaterial />
+				</mesh>
 			);
 		});
 	};
 
-	return renderRoomPositionMarkers();
+	const renderTargetPoints = () => {
+		return targetPoints.map((targetPoint) => {
+			return (
+				<mesh position={targetPoint} scale={0.25}>
+					<sphereGeometry />
+					<meshStandardMaterial color='red' />
+				</mesh>
+			);
+		});
+	};
+
+	const renderLinesFromCamPosToTargetPoints = () => {
+		const startPoints = [];
+		const endPoints = [];
+		targetPoints.forEach((targetPoint) => {
+			endPoints.push(targetPoint);
+		});
+		markerPositions.forEach((markerPos) => {
+			startPoints.push(markerPos);
+		});
+		return startPoints.map((x, i) => {
+			return <Line points={[startPoints[i], endPoints[i]]} color='black' lineWidth={1} />;
+		});
+	};
+
+	return (
+		<>
+			{renderRoomPositionMarkers()}
+			{renderTargetPoints()}
+			{renderLinesFromCamPosToTargetPoints()}
+		</>
+	);
 };
 
 export default RoomPositionMarkers;

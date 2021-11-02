@@ -86,7 +86,6 @@ function App() {
 
 	const controlsRef = useRef();
 	const cameraRef = useRef();
-
 	// TODO: Add cursor with current hovered on mesh
 	// useEffect(() => {
 	// 	// const hoveredMeshIndex = meshList.findIndex(hoveredMesh);
@@ -331,7 +330,10 @@ function App() {
 							invisibleMesh={invisibleMesh}
 							setInvisibleMesh={setInvisibleMesh}
 						/>
-						<RoomPositionMarkers />
+						<RoomPositionMarkers
+							markerPositions={roomList.map(({ camPos }) => camPos)}
+							targetPoints={roomList.map(({ camTarget }) => camTarget)}
+						/>
 					</Suspense>
 				</Canvas>
 			</div>
