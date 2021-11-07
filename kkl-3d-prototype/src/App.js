@@ -1,5 +1,6 @@
 import './App.css';
 import { useRef, useState, useEffect } from 'react';
+import { Stats } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import * as THREE from 'three';
 import { Suspense } from 'react';
@@ -294,6 +295,9 @@ function App() {
 							targetPoints={roomList.map(({ camTarget }) => camTarget)}
 						/>
 					</Suspense>
+					<Stats />
+					{/* <gridHelper /> */}
+					{/* <axesHelper /> */}
 				</Canvas>
 			</div>
 		</div>
