@@ -71,8 +71,14 @@ const CameraControls = ({
 	useFrame((state, delta) => {
 		if (!mouseDown && hasAnimation) {
 			damp(camera.current.position, cameraPosition, dampSpeed, delta);
+			// Focus point of controls. Can be updated manually at any point.
 			damp(controls.current.target, cameraTarget, dampSpeed, delta);
 		}
+		// TODO: Figure out how to rotate camera
+		// camera.current.rotation.set(new THREE.Euler(deg2rad(45), 0, 0));
+		// camera.current.rotation.x = (90 * Math.PI) / 180;
+		// camera.current.rotateOnAxis(new THREE.Vector3(1, 0, 0), 0.2);
+
 		controls.current.update();
 		camera.current.updateProjectionMatrix();
 	});
@@ -85,11 +91,10 @@ const CameraControls = ({
 				ref={camera}
 				makeDefault
 				position={[20, 15, 0]}
-				// rotation={cameraRotation}
 				fov={fov}
 				far={far}
 				aspect={window.innerWidth / window.innerHeight}
-				onUpdate={(self) => self.updateProjectionMatrix()}
+				// onUpdate={(self) => self.updateProjectionMatrix()}
 			/>
 			<OrbitControls
 				ref={controls}
@@ -98,7 +103,7 @@ const CameraControls = ({
 				// minPolarAngle={Math.PI / 2}
 				maxPolarAngle={Math.PI / 2}
 				// autoRotate={controlsIdleState}
-				// autoRotateSpeed={1.5}
+				// autoRotateSpeed={0.5}
 				minDistance={3}
 				maxDistance={20}
 			/>
