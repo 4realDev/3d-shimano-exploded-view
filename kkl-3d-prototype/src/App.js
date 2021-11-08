@@ -1,5 +1,5 @@
 import './App.css';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useMemo } from 'react';
 import { Stats } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -13,43 +13,48 @@ function App() {
 	const defaultCameraFocusPosition = new THREE.Vector3(0, 0, 0);
 	const camHeightOffset = 10;
 
-	const roomList = [
-		{
-			name: 'room_1',
-			camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, 4),
-			camTarget: new THREE.Vector3(-3.8, -0.5, 4),
-		},
-		{
-			name: 'room_2',
-			camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, 0),
-			camTarget: new THREE.Vector3(-3.8, -0.5, 0),
-		},
-		{
-			name: 'room_3',
-			camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, -4),
-			camTarget: new THREE.Vector3(-3.8, -0.5, -4),
-		},
-		{
-			name: 'room_4',
-			camPos: new THREE.Vector3(0.4, -0.5 + camHeightOffset, 4),
-			camTarget: new THREE.Vector3(0.4, -0.5, 4),
-		},
-		{
-			name: 'room_5',
-			camPos: new THREE.Vector3(0.4, -0.5 + camHeightOffset, 0),
-			camTarget: new THREE.Vector3(0.4, -0.5, 0),
-		},
-		{
-			name: 'room_6',
-			camPos: new THREE.Vector3(0.4, -0.5 + camHeightOffset, -4),
-			camTarget: new THREE.Vector3(0.4, -0.5, -4),
-		},
-		{
-			name: 'room_7',
-			camPos: new THREE.Vector3(3.9, -0.5 + camHeightOffset, -4),
-			camTarget: new THREE.Vector3(3.9, -0.5, -4),
-		},
-	];
+	// The 'roomList' array makes the dependencies of useEffect Hook (at line 86) change on every render.
+	// To fix this, wrap the initialization of 'roomList' in its own useMemo() Hook.eslintreact-hooks/exhaustive-deps
+	const roomList = useMemo(
+		() => [
+			{
+				name: 'room_1',
+				camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, 4),
+				camTarget: new THREE.Vector3(-3.8, -0.5, 4),
+			},
+			{
+				name: 'room_2',
+				camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, 0),
+				camTarget: new THREE.Vector3(-3.8, -0.5, 0),
+			},
+			{
+				name: 'room_3',
+				camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, -4),
+				camTarget: new THREE.Vector3(-3.8, -0.5, -4),
+			},
+			{
+				name: 'room_4',
+				camPos: new THREE.Vector3(0.4, -0.5 + camHeightOffset, 4),
+				camTarget: new THREE.Vector3(0.4, -0.5, 4),
+			},
+			{
+				name: 'room_5',
+				camPos: new THREE.Vector3(0.4, -0.5 + camHeightOffset, 0),
+				camTarget: new THREE.Vector3(0.4, -0.5, 0),
+			},
+			{
+				name: 'room_6',
+				camPos: new THREE.Vector3(0.4, -0.5 + camHeightOffset, -4),
+				camTarget: new THREE.Vector3(0.4, -0.5, -4),
+			},
+			{
+				name: 'room_7',
+				camPos: new THREE.Vector3(3.9, -0.5 + camHeightOffset, -4),
+				camTarget: new THREE.Vector3(3.9, -0.5, -4),
+			},
+		],
+		[]
+	);
 
 	const [meshList, setMeshList] = useState([]);
 	const [hoveredMesh, setHoveredMesh] = useState(null);
@@ -83,7 +88,7 @@ function App() {
 				setInvisibleMesh('roof');
 			}
 		}
-	}, [clickedMesh]);
+	}, [clickedMesh, roomList]);
 
 	const controlsRef = useRef();
 	const cameraRef = useRef();
