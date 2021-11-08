@@ -32,41 +32,6 @@ const CameraControls = ({
 		}
 	};
 
-	// const initCamera = () => {
-	// 	// camera.position.x = 10;
-	// 	// camera.position.y = 10;
-	// 	// camera.position.z = 10;
-	// 	camera.position.set(cameraPosition[0], cameraPosition[1], cameraPosition[2]);
-	// 	camera.fov = fov;
-	// 	camera.far = far;
-	// };
-
-	// const initOrbitControls = () => {
-	// 	console.log(controls);
-	// 	// const controls = new OrbitControls(camera, gl.domElement);
-	// 	controls.current.enableZoom = true;
-	// 	controls.current.enablePan = true;
-	// 	// controls.current.minPolarAngle = Math.PI / 2
-	// 	controls.current.maxPolarAngle = Math.PI / 2;
-	// 	controls.current.autoRotate = { controlsIdleState };
-	// 	controls.current.autoRotateSpeed = 1;
-	// 	controls.current.minDistance = 3;
-	// 	controls.current.maxDistance = 60;
-	// 	controls.current.args = [camera, gl.domElement];
-	// 	// Update the controls.current. Must be called after any manual changes to the camera's transform, or in the update loop if .autoRotate or .enableDamping are set
-	// 	controls.current.update();
-	// 	// return () => {
-	// 	// 	// Remove all the event listeners.
-	// 	// 	controls.current.dispose();
-	// 	// };
-	// };
-
-	// INITIAL SETUP OF CAMERA
-	// useEffect(() => {
-	// initCamera();
-	// initOrbitControls();
-	// }, []);
-
 	// ANIMATED UPDATE FOR CAMERA MOVEMENT ONCLICK/ONSELECT
 	useFrame((state, delta) => {
 		if (!mouseDown && hasAnimation) {

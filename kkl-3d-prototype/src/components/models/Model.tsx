@@ -87,12 +87,12 @@ const Model = ({
 		}
 	};
 
-	const deg2rad = (degrees: number) => degrees * (Math.PI / 180);
+	// const deg2rad = (degrees: number) => degrees * (Math.PI / 180);
 
 	useEffect(() => {
 		convertGLTFToMeshList(model.nodes, model.materials);
 		setMeshList(initialMeshList);
-	}, []);
+	});
 
 	// useHelper(group, BoxHelper, 'black');
 
