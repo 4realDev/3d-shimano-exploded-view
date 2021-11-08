@@ -1,7 +1,11 @@
-import React from 'react';
 import { Line } from '@react-three/drei';
 
-const RoomPositionMarkers = ({ markerPositions, targetPoints }) => {
+type RoomPositionMarkersProps = {
+	markerPositions: THREE.Vector3[];
+	targetPoints: THREE.Vector3[];
+};
+
+const RoomPositionMarkers = ({ markerPositions, targetPoints }: RoomPositionMarkersProps) => {
 	const renderRoomPositionMarkers = () => {
 		return markerPositions.map((markerPos) => {
 			return (
@@ -25,8 +29,8 @@ const RoomPositionMarkers = ({ markerPositions, targetPoints }) => {
 	};
 
 	const renderLinesFromCamPosToTargetPoints = () => {
-		const startPoints = [];
-		const endPoints = [];
+		const startPoints: THREE.Vector3[] = [];
+		const endPoints: THREE.Vector3[] = [];
 		targetPoints.forEach((targetPoint) => {
 			endPoints.push(targetPoint);
 		});
