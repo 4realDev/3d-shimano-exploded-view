@@ -23,7 +23,7 @@ function App() {
 	const camHeightOffset = 10;
 
 	// The 'roomList' array makes the dependencies of useEffect Hook (at line 86) change on every render.
-	// To fix this, wrap the initialization of 'roomList' in its own useMemo() Hook.eslintreact-hooks/exhaustive-deps
+	// To fix this, wrap the initialization of 'roomList' in its own useMemo() Hook.
 	const roomList = useMemo(
 		() => [
 			{

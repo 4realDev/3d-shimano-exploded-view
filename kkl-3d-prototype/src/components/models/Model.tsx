@@ -3,6 +3,9 @@ import { useEffect, useRef } from 'react';
 import { Center, useGLTF } from '@react-three/drei';
 // npm i --save-dev @types/three
 import { GLTF } from 'three-stdlib';
+import * as THREE from 'three';
+import { GroupProps } from '@react-three/fiber';
+import { Object3D } from 'three';
 
 // https://githubmemory.com/repo/pmndrs/drei/issues/469
 export type DreiGLTF = GLTF & {
@@ -44,7 +47,7 @@ const Model = ({
 	invisibleMesh,
 	setInvisibleMesh,
 }: ModelProps) => {
-	const group = useRef();
+	const group = useRef<GroupProps>();
 	const model = useGLTF('/house-model.glb') as DreiGLTF;
 
 	const opacityValue = 0.25;
@@ -94,110 +97,111 @@ const Model = ({
 		setMeshList(initialMeshList);
 	}, []);
 
-	// useHelper(group, BoxHelper, 'black');
-
 	return (
 		// Drei: Calculates a boundary box and centers its children accordingly.
-		<Center>
-			{/* <Box position={[-2, 3, 2]} args={[16, 7, 15]}>
+		<>
+			<primitive object={new THREE.BoxHelper(group.current as any, 'black')} />
+			<Center>
+				{/* <Box position={[-2, 3, 2]} args={[16, 7, 15]}>
 				<meshNormalMaterial attach='material' wireframe />
 			</Box> */}
-			<group
-				scale={0.01}
-				position={[0, 0, 0]}
-				// rotation={[deg2rad(0), deg2rad(-90), deg2rad(0)]}
-				ref={group}
-				// dispose={null}
+				<group
+					scale={0.01}
+					position={[0, 0, 0]}
+					// rotation={[deg2rad(0), deg2rad(-90), deg2rad(0)]}
+					ref={group}
+					// dispose={null}
 
-				// EVENTS FOR ALL MESHES
-				// TODO: if possible move back to groups
-				// PROBLEM: LineSegments has onPointerEvents too ..
+					// EVENTS FOR ALL MESHES
+					// TODO: if possible move back to groups
+					// PROBLEM: LineSegments has onPointerEvents too ..
 
-				// Pointer on mesh
-				// if pointer is over a mesh, stop propagation of the event
-				// and set the material name as the hoveredElement
-			>
-				{meshList.map((meshObject: MeshObject) => {
-					return (
-						<mesh
-							name={meshObject.name}
-							visible={invisibleMesh !== null && invisibleMesh === meshObject.name ? false : true}
-							material={meshObject.material}
-							// geometry={meshObject.geometry}
-							// material-color={hoveredMesh === meshObject.name ? hoverColor : meshObject.color}
-							// material-transparent={true}
-							// visible={meshObject.isVisible}
-							// material-visible={invisibleMesh !== null && invisibleMesh === meshObject.name ? false : true}
-							// material-opacity={
-							// 	selectedMesh !== null && selectedMesh !== meshObject.name ? opacityValue : meshObject.opacity
-							// }
-
-							onPointerOver={(event) => {
-								// check to prevent event on not visible meshes
-								if (event.object.visible) {
-									event.stopPropagation();
-									setHoveredMesh(event.object.name);
-								}
-							}}
-							// Pointer outside of mesh
-							// if pointer is outside of a mesh and does not intersect with any other mesh
-							// set the hoveredElement to null
-							onPointerOut={(event) => {
-								event.intersections.length === 0 && setHoveredMesh(null);
-							}}
-							// Pointer click on mesh
-							// stopPropagation and set current object inside state to the one clicked
-							onPointerDown={(event) => {
-								// check to prevent event on not visible meshes
-								if (event.object.visible) {
-									event.stopPropagation();
-									setClickedMesh(event.object.name);
-									// event.object.material.visible = false;
-								}
-							}}
-							// Pointer click outside of mesh
-							// Set current object inside state to the one clicked
-
-							onPointerMissed={(event) => {
-								setClickedMesh(null);
-							}}
-						>
-							<bufferGeometry attach='geometry' {...meshObject.geometry} />
-							<meshBasicMaterial
-								attach='material'
-								// material={meshObject.material}
-								color={hoveredMesh === meshObject.name ? hoverColor : meshObject.color}
-								transparent
+					// Pointer on mesh
+					// if pointer is over a mesh, stop propagation of the event
+					// and set the material name as the hoveredElement
+				>
+					{meshList.map((meshObject: MeshObject) => {
+						return (
+							<mesh
+								name={meshObject.name}
 								visible={invisibleMesh !== null && invisibleMesh === meshObject.name ? false : true}
-								opacity={
-									selectedMeshes.length > 0 && !selectedMeshes.includes(meshObject.name)
-										? opacityValue
-										: meshObject.opacity
-								}
-							/>
-							{/* {selectedMesh !== null && selectedMesh !== meshObject.name ? (
-							''
-						) : ( */}
-							<lineSegments renderOrder={100} name={meshObject.name}>
-								<edgesGeometry attach='geometry' args={[meshObject.geometry]} />
-								{/* Due limitations of OpenGL Core Profile with WebGL renderer on most platforms linewidth will always be 1 regardless of set value.  */}
-								<lineBasicMaterial
-									color='black'
+								material={meshObject.material}
+								// geometry={meshObject.geometry}
+								// material-color={hoveredMesh === meshObject.name ? hoverColor : meshObject.color}
+								// material-transparent={true}
+								// visible={meshObject.isVisible}
+								// material-visible={invisibleMesh !== null && invisibleMesh === meshObject.name ? false : true}
+								// material-opacity={
+								// 	selectedMesh !== null && selectedMesh !== meshObject.name ? opacityValue : meshObject.opacity
+								// }
+
+								onPointerOver={(event) => {
+									// check to prevent event on not visible meshes
+									if (event.object.visible) {
+										event.stopPropagation();
+										setHoveredMesh(event.object.name);
+									}
+								}}
+								// Pointer outside of mesh
+								// if pointer is outside of a mesh and does not intersect with any other mesh
+								// set the hoveredElement to null
+								onPointerOut={(event) => {
+									event.intersections.length === 0 && setHoveredMesh(null);
+								}}
+								// Pointer click on mesh
+								// stopPropagation and set current object inside state to the one clicked
+								onPointerDown={(event) => {
+									// check to prevent event on not visible meshes
+									if (event.object.visible) {
+										event.stopPropagation();
+										setClickedMesh(event.object.name);
+										// event.object.material.visible = false;
+									}
+								}}
+								// Pointer click outside of mesh
+								// Set current object inside state to the one clicked
+
+								onPointerMissed={(event) => {
+									setClickedMesh(null);
+								}}
+							>
+								<bufferGeometry attach='geometry' {...meshObject.geometry} />
+								<meshBasicMaterial
 									attach='material'
+									// material={meshObject.material}
+									color={hoveredMesh === meshObject.name ? hoverColor : meshObject.color}
 									transparent
+									visible={invisibleMesh !== null && invisibleMesh === meshObject.name ? false : true}
 									opacity={
 										selectedMeshes.length > 0 && !selectedMeshes.includes(meshObject.name)
-											? opacityValueOutline
+											? opacityValue
 											: meshObject.opacity
 									}
 								/>
-							</lineSegments>
-							{/* )} */}
-						</mesh>
-					);
-				})}
-			</group>
-		</Center>
+								{/* {selectedMesh !== null && selectedMesh !== meshObject.name ? (
+							''
+						) : ( */}
+								<lineSegments renderOrder={100} name={meshObject.name}>
+									<edgesGeometry attach='geometry' args={[meshObject.geometry]} />
+									{/* Due limitations of OpenGL Core Profile with WebGL renderer on most platforms linewidth will always be 1 regardless of set value.  */}
+									<lineBasicMaterial
+										color='black'
+										attach='material'
+										transparent
+										opacity={
+											selectedMeshes.length > 0 && !selectedMeshes.includes(meshObject.name)
+												? opacityValueOutline
+												: meshObject.opacity
+										}
+									/>
+								</lineSegments>
+								{/* )} */}
+							</mesh>
+						);
+					})}
+				</group>
+			</Center>
+		</>
 	);
 };
 
