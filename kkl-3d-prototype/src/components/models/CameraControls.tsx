@@ -1,4 +1,4 @@
-import { useFrame } from '@react-three/fiber';
+import { useFrame, Vector3 } from '@react-three/fiber';
 import * as THREE from 'three';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
 
@@ -29,7 +29,7 @@ const CameraControls = ({
 
 	// const deg2rad = (degrees: number) => degrees * (Math.PI / 180);
 
-	const damp = (target: THREE.Vector3, to: THREE.Vector3, speed: number, delta: number) => {
+	const damp = (target: Vector3 | undefined, to: THREE.Vector3, speed: number, delta: number) => {
 		if (target instanceof THREE.Vector3) {
 			target.x = THREE.MathUtils.damp(target.x, to.x, speed, delta);
 			target.y = THREE.MathUtils.damp(target.y, to.y, speed, delta);

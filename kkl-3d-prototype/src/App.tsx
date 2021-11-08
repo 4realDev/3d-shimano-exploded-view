@@ -1,12 +1,21 @@
 import './App.css';
-import { useRef, useState, useEffect, useMemo } from 'react';
-import { Stats } from '@react-three/drei';
-import { Canvas } from '@react-three/fiber';
+import { useRef, useState, useEffect, useMemo, MutableRefObject } from 'react';
+import { OrbitControlsProps, Stats } from '@react-three/drei';
+import { Canvas, PerspectiveCameraProps } from '@react-three/fiber';
 import * as THREE from 'three';
 import { Suspense } from 'react';
 import Model from './components/models/Model';
 import CameraControls from './components/models/CameraControls';
 import RoomPositionMarkers from './components/models/RoomPositionMarkers';
+
+type MeshObject = {
+	name: string;
+	geometry: THREE.BufferGeometry;
+	material: THREE.Material;
+	color: string;
+	opacity: number;
+	isVisible: boolean;
+};
 
 function App() {
 	const defaultCameraPosition = new THREE.Vector3(20, 15, 0);
@@ -56,16 +65,19 @@ function App() {
 		[]
 	);
 
-	const [meshList, setMeshList] = useState([]);
-	const [hoveredMesh, setHoveredMesh] = useState(null);
-	const [clickedMesh, setClickedMesh] = useState(null);
-	const [selectedMeshes, setSelectedMeshes] = useState([]);
-	const [invisibleMesh, setInvisibleMesh] = useState(null);
+	const [meshList, setMeshList] = useState<MeshObject[]>([]);
+	const [hoveredMesh, setHoveredMesh] = useState<null | string>(null);
+	const [clickedMesh, setClickedMesh] = useState<null | string>(null);
+	const [selectedMeshes, setSelectedMeshes] = useState<string | string[]>([]);
+	const [invisibleMesh, setInvisibleMesh] = useState<null | string>(null);
 	const [cameraPosition, setCameraPosition] = useState(defaultCameraPosition);
 	const [cameraTarget, setCameraTarget] = useState(defaultCameraFocusPosition);
 	const [hasAnimation, setHasAnimation] = useState(false);
 	const [mouseDown, setMouseDown] = useState(false);
 	const [idleState, setIdleState] = useState(true);
+
+	const controlsRef = useRef<OrbitControlsProps>();
+	const cameraRef = useRef<PerspectiveCameraProps>();
 
 	useEffect(() => {
 		if (clickedMesh) {
@@ -89,9 +101,6 @@ function App() {
 			}
 		}
 	}, [clickedMesh]);
-
-	const controlsRef = useRef();
-	const cameraRef = useRef();
 
 	return (
 		<div className='container' style={{ backgroundImage: `url(${'/images/waves.png'})` }}>
@@ -226,8 +235,12 @@ function App() {
 							className='product-button'
 							onClick={() => {
 								setHasAnimation(true);
-								setCameraPosition(controlsRef.current.position0);
-								setCameraTarget(controlsRef.current.target0);
+								setCameraPosition(
+									controlsRef.current !== undefined ? controlsRef.current.position0! : defaultCameraPosition
+								);
+								setCameraTarget(
+									controlsRef.current !== undefined ? controlsRef.current.target0! : defaultCameraFocusPosition
+								);
 								setSelectedMeshes([]);
 								setInvisibleMesh(null);
 
@@ -274,7 +287,6 @@ function App() {
 						cameraPosition={cameraPosition}
 						cameraTarget={cameraTarget}
 						controlsIdleState={idleState}
-						selectedMeshes={selectedMeshes}
 						hasAnimation={hasAnimation}
 						mouseDown={mouseDown}
 						fov={45}

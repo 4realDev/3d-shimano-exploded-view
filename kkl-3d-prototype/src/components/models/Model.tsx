@@ -26,10 +26,10 @@ type ModelProps = {
 	setHoveredMesh: (value: string | null) => void;
 	clickedMesh: string | null;
 	setClickedMesh: (value: string | null) => void;
-	selectedMeshes: string[];
-	setSelectedMeshes: (value: string[]) => void;
-	invisibleMesh: string;
-	setInvisibleMesh: (value: string) => void;
+	selectedMeshes: string | string[];
+	setSelectedMeshes: (value: string | string[]) => void;
+	invisibleMesh: string | null;
+	setInvisibleMesh: (value: string | null) => void;
 };
 
 const Model = ({
