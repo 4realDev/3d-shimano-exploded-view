@@ -92,7 +92,7 @@ const Model = ({
 	useEffect(() => {
 		convertGLTFToMeshList(model.nodes, model.materials);
 		setMeshList(initialMeshList);
-	});
+	}, []);
 
 	// useHelper(group, BoxHelper, 'black');
 

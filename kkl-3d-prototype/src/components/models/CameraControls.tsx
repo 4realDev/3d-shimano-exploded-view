@@ -1,7 +1,18 @@
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-// import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
+
+type CameraControlsProps = {
+	camera: any; // TODO: Find solution for useRef<PerspectiveCameraProps>
+	controls: any; // TODO: Find solution for useRef<OrbitControlsProps>
+	cameraPosition: THREE.Vector3;
+	cameraTarget: THREE.Vector3;
+	controlsIdleState: boolean;
+	hasAnimation: boolean;
+	mouseDown: boolean;
+	fov: number;
+	far: number;
+};
 
 const CameraControls = ({
 	camera,
@@ -13,18 +24,12 @@ const CameraControls = ({
 	mouseDown,
 	fov,
 	far,
-}) => {
-	// const [ref, camera] = useResource();
-	// const camera = useThree((state) => state.camera);
-
-	// https://codesandbox.io/s/orbitcontrols-react-three-fiber-9iotf?file=/src/index.js:488-545
-	// const { camera, gl } = useThree();
-
+}: CameraControlsProps) => {
 	const dampSpeed = 2;
 
-	const deg2rad = (degrees) => degrees * (Math.PI / 180);
+	// const deg2rad = (degrees: number) => degrees * (Math.PI / 180);
 
-	const damp = (target, to, speed, delta) => {
+	const damp = (target: THREE.Vector3, to: THREE.Vector3, speed: number, delta: number) => {
 		if (target instanceof THREE.Vector3) {
 			target.x = THREE.MathUtils.damp(target.x, to.x, speed, delta);
 			target.y = THREE.MathUtils.damp(target.y, to.y, speed, delta);
@@ -50,8 +55,6 @@ const CameraControls = ({
 
 	return (
 		<>
-			{/* <perspectiveCamera makeDefault onUpdate={(self) => self.updateProjectionMatrix()} />
-			 */}
 			<PerspectiveCamera
 				ref={camera}
 				makeDefault

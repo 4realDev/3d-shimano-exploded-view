@@ -88,7 +88,7 @@ function App() {
 				setInvisibleMesh('roof');
 			}
 		}
-	}, [clickedMesh, roomList]);
+	}, [clickedMesh]);
 
 	const controlsRef = useRef();
 	const cameraRef = useRef();
