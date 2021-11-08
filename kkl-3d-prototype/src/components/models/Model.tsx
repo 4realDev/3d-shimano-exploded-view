@@ -2,7 +2,13 @@
 import { useEffect, useRef } from 'react';
 import { Center, useGLTF } from '@react-three/drei';
 // npm i --save-dev @types/three
-useGLTF.preload('/house-model.glb');
+import { GLTF } from 'three-stdlib';
+
+// https://githubmemory.com/repo/pmndrs/drei/issues/469
+export type DreiGLTF = GLTF & {
+	nodes: { [name: string]: THREE.Mesh };
+	materials: { [name: string]: THREE.Material };
+};
 
 type MeshObject = {
 	name: string;
@@ -39,7 +45,7 @@ const Model = ({
 	setInvisibleMesh,
 }: ModelProps) => {
 	const group = useRef();
-	const { nodes, materials }: any = useGLTF('/house-model.glb');
+	const model = useGLTF('/house-model.glb') as DreiGLTF;
 
 	const opacityValue = 0.25;
 	const opacityValueOutline = 0.05;
@@ -47,7 +53,10 @@ const Model = ({
 
 	const initialMeshList: MeshObject[] = [];
 
-	const convertGLTFToMeshList = (nodes: Record<string, THREE.Mesh>, materials: THREE.Material[]) => {
+	const convertGLTFToMeshList = (
+		nodes: { [name: string]: THREE.Mesh },
+		materials: { [name: string]: THREE.Material }
+	) => {
 		let nodeName: string[] = [];
 		let nodeGeometry: THREE.BufferGeometry[] = [];
 		let nodeMaterial: THREE.Material[] = [];
@@ -81,7 +90,7 @@ const Model = ({
 	const deg2rad = (degrees: number) => degrees * (Math.PI / 180);
 
 	useEffect(() => {
-		convertGLTFToMeshList(nodes, materials);
+		convertGLTFToMeshList(model.nodes, model.materials);
 		setMeshList(initialMeshList);
 	}, []);
 
