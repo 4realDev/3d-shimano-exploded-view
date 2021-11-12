@@ -5,7 +5,6 @@ import { Center, useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import * as THREE from 'three';
 import { GroupProps } from '@react-three/fiber';
-import { Object3D } from 'three';
 
 // https://githubmemory.com/repo/pmndrs/drei/issues/469
 export type DreiGLTF = GLTF & {
@@ -49,12 +48,28 @@ const Model = ({
 }: ModelProps) => {
 	const group = useRef<GroupProps>();
 	const model = useGLTF('/house-model.glb') as DreiGLTF;
-
-	const opacityValue = 0.25;
-	const opacityValueOutline = 0.05;
-	const hoverColor = '#FF7F7F';
-
 	const initialMeshList: MeshObject[] = [];
+
+	const colorOpacityValueUnselected = 0.15;
+	const colorOpacityValueSelectedAndDefault = 1;
+	const outlineOpacityValueUnselected = 0.05;
+	const outlineOpacityValueSelectedAndDefault = 1;
+	const colorHovered = '#FF7F7F';
+	const outlineOpacityValueHovered = 0.25;
+
+	const setOutlineOpacity = (meshObject: MeshObject) => {
+		// current mesh is non of the selectedMeshes
+		if (selectedMeshes.length > 0 && !selectedMeshes.includes(meshObject.name)) {
+			// current mesh is non of the selecteMeshes and is hovered
+			if (hoveredMesh === meshObject.name) {
+				return outlineOpacityValueHovered;
+			}
+			// current mesh is non of the selectedMeshes and is not hovered
+			return outlineOpacityValueUnselected;
+		}
+		// current mesh is selected or there are no selected meshes yet
+		return outlineOpacityValueSelectedAndDefault;
+	};
 
 	const convertGLTFToMeshList = (
 		nodes: { [name: string]: THREE.Mesh },
@@ -98,9 +113,9 @@ const Model = ({
 	}, []);
 
 	return (
-		// Drei: Calculates a boundary box and centers its children accordingly.
 		<>
 			<primitive object={new THREE.BoxHelper(group.current as any, 'black')} />
+			{/* // Drei: Calculates a boundary box and centers its children accordingly. */}
 			<Center>
 				{/* <Box position={[-2, 3, 2]} args={[16, 7, 15]}>
 				<meshNormalMaterial attach='material' wireframe />
@@ -126,15 +141,6 @@ const Model = ({
 								name={meshObject.name}
 								visible={invisibleMesh !== null && invisibleMesh === meshObject.name ? false : true}
 								material={meshObject.material}
-								// geometry={meshObject.geometry}
-								// material-color={hoveredMesh === meshObject.name ? hoverColor : meshObject.color}
-								// material-transparent={true}
-								// visible={meshObject.isVisible}
-								// material-visible={invisibleMesh !== null && invisibleMesh === meshObject.name ? false : true}
-								// material-opacity={
-								// 	selectedMesh !== null && selectedMesh !== meshObject.name ? opacityValue : meshObject.opacity
-								// }
-
 								onPointerOver={(event) => {
 									// check to prevent event on not visible meshes
 									if (event.object.visible) {
@@ -169,13 +175,13 @@ const Model = ({
 								<meshBasicMaterial
 									attach='material'
 									// material={meshObject.material}
-									color={hoveredMesh === meshObject.name ? hoverColor : meshObject.color}
+									color={hoveredMesh === meshObject.name ? colorHovered : meshObject.color}
 									transparent
 									visible={invisibleMesh !== null && invisibleMesh === meshObject.name ? false : true}
 									opacity={
 										selectedMeshes.length > 0 && !selectedMeshes.includes(meshObject.name)
-											? opacityValue
-											: meshObject.opacity
+											? colorOpacityValueUnselected
+											: colorOpacityValueSelectedAndDefault
 									}
 								/>
 								{/* {selectedMesh !== null && selectedMesh !== meshObject.name ? (
@@ -188,11 +194,7 @@ const Model = ({
 										color='black'
 										attach='material'
 										transparent
-										opacity={
-											selectedMeshes.length > 0 && !selectedMeshes.includes(meshObject.name)
-												? opacityValueOutline
-												: meshObject.opacity
-										}
+										opacity={setOutlineOpacity(meshObject)}
 									/>
 								</lineSegments>
 								{/* )} */}

@@ -20,7 +20,7 @@ type MeshObject = {
 function App() {
 	const defaultCameraPosition = new THREE.Vector3(20, 15, 0);
 	const defaultCameraFocusPosition = new THREE.Vector3(0, 0, 0);
-	const camHeightOffset = 10;
+	const camHeightOffset = 12;
 
 	// The 'roomList' array makes the dependencies of useEffect Hook (at line 86) change on every render.
 	// To fix this, wrap the initialization of 'roomList' in its own useMemo() Hook.
