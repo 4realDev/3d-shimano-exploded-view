@@ -20,7 +20,7 @@ type MeshObject = {
 function App() {
 	const defaultCameraPosition = new THREE.Vector3(20, 15, 0);
 	const defaultCameraFocusPosition = new THREE.Vector3(0, 0, 0);
-	const camHeightOffset = 12;
+	const camHeightOffset = 15;
 
 	// The 'roomList' array makes the dependencies of useEffect Hook (at line 86) change on every render.
 	// To fix this, wrap the initialization of 'roomList' in its own useMemo() Hook.
@@ -68,7 +68,7 @@ function App() {
 	const [meshList, setMeshList] = useState<MeshObject[]>([]);
 	const [hoveredMesh, setHoveredMesh] = useState<null | string>(null);
 	const [clickedMesh, setClickedMesh] = useState<null | string>(null);
-	const [selectedMeshes, setSelectedMeshes] = useState<string | string[]>([]);
+	const [selectedMeshes, setSelectedMeshes] = useState<string[]>([]);
 	const [invisibleMesh, setInvisibleMesh] = useState<null | string>(null);
 	const [cameraPosition, setCameraPosition] = useState(defaultCameraPosition);
 	const [cameraTarget, setCameraTarget] = useState(defaultCameraFocusPosition);
@@ -95,7 +95,7 @@ function App() {
 				if (typeof clickedRoom != 'undefined') {
 					setCameraPosition(clickedRoom.camPos);
 					setCameraTarget(clickedRoom.camTarget);
-					setSelectedMeshes(clickedRoom.name);
+					setSelectedMeshes([clickedRoom.name]);
 				}
 				setInvisibleMesh('roof');
 			}
@@ -145,7 +145,7 @@ function App() {
 							onClick={() => {
 								setIdleState(false);
 								setHasAnimation(true);
-								setSelectedMeshes('room_1');
+								setSelectedMeshes(['room_1']);
 								setInvisibleMesh('roof');
 								setCameraPosition(roomList[0].camPos);
 								setCameraTarget(roomList[0].camTarget);
@@ -158,7 +158,7 @@ function App() {
 							onClick={() => {
 								setIdleState(false);
 								setHasAnimation(true);
-								setSelectedMeshes('room_2');
+								setSelectedMeshes(['room_2']);
 								setInvisibleMesh('roof');
 								setCameraPosition(roomList[1].camPos);
 								setCameraTarget(roomList[1].camTarget);
@@ -171,7 +171,7 @@ function App() {
 							onClick={() => {
 								setIdleState(false);
 								setHasAnimation(true);
-								setSelectedMeshes('room_3');
+								setSelectedMeshes(['room_3']);
 								setInvisibleMesh('roof');
 								setCameraPosition(roomList[2].camPos);
 								setCameraTarget(roomList[2].camTarget);
@@ -184,7 +184,7 @@ function App() {
 							onClick={() => {
 								setIdleState(false);
 								setHasAnimation(true);
-								setSelectedMeshes('room_4');
+								setSelectedMeshes(['room_4']);
 								setInvisibleMesh('roof');
 								setCameraPosition(roomList[3].camPos);
 								setCameraTarget(roomList[3].camTarget);
@@ -197,7 +197,7 @@ function App() {
 							onClick={() => {
 								setIdleState(false);
 								setHasAnimation(true);
-								setSelectedMeshes('room_5');
+								setSelectedMeshes(['room_5']);
 								setInvisibleMesh('roof');
 								setCameraPosition(roomList[4].camPos);
 								setCameraTarget(roomList[4].camTarget);
@@ -210,7 +210,7 @@ function App() {
 							onClick={() => {
 								setIdleState(false);
 								setHasAnimation(true);
-								setSelectedMeshes('room_6');
+								setSelectedMeshes(['room_6']);
 								setInvisibleMesh('roof');
 								setCameraPosition(roomList[5].camPos);
 								setCameraTarget(roomList[5].camTarget);
@@ -223,7 +223,7 @@ function App() {
 							onClick={() => {
 								setIdleState(false);
 								setHasAnimation(true);
-								setSelectedMeshes('room_7');
+								setSelectedMeshes(['room_7']);
 								setInvisibleMesh('roof');
 								setCameraPosition(roomList[6].camPos);
 								setCameraTarget(roomList[6].camTarget);

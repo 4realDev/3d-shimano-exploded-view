@@ -1,10 +1,11 @@
 // npm i --save-dev @types/react
 import { useEffect, useRef } from 'react';
-import { Center, useGLTF } from '@react-three/drei';
+import { Box, Center, useGLTF } from '@react-three/drei';
 // npm i --save-dev @types/three
-import { GLTF } from 'three-stdlib';
+import { GLTF, NodeMaterial } from 'three-stdlib';
 import * as THREE from 'three';
 import { GroupProps } from '@react-three/fiber';
+import { Material, Object3D } from 'three';
 
 // https://githubmemory.com/repo/pmndrs/drei/issues/469
 export type DreiGLTF = GLTF & {
@@ -15,10 +16,14 @@ export type DreiGLTF = GLTF & {
 type MeshObject = {
 	name: string;
 	geometry: THREE.BufferGeometry;
+	position?: THREE.Vector3;
+	rotation?: THREE.Euler;
+	scale?: THREE.Vector3;
 	material: THREE.Material;
 	color: string;
 	opacity: number;
 	isVisible: boolean;
+	children?: MeshObject[];
 };
 
 type ModelProps = {
@@ -28,8 +33,8 @@ type ModelProps = {
 	setHoveredMesh: (value: string | null) => void;
 	clickedMesh: string | null;
 	setClickedMesh: (value: string | null) => void;
-	selectedMeshes: string | string[];
-	setSelectedMeshes: (value: string | string[]) => void;
+	selectedMeshes: string[];
+	setSelectedMeshes: (value: string[]) => void;
 	invisibleMesh: string | null;
 	setInvisibleMesh: (value: string | null) => void;
 };
@@ -50,12 +55,20 @@ const Model = ({
 	const model = useGLTF('/house-model.glb') as DreiGLTF;
 	const initialMeshList: MeshObject[] = [];
 
+	const outlineOpacityValueUnselected = 0.2;
+	const outlineOpacityValueSelectedAndDefault = 1;
 	const colorOpacityValueUnselected = 0.15;
 	const colorOpacityValueSelectedAndDefault = 1;
-	const outlineOpacityValueUnselected = 0.05;
-	const outlineOpacityValueSelectedAndDefault = 1;
 	const colorHovered = '#FF7F7F';
-	const outlineOpacityValueHovered = 0.25;
+	const outlineOpacityValueHovered = 0.5;
+
+	console.log(model.nodes);
+
+	const setMeshColor = (meshObject: MeshObject) => {
+		if (hoveredMesh !== meshObject.name) return meshObject.color;
+		if (selectedMeshes.includes(meshObject.name) && selectedMeshes.length <= 1) return meshObject.color;
+		else return colorHovered;
+	};
 
 	const setOutlineOpacity = (meshObject: MeshObject) => {
 		// current mesh is non of the selectedMeshes
@@ -71,45 +84,51 @@ const Model = ({
 		return outlineOpacityValueSelectedAndDefault;
 	};
 
-	const convertGLTFToMeshList = (
-		nodes: { [name: string]: THREE.Mesh },
-		materials: { [name: string]: THREE.Material }
-	) => {
-		let nodeName: string[] = [];
-		let nodeGeometry: THREE.BufferGeometry[] = [];
-		let nodeMaterial: THREE.Material[] = [];
+	const convertGLTFToMeshList = (nodes: { [name: string]: THREE.Mesh }) => {
+		// const meshes: Record<string, THREE.Mesh> = nodes;
+		delete nodes.Scene;
+		delete nodes.Camera;
+		delete nodes.Light;
 
-		const meshes: Record<string, THREE.Mesh> = nodes;
-		delete meshes.Scene;
-		delete meshes.Camera;
-		delete meshes.Light;
+		Object.values(nodes).forEach((mesh) => {
+			const children: MeshObject[] = [];
 
-		Object.values(meshes).forEach((mesh) => {
-			nodeName.push(mesh.name);
-			nodeGeometry.push(mesh.geometry);
+			if (mesh.children.length !== 0) {
+				Object.values(mesh.children).forEach((child: any) => {
+					children.push({
+						name: child.name,
+						geometry: child.geometry,
+						material: child.material as any,
+						color: 'white',
+						opacity: 1,
+						isVisible: true,
+						position: child.position,
+						rotation: child.rotation,
+						scale: child.scale,
+					});
+				});
+			}
+
+			if (mesh.parent?.name === 'Scene') {
+				initialMeshList.push({
+					name: mesh.name,
+					geometry: mesh.geometry,
+					material: mesh.material as any,
+					color: 'white',
+					opacity: 1,
+					isVisible: true,
+					children: children,
+				});
+			}
 		});
-
-		Object.values(materials).forEach((material) => {
-			nodeMaterial.push(material);
-		});
-
-		for (var i = 0; i < nodeName.length; i++) {
-			initialMeshList.push({
-				name: nodeName[i],
-				geometry: nodeGeometry[i],
-				material: nodeMaterial[i],
-				color: 'white',
-				opacity: 1,
-				isVisible: true,
-			});
-		}
 	};
 
 	// const deg2rad = (degrees: number) => degrees * (Math.PI / 180);
 
 	useEffect(() => {
-		convertGLTFToMeshList(model.nodes, model.materials);
+		convertGLTFToMeshList(model.nodes);
 		setMeshList(initialMeshList);
+		console.log(initialMeshList);
 	}, []);
 
 	return (
@@ -130,75 +149,105 @@ const Model = ({
 					// EVENTS FOR ALL MESHES
 					// TODO: if possible move back to groups
 					// PROBLEM: LineSegments has onPointerEvents too ..
-
-					// Pointer on mesh
-					// if pointer is over a mesh, stop propagation of the event
-					// and set the material name as the hoveredElement
 				>
 					{meshList.map((meshObject: MeshObject) => {
 						return (
-							<mesh
-								name={meshObject.name}
-								visible={invisibleMesh !== null && invisibleMesh === meshObject.name ? false : true}
-								material={meshObject.material}
-								onPointerOver={(event) => {
-									// check to prevent event on not visible meshes
-									if (event.object.visible) {
-										event.stopPropagation();
-										setHoveredMesh(event.object.name);
-									}
-								}}
-								// Pointer outside of mesh
-								// if pointer is outside of a mesh and does not intersect with any other mesh
-								// set the hoveredElement to null
-								onPointerOut={(event) => {
-									event.intersections.length === 0 && setHoveredMesh(null);
-								}}
-								// Pointer click on mesh
-								// stopPropagation and set current object inside state to the one clicked
-								onPointerDown={(event) => {
-									// check to prevent event on not visible meshes
-									if (event.object.visible) {
-										event.stopPropagation();
-										setClickedMesh(event.object.name);
-										// event.object.material.visible = false;
-									}
-								}}
-								// Pointer click outside of mesh
-								// Set current object inside state to the one clicked
-
-								onPointerMissed={(event) => {
-									setClickedMesh(null);
-								}}
-							>
-								<bufferGeometry attach='geometry' {...meshObject.geometry} />
-								<meshBasicMaterial
-									attach='material'
-									// material={meshObject.material}
-									color={hoveredMesh === meshObject.name ? colorHovered : meshObject.color}
-									transparent
+							<>
+								<mesh
+									name={meshObject.name}
 									visible={invisibleMesh !== null && invisibleMesh === meshObject.name ? false : true}
-									opacity={
-										selectedMeshes.length > 0 && !selectedMeshes.includes(meshObject.name)
-											? colorOpacityValueUnselected
-											: colorOpacityValueSelectedAndDefault
-									}
-								/>
-								{/* {selectedMesh !== null && selectedMesh !== meshObject.name ? (
-							''
-						) : ( */}
-								<lineSegments renderOrder={100} name={meshObject.name}>
-									<edgesGeometry attach='geometry' args={[meshObject.geometry]} />
-									{/* Due limitations of OpenGL Core Profile with WebGL renderer on most platforms linewidth will always be 1 regardless of set value.  */}
-									<lineBasicMaterial
-										color='black'
+									material={meshObject.material}
+									onPointerOver={(event) => {
+										// check to prevent event on not visible meshes
+										if (event.object.visible) {
+											event.stopPropagation();
+											setHoveredMesh(event.object.name);
+										}
+									}}
+									// Pointer outside of mesh
+									// if pointer is outside of a mesh and does not intersect with any other mesh
+									// set the hoveredElement to null
+									onPointerOut={(event) => {
+										event.intersections.length === 0 && setHoveredMesh(null);
+									}}
+									// Pointer click on mesh
+									// stopPropagation and set current object inside state to the one clicked
+									onPointerDown={(event) => {
+										// check to prevent event on not visible meshes
+										if (event.object.visible) {
+											event.stopPropagation();
+											setClickedMesh(event.object.name);
+											// event.object.material.visible = false;
+										}
+									}}
+									// Pointer click outside of mesh
+									// Set current object inside state to the one clicked
+									onPointerMissed={(event) => {
+										setClickedMesh(null);
+									}}
+								>
+									{meshObject.children !== undefined &&
+										meshObject.children?.length > 0 &&
+										meshObject.children.map((childObject) => {
+											return (
+												<>
+													<mesh
+														name={childObject.name}
+														visible={childObject.isVisible}
+														material={childObject.material}
+														position={childObject.position}
+														rotation={childObject.rotation}
+														scale={childObject.scale}
+													>
+														<bufferGeometry attach='geometry' {...childObject.geometry} />
+														<meshBasicMaterial
+															attach='material'
+															color={childObject.color}
+															transparent
+															visible={childObject.isVisible}
+															opacity={childObject.opacity}
+														/>
+														<lineSegments renderOrder={100} name={childObject.name}>
+															<edgesGeometry attach='geometry' args={[childObject.geometry]} />
+															<lineBasicMaterial
+																color='black'
+																attach='material'
+																transparent
+																opacity={childObject.opacity}
+															/>
+														</lineSegments>
+													</mesh>
+													{/* <Box position={[0, 0, 0]} args={[200, 200, 200]}>
+													<meshNormalMaterial attach='material' wireframe />
+												</Box> */}
+												</>
+											);
+										})}
+									<bufferGeometry attach='geometry' {...meshObject.geometry} />
+									<meshBasicMaterial
 										attach='material'
+										// material={meshObject.material}
+										color={setMeshColor(meshObject)}
 										transparent
-										opacity={setOutlineOpacity(meshObject)}
+										visible={invisibleMesh !== null && invisibleMesh === meshObject.name ? false : true}
+										opacity={
+											selectedMeshes.length > 0 && !selectedMeshes.includes(meshObject.name)
+												? colorOpacityValueUnselected
+												: colorOpacityValueSelectedAndDefault
+										}
 									/>
-								</lineSegments>
-								{/* )} */}
-							</mesh>
+									<lineSegments renderOrder={100} name={meshObject.name}>
+										<edgesGeometry attach='geometry' args={[meshObject.geometry]} />
+										{/* Due limitations of OpenGL Core Profile with WebGL renderer on most platforms linewidth will always be 1 regardless of set value.  */}
+										<lineBasicMaterial
+											color='black'
+											attach='material'
+											transparent
+											opacity={setOutlineOpacity(meshObject)}
+										/>
+									</lineSegments>
+								</mesh>
+							</>
 						);
 					})}
 				</group>
