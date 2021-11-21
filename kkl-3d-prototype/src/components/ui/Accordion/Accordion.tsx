@@ -1,4 +1,9 @@
 import { useEffect } from 'react';
+import ChairFormationCircle from '../../icons/ChairFormationCircle';
+import ChairFormationShuffled from '../../icons/ChairFormationShuffled';
+import ChairFormationSquare from '../../icons/ChairFormationSquare';
+import { MeshObject } from '../../models/Model';
+import MeshVisibilityButton from '../MeshVisibilityButton/MeshVisibilityButton';
 import styles from './Accordion.module.css';
 // npm i classnames
 import AccordionItem from './AccordionItem';
@@ -14,12 +19,14 @@ type RoomInfo = {
 type Accordion = {
 	roomInfo: RoomInfo[];
 	selectedMeshes: string[];
+	meshList: MeshObject[];
+	setMeshList: (value: MeshObject[]) => void;
 	executeScroll: (id: number) => void;
 	onClick: (id: number) => void;
 	refs: any;
 };
 
-const Accordion = ({ roomInfo, selectedMeshes, onClick, executeScroll, refs }: Accordion) => {
+const Accordion = ({ roomInfo, selectedMeshes, meshList, setMeshList, onClick, executeScroll, refs }: Accordion) => {
 	// TODO: Move this logic inside AccordionItem component itself
 	// TODO: Find a way to focus on the item / show that it is active
 	// TODO: Closing AccordionItem should trigger the reset of the model
@@ -52,7 +59,29 @@ const Accordion = ({ roomInfo, selectedMeshes, onClick, executeScroll, refs }: A
 					executeScroll={executeScroll}
 					ref={refs[room.id]}
 				>
-					TEST
+					<div className={styles.visibilityToggleContainer}>
+						<MeshVisibilityButton
+							meshList={meshList}
+							setMeshList={setMeshList}
+							toggledRoomName={'room_1'}
+							toggledMeshName={'chair_formation_1'}
+							toggleIcon={<ChairFormationShuffled />}
+						/>
+						<MeshVisibilityButton
+							meshList={meshList}
+							setMeshList={setMeshList}
+							toggledRoomName={'room_1'}
+							toggledMeshName={'chair_formation_2'}
+							toggleIcon={<ChairFormationSquare />}
+						/>
+						<MeshVisibilityButton
+							meshList={meshList}
+							setMeshList={setMeshList}
+							toggledRoomName={'room_1'}
+							toggledMeshName={'chair_formation_3'}
+							toggleIcon={<ChairFormationCircle />}
+						/>
+					</div>
 				</AccordionItem>
 			))}
 		</div>

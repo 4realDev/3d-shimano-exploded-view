@@ -17,7 +17,7 @@ type AccordionItem = {
 };
 
 const AccordionItem = React.forwardRef<HTMLInputElement, AccordionItem>(
-	({ id, title, seats, area, height, selectedMeshes, onClick, executeScroll }, ref) => {
+	({ id, title, seats, area, height, children, selectedMeshes, onClick, executeScroll }, ref) => {
 		const [isActive, setIsActive] = useState<boolean>(false);
 		// const myRef = useRef<null | HTMLDivElement>(null);
 
@@ -54,7 +54,7 @@ const AccordionItem = React.forwardRef<HTMLInputElement, AccordionItem>(
 						a.
 					</p>
 
-					{/* {children} */}
+					{children}
 				</div>
 			</div>
 		);

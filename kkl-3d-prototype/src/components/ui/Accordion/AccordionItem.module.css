@@ -58,7 +58,7 @@
 
 .answer_open {
 	overflow: none;
-	max-height: 20rem;
+	max-height: 40rem;
 	transition: max-height 1000ms;
 }
 

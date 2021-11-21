@@ -9,6 +9,7 @@ import CameraControls from './components/models/CameraControls';
 import RoomPositionMarkers from './components/models/RoomPositionMarkers';
 import Accordion from './components/ui/Accordion/Accordion';
 import roomList from './common/roomData';
+import MeshVisibilityButton from './components/ui/MeshVisibilityButton/MeshVisibilityButton';
 
 function App() {
 	const camHeightOffset = 15;
@@ -83,29 +84,16 @@ function App() {
 			<div className='inner-container'>
 				<div className='card-container'>
 					<div className='card'>
-						{/* <div
-							style={{
-								overflowWrap: 'break-word',
-								display: 'flex',
-								flexDirection: 'column',
-								justifyContent: 'center',
-								alignItems: 'flex-start',
-								width: 100 + '%',
-							}}
-						>
-							<h1>Wähle einen Hauptraum</h1>
-							<p style={{ lineHeight: 0 }}>hovered: {hoveredMesh ? hoveredMesh : ''}</p>
-							<p style={{ lineHeight: 0 }}>clicked: {clickedMesh ? clickedMesh : ''}</p>
-							<p style={{ lineHeight: 0, marginBottom: 50 }}>selected: {selectedMeshes ? selectedMeshes : ''}</p>
-						</div> */}
-
 						<Accordion
 							roomInfo={roomListInfo}
 							selectedMeshes={selectedMeshes}
+							meshList={meshList}
+							setMeshList={setMeshList}
 							onClick={onClick}
 							executeScroll={executeScroll}
 							refs={refs}
 						/>
+
 						<button
 							className='product-button'
 							onClick={() => {

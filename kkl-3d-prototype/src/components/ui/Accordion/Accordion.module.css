@@ -1,0 +1,7 @@
+.visibilityToggleContainer {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	justify-content: space-evenly;
+	padding: 25px 0 40px 0;
+}
