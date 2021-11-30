@@ -55,6 +55,21 @@ function App() {
 		}
 	};
 
+	const resetScene = () => {
+		setHasAnimation(true);
+		setCameraPosition(controlsRef.current !== undefined ? controlsRef.current.position0! : defaultCameraPosition);
+		setCameraTarget(controlsRef.current !== undefined ? controlsRef.current.target0! : defaultCameraFocusPosition);
+		setSelectedMeshes([]);
+		setInvisibleMesh(null);
+
+		// TODO: Figure out better way to deactivate hasAnimation
+		// after the position as damped to the defaultCameraPosition
+		// setTimeout(() => {
+		// 	setIdleState(true);
+		// 	setHasAnimation(false);
+		// }, 2250);
+	};
+
 	useEffect(() => {
 		if (clickedMesh) {
 			if (clickedMesh === 'roof') {
@@ -96,22 +111,7 @@ function App() {
 						<button
 							className='product-button'
 							onClick={() => {
-								setHasAnimation(true);
-								setCameraPosition(
-									controlsRef.current !== undefined ? controlsRef.current.position0! : defaultCameraPosition
-								);
-								setCameraTarget(
-									controlsRef.current !== undefined ? controlsRef.current.target0! : defaultCameraFocusPosition
-								);
-								setSelectedMeshes([]);
-								setInvisibleMesh(null);
-
-								// TODO: Figure out better way to deactivate hasAnimation
-								// after the position as damped to the defaultCameraPosition
-								// setTimeout(() => {
-								// 	setIdleState(true);
-								// 	setHasAnimation(false);
-								// }, 2250);
+								resetScene();
 							}}
 						>
 							RESET
