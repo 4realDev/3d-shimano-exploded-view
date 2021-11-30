@@ -9,7 +9,6 @@ import CameraControls from './components/models/CameraControls';
 import RoomPositionMarkers from './components/models/RoomPositionMarkers';
 import Accordion from './components/ui/Accordion/Accordion';
 import roomList from './common/roomData';
-import MeshVisibilityButton from './components/ui/MeshVisibilityButton/MeshVisibilityButton';
 
 function App() {
 	const camHeightOffset = 15;
@@ -85,7 +84,7 @@ function App() {
 				<div className='card-container'>
 					<div className='card'>
 						<Accordion
-							roomInfo={roomListInfo}
+							roomList={roomList}
 							selectedMeshes={selectedMeshes}
 							meshList={meshList}
 							setMeshList={setMeshList}

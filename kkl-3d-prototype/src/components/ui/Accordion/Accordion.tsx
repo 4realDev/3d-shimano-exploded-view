@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
+import { CHAIR_FORMATION, RoomListItem } from '../../../common/roomData';
 import ChairFormationCircle from '../../icons/ChairFormationCircle';
 import ChairFormationShuffled from '../../icons/ChairFormationShuffled';
 import ChairFormationSquare from '../../icons/ChairFormationSquare';
@@ -8,16 +9,8 @@ import styles from './Accordion.module.css';
 // npm i classnames
 import AccordionItem from './AccordionItem';
 
-type RoomInfo = {
-	id: number;
-	title: string;
-	seats: number;
-	area: number;
-	height: number;
-};
-
 type Accordion = {
-	roomInfo: RoomInfo[];
+	roomList: RoomListItem[];
 	selectedMeshes: string[];
 	meshList: MeshObject[];
 	setMeshList: (value: MeshObject[]) => void;
@@ -26,7 +19,8 @@ type Accordion = {
 	refs: any;
 };
 
-const Accordion = ({ roomInfo, selectedMeshes, meshList, setMeshList, onClick, executeScroll, refs }: Accordion) => {
+const Accordion = ({ roomList, selectedMeshes, meshList, setMeshList, onClick, executeScroll, refs }: Accordion) => {
+	const roomInfoList = useMemo(() => roomList.map((room) => room.card), [roomList]);
 	// TODO: Move this logic inside AccordionItem component itself
 	// TODO: Find a way to focus on the item / show that it is active
 	// TODO: Closing AccordionItem should trigger the reset of the model
@@ -45,9 +39,46 @@ const Accordion = ({ roomInfo, selectedMeshes, meshList, setMeshList, onClick, e
 		}
 	}, [selectedMeshes]);
 
+	const onMeshVisibilityButtonClicked = (toggledRoomName: string, toggledMeshName: string) => {
+		console.log('toggledMeshName', toggledMeshName);
+		console.log('toggledRoomName', toggledRoomName);
+		let items: MeshObject[] = [...meshList]; // Make shallow copy of itemList
+		let itemIndex = items.findIndex((item) => item.name === toggledRoomName); // Find index of item you want to mutate
+		let item = items[itemIndex]; // Make shallow copy of the selected item
+		console.log('item', item);
+		// Overwrite properties in each child of children array in item copy
+		if (itemIndex !== -1 && item.children) {
+			item.children.forEach((child, i, array) => {
+				// Toggle visibility of selected child / chair formation
+				// Make all other children / formations in children array of the item invisible
+				// child.name.replace(/[0-9]/g, '') to remove BLENDERS suffix for duplicated objects
+				// -> "chair_formation_circle001" to "chair_formation_circle"
+				array[i] = {
+					...child,
+					isVisible: child.name.replace(/[0-9]/g, '') === toggledMeshName ? !child.isVisible : false,
+				};
+			});
+		}
+		items[itemIndex] = item; // Overwrite selected item in array copy with modified selected item
+		setMeshList(items); // Set state to new array copy -> overwritting state instead of mutating
+	};
+
+	const getFormationIcon = (formation: string) => {
+		switch (formation) {
+			case CHAIR_FORMATION.shuffle:
+				return <ChairFormationShuffled />;
+			case CHAIR_FORMATION.square:
+				return <ChairFormationSquare />;
+			case CHAIR_FORMATION.circle:
+				return <ChairFormationCircle />;
+			default:
+				return null;
+		}
+	};
+
 	return (
 		<div className={styles.accordion}>
-			{roomInfo.map((room, i) => (
+			{roomInfoList.map((room, roomIndex) => (
 				<AccordionItem
 					id={room.id}
 					title={room.title}
@@ -59,29 +90,20 @@ const Accordion = ({ roomInfo, selectedMeshes, meshList, setMeshList, onClick, e
 					executeScroll={executeScroll}
 					ref={refs[room.id]}
 				>
-					<div className={styles.visibilityToggleContainer}>
-						<MeshVisibilityButton
-							meshList={meshList}
-							setMeshList={setMeshList}
-							toggledRoomName={'room_1'}
-							toggledMeshName={'chair_formation_1'}
-							toggleIcon={<ChairFormationShuffled />}
-						/>
-						<MeshVisibilityButton
-							meshList={meshList}
-							setMeshList={setMeshList}
-							toggledRoomName={'room_1'}
-							toggledMeshName={'chair_formation_2'}
-							toggleIcon={<ChairFormationSquare />}
-						/>
-						<MeshVisibilityButton
-							meshList={meshList}
-							setMeshList={setMeshList}
-							toggledRoomName={'room_1'}
-							toggledMeshName={'chair_formation_3'}
-							toggleIcon={<ChairFormationCircle />}
-						/>
-					</div>
+					{room.chairFormations && (
+						<div className={styles.visibilityToggleContainer}>
+							{Object.values(room.chairFormations).map((formation) => {
+								return (
+									<MeshVisibilityButton
+										toggledRoomName={roomList[roomIndex].model.meshName}
+										toggledMeshName={formation}
+										toggleIcon={getFormationIcon(formation)}
+										onClick={onMeshVisibilityButtonClicked}
+									/>
+								);
+							})}
+						</div>
+					)}
 				</AccordionItem>
 			))}
 		</div>
