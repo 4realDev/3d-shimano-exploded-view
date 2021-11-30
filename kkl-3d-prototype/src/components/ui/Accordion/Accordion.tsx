@@ -40,12 +40,9 @@ const Accordion = ({ roomList, selectedMeshes, meshList, setMeshList, onClick, e
 	}, [selectedMeshes]);
 
 	const onMeshVisibilityButtonClicked = (toggledRoomName: string, toggledMeshName: string) => {
-		console.log('toggledMeshName', toggledMeshName);
-		console.log('toggledRoomName', toggledRoomName);
 		let items: MeshObject[] = [...meshList]; // Make shallow copy of itemList
 		let itemIndex = items.findIndex((item) => item.name === toggledRoomName); // Find index of item you want to mutate
 		let item = items[itemIndex]; // Make shallow copy of the selected item
-		console.log('item', item);
 		// Overwrite properties in each child of children array in item copy
 		if (itemIndex !== -1 && item.children) {
 			item.children.forEach((child, i, array) => {
