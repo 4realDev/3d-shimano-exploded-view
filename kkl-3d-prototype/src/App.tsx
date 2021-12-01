@@ -27,7 +27,6 @@ function App() {
 	const [hoveredMesh, setHoveredMesh] = useState<null | string>(null);
 	const [clickedMesh, setClickedMesh] = useState<null | string>(null);
 	const [selectedMeshes, setSelectedMeshes] = useState<string[]>([]);
-	const [invisibleMesh, setInvisibleMesh] = useState<null | string>(null);
 	const [cameraPosition, setCameraPosition] = useState(defaultCameraPosition);
 	const [cameraTarget, setCameraTarget] = useState(defaultCameraFocusPosition);
 	const [hasAnimation, setHasAnimation] = useState(false);
@@ -40,7 +39,7 @@ function App() {
 		setIdleState(false);
 		setHasAnimation(true);
 		setSelectedMeshes([`room_${id}`]);
-		setInvisibleMesh('roof');
+		setMeshVisibility('roof', false);
 		setCameraPosition(roomListModel[id - 1].camPos);
 		setCameraTarget(roomListModel[id - 1].camTarget);
 	};
@@ -60,7 +59,7 @@ function App() {
 		setCameraPosition(controlsRef.current !== undefined ? controlsRef.current.position0! : defaultCameraPosition);
 		setCameraTarget(controlsRef.current !== undefined ? controlsRef.current.target0! : defaultCameraFocusPosition);
 		setSelectedMeshes([]);
-		setInvisibleMesh(null);
+		resetMeshVisibility();
 
 		// TODO: Figure out better way to deactivate hasAnimation
 		// after the position as damped to the defaultCameraPosition
@@ -70,12 +69,35 @@ function App() {
 		// }, 2250);
 	};
 
+	const setMeshVisibility = (meshName: string, visible: boolean) => {
+		let items: MeshObject[] = [...meshList];
+		let itemIndex = items.findIndex((item) => item.name === meshName);
+		let item = items[itemIndex];
+		item = {
+			...item,
+			isVisible: visible,
+		};
+		items[itemIndex] = item;
+		setMeshList(items);
+	};
+
+	const resetMeshVisibility = () => {
+		let items: MeshObject[] = [...meshList];
+		items.forEach((item, i, array) => {
+			array[i] = {
+				...item,
+				isVisible: true,
+			};
+		});
+		setMeshList(items); // Set state to new array copy -> overwritting state instead of mutating
+	};
+
 	useEffect(() => {
 		if (clickedMesh) {
 			if (clickedMesh === 'roof') {
 				setIdleState(false);
 				setHasAnimation(true);
-				setInvisibleMesh('roof');
+				setMeshVisibility('roof', false);
 				setCameraPosition(new THREE.Vector3(0, 25, 2));
 			} else {
 				setIdleState(false);
@@ -88,7 +110,7 @@ function App() {
 					setCameraTarget(clickedRoom.camTarget);
 					setSelectedMeshes([clickedRoom.meshName]);
 				}
-				setInvisibleMesh('roof');
+				setMeshVisibility('roof', false);
 			}
 		}
 	}, [clickedMesh]);
@@ -121,7 +143,7 @@ function App() {
 							onClick={() => {
 								setIdleState(false);
 								setHasAnimation(true);
-								setInvisibleMesh('roof');
+								setMeshVisibility('roof', false);
 								setSelectedMeshes(roomListModel.map((room) => room.meshName));
 								setCameraPosition(new THREE.Vector3(0, 25 + camHeightOffset, 2));
 								setCameraTarget(defaultCameraFocusPosition);
@@ -166,8 +188,6 @@ function App() {
 							setClickedMesh={setClickedMesh}
 							selectedMeshes={selectedMeshes}
 							setSelectedMeshes={setSelectedMeshes}
-							invisibleMesh={invisibleMesh}
-							setInvisibleMesh={setInvisibleMesh}
 						/>
 						<RoomPositionMarkers
 							markerPositions={roomListModel.map(({ camPos }) => camPos)}

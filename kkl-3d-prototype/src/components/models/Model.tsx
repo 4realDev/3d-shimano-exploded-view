@@ -34,8 +34,6 @@ type ModelProps = {
 	setClickedMesh: (value: string | null) => void;
 	selectedMeshes: string[];
 	setSelectedMeshes: (value: string[]) => void;
-	invisibleMesh: string | null;
-	setInvisibleMesh: (value: string | null) => void;
 };
 
 const Model = ({
@@ -47,8 +45,6 @@ const Model = ({
 	setClickedMesh,
 	selectedMeshes,
 	setSelectedMeshes,
-	invisibleMesh,
-	setInvisibleMesh,
 }: ModelProps) => {
 	const group = useRef<GroupProps>();
 	const model = useGLTF('/house-model.glb') as DreiGLTF;
@@ -160,7 +156,7 @@ const Model = ({
 		return (
 			<mesh
 				name={meshObject.name}
-				visible={invisibleMesh !== null && invisibleMesh === meshObject.name ? false : true}
+				visible={meshObject.isVisible}
 				material={meshObject.material}
 				onPointerOver={(event) => {
 					// check to prevent event on not visible meshes
@@ -197,7 +193,7 @@ const Model = ({
 					// material={meshObject.material}
 					color={setMeshColor(meshObject)}
 					transparent
-					visible={invisibleMesh !== null && invisibleMesh === meshObject.name ? false : true}
+					visible={meshObject.isVisible}
 					opacity={
 						selectedMeshes.length > 0 && !selectedMeshes.includes(meshObject.name)
 							? colorOpacityValueUnselected
