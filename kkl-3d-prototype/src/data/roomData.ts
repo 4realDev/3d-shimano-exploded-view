@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+// npm install three
 
 export type RoomListItem = {
 	model: {
@@ -16,6 +17,12 @@ export type RoomListItem = {
 	};
 };
 
+export type RoomListModel = {
+	meshName: string;
+	camPos: THREE.Vector3;
+	camTarget: THREE.Vector3;
+};
+
 export const CHAIR_FORMATION = {
 	shuffle: 'chair_formation_shuffle',
 	square: 'chair_formation_square',
@@ -24,7 +31,7 @@ export const CHAIR_FORMATION = {
 
 const camHeightOffset = 15;
 
-const roomList = [
+export const roomList = [
 	{
 		model: {
 			meshName: 'room_1',
@@ -127,5 +134,3 @@ const roomList = [
 		},
 	},
 ];
-
-export default roomList;

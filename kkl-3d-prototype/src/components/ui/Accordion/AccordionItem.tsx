@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styles from './AccordionItem.module.css';
-// npm i classnames
 import cn from 'classnames';
 
 type AccordionItem = {

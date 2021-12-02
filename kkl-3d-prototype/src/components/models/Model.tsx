@@ -27,7 +27,7 @@ export type MeshObject = {
 
 type ModelProps = {
 	meshList: MeshObject[];
-	setMeshList: (value: MeshObject[]) => void;
+	setMeshList: (meshList: MeshObject[]) => void;
 	hoveredMesh: string | null;
 	setHoveredMesh: (value: string | null) => void;
 	clickedMesh: string | null;
@@ -46,9 +46,10 @@ const Model = ({
 	selectedMeshes,
 	setSelectedMeshes,
 }: ModelProps) => {
+	const initialMeshList: MeshObject[] = [];
+
 	const group = useRef<GroupProps>();
 	const model = useGLTF('/house-model.glb') as DreiGLTF;
-	const initialMeshList: MeshObject[] = [];
 
 	const outlineOpacityValueUnselected = 0.2;
 	const outlineOpacityValueSelectedAndDefault = 1;

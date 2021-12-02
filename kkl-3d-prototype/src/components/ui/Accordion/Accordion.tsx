@@ -1,9 +1,11 @@
 import { useEffect, useMemo } from 'react';
-import { CHAIR_FORMATION, RoomListItem } from '../../../common/roomData';
+import { useDispatch, useSelector } from 'react-redux';
+import { CHAIR_FORMATION, RoomListItem } from '../../../data/roomData';
+import { setMeshChildVisibility } from '../../../store/mesh/meshSlice';
+import { RootState } from '../../../store/store';
 import ChairFormationCircle from '../../icons/ChairFormationCircle';
 import ChairFormationShuffled from '../../icons/ChairFormationShuffled';
 import ChairFormationSquare from '../../icons/ChairFormationSquare';
-import { MeshObject } from '../../models/Model';
 import MeshVisibilityButton from '../MeshVisibilityButton/MeshVisibilityButton';
 import styles from './Accordion.module.css';
 // npm i classnames
@@ -11,15 +13,14 @@ import AccordionItem from './AccordionItem';
 
 type Accordion = {
 	roomList: RoomListItem[];
-	selectedMeshes: string[];
-	meshList: MeshObject[];
-	setMeshList: (value: MeshObject[]) => void;
 	executeScroll: (id: number) => void;
 	onClick: (id: number) => void;
 	refs: any;
 };
 
-const Accordion = ({ roomList, selectedMeshes, meshList, setMeshList, onClick, executeScroll, refs }: Accordion) => {
+const Accordion = ({ roomList, onClick, executeScroll, refs }: Accordion) => {
+	const selectedMeshes = useSelector((state: RootState) => state.camera.selectedMeshes);
+	const dispatch = useDispatch();
 	const roomInfoList = useMemo(() => roomList.map((room) => room.card), [roomList]);
 	// TODO: Move this logic inside AccordionItem component itself
 	// TODO: Find a way to focus on the item / show that it is active
@@ -40,24 +41,7 @@ const Accordion = ({ roomList, selectedMeshes, meshList, setMeshList, onClick, e
 	}, [selectedMeshes]);
 
 	const onMeshVisibilityButtonClicked = (toggledRoomName: string, toggledMeshName: string) => {
-		let items: MeshObject[] = [...meshList]; // Make shallow copy of itemList
-		let itemIndex = items.findIndex((item) => item.name === toggledRoomName); // Find index of item you want to mutate
-		let item = items[itemIndex]; // Make shallow copy of the selected item
-		// Overwrite properties in each child of children array in item copy
-		if (itemIndex !== -1 && item.children) {
-			item.children.forEach((child, i, array) => {
-				// Toggle visibility of selected child / chair formation
-				// Make all other children / formations in children array of the item invisible
-				// child.name.replace(/[0-9]/g, '') to remove BLENDERS suffix for duplicated objects
-				// -> "chair_formation_circle001" to "chair_formation_circle"
-				array[i] = {
-					...child,
-					isVisible: child.name.replace(/[0-9]/g, '') === toggledMeshName ? !child.isVisible : false,
-				};
-			});
-		}
-		items[itemIndex] = item; // Overwrite selected item in array copy with modified selected item
-		setMeshList(items); // Set state to new array copy -> overwritting state instead of mutating
+		dispatch(setMeshChildVisibility({ toggledRoomName: toggledRoomName, toggledMeshName: toggledMeshName }));
 	};
 
 	const getFormationIcon = (formation: string) => {

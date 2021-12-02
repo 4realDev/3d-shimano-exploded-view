@@ -1,6 +1,9 @@
 import { useFrame, Vector3 } from '@react-three/fiber';
 import * as THREE from 'three';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+// npm install @react-three/drei
 
 type CameraControlsProps = {
 	camera: any; // TODO: Find solution for useRef<PerspectiveCameraProps>
@@ -26,6 +29,9 @@ const CameraControls = ({
 	far,
 }: CameraControlsProps) => {
 	const dampSpeed = 2;
+
+	console.log(cameraPosition);
+	console.log(cameraTarget);
 
 	// const deg2rad = (degrees: number) => degrees * (Math.PI / 180);
 
@@ -66,8 +72,8 @@ const CameraControls = ({
 			/>
 			<OrbitControls
 				ref={controls}
-				enableZoom={true}
-				enablePan={true}
+				enableZoom={false}
+				enablePan={false}
 				// minPolarAngle={Math.PI / 2}
 				maxPolarAngle={Math.PI / 2}
 				// autoRotate={controlsIdleState}
