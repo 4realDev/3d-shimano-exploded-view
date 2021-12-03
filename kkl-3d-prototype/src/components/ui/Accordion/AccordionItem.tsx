@@ -28,7 +28,6 @@ const AccordionItem = React.forwardRef<HTMLInputElement, AccordionItem>(
 
 		// TODO: Find out why this is triggered as well on "handleOnClick"
 		useEffect(() => {
-			console.log('SELECTEDMESH TRIGGERD');
 			selectedMeshes.includes(`room_${id}`) && setIsActive(!isActive);
 			// executeScroll(ref);
 		}, [selectedMeshes]);

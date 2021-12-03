@@ -1,10 +1,12 @@
 import * as THREE from 'three';
 import create from 'zustand';
 import { RoomListModel } from '../data/roomData';
+import { resetMeshVisibility, setMeshVisibility } from './useMeshStore';
 // import { RoomListModel } from '../../data/roomData';
 
-const defaultCameraPosition = new THREE.Vector3(20, 15, 0);
-const defaultCameraFocusPosition = new THREE.Vector3(0, 0, 0);
+export const defaultCameraPosition = new THREE.Vector3(20, 15, 0);
+export const defaultCameraFocusPosition = new THREE.Vector3(0, 0, 0);
+export const camHeightOffset = 15;
 
 // Define a type for the slice state
 interface CameraStore {
@@ -25,18 +27,18 @@ export const useCameraStore = create<CameraStore>((set) => ({
 	selectedMeshes: [],
 }));
 
-export const setSelectedMeshesInStore = (selectedMeshes: string[]) =>
+export const setSelectedMeshes = (selectedMeshes: string[]) =>
 	useCameraStore.setState((state) => ({ selectedMeshes: selectedMeshes }));
 
-export const setCameraPositionInStore = (cameraPosition: THREE.Vector3) => {
+export const setCameraPosition = (cameraPosition: THREE.Vector3) => {
 	useCameraStore.setState((state) => ({ cameraPosition: cameraPosition }));
 };
 
-export const setCameraTargetInStore = (cameraTarget: THREE.Vector3) => {
+export const setCameraTarget = (cameraTarget: THREE.Vector3) => {
 	useCameraStore.setState((state) => ({ cameraTarget: cameraTarget }));
 };
 
-export const setHasAnimationInStore = (hasAnimation: boolean) => {
+export const setHasAnimation = (hasAnimation: boolean) => {
 	useCameraStore.setState((state) => ({ hasAnimation: hasAnimation }));
 };
 
@@ -58,4 +60,28 @@ export const showClickedRoom = (roomModels: RoomListModel[], clickedMesh: string
 			selectedMeshes: [clickedRoom.meshName],
 		}));
 	}
+};
+
+export const showAndSelectAllRooms = (roomListModel: RoomListModel[]) => {
+	// setIdleState(false);
+	setHasAnimation(true);
+	setMeshVisibility('roof', false);
+	setSelectedMeshes(roomListModel.map((room) => room.meshName));
+	setCameraPosition(new THREE.Vector3(0, 25 + camHeightOffset, 2));
+	setCameraTarget(defaultCameraFocusPosition);
+};
+
+export const resetScene = () => {
+	setHasAnimation(true);
+	setCameraPosition(defaultCameraPosition);
+	setCameraTarget(defaultCameraFocusPosition);
+	setSelectedMeshes([]);
+	resetMeshVisibility();
+
+	// TODO: Figure out better way to deactivate hasAnimation
+	// after the position as damped to the defaultCameraPosition
+	// setTimeout(() => {
+	// 	setIdleState(true);
+	// 	setHasAnimation(false);
+	// }, 2250);
 };

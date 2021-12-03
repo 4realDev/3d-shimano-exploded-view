@@ -27,9 +27,6 @@ const CameraControls = ({
 	const cameraTarget = useCameraStore((state) => state.cameraTarget);
 	const dampSpeed = 2;
 
-	console.log(cameraPosition);
-	console.log(cameraTarget);
-
 	// const deg2rad = (degrees: number) => degrees * (Math.PI / 180);
 
 	const damp = (target: Vector3 | undefined, to: THREE.Vector3, speed: number, delta: number) => {
@@ -42,11 +39,11 @@ const CameraControls = ({
 
 	// ANIMATED UPDATE FOR CAMERA MOVEMENT ONCLICK/ONSELECT
 	useFrame((state, delta) => {
-		// if (!mouseDown && hasAnimation) {
-		damp(camera.current.position, cameraPosition, dampSpeed, delta);
-		// Focus point of controls. Can be updated manually at any point.
-		damp(controls.current.target, cameraTarget, dampSpeed, delta);
-		// }
+		if (/*!mouseDown &&*/ hasAnimation) {
+			damp(camera.current.position, cameraPosition, dampSpeed, delta);
+			// Focus point of controls. Can be updated manually at any point.
+			damp(controls.current.target, cameraTarget, dampSpeed, delta);
+		}
 		// TODO: Figure out how to rotate camera
 		// camera.current.rotation.set(new THREE.Euler(deg2rad(45), 0, 0));
 		// camera.current.rotation.x = (90 * Math.PI) / 180;

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { camHeightOffset } from '../store/useCameraStore';
 // npm install three
 
 export type RoomListItem = {
@@ -28,8 +29,6 @@ export const CHAIR_FORMATION = {
 	square: 'chair_formation_square',
 	circle: 'chair_formation_circle',
 };
-
-const camHeightOffset = 15;
 
 export const roomList = [
 	{

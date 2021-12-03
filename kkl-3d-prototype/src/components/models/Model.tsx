@@ -5,6 +5,8 @@ import { Center, useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import * as THREE from 'three';
 import { GroupProps } from '@react-three/fiber';
+import { setMeshListInStore, useMeshStore } from '../../store/useMeshStore';
+import { useCameraStore } from '../../store/useCameraStore';
 
 // https://githubmemory.com/repo/pmndrs/drei/issues/469
 export type DreiGLTF = GLTF & {
@@ -26,27 +28,15 @@ export type MeshObject = {
 };
 
 type ModelProps = {
-	meshList: MeshObject[];
-	setMeshList: (meshList: MeshObject[]) => void;
 	hoveredMesh: string | null;
 	setHoveredMesh: (value: string | null) => void;
 	clickedMesh: string | null;
 	setClickedMesh: (value: string | null) => void;
-	selectedMeshes: string[];
-	setSelectedMeshes: (value: string[]) => void;
 };
 
-const Model = ({
-	meshList,
-	setMeshList,
-	hoveredMesh,
-	setHoveredMesh,
-	clickedMesh,
-	setClickedMesh,
-	selectedMeshes,
-	setSelectedMeshes,
-}: ModelProps) => {
-	const initialMeshList: MeshObject[] = [];
+const Model = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }: ModelProps) => {
+	const meshList = useMeshStore((state) => state.meshList);
+	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
 
 	const group = useRef<GroupProps>();
 	const model = useGLTF('/house-model.glb') as DreiGLTF;
@@ -79,7 +69,7 @@ const Model = ({
 	};
 
 	const convertGLTFToMeshList = (nodes: { [name: string]: THREE.Mesh }) => {
-		// const meshes: Record<string, THREE.Mesh> = nodes;
+		const initialMeshList: MeshObject[] = [];
 		delete nodes.Scene;
 		delete nodes.Camera;
 		delete nodes.Light;
@@ -115,6 +105,8 @@ const Model = ({
 				});
 			}
 		});
+
+		return initialMeshList;
 	};
 
 	// const deg2rad = (degrees: number) => degrees * (Math.PI / 180);
@@ -211,8 +203,8 @@ const Model = ({
 	};
 
 	useEffect(() => {
-		convertGLTFToMeshList(model.nodes);
-		setMeshList(initialMeshList);
+		const initialMeshList = convertGLTFToMeshList(model.nodes);
+		setMeshListInStore(initialMeshList);
 	}, []);
 
 	return (

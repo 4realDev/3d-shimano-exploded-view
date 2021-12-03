@@ -10,7 +10,7 @@ export const useMeshStore = create<MeshState>((set, get) => ({
 }));
 
 export const setMeshListInStore = (meshList: MeshObject[]) => {
-	useMeshStore.setState((state) => ({ meshList: meshList }));
+	useMeshStore.setState({ meshList: meshList });
 };
 
 export const setMeshVisibility = (meshName: string, visible: boolean) => {
@@ -22,7 +22,7 @@ export const setMeshVisibility = (meshName: string, visible: boolean) => {
 		isVisible: visible,
 	};
 	newList[itemIndex] = item;
-	useMeshStore.setState((state) => ({ meshList: newList }));
+	useMeshStore.setState({ meshList: newList });
 };
 
 export const resetMeshVisibility = () => {
@@ -33,7 +33,7 @@ export const resetMeshVisibility = () => {
 			isVisible: true,
 		};
 	});
-	useMeshStore.setState((state) => ({ meshList: newList }));
+	useMeshStore.setState({ meshList: newList });
 };
 
 export const setMeshChildVisibility = (toggledRoomName: string, toggledMeshName: string) => {
@@ -54,5 +54,8 @@ export const setMeshChildVisibility = (toggledRoomName: string, toggledMeshName:
 		});
 	}
 	newList[itemIndex] = item; // Overwrite selected item in array copy with modified selected item
-	useMeshStore.setState((state) => ({ meshList: newList }));
+
+	// TODO: Find out why I need to update the state twice, so that the component reacts and rerenders
+	useMeshStore.setState({ meshList: [] });
+	useMeshStore.setState({ meshList: newList });
 };
