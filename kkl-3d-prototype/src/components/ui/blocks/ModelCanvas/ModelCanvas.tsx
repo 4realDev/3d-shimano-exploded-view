@@ -21,10 +21,7 @@ const ModelCanvas = () => {
 
 	const meshList = useMeshStore((state) => state.meshList);
 	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
-	const cameraPosition = useCameraStore((state) => state.cameraPosition);
-	const cameraTarget = useCameraStore((state) => state.cameraTarget);
 	const hasAnimation = useCameraStore((state) => state.hasAnimation);
-	console.log(selectedMeshes, cameraPosition, cameraTarget);
 
 	const setMeshList = (meshList: MeshObject[]) => {
 		setMeshListInStore(meshList);
@@ -66,8 +63,6 @@ const ModelCanvas = () => {
 				<CameraControls
 					camera={cameraRef}
 					controls={controlsRef}
-					cameraPosition={cameraPosition}
-					cameraTarget={cameraTarget}
 					controlsIdleState={idleState}
 					hasAnimation={hasAnimation}
 					mouseDown={mouseDown}

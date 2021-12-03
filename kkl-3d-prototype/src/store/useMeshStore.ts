@@ -1,16 +1,13 @@
 import create from 'zustand';
-import { devtools } from 'zustand/middleware';
 import { MeshObject } from '../components/models/Model';
 
 interface MeshState {
 	meshList: MeshObject[];
 }
 
-export const useMeshStore = create<MeshState>(
-	devtools((set, get) => ({
-		meshList: [],
-	}))
-);
+export const useMeshStore = create<MeshState>((set, get) => ({
+	meshList: [],
+}));
 
 export const setMeshListInStore = (meshList: MeshObject[]) => {
 	useMeshStore.setState((state) => ({ meshList: meshList }));

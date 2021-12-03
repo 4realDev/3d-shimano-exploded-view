@@ -1,13 +1,12 @@
 import { useFrame, Vector3 } from '@react-three/fiber';
 import * as THREE from 'three';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
+import { useCameraStore } from '../../store/useCameraStore';
 // npm install @react-three/drei
 
 type CameraControlsProps = {
 	camera: any; // TODO: Find solution for useRef<PerspectiveCameraProps>
 	controls: any; // TODO: Find solution for useRef<OrbitControlsProps>
-	cameraPosition: THREE.Vector3;
-	cameraTarget: THREE.Vector3;
 	controlsIdleState: boolean;
 	hasAnimation: boolean;
 	mouseDown: boolean;
@@ -18,14 +17,14 @@ type CameraControlsProps = {
 const CameraControls = ({
 	camera,
 	controls,
-	cameraPosition,
-	cameraTarget,
 	controlsIdleState,
 	hasAnimation,
 	mouseDown,
 	fov,
 	far,
 }: CameraControlsProps) => {
+	const cameraPosition = useCameraStore((state) => state.cameraPosition);
+	const cameraTarget = useCameraStore((state) => state.cameraTarget);
 	const dampSpeed = 2;
 
 	console.log(cameraPosition);

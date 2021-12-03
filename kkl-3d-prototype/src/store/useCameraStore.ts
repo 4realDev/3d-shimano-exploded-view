@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import create from 'zustand';
-import { devtools } from 'zustand/middleware';
 import { RoomListModel } from '../data/roomData';
 // import { RoomListModel } from '../../data/roomData';
 
@@ -17,16 +16,14 @@ interface CameraStore {
 	selectedMeshes: string[];
 }
 
-export const useCameraStore = create<CameraStore>(
-	devtools((set) => ({
-		cameraPosition: defaultCameraPosition,
-		cameraTarget: defaultCameraFocusPosition,
-		hasAnimation: true,
-		hoveredMesh: null,
-		clickedMesh: null,
-		selectedMeshes: [],
-	}))
-);
+export const useCameraStore = create<CameraStore>((set) => ({
+	cameraPosition: defaultCameraPosition,
+	cameraTarget: defaultCameraFocusPosition,
+	hasAnimation: true,
+	hoveredMesh: null,
+	clickedMesh: null,
+	selectedMeshes: [],
+}));
 
 export const setSelectedMeshesInStore = (selectedMeshes: string[]) =>
 	useCameraStore.setState((state) => ({ selectedMeshes: selectedMeshes }));
