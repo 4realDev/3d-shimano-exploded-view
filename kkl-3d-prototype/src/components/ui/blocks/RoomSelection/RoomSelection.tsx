@@ -1,13 +1,10 @@
 import { createRef } from 'react';
-import { useDispatch } from 'react-redux';
 import { roomList } from '../../../../data/roomData';
-import { setSelectedMeshesInStore } from '../../../../store/camera/cameraSlice';
-import { resetMeshVisibility, setMeshVisibility } from '../../../../store/mesh/meshSlice';
+import { setSelectedMeshesInStore } from '../../../../store/useCameraStore';
+import { setMeshVisibility, resetMeshVisibility } from '../../../../store/useMeshStore';
 import Accordion from '../../Accordion/Accordion';
 
 const RoomSelection = () => {
-	const dispatch = useDispatch();
-
 	const roomListModel = roomList.map((room) => room.model);
 	const roomListInfo = roomList.map((room) => room.card);
 	const refs = roomListInfo.reduce((acc: any, value) => {
@@ -18,8 +15,8 @@ const RoomSelection = () => {
 	const onClick = (id: number) => {
 		// setIdleState(false);
 		// setHasAnimation(true);
-		dispatch(setSelectedMeshesInStore([`room_${id}`]));
-		dispatch(setMeshVisibility({ meshName: 'roof', visible: false }));
+		setSelectedMeshesInStore([`room_${id}`]);
+		setMeshVisibility('roof', false);
 		// setCameraPosition(roomListModel[id - 1].camPos);
 		// setCameraTarget(roomListModel[id - 1].camTarget);
 	};
@@ -38,8 +35,8 @@ const RoomSelection = () => {
 		// setHasAnimation(true);
 		// setCameraPosition(controlsRef.current !== undefined ? controlsRef.current.position0! : defaultCameraPosition);
 		// setCameraTarget(controlsRef.current !== undefined ? controlsRef.current.target0! : defaultCameraFocusPosition);
-		dispatch(setSelectedMeshesInStore([]));
-		dispatch(resetMeshVisibility());
+		setSelectedMeshesInStore([]);
+		resetMeshVisibility();
 
 		// TODO: Figure out better way to deactivate hasAnimation
 		// after the position as damped to the defaultCameraPosition
@@ -68,8 +65,8 @@ const RoomSelection = () => {
 						onClick={() => {
 							// setIdleState(false);
 							// setHasAnimation(true);
-							dispatch(setMeshVisibility({ meshName: 'roof', visible: false }));
-							dispatch(setSelectedMeshesInStore(roomListModel.map((room) => room.meshName)));
+							setMeshVisibility('roof', false);
+							setSelectedMeshesInStore(roomListModel.map((room) => room.meshName));
 							// setCameraPosition(new THREE.Vector3(0, 25 + camHeightOffset, 2));
 							// setCameraTarget(defaultCameraFocusPosition);
 						}}

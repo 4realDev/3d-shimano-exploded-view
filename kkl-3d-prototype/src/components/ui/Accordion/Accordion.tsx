@@ -1,8 +1,7 @@
 import { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { CHAIR_FORMATION, RoomListItem } from '../../../data/roomData';
-import { setMeshChildVisibility } from '../../../store/mesh/meshSlice';
-import { RootState } from '../../../store/store';
+import { useCameraStore } from '../../../store/useCameraStore';
+import { setMeshChildVisibility } from '../../../store/useMeshStore';
 import ChairFormationCircle from '../../icons/ChairFormationCircle';
 import ChairFormationShuffled from '../../icons/ChairFormationShuffled';
 import ChairFormationSquare from '../../icons/ChairFormationSquare';
@@ -19,8 +18,7 @@ type Accordion = {
 };
 
 const Accordion = ({ roomList, onClick, executeScroll, refs }: Accordion) => {
-	const selectedMeshes = useSelector((state: RootState) => state.camera.selectedMeshes);
-	const dispatch = useDispatch();
+	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
 	const roomInfoList = useMemo(() => roomList.map((room) => room.card), [roomList]);
 	// TODO: Move this logic inside AccordionItem component itself
 	// TODO: Find a way to focus on the item / show that it is active
@@ -41,7 +39,7 @@ const Accordion = ({ roomList, onClick, executeScroll, refs }: Accordion) => {
 	}, [selectedMeshes]);
 
 	const onMeshVisibilityButtonClicked = (toggledRoomName: string, toggledMeshName: string) => {
-		dispatch(setMeshChildVisibility({ toggledRoomName: toggledRoomName, toggledMeshName: toggledMeshName }));
+		setMeshChildVisibility(toggledRoomName, toggledMeshName);
 	};
 
 	const getFormationIcon = (formation: string) => {

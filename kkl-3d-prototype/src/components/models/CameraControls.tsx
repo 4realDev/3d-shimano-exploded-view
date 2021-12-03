@@ -1,8 +1,6 @@
 import { useFrame, Vector3 } from '@react-three/fiber';
 import * as THREE from 'three';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
 // npm install @react-three/drei
 
 type CameraControlsProps = {
@@ -45,11 +43,11 @@ const CameraControls = ({
 
 	// ANIMATED UPDATE FOR CAMERA MOVEMENT ONCLICK/ONSELECT
 	useFrame((state, delta) => {
-		if (!mouseDown && hasAnimation) {
-			damp(camera.current.position, cameraPosition, dampSpeed, delta);
-			// Focus point of controls. Can be updated manually at any point.
-			damp(controls.current.target, cameraTarget, dampSpeed, delta);
-		}
+		// if (!mouseDown && hasAnimation) {
+		damp(camera.current.position, cameraPosition, dampSpeed, delta);
+		// Focus point of controls. Can be updated manually at any point.
+		damp(controls.current.target, cameraTarget, dampSpeed, delta);
+		// }
 		// TODO: Figure out how to rotate camera
 		// camera.current.rotation.set(new THREE.Euler(deg2rad(45), 0, 0));
 		// camera.current.rotation.x = (90 * Math.PI) / 180;
