@@ -5,7 +5,7 @@ import { Center, useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import * as THREE from 'three';
 import { GroupProps } from '@react-three/fiber';
-import { setMeshListInStore, useMeshStore } from '../../store/useMeshStore';
+import { setMeshList, useMeshStore } from '../../store/useMeshStore';
 import { useCameraStore } from '../../store/useCameraStore';
 
 // https://githubmemory.com/repo/pmndrs/drei/issues/469
@@ -204,7 +204,7 @@ const Model = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }: Mod
 
 	useEffect(() => {
 		const initialMeshList = convertGLTFToMeshList(model.nodes);
-		setMeshListInStore(initialMeshList);
+		setMeshList(initialMeshList);
 	}, []);
 
 	return (

@@ -3,8 +3,12 @@ import { Canvas, PerspectiveCameraProps } from '@react-three/fiber';
 // npm install @react-three/fiber
 import { Suspense, useEffect, useRef, useState } from 'react';
 import { roomModelList } from '../../../../data/roomData';
-import { showAllRoomsFromAbove, showClickedRoom, useCameraStore } from '../../../../store/useCameraStore';
-import { setMeshVisibility } from '../../../../store/useMeshStore';
+import {
+	setHasAnimation,
+	showAllRoomsFromAbove,
+	showClickedRoom,
+	useCameraStore,
+} from '../../../../store/useCameraStore';
 import CameraControls from '../../../models/CameraControls';
 import Model from '../../../models/Model';
 import RoomPositionMarkers from '../../../models/RoomPositionMarkers';
@@ -22,12 +26,7 @@ const ModelCanvas = () => {
 
 	useEffect(() => {
 		if (clickedMesh) {
-			if (clickedMesh === 'roof') {
-				showAllRoomsFromAbove();
-			} else {
-				showClickedRoom(roomModelList, clickedMesh);
-			}
-			setMeshVisibility('roof', false);
+			clickedMesh === 'roof' ? showAllRoomsFromAbove() : showClickedRoom(roomModelList, clickedMesh);
 		}
 	}, [clickedMesh]);
 
@@ -36,9 +35,13 @@ const ModelCanvas = () => {
 			className='canvas-wrapper'
 			onMouseDown={() => {
 				setIdleState(false);
+				setHasAnimation(false);
 				setMouseDown(true);
 			}}
-			onMouseUp={() => setMouseDown(false)}
+			onMouseUp={() => {
+				setMouseDown(false);
+				setHasAnimation(true);
+			}}
 		>
 			<Canvas>
 				<CameraControls

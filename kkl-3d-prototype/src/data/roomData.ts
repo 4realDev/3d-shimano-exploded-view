@@ -7,6 +7,7 @@ export type RoomItemsList = {
 		meshName: string;
 		camPos: THREE.Vector3;
 		camTarget: THREE.Vector3;
+		camAngle: number;
 	};
 	info: {
 		id: number;
@@ -22,6 +23,7 @@ export type RoomModelsList = {
 	meshName: string;
 	camPos: THREE.Vector3;
 	camTarget: THREE.Vector3;
+	camAngle: number;
 };
 
 export type RoomInfosList = {
@@ -45,6 +47,7 @@ export const roomList = [
 			meshName: 'room_1',
 			camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, 4),
 			camTarget: new THREE.Vector3(-3.8, -0.5, 4),
+			camAngle: 0,
 		},
 		info: {
 			id: 1,
@@ -60,6 +63,7 @@ export const roomList = [
 			meshName: 'room_2',
 			camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, 0),
 			camTarget: new THREE.Vector3(-3.8, -0.5, 0),
+			camAngle: -90,
 		},
 		info: {
 			id: 2,
@@ -74,6 +78,7 @@ export const roomList = [
 			meshName: 'room_3',
 			camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, -4),
 			camTarget: new THREE.Vector3(-3.8, -0.5, -4),
+			camAngle: -180,
 		},
 		info: {
 			id: 3,
@@ -89,6 +94,7 @@ export const roomList = [
 			meshName: 'room_4',
 			camPos: new THREE.Vector3(0.4, -0.5 + camHeightOffset, 4),
 			camTarget: new THREE.Vector3(0.4, -0.5, 4),
+			camAngle: 0,
 		},
 		info: {
 			id: 4,
@@ -103,6 +109,7 @@ export const roomList = [
 			meshName: 'room_5',
 			camPos: new THREE.Vector3(0.4, -0.5 + camHeightOffset, 0),
 			camTarget: new THREE.Vector3(0.4, -0.5, 0),
+			camAngle: 90,
 		},
 		info: {
 			id: 5,
@@ -118,6 +125,7 @@ export const roomList = [
 			meshName: 'room_6',
 			camPos: new THREE.Vector3(0.4, -0.5 + camHeightOffset, -4),
 			camTarget: new THREE.Vector3(0.4, -0.5, -4),
+			camAngle: 180,
 		},
 		info: {
 			id: 6,
@@ -132,6 +140,7 @@ export const roomList = [
 			meshName: 'room_7',
 			camPos: new THREE.Vector3(3.9, -0.5 + camHeightOffset, -4),
 			camTarget: new THREE.Vector3(3.9, -0.5, -4),
+			camAngle: 90,
 		},
 		info: {
 			id: 7,

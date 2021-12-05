@@ -1,13 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { CHAIR_FORMATION, roomInfoList, RoomItemsList, roomModelList } from '../../../data/roomData';
-import {
-	resetScene,
-	setCameraPosition,
-	setCameraTarget,
-	setHasAnimation,
-	setSelectedMeshes,
-	useCameraStore,
-} from '../../../store/useCameraStore';
+import { resetScene, showClickedRoom, useCameraStore } from '../../../store/useCameraStore';
 import { setMeshChildVisibility, setMeshVisibility } from '../../../store/useMeshStore';
 import ChairFormationCircle from '../../icons/ChairFormationCircle';
 import ChairFormationShuffled from '../../icons/ChairFormationShuffled';
@@ -50,12 +43,7 @@ const Accordion = ({ roomList, refs }: Accordion) => {
 	}, [selectedMeshes]);
 
 	const onClick = (id: number) => {
-		// setIdleState(false);
-		setHasAnimation(true);
-		setSelectedMeshes([`room_${id}`]);
-		setMeshVisibility('roof', false);
-		setCameraPosition(roomModelList[id - 1].camPos);
-		setCameraTarget(roomModelList[id - 1].camTarget);
+		showClickedRoom(roomModelList, `room_${id}`);
 	};
 
 	const executeScroll = (id: number) => {
