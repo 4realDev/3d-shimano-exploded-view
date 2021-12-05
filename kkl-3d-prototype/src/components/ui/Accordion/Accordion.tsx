@@ -19,10 +19,11 @@ type Accordion = {
 
 const Accordion = ({ roomList, onClick, executeScroll, refs }: Accordion) => {
 	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
-	const roomInfoList = useMemo(() => roomList.map((room) => room.card), [roomList]);
+	const roomInfoList = useMemo(() => roomList.map((room) => room.info), [roomList]);
 	// TODO: Move this logic inside AccordionItem component itself
 	// TODO: Find a way to focus on the item / show that it is active
 	// TODO: Closing AccordionItem should trigger the reset of the model
+	// TODO: Hardcoded Logic enforcing naming convetion of "xyz_1" -> maybe found another way, if possible
 	useEffect(() => {
 		if (selectedMeshes.length === 1) {
 			const roomNumber = parseInt(selectedMeshes[0].split('_')[1]);

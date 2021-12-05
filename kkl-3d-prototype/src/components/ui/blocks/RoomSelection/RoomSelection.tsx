@@ -13,7 +13,7 @@ import Accordion from '../../Accordion/Accordion';
 
 const RoomSelection = () => {
 	const roomListModel = roomList.map((room) => room.model);
-	const roomListInfo = roomList.map((room) => room.card);
+	const roomListInfo = roomList.map((room) => room.info);
 	const refs = roomListInfo.reduce((acc: any, value) => {
 		acc[value.id] = createRef();
 		return acc;
