@@ -1,7 +1,14 @@
 import { useEffect, useMemo } from 'react';
-import { CHAIR_FORMATION, RoomListItem } from '../../../data/roomData';
-import { useCameraStore } from '../../../store/useCameraStore';
-import { setMeshChildVisibility } from '../../../store/useMeshStore';
+import { CHAIR_FORMATION, roomInfoList, RoomItemsList, roomModelList } from '../../../data/roomData';
+import {
+	resetScene,
+	setCameraPosition,
+	setCameraTarget,
+	setHasAnimation,
+	setSelectedMeshes,
+	useCameraStore,
+} from '../../../store/useCameraStore';
+import { setMeshChildVisibility, setMeshVisibility } from '../../../store/useMeshStore';
 import ChairFormationCircle from '../../icons/ChairFormationCircle';
 import ChairFormationShuffled from '../../icons/ChairFormationShuffled';
 import ChairFormationSquare from '../../icons/ChairFormationSquare';
@@ -11,20 +18,19 @@ import styles from './Accordion.module.css';
 import AccordionItem from './AccordionItem';
 
 type Accordion = {
-	roomList: RoomListItem[];
-	executeScroll: (id: number) => void;
-	onClick: (id: number) => void;
+	roomList: RoomItemsList[];
 	refs: any;
 };
 
-const Accordion = ({ roomList, onClick, executeScroll, refs }: Accordion) => {
+const Accordion = ({ roomList, refs }: Accordion) => {
 	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
-	const roomInfoList = useMemo(() => roomList.map((room) => room.info), [roomList]);
+
 	// TODO: Move this logic inside AccordionItem component itself
 	// TODO: Find a way to focus on the item / show that it is active
 	// TODO: Closing AccordionItem should trigger the reset of the model
 	// TODO: Hardcoded Logic enforcing naming convetion of "xyz_1" -> maybe found another way, if possible
 	useEffect(() => {
+		console.log(selectedMeshes);
 		if (selectedMeshes.length === 1) {
 			const roomNumber = parseInt(selectedMeshes[0].split('_')[1]);
 			window.scrollTo({
@@ -37,7 +43,30 @@ const Accordion = ({ roomList, onClick, executeScroll, refs }: Accordion) => {
 				behavior: 'smooth',
 			});
 		}
+
+		if (selectedMeshes === null) {
+			resetScene();
+		}
 	}, [selectedMeshes]);
+
+	const onClick = (id: number) => {
+		// setIdleState(false);
+		setHasAnimation(true);
+		setSelectedMeshes([`room_${id}`]);
+		setMeshVisibility('roof', false);
+		setCameraPosition(roomModelList[id - 1].camPos);
+		setCameraTarget(roomModelList[id - 1].camTarget);
+	};
+
+	const executeScroll = (id: number) => {
+		if (refs && refs.current) {
+			// myRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+			refs[id].current.scrollIntoView({
+				behavior: 'smooth',
+				block: 'start',
+			});
+		}
+	};
 
 	const onMeshVisibilityButtonClicked = (toggledRoomName: string, toggledMeshName: string) => {
 		setMeshChildVisibility(toggledRoomName, toggledMeshName);

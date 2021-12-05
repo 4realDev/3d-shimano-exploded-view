@@ -2,7 +2,7 @@ import { OrbitControlsProps, Stats } from '@react-three/drei';
 import { Canvas, PerspectiveCameraProps } from '@react-three/fiber';
 // npm install @react-three/fiber
 import { Suspense, useEffect, useRef, useState } from 'react';
-import { roomList } from '../../../../data/roomData';
+import { roomModelList } from '../../../../data/roomData';
 import { showAllRoomsFromAbove, showClickedRoom, useCameraStore } from '../../../../store/useCameraStore';
 import { setMeshVisibility } from '../../../../store/useMeshStore';
 import CameraControls from '../../../models/CameraControls';
@@ -10,7 +10,6 @@ import Model from '../../../models/Model';
 import RoomPositionMarkers from '../../../models/RoomPositionMarkers';
 
 const ModelCanvas = () => {
-	const roomListModel = roomList.map((room) => room.model);
 	const hasAnimation = useCameraStore((state) => state.hasAnimation);
 
 	const [hoveredMesh, setHoveredMesh] = useState<null | string>(null);
@@ -26,7 +25,7 @@ const ModelCanvas = () => {
 			if (clickedMesh === 'roof') {
 				showAllRoomsFromAbove();
 			} else {
-				showClickedRoom(roomListModel, clickedMesh);
+				showClickedRoom(roomModelList, clickedMesh);
 			}
 			setMeshVisibility('roof', false);
 		}
@@ -61,8 +60,8 @@ const ModelCanvas = () => {
 						setClickedMesh={setClickedMesh}
 					/>
 					<RoomPositionMarkers
-						markerPositions={roomListModel.map(({ camPos }) => camPos)}
-						targetPoints={roomListModel.map(({ camTarget }) => camTarget)}
+						markerPositions={roomModelList.map(({ camPos }) => camPos)}
+						targetPoints={roomModelList.map(({ camTarget }) => camTarget)}
 					/>
 				</Suspense>
 				<Stats />

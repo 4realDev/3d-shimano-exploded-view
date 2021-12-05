@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { camHeightOffset } from '../store/useCameraStore';
 // npm install three
 
-export type RoomListItem = {
+export type RoomItemsList = {
 	model: {
 		meshName: string;
 		camPos: THREE.Vector3;
@@ -18,13 +18,13 @@ export type RoomListItem = {
 	};
 };
 
-export type RoomListModel = {
+export type RoomModelsList = {
 	meshName: string;
 	camPos: THREE.Vector3;
 	camTarget: THREE.Vector3;
 };
 
-export type RoomListInfo = {
+export type RoomInfosList = {
 	id: number;
 	title: string;
 	seats: number;
@@ -142,3 +142,6 @@ export const roomList = [
 		},
 	},
 ];
+
+export const roomModelList = roomList.map((room) => room.model);
+export const roomInfoList = roomList.map((room) => room.info);
