@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from 'react';
-import { CHAIR_FORMATION, roomInfoList, RoomItemsList, roomModelList } from '../../../data/roomData';
-import { resetScene, showClickedRoom, useCameraStore } from '../../../store/useCameraStore';
-import { setMeshChildVisibility, setMeshVisibility } from '../../../store/useMeshStore';
+import { useEffect } from 'react';
+import { CHAIR_FORMATION, roomInfoList, RoomItemsList } from '../../../data/roomData';
+import { useCameraStore } from '../../../store/useCameraStore';
+import { setMeshChildVisibility } from '../../../store/useMeshStore';
 import ChairFormationCircle from '../../icons/ChairFormationCircle';
 import ChairFormationShuffled from '../../icons/ChairFormationShuffled';
 import ChairFormationSquare from '../../icons/ChairFormationSquare';
@@ -36,15 +36,7 @@ const Accordion = ({ roomList, refs }: Accordion) => {
 				behavior: 'smooth',
 			});
 		}
-
-		if (selectedMeshes === null) {
-			resetScene();
-		}
 	}, [selectedMeshes]);
-
-	const onClick = (id: number) => {
-		showClickedRoom(roomModelList, `room_${id}`);
-	};
 
 	const executeScroll = (id: number) => {
 		if (refs && refs.current) {
@@ -83,7 +75,6 @@ const Accordion = ({ roomList, refs }: Accordion) => {
 					area={room.area}
 					height={room.height}
 					selectedMeshes={selectedMeshes}
-					onClick={onClick}
 					executeScroll={executeScroll}
 					ref={refs[room.id]}
 				>

@@ -221,10 +221,6 @@ const Model = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }: Mod
 					// rotation={[deg2rad(0), deg2rad(-90), deg2rad(0)]}
 					ref={group}
 					// dispose={null}
-
-					// EVENTS FOR ALL MESHES
-					// TODO: if possible move back to groups
-					// PROBLEM: LineSegments has onPointerEvents too ..
 				>
 					{meshList.map((meshObject: MeshObject) => {
 						return (

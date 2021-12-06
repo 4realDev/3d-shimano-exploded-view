@@ -54,13 +54,9 @@ const CameraControls = ({
 	// ANIMATED UPDATE FOR CAMERA MOVEMENT ONCLICK/ONSELECT
 	useFrame((state, delta) => {
 		if (!mouseDown && hasAnimation && camera.current && controls.current) {
-			// (controls.current as any).setAzimuthalAngle(deg2rad(90));
-
 			selectedMeshes.length !== 0 &&
 				dampAzimuthalAngle((controls.current as any).getAzimuthalAngle(), deg2rad(cameraAngle), 20, delta);
-
 			damp(camera.current.position, cameraPosition, dampSpeed, delta);
-			// Focus point of controls. Can be updated manually at any point.
 			damp(controls.current.target, cameraTarget, dampSpeed, delta);
 		}
 

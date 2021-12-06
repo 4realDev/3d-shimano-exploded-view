@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import create from 'zustand';
-import { RoomModelsList } from '../data/roomData';
+import { roomModelList, RoomModelsList } from '../data/roomData';
 import { resetMeshVisibility, setMeshVisibility } from './useMeshStore';
 
 export const defaultCameraPosition = new THREE.Vector3(20, 15, 0);
@@ -48,11 +48,11 @@ export const setHasAnimation = (hasAnimation: boolean) => {
 	useCameraStore.setState((state) => ({ hasAnimation: hasAnimation }));
 };
 
-export const showClickedRoom = (roomModels: RoomModelsList[], clickedMesh: string) => {
+export const showClickedRoom = (clickedMesh: string) => {
 	// setIdleState(false);
 	setHasAnimation(true);
 	setMeshVisibility('roof', false);
-	const clickedRoom = roomModels.find((room) => {
+	const clickedRoom = roomModelList.find((room) => {
 		if (room.meshName === clickedMesh) return room;
 	});
 	if (typeof clickedRoom != 'undefined') {
@@ -72,11 +72,11 @@ export const showAllRoomsFromAbove = () => {
 	setCameraAngle(0);
 };
 
-export const showAndSelectAllRooms = (roomListModel: RoomModelsList[]) => {
+export const showAndSelectAllRooms = () => {
 	// setIdleState(false);
 	setHasAnimation(true);
 	setMeshVisibility('roof', false);
-	setSelectedMeshes(roomListModel.map((room) => room.meshName));
+	setSelectedMeshes(roomModelList.map((room) => room.meshName));
 	setCameraPosition(new THREE.Vector3(0, 25 + camHeightOffset, 2));
 	setCameraTarget(defaultCameraTargetPosition);
 	setCameraAngle(0);

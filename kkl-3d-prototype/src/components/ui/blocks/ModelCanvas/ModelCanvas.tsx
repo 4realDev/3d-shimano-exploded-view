@@ -26,7 +26,7 @@ const ModelCanvas = () => {
 
 	useEffect(() => {
 		if (clickedMesh) {
-			clickedMesh === 'roof' ? showAllRoomsFromAbove() : showClickedRoom(roomModelList, clickedMesh);
+			clickedMesh === 'roof' ? showAllRoomsFromAbove() : showClickedRoom(clickedMesh);
 		}
 	}, [clickedMesh]);
 

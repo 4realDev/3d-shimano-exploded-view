@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styles from './AccordionItem.module.css';
 import cn from 'classnames';
+import { resetScene, showClickedRoom } from '../../../store/useCameraStore';
+import { roomModelList } from '../../../data/roomData';
 
 type AccordionItem = {
 	id: number;
@@ -10,25 +12,26 @@ type AccordionItem = {
 	height: number;
 	children: React.ReactNode;
 	selectedMeshes: string[];
-	onClick: (id: number) => void;
 	executeScroll: (id: number) => void;
 	ref: any;
 };
 
 const AccordionItem = React.forwardRef<HTMLInputElement, AccordionItem>(
-	({ id, title, seats, area, height, children, selectedMeshes, onClick, executeScroll }, ref) => {
+	({ id, title, seats, area, height, children, selectedMeshes, executeScroll }, ref) => {
 		const [isActive, setIsActive] = useState<boolean>(false);
 		// const myRef = useRef<null | HTMLDivElement>(null);
 
 		const handleOnClick = (id: number) => {
 			// setIsActive(!isActive);
 			// executeScroll(ref);
-			onClick(id);
+			selectedMeshes.includes(`room_${id}`) && selectedMeshes.length !== roomModelList.length
+				? resetScene()
+				: showClickedRoom(`room_${id}`);
 		};
 
 		// TODO: Find out why this is triggered as well on "handleOnClick"
 		useEffect(() => {
-			selectedMeshes.includes(`room_${id}`) && setIsActive(!isActive);
+			selectedMeshes.includes(`room_${id}`) ? setIsActive(true) : setIsActive(false);
 			// executeScroll(ref);
 		}, [selectedMeshes]);
 

@@ -26,7 +26,7 @@ const RoomSelection = () => {
 					<button
 						className='product-button'
 						onClick={() => {
-							showAndSelectAllRooms(roomList.map((room) => room.model));
+							showAndSelectAllRooms();
 						}}
 					>
 						SHOW ALL ROOMS
