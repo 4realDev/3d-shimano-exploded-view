@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import { GroupProps } from '@react-three/fiber';
 import { setMeshList, useMeshStore } from '../../store/useMeshStore';
 import { useCameraStore } from '../../store/useCameraStore';
+import { CANVAS_DEBUG } from '../../App';
 
 // https://githubmemory.com/repo/pmndrs/drei/issues/469
 export type DreiGLTF = GLTF & {
@@ -209,19 +210,10 @@ const Model = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }: Mod
 
 	return (
 		<>
-			<primitive object={new THREE.BoxHelper(group.current as any, 'black')} />
+			{CANVAS_DEBUG && <primitive object={new THREE.BoxHelper(group.current as any, 'black')} />}
 			{/* // Drei: Calculates a boundary box and centers its children accordingly. */}
 			<Center>
-				{/* <Box position={[-2, 3, 2]} args={[16, 7, 15]}>
-				<meshNormalMaterial attach='material' wireframe />
-			</Box> */}
-				<group
-					scale={0.01}
-					position={[0, 0, 0]}
-					// rotation={[deg2rad(0), deg2rad(-90), deg2rad(0)]}
-					ref={group}
-					// dispose={null}
-				>
+				<group scale={0.01} position={[0, 0, 0]} ref={group}>
 					{meshList.map((meshObject: MeshObject) => {
 						return (
 							<>

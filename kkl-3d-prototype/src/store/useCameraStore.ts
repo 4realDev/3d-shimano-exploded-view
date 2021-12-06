@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import create from 'zustand';
-import { roomModelList, RoomModelsList } from '../data/roomData';
+import { roomModelList } from '../data/roomData';
 import { resetMeshVisibility, setMeshVisibility } from './useMeshStore';
 
 export const defaultCameraPosition = new THREE.Vector3(20, 15, 0);
@@ -8,7 +8,6 @@ export const defaultCameraTargetPosition = new THREE.Vector3(0, 0, 0);
 export const defaultCameraAngle = 0;
 export const camHeightOffset = 15;
 
-// Define a type for the slice state
 interface CameraStore {
 	cameraPosition: THREE.Vector3;
 	cameraTarget: THREE.Vector3;
@@ -23,7 +22,7 @@ export const useCameraStore = create<CameraStore>((set) => ({
 	cameraPosition: defaultCameraPosition,
 	cameraTarget: defaultCameraTargetPosition,
 	cameraAngle: defaultCameraAngle,
-	hasAnimation: true,
+	hasAnimation: false, // initially false so idleRotation in idleState works
 	hoveredMesh: null,
 	clickedMesh: null,
 	selectedMeshes: [],

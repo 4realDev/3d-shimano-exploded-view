@@ -63,7 +63,7 @@ export const roomList = [
 			meshName: 'room_2',
 			camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, 0),
 			camTarget: new THREE.Vector3(-3.8, -0.5, 0),
-			camAngle: -90,
+			camAngle: 90,
 		},
 		info: {
 			id: 2,
@@ -78,7 +78,7 @@ export const roomList = [
 			meshName: 'room_3',
 			camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, -4),
 			camTarget: new THREE.Vector3(-3.8, -0.5, -4),
-			camAngle: -180,
+			camAngle: 180,
 		},
 		info: {
 			id: 3,

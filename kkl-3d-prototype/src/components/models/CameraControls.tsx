@@ -105,12 +105,11 @@ const CameraControls = ({
 				enablePan={false}
 				// minPolarAngle={Math.PI / 2}
 				maxPolarAngle={Math.PI / 2}
-				// autoRotate={controlsIdleState}
-				// autoRotateSpeed={0.5}
+				autoRotate={controlsIdleState}
+				autoRotateSpeed={0.5}
 				minDistance={3}
 				maxDistance={20}
 			/>
-			<primitive object={new THREE.AxesHelper(100)} />
 		</>
 	);
 };

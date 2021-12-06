@@ -2,13 +2,10 @@ import { OrbitControlsProps, Stats } from '@react-three/drei';
 import { Canvas, PerspectiveCameraProps } from '@react-three/fiber';
 // npm install @react-three/fiber
 import { Suspense, useEffect, useRef, useState } from 'react';
+import * as THREE from 'three';
+import { CANVAS_DEBUG } from '../../../../App';
 import { roomModelList } from '../../../../data/roomData';
-import {
-	setHasAnimation,
-	showAllRoomsFromAbove,
-	showClickedRoom,
-	useCameraStore,
-} from '../../../../store/useCameraStore';
+import { showAllRoomsFromAbove, showClickedRoom, useCameraStore } from '../../../../store/useCameraStore';
 import CameraControls from '../../../models/CameraControls';
 import Model from '../../../models/Model';
 import RoomPositionMarkers from '../../../models/RoomPositionMarkers';
@@ -35,12 +32,12 @@ const ModelCanvas = () => {
 			className='canvas-wrapper'
 			onMouseDown={() => {
 				setIdleState(false);
-				setHasAnimation(false);
+				// setHasAnimation(false);
 				setMouseDown(true);
 			}}
 			onMouseUp={() => {
 				setMouseDown(false);
-				setHasAnimation(true);
+				// setHasAnimation(true);
 			}}
 		>
 			<Canvas>
@@ -62,14 +59,15 @@ const ModelCanvas = () => {
 						clickedMesh={clickedMesh}
 						setClickedMesh={setClickedMesh}
 					/>
-					<RoomPositionMarkers
-						markerPositions={roomModelList.map(({ camPos }) => camPos)}
-						targetPoints={roomModelList.map(({ camTarget }) => camTarget)}
-					/>
+					{CANVAS_DEBUG && (
+						<RoomPositionMarkers
+							markerPositions={roomModelList.map(({ camPos }) => camPos)}
+							targetPoints={roomModelList.map(({ camTarget }) => camTarget)}
+						/>
+					)}
 				</Suspense>
-				<Stats />
-				{/* <gridHelper /> */}
-				{/* <axesHelper /> */}
+				{CANVAS_DEBUG && <Stats />}
+				{CANVAS_DEBUG && <primitive object={new THREE.AxesHelper(100)} />}
 			</Canvas>
 		</div>
 	);
