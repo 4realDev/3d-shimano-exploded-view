@@ -6,9 +6,9 @@ import ChairFormationCircle from '../../icons/ChairFormationCircle';
 import ChairFormationShuffled from '../../icons/ChairFormationShuffled';
 import ChairFormationSquare from '../../icons/ChairFormationSquare';
 import MeshVisibilityButton from '../MeshVisibilityButton/MeshVisibilityButton';
-import styles from './Accordion.module.css';
 // npm i classnames
 import AccordionItem from '../AccordionItem/AccordionItem';
+import styles from './Accordion.module.scss';
 
 type Accordion = {
 	roomList: RoomItemsList[];

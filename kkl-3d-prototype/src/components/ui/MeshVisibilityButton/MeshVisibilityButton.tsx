@@ -1,4 +1,4 @@
-import styles from './MeshVisibilityButton.module.css';
+import styles from './MeshVisibilityButton.module.scss';
 
 type MeshVisiblityButtonProps = {
 	toggledRoomName: string;

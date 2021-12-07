@@ -9,6 +9,7 @@ import { showAllRoomsFromAbove, showClickedRoom, useCameraStore } from '../../..
 import CameraControls from '../../threeJs/CameraControls';
 import Model from '../../threeJs/Model';
 import RoomPositionMarkers from '../../threeJs/RoomPositionMarkers';
+import styles from './ModelCanvas.module.scss';
 
 const ModelCanvas = () => {
 	const hasAnimation = useCameraStore((state) => state.hasAnimation);
@@ -29,7 +30,7 @@ const ModelCanvas = () => {
 
 	return (
 		<div
-			className='canvas-wrapper'
+			className={styles.canvas}
 			onMouseDown={() => {
 				setIdleState(false);
 				// setHasAnimation(false);

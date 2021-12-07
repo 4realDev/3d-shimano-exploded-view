@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import styles from './AccordionItem.module.css';
 import cn from 'classnames';
 import { resetScene, showClickedRoom } from '../../../store/useCameraStore';
 import { roomInfoList, roomModelList } from '../../../data/roomData';
@@ -10,6 +9,7 @@ import Service from '../../icons/Service';
 import Drinks from '../../icons/Drinks';
 import Invalid from '../../icons/Invalid';
 import Seats from '../../icons/Seats';
+import styles from './AccordionItem.module.scss';
 
 type AccordionItem = {
 	id: number;
@@ -94,7 +94,7 @@ const AccordionItem = React.forwardRef<HTMLInputElement, AccordionItem>(
 		};
 
 		return (
-			<div ref={ref} className={styles.accordion__section}>
+			<div ref={ref}>
 				<button className={cn(styles.accordion, { [styles.active]: isActive })}>
 					{/* whenever we click on the link, it will navigate to what it matches as id */}
 					<div className={styles.accordion__header} onClick={() => handleOnClick(id)}>
@@ -103,7 +103,7 @@ const AccordionItem = React.forwardRef<HTMLInputElement, AccordionItem>(
 							{renderDetails()}
 							{renderDetailsIcons()}
 						</div>
-						<img className={styles.accordion_image} src={'./images/roomSample.png'} alt={title} />
+						<img className={styles.accordion__image} src={'./images/roomSample.png'} alt={title} />
 						<Chevron className={cn(styles.accordion__icon, { [styles.rotate]: isActive })} width={24} fill='#ffffff' />
 					</div>
 

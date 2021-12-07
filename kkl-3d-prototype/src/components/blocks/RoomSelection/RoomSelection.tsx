@@ -2,6 +2,7 @@ import { createRef } from 'react';
 import { roomInfoList, roomList } from '../../../data/roomData';
 import { resetScene, showAndSelectAllRooms } from '../../../store/useCameraStore';
 import Accordion from '../../ui/Accordion/Accordion';
+import styles from './RoomSelection.module.scss';
 
 const RoomSelection = () => {
 	const refs = roomInfoList.reduce((acc: any, value) => {
@@ -10,28 +11,25 @@ const RoomSelection = () => {
 	}, {});
 
 	return (
-		<div className='inner-container'>
-			<div className='card-container'>
-				<div className='card'>
-					<Accordion roomList={roomList} refs={refs} />
-
-					<button
-						className='product-button'
-						onClick={() => {
-							resetScene();
-						}}
-					>
-						RESET
-					</button>
-					<button
-						className='product-button'
-						onClick={() => {
-							showAndSelectAllRooms();
-						}}
-					>
-						SHOW ALL ROOMS
-					</button>
-				</div>
+		<div className={styles.container}>
+			<div className={styles.card}>
+				<Accordion roomList={roomList} refs={refs} />
+				<button
+					className={styles.card__button}
+					onClick={() => {
+						resetScene();
+					}}
+				>
+					RESET
+				</button>
+				<button
+					className={styles.card__button}
+					onClick={() => {
+						showAndSelectAllRooms();
+					}}
+				>
+					SHOW ALL ROOMS
+				</button>
 			</div>
 		</div>
 	);
