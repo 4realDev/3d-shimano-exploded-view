@@ -16,6 +16,7 @@ export type RoomItemsList = {
 		area: number;
 		height: number;
 		chairFormations?: string[];
+		equipment?: string[];
 		fittings: {
 			hasBuffet: boolean;
 			hasService: boolean;
@@ -40,6 +41,7 @@ export type RoomInfosList = {
 	area: number;
 	height: number;
 	chairFormations?: string[];
+	equipment?: string[];
 	fittings: {
 		hasBuffet: boolean;
 		hasService: boolean;
@@ -55,12 +57,22 @@ export const CHAIR_FORMATION = {
 	circle: 'chair_formation_circle',
 };
 
+export const EQUIPMENT = {
+	stage: 'equipment_stage',
+	podium: 'equipment_podium',
+};
+
+export const ROOM_ADDITIONS_CATEGORY = {
+	chairFormation: 'chair_formation',
+	equipment: 'equipment',
+};
+
 export const roomList = [
 	{
 		model: {
 			meshName: 'room_1',
-			camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, 4),
-			camTarget: new THREE.Vector3(-3.8, -0.5, 4),
+			camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, 2),
+			camTarget: new THREE.Vector3(-3.8, -0.5, 2),
 			camAngle: 0,
 		},
 		info: {
@@ -69,7 +81,8 @@ export const roomList = [
 			seats: 1989,
 			area: 760,
 			height: 12,
-			chairFormations: [CHAIR_FORMATION.shuffle, CHAIR_FORMATION.square, CHAIR_FORMATION.circle],
+			chairFormations: [CHAIR_FORMATION.square, CHAIR_FORMATION.circle],
+			equipment: [EQUIPMENT.stage, EQUIPMENT.podium],
 			fittings: {
 				hasBuffet: false,
 				hasService: true,
@@ -82,8 +95,8 @@ export const roomList = [
 	{
 		model: {
 			meshName: 'room_2',
-			camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, 0),
-			camTarget: new THREE.Vector3(-3.8, -0.5, 0),
+			camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, -4),
+			camTarget: new THREE.Vector3(-3.8, -0.5, -4),
 			camAngle: 90,
 		},
 		info: {
@@ -104,9 +117,9 @@ export const roomList = [
 	{
 		model: {
 			meshName: 'room_3',
-			camPos: new THREE.Vector3(-3.8, -0.5 + camHeightOffset, -4),
-			camTarget: new THREE.Vector3(-3.8, -0.5, -4),
-			camAngle: 180,
+			camPos: new THREE.Vector3(0.4, -0.5 + camHeightOffset, 4),
+			camTarget: new THREE.Vector3(0.4, -0.5, 4),
+			camAngle: 0,
 		},
 		info: {
 			id: 3,
@@ -127,9 +140,9 @@ export const roomList = [
 	{
 		model: {
 			meshName: 'room_4',
-			camPos: new THREE.Vector3(0.4, -0.5 + camHeightOffset, 4),
-			camTarget: new THREE.Vector3(0.4, -0.5, 4),
-			camAngle: 0,
+			camPos: new THREE.Vector3(0.4, -0.5 + camHeightOffset, 0),
+			camTarget: new THREE.Vector3(0.4, -0.5, 0),
+			camAngle: 90,
 		},
 		info: {
 			id: 4,
@@ -149,9 +162,9 @@ export const roomList = [
 	{
 		model: {
 			meshName: 'room_5',
-			camPos: new THREE.Vector3(0.4, -0.5 + camHeightOffset, 0),
-			camTarget: new THREE.Vector3(0.4, -0.5, 0),
-			camAngle: 90,
+			camPos: new THREE.Vector3(0.4, -0.5 + camHeightOffset, -4),
+			camTarget: new THREE.Vector3(0.4, -0.5, -4),
+			camAngle: 180,
 		},
 		info: {
 			id: 5,
@@ -172,9 +185,9 @@ export const roomList = [
 	{
 		model: {
 			meshName: 'room_6',
-			camPos: new THREE.Vector3(0.4, -0.5 + camHeightOffset, -4),
-			camTarget: new THREE.Vector3(0.4, -0.5, -4),
-			camAngle: 180,
+			camPos: new THREE.Vector3(3.9, -0.5 + camHeightOffset, -4),
+			camTarget: new THREE.Vector3(3.9, -0.5, -4),
+			camAngle: 90,
 		},
 		info: {
 			id: 6,
@@ -187,28 +200,6 @@ export const roomList = [
 				hasService: false,
 				hasDrinks: true,
 				hasInvalid: false,
-				hasSeats: true,
-			},
-		},
-	},
-	{
-		model: {
-			meshName: 'room_7',
-			camPos: new THREE.Vector3(3.9, -0.5 + camHeightOffset, -4),
-			camTarget: new THREE.Vector3(3.9, -0.5, -4),
-			camAngle: 90,
-		},
-		info: {
-			id: 7,
-			title: 'BREAKOUT ROOM 4',
-			seats: 1989,
-			area: 760,
-			height: 12,
-			fittings: {
-				hasBuffet: true,
-				hasService: true,
-				hasDrinks: true,
-				hasInvalid: true,
 				hasSeats: true,
 			},
 		},

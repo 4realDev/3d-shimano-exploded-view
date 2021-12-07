@@ -42,8 +42,6 @@ const Model = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }: Mod
 	const group = useRef<GroupProps>();
 	const model = useGLTF('/house-model.glb') as DreiGLTF;
 
-	console.log(model);
-
 	const outlineOpacityValueUnselected = 0.2;
 	const outlineOpacityValueSelectedAndDefault = 1;
 	const colorOpacityValueUnselected = 0.15;

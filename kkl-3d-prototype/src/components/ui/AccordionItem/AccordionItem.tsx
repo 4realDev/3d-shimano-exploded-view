@@ -84,7 +84,6 @@ const AccordionItem = React.forwardRef<HTMLInputElement, AccordionItem>(
 			return (
 				<div className={styles.accordion__detailsIcons}>
 					{Object.entries(roomInfoList[roomInfoIndex].fittings).map((fittingEntry: [string, unknown]) => {
-						console.log(fittingEntry);
 						return (
 							fittingEntry[1] && <div className={styles.accordion__detailsIcon}>{getFittingIcon(fittingEntry[0])}</div>
 						);

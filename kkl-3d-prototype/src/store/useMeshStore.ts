@@ -36,20 +36,32 @@ export const resetMeshVisibility = () => {
 	setMeshList(newList);
 };
 
-export const setMeshChildVisibility = (toggledRoomName: string, toggledMeshName: string) => {
+export const setMeshChildVisibility = (toggledRoomName: string, toggledMeshName: string, category?: string) => {
 	let newList: MeshObject[] = useMeshStore.getState().meshList;
 	let itemIndex = newList.findIndex((item) => item.name === toggledRoomName); // Find index of item you want to mutate
 	let item = newList[itemIndex]; // Make shallow copy of the selected item
 	// Overwrite properties in each child of children array in item copy
 	if (itemIndex !== -1 && item.children) {
 		item.children.forEach((child, i, array) => {
+			console.log(child.name.replace(/[0-9]/g, ''));
 			// Toggle visibility of selected child / chair formation
 			// Make all other children / formations in children array of the item invisible
 			// child.name.replace(/[0-9]/g, '') to remove BLENDERS suffix for duplicated objects
 			// -> "chair_formation_circle001" to "chair_formation_circle"
+			console.log(category);
+			console.log(child.name.substr(0, child.name.lastIndexOf('_')));
+			console.log(child.name.substr(0, child.name.lastIndexOf('_')) === category);
 			array[i] = {
 				...child,
-				isVisible: child.name.replace(/[0-9]/g, '') === toggledMeshName ? !child.isVisible : false,
+				// if child is toggledMesh -> toggle visiblity of child
+				// for other children: if other children are in the same category -> make them invisible
+				// else leave their visiblity as it is
+				isVisible:
+					child.name.replace(/[0-9]/g, '') === toggledMeshName
+						? !child.isVisible
+						: child.name.substr(0, child.name.lastIndexOf('_')) === category
+						? false
+						: child.isVisible,
 			};
 		});
 	}

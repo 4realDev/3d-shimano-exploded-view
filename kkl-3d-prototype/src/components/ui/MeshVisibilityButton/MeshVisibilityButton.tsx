@@ -4,15 +4,22 @@ type MeshVisiblityButtonProps = {
 	toggledRoomName: string;
 	toggledMeshName: string;
 	toggleIcon: React.ReactNode;
-	onClick: (toggledRoomName: string, toggledMeshName: string) => void;
+	category: string;
+	onClick: (toggledRoomName: string, toggledMeshName: string, category: string) => void;
 };
 
-const MeshVisibilityButton = ({ toggledRoomName, toggledMeshName, toggleIcon, onClick }: MeshVisiblityButtonProps) => {
+const MeshVisibilityButton = ({
+	toggledRoomName,
+	toggledMeshName,
+	toggleIcon,
+	category,
+	onClick,
+}: MeshVisiblityButtonProps) => {
 	return (
 		<button
 			className={styles.chairFormationToggle}
 			onClick={() => {
-				onClick(toggledRoomName, toggledMeshName);
+				onClick(toggledRoomName, toggledMeshName, category);
 			}}
 		>
 			{toggleIcon}

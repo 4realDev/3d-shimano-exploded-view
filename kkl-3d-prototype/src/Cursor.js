@@ -62,7 +62,6 @@
 // TODO: Add cursor with current hovered on mesh
 // useEffect(() => {
 // 	// const hoveredMeshIndex = meshList.findIndex(hoveredMesh);
-// 	// console.log(meshList[hoveredMeshIndex]);
 // 	const cursor = `
 // 	<svg width="64" height="64" fill="none" xmlns="http://www.w3.org/2000/svg">
 // 		<g clip-path="url(#clip0)">
