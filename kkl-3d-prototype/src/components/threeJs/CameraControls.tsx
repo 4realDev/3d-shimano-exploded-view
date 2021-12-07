@@ -48,14 +48,14 @@ const CameraControls = ({
 
 	const dampAzimuthalAngle = (startAnlge: number, to: number, speed: number, delta: number) => {
 		const dampedAzimuthalAngle = THREE.MathUtils.damp(startAnlge, to, speed, delta);
-		(controls.current as any).setAzimuthalAngle(dampedAzimuthalAngle);
+		controls?.current?.setAzimuthalAngle!(dampedAzimuthalAngle);
 	};
 
 	// ANIMATED UPDATE FOR CAMERA MOVEMENT ONCLICK/ONSELECT
 	useFrame((state, delta) => {
 		if (!mouseDown && hasAnimation && camera.current && controls.current) {
 			selectedMeshes.length !== 0 &&
-				dampAzimuthalAngle((controls.current as any).getAzimuthalAngle(), deg2rad(cameraAngle), 20, delta);
+				dampAzimuthalAngle(controls?.current?.getAzimuthalAngle!(), deg2rad(cameraAngle), 20, delta);
 			damp(camera.current.position, cameraPosition, dampSpeed, delta);
 			damp(controls.current.target, cameraTarget, dampSpeed, delta);
 		}
@@ -84,8 +84,8 @@ const CameraControls = ({
 		// (controls.current as any).object.setRotationFromEuler(new THREE.Euler(-10, deg2rad(-49), deg2rad(-23)));
 		/* #endregion */
 
-		(controls.current as any).update(); // Workaround
-		(camera.current as any).updateProjectionMatrix(); // Workaround
+		controls?.current?.update!(); // Workaround
+		camera?.current?.updateProjectionMatrix!(); // Workaround
 	});
 
 	return (

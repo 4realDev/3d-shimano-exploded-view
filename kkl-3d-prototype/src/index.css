@@ -2,10 +2,11 @@
 *,
 *::before,
 *::after {
+	/* ensures that padding is added to inside of elements */
+	box-sizing: border-box;
+	/* ensures that browser isn’t adding any default padding */
 	margin: 0;
 	padding: 0;
-	/* appling border-box to html document ensures that everything else will inherit it */
-	box-sizing: inherit;
 }
 
 html {

@@ -3,12 +3,12 @@ import { Canvas, PerspectiveCameraProps } from '@react-three/fiber';
 // npm install @react-three/fiber
 import { Suspense, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { CANVAS_DEBUG } from '../../../../App';
-import { roomModelList } from '../../../../data/roomData';
-import { showAllRoomsFromAbove, showClickedRoom, useCameraStore } from '../../../../store/useCameraStore';
-import CameraControls from '../../../models/CameraControls';
-import Model from '../../../models/Model';
-import RoomPositionMarkers from '../../../models/RoomPositionMarkers';
+import { CANVAS_DEBUG } from '../../../App';
+import { roomModelList } from '../../../data/roomData';
+import { showAllRoomsFromAbove, showClickedRoom, useCameraStore } from '../../../store/useCameraStore';
+import CameraControls from '../../threeJs/CameraControls';
+import Model from '../../threeJs/Model';
+import RoomPositionMarkers from '../../threeJs/RoomPositionMarkers';
 
 const ModelCanvas = () => {
 	const hasAnimation = useCameraStore((state) => state.hasAnimation);

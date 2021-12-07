@@ -1,7 +1,7 @@
 import { createRef } from 'react';
-import { roomInfoList, roomList } from '../../../../data/roomData';
-import { resetScene, showAndSelectAllRooms } from '../../../../store/useCameraStore';
-import Accordion from '../../Accordion/Accordion';
+import { roomInfoList, roomList } from '../../../data/roomData';
+import { resetScene, showAndSelectAllRooms } from '../../../store/useCameraStore';
+import Accordion from '../../ui/Accordion/Accordion';
 
 const RoomSelection = () => {
 	const refs = roomInfoList.reduce((acc: any, value) => {

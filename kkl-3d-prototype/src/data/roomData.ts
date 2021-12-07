@@ -16,6 +16,13 @@ export type RoomItemsList = {
 		area: number;
 		height: number;
 		chairFormations?: string[];
+		fittings: {
+			hasBuffet: boolean;
+			hasService: boolean;
+			hasDrinks: boolean;
+			hasInvalid: boolean;
+			hasSeats: boolean;
+		};
 	};
 };
 
@@ -33,6 +40,13 @@ export type RoomInfosList = {
 	area: number;
 	height: number;
 	chairFormations?: string[];
+	fittings: {
+		hasBuffet: boolean;
+		hasService: boolean;
+		hasDrinks: boolean;
+		hasInvalid: boolean;
+		hasSeats: boolean;
+	};
 };
 
 export const CHAIR_FORMATION = {
@@ -56,6 +70,13 @@ export const roomList = [
 			area: 760,
 			height: 12,
 			chairFormations: [CHAIR_FORMATION.shuffle, CHAIR_FORMATION.square, CHAIR_FORMATION.circle],
+			fittings: {
+				hasBuffet: false,
+				hasService: true,
+				hasDrinks: false,
+				hasInvalid: true,
+				hasSeats: true,
+			},
 		},
 	},
 	{
@@ -71,6 +92,13 @@ export const roomList = [
 			seats: 1989,
 			area: 760,
 			height: 12,
+			fittings: {
+				hasBuffet: true,
+				hasService: false,
+				hasDrinks: false,
+				hasInvalid: true,
+				hasSeats: false,
+			},
 		},
 	},
 	{
@@ -87,6 +115,13 @@ export const roomList = [
 			area: 760,
 			height: 12,
 			chairFormations: [CHAIR_FORMATION.shuffle, CHAIR_FORMATION.square, CHAIR_FORMATION.circle],
+			fittings: {
+				hasBuffet: true,
+				hasService: true,
+				hasDrinks: true,
+				hasInvalid: true,
+				hasSeats: true,
+			},
 		},
 	},
 	{
@@ -102,6 +137,13 @@ export const roomList = [
 			seats: 1989,
 			area: 760,
 			height: 12,
+			fittings: {
+				hasBuffet: false,
+				hasService: false,
+				hasDrinks: true,
+				hasInvalid: true,
+				hasSeats: false,
+			},
 		},
 	},
 	{
@@ -118,6 +160,13 @@ export const roomList = [
 			area: 760,
 			height: 12,
 			chairFormations: [CHAIR_FORMATION.shuffle, CHAIR_FORMATION.square],
+			fittings: {
+				hasBuffet: true,
+				hasService: true,
+				hasDrinks: false,
+				hasInvalid: true,
+				hasSeats: true,
+			},
 		},
 	},
 	{
@@ -133,6 +182,13 @@ export const roomList = [
 			seats: 1989,
 			area: 760,
 			height: 12,
+			fittings: {
+				hasBuffet: true,
+				hasService: false,
+				hasDrinks: true,
+				hasInvalid: false,
+				hasSeats: true,
+			},
 		},
 	},
 	{
@@ -148,6 +204,13 @@ export const roomList = [
 			seats: 1989,
 			area: 760,
 			height: 12,
+			fittings: {
+				hasBuffet: true,
+				hasService: true,
+				hasDrinks: true,
+				hasInvalid: true,
+				hasSeats: true,
+			},
 		},
 	},
 ];

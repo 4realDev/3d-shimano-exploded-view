@@ -1,5 +1,5 @@
 import create from 'zustand';
-import { MeshObject } from '../components/models/Model';
+import { MeshObject } from '../components/threeJs/Model';
 
 interface MeshState {
 	meshList: MeshObject[];

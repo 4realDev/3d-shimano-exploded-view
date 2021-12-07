@@ -1,9 +1,9 @@
 import './App.css';
 
-import RoomSelection from './components/ui/blocks/RoomSelection/RoomSelection';
-import ModelCanvas from './components/ui/blocks/ModelCanvas/ModelCanvas';
+import RoomSelection from './components/blocks/RoomSelection/RoomSelection';
+import ModelCanvas from './components/blocks/ModelCanvas/ModelCanvas';
 
-export const CANVAS_DEBUG = false;
+export const CANVAS_DEBUG = true;
 
 function App() {
 	return (
