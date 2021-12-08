@@ -51,21 +51,21 @@ export type RoomInfosList = {
 	};
 };
 
-export const CHAIR_FORMATION = {
-	shuffle: 'chair_formation_shuffle',
-	square: 'chair_formation_square',
-	circle: 'chair_formation_circle',
-};
+export enum CHAIR_FORMATION {
+	shuffle = 'chair_formation_shuffle',
+	square = 'chair_formation_square',
+	circle = 'chair_formation_circle',
+}
 
-export const EQUIPMENT = {
-	stage: 'equipment_stage',
-	podium: 'equipment_podium',
-};
+export enum EQUIPMENT {
+	stage = 'equipment_stage',
+	podium = 'equipment_podium',
+}
 
-export const ROOM_ADDITIONS_CATEGORY = {
-	chairFormation: 'chair_formation',
-	equipment: 'equipment',
-};
+export enum ROOM_ADDITIONS_CATEGORY {
+	chairFormation = 'chair_formation',
+	equipment = 'equipment',
+}
 
 export const roomList = [
 	{
