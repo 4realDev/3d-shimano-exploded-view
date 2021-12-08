@@ -13,22 +13,14 @@ import { useCameraStore } from '../../store/useCameraStore';
 type CameraControlsProps = {
 	camera: React.MutableRefObject<PerspectiveCameraProps | undefined>;
 	controls: React.MutableRefObject<OrbitControlsProps | undefined>;
-	controlsIdleState: boolean;
 	hasAnimation: boolean;
 	mouseDown: boolean;
 	fov: number;
 	far: number;
 };
 
-const CameraControls = ({
-	camera,
-	controls,
-	controlsIdleState,
-	hasAnimation,
-	mouseDown,
-	fov,
-	far,
-}: CameraControlsProps) => {
+const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }: CameraControlsProps) => {
+	const idleState = useCameraStore((state) => state.idleState);
 	const cameraPosition = useCameraStore((state) => state.cameraPosition);
 	const cameraTarget = useCameraStore((state) => state.cameraTarget);
 	const cameraAngle = useCameraStore((state) => state.cameraAngle);
@@ -105,7 +97,7 @@ const CameraControls = ({
 				enablePan={false}
 				// minPolarAngle={Math.PI / 2}
 				maxPolarAngle={Math.PI / 2}
-				autoRotate={controlsIdleState}
+				autoRotate={idleState}
 				autoRotateSpeed={0.5}
 				minDistance={3}
 				maxDistance={20}

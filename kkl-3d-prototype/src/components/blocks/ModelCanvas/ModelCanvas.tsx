@@ -5,7 +5,7 @@ import { Suspense, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { CANVAS_DEBUG } from '../../../App';
 import { roomModelList } from '../../../data/roomData';
-import { showAllRoomsFromAbove, showClickedRoom, useCameraStore } from '../../../store/useCameraStore';
+import { setIdleState, showAllRoomsFromAbove, showClickedRoom, useCameraStore } from '../../../store/useCameraStore';
 import CameraControls from '../../threeJs/CameraControls';
 import Model from '../../threeJs/Model';
 import RoomPositionMarkers from '../../threeJs/RoomPositionMarkers';
@@ -17,7 +17,6 @@ const ModelCanvas = () => {
 	const [hoveredMesh, setHoveredMesh] = useState<null | string>(null);
 	const [clickedMesh, setClickedMesh] = useState<null | string>(null);
 	const [mouseDown, setMouseDown] = useState(false);
-	const [idleState, setIdleState] = useState(true);
 
 	const controlsRef = useRef<OrbitControlsProps>();
 	const cameraRef = useRef<PerspectiveCameraProps>();
@@ -45,7 +44,6 @@ const ModelCanvas = () => {
 				<CameraControls
 					camera={cameraRef}
 					controls={controlsRef}
-					controlsIdleState={idleState}
 					hasAnimation={hasAnimation}
 					mouseDown={mouseDown}
 					fov={45}
