@@ -123,8 +123,6 @@ const Model = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }: Mod
 		return initialMeshList;
 	};
 
-	// const deg2rad = (degrees: number) => degrees * (Math.PI / 180);
-
 	const renderMeshChildren = (meshObject: MeshObject) => {
 		return (
 			<>

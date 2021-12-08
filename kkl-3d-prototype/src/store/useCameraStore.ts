@@ -5,13 +5,11 @@ import { resetMeshVisibility, setMeshVisibility } from './useMeshStore';
 
 export const defaultCameraPosition = new THREE.Vector3(20, 15, 0);
 export const defaultCameraTargetPosition = new THREE.Vector3(0, 0, 0);
-export const defaultCameraAngle = 0;
 export const camHeightOffset = 15;
 
 interface CameraStore {
 	cameraPosition: THREE.Vector3;
 	cameraTarget: THREE.Vector3;
-	cameraAngle: number;
 	hasAnimation: boolean;
 	idleState: boolean;
 	hoveredMesh: string | null;
@@ -22,7 +20,6 @@ interface CameraStore {
 export const useCameraStore = create<CameraStore>((set) => ({
 	cameraPosition: defaultCameraPosition,
 	cameraTarget: defaultCameraTargetPosition,
-	cameraAngle: defaultCameraAngle,
 	hasAnimation: false, // initially false so idleRotation in idleState works
 	idleState: true,
 	hoveredMesh: null,
@@ -39,10 +36,6 @@ export const setCameraPosition = (cameraPosition: THREE.Vector3) => {
 
 export const setCameraTarget = (cameraTarget: THREE.Vector3) => {
 	useCameraStore.setState((state) => ({ cameraTarget: cameraTarget }));
-};
-
-export const setCameraAngle = (cameraAngle: number) => {
-	useCameraStore.setState((state) => ({ cameraAngle: cameraAngle }));
 };
 
 export const setHasAnimation = (hasAnimation: boolean) => {
@@ -64,7 +57,6 @@ export const showClickedRoom = (clickedMesh: string) => {
 		setSelectedMeshes([clickedRoom.meshName]);
 		setCameraPosition(clickedRoom.camPos);
 		setCameraTarget(clickedRoom.camTarget);
-		setCameraAngle(clickedRoom.camAngle);
 	}
 };
 
@@ -74,7 +66,6 @@ export const showAllRoomsFromAbove = () => {
 	setMeshVisibility('roof', false);
 	setCameraPosition(new THREE.Vector3(0, 25, 2));
 	setCameraTarget(defaultCameraTargetPosition);
-	setCameraAngle(0);
 };
 
 export const showAndSelectAllRooms = () => {
@@ -84,7 +75,6 @@ export const showAndSelectAllRooms = () => {
 	setSelectedMeshes(roomModelList.map((room) => room.meshName));
 	setCameraPosition(new THREE.Vector3(0, 25 + camHeightOffset, 2));
 	setCameraTarget(defaultCameraTargetPosition);
-	setCameraAngle(0);
 };
 
 export const resetScene = () => {
@@ -94,7 +84,6 @@ export const resetScene = () => {
 	setSelectedMeshes([]);
 	setCameraPosition(defaultCameraPosition);
 	setCameraTarget(defaultCameraTargetPosition);
-	setCameraAngle(defaultCameraAngle);
 
 	// TODO: Figure out better way to deactivate hasAnimation
 	// after the position as damped to the defaultCameraPosition
