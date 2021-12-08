@@ -25,6 +25,7 @@ export type MeshObject = {
 	color: string;
 	opacity: number;
 	isVisible: boolean;
+	userData: Record<string, string> | undefined;
 	children?: MeshObject[];
 };
 
@@ -78,15 +79,26 @@ const Model = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }: Mod
 		Object.values(nodes).forEach((mesh) => {
 			const children: MeshObject[] = [];
 
+			// *** NAMING LOGIC OF THE MESHES ***
+			// For the naming of the meshes, we use the "Custom Properties" from the Blender Software
+			// These "Custom Properties" are stored in the glTF model inside every mesh as "userData"
+			// Therefore mesh.userData.customName meta information are used instead of mesh.name
+			// This keeps the naming of the meshes independed from the naming conventions in the code
+			// If the customName inside the userData is not defined, use the original mesh.name as fallback
+			// Additionally we store the userData inside the mesh itself
+			// This allows us to differentiate inside the onMouseOver and onMouseDown Events,
+			// between custom named meshes, which are interactable and other non interactable meshes
+
 			if (mesh.children.length !== 0) {
 				Object.values(mesh.children).forEach((child: any) => {
 					children.push({
-						name: child.name,
+						name: child.userData.customName ?? child.name,
 						geometry: child.geometry,
 						material: child.material as any,
 						color: 'white',
 						opacity: 1,
 						isVisible: false,
+						userData: 'customName' in child.userData ? { customName: child.userData.customName } : undefined,
 						position: child.position,
 						rotation: child.rotation,
 						scale: child.scale,
@@ -96,12 +108,13 @@ const Model = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }: Mod
 
 			if (mesh.parent?.name === 'Scene') {
 				initialMeshList.push({
-					name: mesh.name,
+					name: mesh.userData.customName ?? mesh.name,
 					geometry: mesh.geometry,
 					material: mesh.material as any,
 					color: 'white',
 					opacity: 1,
 					isVisible: true,
+					userData: 'customName' in mesh.userData ? { customName: mesh.userData.customName } : undefined,
 					children: children,
 				});
 			}
@@ -122,6 +135,7 @@ const Model = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }: Mod
 							<mesh
 								name={childObject.name}
 								visible={childObject.isVisible}
+								userData={childObject.userData}
 								material={childObject.material}
 								position={childObject.position}
 								rotation={childObject.rotation}
@@ -151,10 +165,11 @@ const Model = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }: Mod
 			<mesh
 				name={meshObject.name}
 				visible={meshObject.isVisible}
+				userData={meshObject.userData}
 				material={meshObject.material}
 				onPointerOver={(event) => {
 					// check to prevent event on not visible meshes
-					if (event.object.visible) {
+					if (event.object.visible && event.object.userData.customName) {
 						event.stopPropagation();
 						setHoveredMesh(event.object.name);
 					}
@@ -169,7 +184,7 @@ const Model = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }: Mod
 				// stopPropagation and set current object inside state to the one clicked
 				onPointerDown={(event) => {
 					// check to prevent event on not visible meshes
-					if (event.object.visible) {
+					if (event.object.visible && event.object.userData.customName) {
 						event.stopPropagation();
 						setClickedMesh(event.object.name);
 						// event.object.material.visible = false;
