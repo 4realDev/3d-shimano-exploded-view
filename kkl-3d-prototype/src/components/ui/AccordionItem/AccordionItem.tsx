@@ -10,6 +10,7 @@ import Drinks from '../../icons/Drinks';
 import Invalid from '../../icons/Invalid';
 import Seats from '../../icons/Seats';
 import styles from './AccordionItem.module.scss';
+import Podium from '../../icons/Podium';
 
 type AccordionItem = {
 	id: number;
