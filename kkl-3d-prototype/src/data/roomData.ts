@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import { camHeightOffset } from '../store/useCameraStore';
 // npm install three
+import { camHeightOffset } from '../store/useCameraStore';
 
 export type RoomItemsList = {
 	model: {
@@ -16,12 +16,12 @@ export type RoomItemsList = {
 		height: number;
 		chairFormations?: string[];
 		equipment?: string[];
-		fittings: {
-			hasBuffet: boolean;
-			hasService: boolean;
-			hasDrinks: boolean;
-			hasInvalid: boolean;
-			hasSeats: boolean;
+		fittings?: {
+			hasBuffet?: boolean;
+			hasService?: boolean;
+			hasDrinks?: boolean;
+			hasInvalid?: boolean;
+			hasSeats?: boolean;
 		};
 	};
 };
@@ -81,9 +81,7 @@ export const roomList = [
 			chairFormations: [CHAIR_FORMATION.square, CHAIR_FORMATION.circle],
 			equipment: [EQUIPMENT.stage, EQUIPMENT.podium],
 			fittings: {
-				hasBuffet: false,
 				hasService: true,
-				hasDrinks: false,
 				hasInvalid: true,
 				hasSeats: true,
 			},
@@ -104,10 +102,7 @@ export const roomList = [
 			chairFormations: [CHAIR_FORMATION.shuffle, CHAIR_FORMATION.square, CHAIR_FORMATION.circle],
 			fittings: {
 				hasBuffet: true,
-				hasService: false,
-				hasDrinks: false,
 				hasInvalid: true,
-				hasSeats: false,
 			},
 		},
 	},
@@ -146,11 +141,8 @@ export const roomList = [
 			height: 12,
 			chairFormations: [CHAIR_FORMATION.shuffle, CHAIR_FORMATION.square],
 			fittings: {
-				hasBuffet: false,
-				hasService: false,
 				hasDrinks: true,
 				hasInvalid: true,
-				hasSeats: false,
 			},
 		},
 	},
@@ -189,9 +181,7 @@ export const roomList = [
 			height: 12,
 			fittings: {
 				hasBuffet: true,
-				hasService: false,
 				hasDrinks: true,
-				hasInvalid: false,
 				hasSeats: true,
 			},
 		},

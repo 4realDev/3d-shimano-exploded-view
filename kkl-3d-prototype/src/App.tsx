@@ -3,7 +3,7 @@ import './App.css';
 import RoomSelection from './components/blocks/RoomSelection/RoomSelection';
 import ModelCanvas from './components/blocks/ModelCanvas/ModelCanvas';
 
-export const CANVAS_DEBUG = true;
+export const CANVAS_DEBUG = false;
 
 function App() {
 	return (

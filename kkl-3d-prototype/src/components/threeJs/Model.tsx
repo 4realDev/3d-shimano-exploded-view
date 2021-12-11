@@ -1,5 +1,5 @@
 // npm i --save-dev @types/react
-import { useEffect, useRef } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { Center, useGLTF } from '@react-three/drei';
 // npm i --save-dev @types/three
 import { GLTF } from 'three-stdlib';
@@ -8,6 +8,9 @@ import { GroupProps } from '@react-three/fiber';
 import { setMeshList, useMeshStore } from '../../store/useMeshStore';
 import { useCameraStore } from '../../store/useCameraStore';
 import { CANVAS_DEBUG } from '../../App';
+import SimpleModel from './SimpleModel';
+
+// TODO: Performance issues due to lineSegment Material -> Could be fixed in 3D production
 
 // https://githubmemory.com/repo/pmndrs/drei/issues/469
 export type DreiGLTF = GLTF & {
@@ -36,9 +39,10 @@ type ModelProps = {
 	setClickedMesh: (value: string | null) => void;
 };
 
-const Model = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }: ModelProps) => {
+const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }) => {
 	const meshList = useMeshStore((state) => state.meshList);
 	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
+	// const [renderedMesh, setRenderedMesh] = useState<JSX.Element | null>(null);
 
 	const group = useRef<GroupProps>();
 	const model = useGLTF('/house-model.glb') as DreiGLTF;
@@ -147,7 +151,7 @@ const Model = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }: Mod
 									visible={childObject.isVisible}
 									opacity={childObject.opacity}
 								/>
-								<lineSegments renderOrder={100} name={childObject.name}>
+								<lineSegments>
 									<edgesGeometry attach='geometry' args={[childObject.geometry]} />
 									<lineBasicMaterial color='black' attach='material' transparent opacity={childObject.opacity} />
 								</lineSegments>
@@ -197,7 +201,6 @@ const Model = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }: Mod
 				<bufferGeometry attach='geometry' {...meshObject.geometry} />
 				<meshBasicMaterial
 					attach='material'
-					// material={meshObject.material}
 					color={setMeshColor(meshObject)}
 					transparent
 					visible={meshObject.isVisible}
@@ -207,7 +210,7 @@ const Model = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }: Mod
 							: colorOpacityValueSelectedAndDefault
 					}
 				/>
-				<lineSegments renderOrder={100} name={meshObject.name}>
+				<lineSegments>
 					<edgesGeometry attach='geometry' args={[meshObject.geometry]} />
 					{/* Due limitations of OpenGL Core Profile with WebGL renderer on most platforms linewidth will always be 1 regardless of set value.  */}
 					<lineBasicMaterial color='black' attach='material' transparent opacity={setOutlineOpacity(meshObject)} />
@@ -216,12 +219,44 @@ const Model = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }: Mod
 		);
 	};
 
+	// const getAsyncRenderedMesh = async () => {
+	// 	try {
+	// 		const result = await new Promise<JSX.Element>((resolve, reject) => {
+	// 			resolve(
+	// 				<>
+	// 					{CANVAS_DEBUG && <primitive object={new THREE.BoxHelper(group.current as any, 'black')} />}
+	// 					{/* // Drei: Calculates a boundary box and centers its children accordingly. */}
+	// 					<Center>
+	// 						<group scale={0.01} position={[0, 0, 0]} ref={group}>
+	// 							{meshList.map((meshObject: MeshObject) => {
+	// 								return (
+	// 									<>
+	// 										{renderMeshChildren(meshObject)}
+	// 										{renderMesh(meshObject)}
+	// 									</>
+	// 								);
+	// 							})}
+	// 						</group>
+	// 					</Center>
+	// 				</>
+	// 			);
+	// 		});
+	// 		console.log('FINISHED RENDERING');
+	// 		setRenderedMesh(result);
+	// 	} catch (err) {
+	// 		console.log(err);
+	// 	}
+	// };
+
 	useEffect(() => {
 		const initialMeshList = convertGLTFToMeshList(model.nodes);
 		setMeshList(initialMeshList);
-		console.log(initialMeshList);
+		// getAsyncRenderedMesh();
 	}, []);
 
+	// console.log(renderedMesh);
+
+	// return renderedMesh === null ? <SimpleModel /> : renderedMesh;
 	return (
 		<>
 			{CANVAS_DEBUG && <primitive object={new THREE.BoxHelper(group.current as any, 'black')} />}
@@ -244,4 +279,4 @@ const Model = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }: Mod
 
 export default Model;
 
-useGLTF.preload('/house-model.glb');
+// useGLTF.preload('/house-model.glb');

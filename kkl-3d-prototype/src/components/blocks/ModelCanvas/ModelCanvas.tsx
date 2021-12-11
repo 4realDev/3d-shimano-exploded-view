@@ -1,5 +1,6 @@
 import { OrbitControlsProps, Stats } from '@react-three/drei';
 import { Canvas, PerspectiveCameraProps } from '@react-three/fiber';
+import React from 'react';
 // npm install @react-three/fiber
 import { Suspense, useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
@@ -7,9 +8,16 @@ import { CANVAS_DEBUG } from '../../../App';
 import { roomModelList } from '../../../data/roomData';
 import { setIdleState, showAllRoomsFromAbove, showClickedRoom, useCameraStore } from '../../../store/useCameraStore';
 import CameraControls from '../../threeJs/CameraControls';
-import Model from '../../threeJs/Model';
+import SimpleModel from '../../threeJs/SimpleModel';
 import RoomPositionMarkers from '../../threeJs/RoomPositionMarkers';
 import styles from './ModelCanvas.module.scss';
+
+// import Model from '../../threeJs/Model';
+const Model = React.lazy(() =>
+	import('../../threeJs/Model').then((module) => ({
+		default: module.default,
+	}))
+);
 
 const ModelCanvas = () => {
 	const hasAnimation = useCameraStore((state) => state.hasAnimation);
@@ -51,13 +59,14 @@ const ModelCanvas = () => {
 				/>
 
 				{/* create Loader UI as fallback before useLoader promise is returned */}
-				<Suspense fallback={null}>
+				<Suspense fallback={<SimpleModel />}>
 					<Model
 						hoveredMesh={hoveredMesh}
 						setHoveredMesh={setHoveredMesh}
 						clickedMesh={clickedMesh}
 						setClickedMesh={setClickedMesh}
 					/>
+
 					{CANVAS_DEBUG && (
 						<RoomPositionMarkers
 							markerPositions={roomModelList.map(({ camPos }) => camPos)}
