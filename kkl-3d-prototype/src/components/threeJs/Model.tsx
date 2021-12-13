@@ -1,14 +1,12 @@
 // npm i --save-dev @types/react
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Center, useGLTF } from '@react-three/drei';
 // npm i --save-dev @types/three
 import { GLTF } from 'three-stdlib';
 import * as THREE from 'three';
 import { GroupProps } from '@react-three/fiber';
 import { setMeshList, useMeshStore } from '../../store/useMeshStore';
-import { useCameraStore } from '../../store/useCameraStore';
 import { CANVAS_DEBUG } from '../../App';
-import SimpleModel from './SimpleModel';
 
 // TODO: Performance issues due to lineSegment Material -> Could be fixed in 3D production
 
@@ -42,7 +40,6 @@ type ModelProps = {
 const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }) => {
 	const meshList = useMeshStore((state) => state.meshList);
 	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
-	// const [renderedMesh, setRenderedMesh] = useState<JSX.Element | null>(null);
 
 	const group = useRef<GroupProps>();
 	const model = useGLTF('/house-model.glb') as DreiGLTF;
@@ -53,6 +50,11 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, clickedMesh,
 	const colorOpacityValueSelectedAndDefault = 1;
 	const colorHovered = '#FF7F7F';
 	const outlineOpacityValueHovered = 0.5;
+
+	useEffect(() => {
+		const initialMeshList = convertGLTFToMeshList(model.nodes);
+		setMeshList(initialMeshList);
+	}, []);
 
 	const setMeshColor = (meshObject: MeshObject) => {
 		if (hoveredMesh !== meshObject.name) return meshObject.color;
@@ -219,44 +221,6 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, clickedMesh,
 		);
 	};
 
-	// const getAsyncRenderedMesh = async () => {
-	// 	try {
-	// 		const result = await new Promise<JSX.Element>((resolve, reject) => {
-	// 			resolve(
-	// 				<>
-	// 					{CANVAS_DEBUG && <primitive object={new THREE.BoxHelper(group.current as any, 'black')} />}
-	// 					{/* // Drei: Calculates a boundary box and centers its children accordingly. */}
-	// 					<Center>
-	// 						<group scale={0.01} position={[0, 0, 0]} ref={group}>
-	// 							{meshList.map((meshObject: MeshObject) => {
-	// 								return (
-	// 									<>
-	// 										{renderMeshChildren(meshObject)}
-	// 										{renderMesh(meshObject)}
-	// 									</>
-	// 								);
-	// 							})}
-	// 						</group>
-	// 					</Center>
-	// 				</>
-	// 			);
-	// 		});
-	// 		console.log('FINISHED RENDERING');
-	// 		setRenderedMesh(result);
-	// 	} catch (err) {
-	// 		console.log(err);
-	// 	}
-	// };
-
-	useEffect(() => {
-		const initialMeshList = convertGLTFToMeshList(model.nodes);
-		setMeshList(initialMeshList);
-		// getAsyncRenderedMesh();
-	}, []);
-
-	// console.log(renderedMesh);
-
-	// return renderedMesh === null ? <SimpleModel /> : renderedMesh;
 	return (
 		<>
 			{CANVAS_DEBUG && <primitive object={new THREE.BoxHelper(group.current as any, 'black')} />}
@@ -279,4 +243,4 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, clickedMesh,
 
 export default Model;
 
-// useGLTF.preload('/house-model.glb');
+useGLTF.preload('/house-model.glb');
