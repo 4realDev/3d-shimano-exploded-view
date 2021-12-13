@@ -23,17 +23,10 @@ const ModelCanvas = () => {
 	const hasAnimation = useCameraStore((state) => state.hasAnimation);
 
 	const [hoveredMesh, setHoveredMesh] = useState<null | string>(null);
-	const [clickedMesh, setClickedMesh] = useState<null | string>(null);
 	const [mouseDown, setMouseDown] = useState(false);
 
 	const controlsRef = useRef<OrbitControlsProps>();
 	const cameraRef = useRef<PerspectiveCameraProps>();
-
-	useEffect(() => {
-		if (clickedMesh) {
-			clickedMesh === 'roof' ? showAllRoomsFromAbove() : showClickedRoom(clickedMesh);
-		}
-	}, [clickedMesh]);
 
 	return (
 		<div
@@ -60,12 +53,7 @@ const ModelCanvas = () => {
 
 				{/* create Loader UI as fallback before useLoader promise is returned */}
 				<Suspense fallback={<SimpleModel />}>
-					<Model
-						hoveredMesh={hoveredMesh}
-						setHoveredMesh={setHoveredMesh}
-						clickedMesh={clickedMesh}
-						setClickedMesh={setClickedMesh}
-					/>
+					<Model hoveredMesh={hoveredMesh} setHoveredMesh={setHoveredMesh} />
 
 					{CANVAS_DEBUG && (
 						<RoomPositionMarkers

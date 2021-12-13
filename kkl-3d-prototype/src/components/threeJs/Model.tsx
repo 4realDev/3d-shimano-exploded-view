@@ -6,6 +6,7 @@ import { GLTF } from 'three-stdlib';
 import * as THREE from 'three';
 import { GroupProps } from '@react-three/fiber';
 import { setMeshList, useMeshStore } from '../../store/useMeshStore';
+import { showAllRoomsFromAbove, showClickedRoom, useCameraStore } from '../../store/useCameraStore';
 import { CANVAS_DEBUG } from '../../App';
 
 // TODO: Performance issues due to lineSegment Material -> Could be fixed in 3D production
@@ -33,11 +34,9 @@ export type MeshObject = {
 type ModelProps = {
 	hoveredMesh: string | null;
 	setHoveredMesh: (value: string | null) => void;
-	clickedMesh: string | null;
-	setClickedMesh: (value: string | null) => void;
 };
 
-const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, clickedMesh, setClickedMesh }) => {
+const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 	const meshList = useMeshStore((state) => state.meshList);
 	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
 
@@ -188,17 +187,16 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, clickedMesh,
 				// stopPropagation and set current object inside state to the one clicked
 				onPointerDown={(event) => {
 					// check to prevent event on not visible meshes
+					// only meshes which have a customName are interactable
 					if (event.object.visible && event.object.userData.customName) {
 						event.stopPropagation();
-						setClickedMesh(event.object.name);
-						// event.object.material.visible = false;
+						event.object.userData.customName === 'roof'
+							? showAllRoomsFromAbove()
+							: showClickedRoom(event.object.userData.customName);
 					}
 				}}
 				// Pointer click outside of mesh
-				// Set current object inside state to the one clicked
-				onPointerMissed={(event) => {
-					setClickedMesh(null);
-				}}
+				onPointerMissed={(event) => {}}
 			>
 				<bufferGeometry attach='geometry' {...meshObject.geometry} />
 				<meshBasicMaterial
