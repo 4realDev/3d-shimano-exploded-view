@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 import { resetScene, showClickedRoom } from '../../../store/useCameraStore';
-import { roomInfoList, roomModelList } from '../../../data/roomData';
+import { roomInfoList } from '../../../data/roomData';
 import Chevron from '../../icons/Chevron';
 import CheckMark from '../../icons/CheckMark';
 import Buffet from '../../icons/Buffet';
@@ -19,108 +19,126 @@ type AccordionItem = {
 	height: number;
 	children: React.ReactNode;
 	selectedMeshes: string[];
-	executeScroll: (id: number) => void;
-	ref: any;
 };
 
-const AccordionItem = React.forwardRef<HTMLInputElement, AccordionItem>(
-	({ id, title, seats, area, height, children, selectedMeshes, executeScroll }, ref) => {
-		const [isActive, setIsActive] = useState<boolean>(false);
-		// const myRef = useRef<null | HTMLDivElement>(null);
+const AccordionItem = ({ id, title, seats, area, height, children, selectedMeshes }: AccordionItem) => {
+	const content = useRef<null | HTMLDivElement>(null);
+	// All content should be initially hidden / accordion items should be closed -> maxHeight: 0px
+	const [contentHeight, setHeight] = useState(0);
+	const [isActive, setIsActive] = useState<boolean>(false);
 
-		const handleOnClick = (id: number) => {
-			// setIsActive(!isActive);
-			// executeScroll(ref);
-			selectedMeshes.includes(`room_${id}`) && selectedMeshes.length !== roomModelList.length
-				? resetScene()
-				: showClickedRoom(`room_${id}`);
-		};
+	// On first render scroll to top
+	useEffect(() => {
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth',
+		});
+	}, []);
 
-		// TODO: Find out why this is triggered as well on "handleOnClick"
-		useEffect(() => {
-			selectedMeshes.includes(`room_${id}`) ? setIsActive(true) : setIsActive(false);
-			// executeScroll(ref);
-		}, [selectedMeshes]);
+	// Triggered by handleOnClick from UI interaction as well as by interacting with 3D Modell
+	useEffect(() => {
+		// use effect is triggered in every accordion item
+		// check which one is the clicked item
+		// activate it, open and scroll to it (otherwise deactivate and close it)
+		if (selectedMeshes.includes(`room_${id}`)) {
+			setIsActive(true);
+			content.current && setHeight(content.current.scrollHeight);
 
-		const roomInfoIndex = id - 1;
+			// TODO: Put delay in scss const
+			// Delay scrolling to the clicked accordion item by the translation delay of the opening and closing of the item to get the correct scrollHeight
+			setTimeout(() => {
+				window.scrollTo({
+					top: content.current ? content.current.offsetTop - content.current.scrollHeight : 0,
+					behavior: 'smooth',
+				});
+			}, 500);
+		} else {
+			setIsActive(false);
+			setHeight(0);
+		}
+	}, [selectedMeshes]);
 
-		const getFittingIcon = (fitting: string) => {
-			switch (fitting) {
-				case 'hasBuffet':
-					return <Buffet />;
-				case 'hasService':
-					return <Service />;
-				case 'hasDrinks':
-					return <Drinks />;
-				case 'hasInvalid':
-					return <Invalid />;
-				case 'hasSeats':
-					return <Seats />;
-				default:
-					return null;
-			}
-		};
+	const handleOnClick = (id: number) => {
+		// both methods manipulate selectedMeshes and will be catched in useEffect([selectedMeshes]) above
+		if (!isActive) {
+			showClickedRoom(`room_${id}`);
+		} else {
+			resetScene();
+		}
+	};
 
-		const renderDetails = () => {
-			return (
-				<div className={styles.accordion__details}>
-					<div className={styles.accordion__detailsItem}>
-						<CheckMark className={styles.accordion__checkMark} width={16} fill='#ffffff' />
-						<span>{seats} Sitzplätze</span>
-					</div>
-					<div className={styles.accordion__detailsItem}>
-						<CheckMark className={styles.accordion__checkMark} width={16} fill='#ffffff' />
-						<span>{area} m²</span>
-					</div>
-					<div className={styles.accordion__detailsItem}>
-						<CheckMark className={styles.accordion__checkMark} width={16} fill='#ffffff' />
-						<span>{height} m Raumhöhe</span>
-					</div>
-				</div>
-			);
-		};
+	const getFittingIcon = (fitting: string) => {
+		switch (fitting) {
+			case 'hasBuffet':
+				return <Buffet />;
+			case 'hasService':
+				return <Service />;
+			case 'hasDrinks':
+				return <Drinks />;
+			case 'hasInvalid':
+				return <Invalid />;
+			case 'hasSeats':
+				return <Seats />;
+			default:
+				return null;
+		}
+	};
 
-		const renderDetailsIcons = () => {
-			return (
-				<div className={styles.accordion__detailsIcons}>
-					{Object.entries(roomInfoList[roomInfoIndex].fittings).map((fittingEntry: [string, unknown]) => {
-						return (
-							fittingEntry[1] && <div className={styles.accordion__detailsIcon}>{getFittingIcon(fittingEntry[0])}</div>
-						);
-					})}
-				</div>
-			);
-		};
-
+	const renderDetails = () => {
 		return (
-			<div ref={ref}>
-				<button className={cn(styles.accordion, { [styles.active]: isActive })}>
-					{/* whenever we click on the link, it will navigate to what it matches as id */}
-					<div className={styles.accordion__header} onClick={() => handleOnClick(id)}>
-						<div className={styles.accordion__infoColumn}>
-							<h1 className={styles.accordion__title}>{title}</h1>
-							{renderDetails()}
-							{renderDetailsIcons()}
-						</div>
-						<img className={styles.accordion__image} src={'./images/roomSample.png'} alt={title} />
-						<Chevron className={cn(styles.accordion__icon, { [styles.rotate]: isActive })} width={24} fill='#ffffff' />
-					</div>
-
-					<div
-						className={cn(styles.accordion__content, {
-							[styles['accordion__content--open']]: isActive,
-						})}
-					>
-						<p>
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, molestiae impedit facilis error at
-							eveniet sunt eos, id ipsam, earum hic.
-						</p>
-						{children}
-					</div>
-				</button>
+			<div className={styles.accordion__details}>
+				<div className={styles.accordion__detailsItem}>
+					<CheckMark className={styles.accordion__checkMark} width={16} fill='#ffffff' />
+					<span>{seats} Sitzplätze</span>
+				</div>
+				<div className={styles.accordion__detailsItem}>
+					<CheckMark className={styles.accordion__checkMark} width={16} fill='#ffffff' />
+					<span>{area} m²</span>
+				</div>
+				<div className={styles.accordion__detailsItem}>
+					<CheckMark className={styles.accordion__checkMark} width={16} fill='#ffffff' />
+					<span>{height} m Raumhöhe</span>
+				</div>
 			</div>
 		);
-	}
-);
+	};
+
+	const renderDetailsIcons = () => {
+		return (
+			<div className={styles.accordion__detailsIcons}>
+				{Object.entries(roomInfoList[id - 1].fittings).map((fittingEntry: [string, unknown]) => {
+					return (
+						fittingEntry[1] && <div className={styles.accordion__detailsIcon}>{getFittingIcon(fittingEntry[0])}</div>
+					);
+				})}
+			</div>
+		);
+	};
+
+	return (
+		<div>
+			<button className={cn(styles.accordion, { [styles.active]: isActive })}>
+				{/* whenever we click on the link, it will navigate to what it matches as id */}
+				<div className={styles.accordion__header} onClick={() => handleOnClick(id)}>
+					<div className={styles.accordion__infoColumn}>
+						<h1 className={styles.accordion__title}>{title}</h1>
+						{renderDetails()}
+						{renderDetailsIcons()}
+					</div>
+					<img className={styles.accordion__image} src={'./images/roomSample.png'} alt={title} />
+					<Chevron className={cn(styles.accordion__icon, { [styles.rotate]: isActive })} width={24} fill='#ffffff' />
+				</div>
+
+				<div ref={content} className={cn(styles.accordion__content)} style={{ maxHeight: `${contentHeight}px` }}>
+					<p>
+						Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, molestiae impedit facilis error at
+						eveniet sunt eos, id ipsam, earum hic.
+					</p>
+					{children}
+				</div>
+			</button>
+		</div>
+	);
+};
 
 export default AccordionItem;

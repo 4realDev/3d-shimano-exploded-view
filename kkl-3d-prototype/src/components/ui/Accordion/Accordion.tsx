@@ -20,41 +20,10 @@ import Podium from '../../icons/Podium';
 
 type Accordion = {
 	roomList: RoomItemsList[];
-	refs: any;
 };
 
-const Accordion = ({ roomList, refs }: Accordion) => {
+const Accordion = ({ roomList }: Accordion) => {
 	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
-
-	// TODO: Move this logic inside AccordionItem component itself
-	// TODO: Find a way to focus on the item / show that it is active
-	// TODO: Closing AccordionItem should trigger the reset of the model
-	// TODO: Hardcoded Logic enforcing naming convetion of "xyz_1" -> maybe found another way, if possible
-	useEffect(() => {
-		if (selectedMeshes.length === 1) {
-			const roomNumber = parseInt(selectedMeshes[0].split('_')[1]);
-			window.scrollTo({
-				top: refs[roomNumber].current.offsetTop - 100,
-				behavior: 'smooth',
-			});
-		} else {
-			window.scrollTo({
-				top: 0,
-				behavior: 'smooth',
-			});
-		}
-	}, [selectedMeshes]);
-
-	const executeScroll = (id: number) => {
-		if (refs && refs.current) {
-			// myRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-			refs[id].current.scrollIntoView({
-				behavior: 'smooth',
-				block: 'start',
-			});
-		}
-	};
-
 	const onMeshVisibilityButtonClicked = (toggledRoomName: string, toggledMeshName: string, category?: string) => {
 		setMeshChildVisibility(toggledRoomName, toggledMeshName, category);
 	};
@@ -93,8 +62,6 @@ const Accordion = ({ roomList, refs }: Accordion) => {
 					area={room.area}
 					height={room.height}
 					selectedMeshes={selectedMeshes}
-					executeScroll={executeScroll}
-					ref={refs[room.id]}
 				>
 					{room.chairFormations && (
 						<div className={styles.visibilityToggleContainer}>

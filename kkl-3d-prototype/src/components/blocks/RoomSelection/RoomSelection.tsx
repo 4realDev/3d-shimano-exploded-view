@@ -1,19 +1,13 @@
-import { createRef } from 'react';
-import { roomInfoList, roomList } from '../../../data/roomData';
+import { roomList } from '../../../data/roomData';
 import { resetScene, showAndSelectAllRooms } from '../../../store/useCameraStore';
 import Accordion from '../../ui/Accordion/Accordion';
 import styles from './RoomSelection.module.scss';
 
 const RoomSelection = () => {
-	const refs = roomInfoList.reduce((acc: any, value) => {
-		acc[value.id] = createRef();
-		return acc;
-	}, {});
-
 	return (
 		<div className={styles.container}>
 			<div className={styles.card}>
-				<Accordion roomList={roomList} refs={refs} />
+				<Accordion roomList={roomList} />
 				<button
 					className={styles.card__button}
 					onClick={() => {
