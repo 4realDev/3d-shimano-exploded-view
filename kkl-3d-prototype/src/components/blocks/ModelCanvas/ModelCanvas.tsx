@@ -52,7 +52,8 @@ const ModelCanvas = () => {
 				/>
 
 				{/* create Loader UI as fallback before useLoader promise is returned */}
-				<Suspense fallback={<SimpleModel />}>
+				{/* TODO: Loading <SimpleModel/> leads some time to ThreeJS lost Context error! */}
+				<Suspense fallback={null}>
 					<Model hoveredMesh={hoveredMesh} setHoveredMesh={setHoveredMesh} />
 
 					{CANVAS_DEBUG && (
