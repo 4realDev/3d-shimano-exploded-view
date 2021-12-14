@@ -14,6 +14,7 @@ export type RoomItemsList = {
 		seats: number;
 		area: number;
 		height: number;
+		img: string;
 		chairFormations?: string[];
 		equipment?: string[];
 		fittings?: {
@@ -38,6 +39,7 @@ export type RoomInfosList = {
 	seats: number;
 	area: number;
 	height: number;
+	img: string;
 	chairFormations?: string[];
 	equipment?: string[];
 	fittings: {
@@ -74,10 +76,11 @@ export const roomList = [
 		},
 		info: {
 			id: 1,
-			title: 'LUZERNER SAAL',
-			seats: 1989,
-			area: 760,
+			title: 'Konzertsaal',
+			seats: 1898,
+			area: 2100,
 			height: 12,
+			img: './images/Konzertsaal.jpg',
 			chairFormations: [CHAIR_FORMATION.square, CHAIR_FORMATION.circle],
 			equipment: [EQUIPMENT.stage, EQUIPMENT.podium],
 			fittings: {
@@ -95,10 +98,11 @@ export const roomList = [
 		},
 		info: {
 			id: 2,
-			title: 'KONZERTSAAL',
-			seats: 1989,
+			title: 'Luzerner Saal',
+			seats: 1044,
 			area: 760,
 			height: 12,
+			img: './images/LuzernerSaal.jpg',
 			chairFormations: [CHAIR_FORMATION.shuffle, CHAIR_FORMATION.square, CHAIR_FORMATION.circle],
 			fittings: {
 				hasBuffet: true,
@@ -114,10 +118,12 @@ export const roomList = [
 		},
 		info: {
 			id: 3,
-			title: 'AUDITORIUM',
-			seats: 1989,
-			area: 760,
+			title: 'Auditorium',
+			seats: 271,
+			area: 200,
 			height: 12,
+			img: './images/Auditorium.jpg',
+			chairFormations: [CHAIR_FORMATION.shuffle, CHAIR_FORMATION.circle],
 			fittings: {
 				hasBuffet: true,
 				hasService: true,
@@ -136,9 +142,10 @@ export const roomList = [
 		info: {
 			id: 4,
 			title: 'BREAKOUT ROOM 1',
-			seats: 1989,
-			area: 760,
+			seats: 15,
+			area: 32,
 			height: 12,
+			img: './images/Clubraeume.jpg',
 			chairFormations: [CHAIR_FORMATION.shuffle, CHAIR_FORMATION.square],
 			fittings: {
 				hasDrinks: true,
@@ -155,9 +162,11 @@ export const roomList = [
 		info: {
 			id: 5,
 			title: 'BREAKOUT ROOM 2',
-			seats: 1989,
-			area: 760,
+			seats: 30,
+			area: 48,
 			height: 12,
+			img: './images/Clubraeume.jpg',
+			chairFormations: [CHAIR_FORMATION.shuffle, CHAIR_FORMATION.square, CHAIR_FORMATION.circle],
 			fittings: {
 				hasBuffet: true,
 				hasService: true,
@@ -170,15 +179,17 @@ export const roomList = [
 	{
 		model: {
 			meshName: 'room_6',
-			camPos: new THREE.Vector3(10, -4.5 + camHeightOffset, -4),
+			camPos: new THREE.Vector3(4, -4.5 + camHeightOffset, -4),
 			camTarget: new THREE.Vector3(3.9, -0.5, -4),
 		},
 		info: {
 			id: 6,
 			title: 'BREAKOUT ROOM 3',
-			seats: 1989,
-			area: 760,
+			seats: 50,
+			area: 65,
 			height: 12,
+			img: './images/Clubraeume.jpg',
+			chairFormations: [CHAIR_FORMATION.square],
 			fittings: {
 				hasBuffet: true,
 				hasDrinks: true,
