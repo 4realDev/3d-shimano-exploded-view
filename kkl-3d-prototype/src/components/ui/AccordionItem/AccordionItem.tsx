@@ -17,11 +17,12 @@ type AccordionItem = {
 	seats: number;
 	area: number;
 	height: number;
+	img: string;
 	children: React.ReactNode;
 	selectedMeshes: string[];
 };
 
-const AccordionItem = ({ id, title, seats, area, height, children, selectedMeshes }: AccordionItem) => {
+const AccordionItem = ({ id, title, seats, area, height, img, children, selectedMeshes }: AccordionItem) => {
 	const content = useRef<null | HTMLDivElement>(null);
 	// All content should be initially hidden / accordion items should be closed -> maxHeight: 0px
 	const [contentHeight, setHeight] = useState(0);
@@ -125,7 +126,7 @@ const AccordionItem = ({ id, title, seats, area, height, children, selectedMeshe
 						{renderDetails()}
 						{renderDetailsIcons()}
 					</div>
-					<img className={styles.accordion__image} src={'./images/roomSample.png'} alt={title} />
+					<img className={styles.accordion__image} src={img} alt={title} />
 					<Chevron className={cn(styles.accordion__icon, { [styles.rotate]: isActive })} width={24} fill='#ffffff' />
 				</div>
 

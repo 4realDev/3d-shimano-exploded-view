@@ -61,6 +61,7 @@ const Accordion = ({ roomList }: Accordion) => {
 					seats={room.seats}
 					area={room.area}
 					height={room.height}
+					img={room.img}
 					selectedMeshes={selectedMeshes}
 				>
 					{room.chairFormations && (

@@ -5,8 +5,8 @@ const Podium = ({ ...props }) => {
 		<svg
 			version='1.0'
 			xmlns='http://www.w3.org/2000/svg'
-			width='35'
-			height='35'
+			width='32'
+			height='32'
 			viewBox='0 0 97 97'
 			preserveAspectRatio='xMidYMid meet'
 			{...props}
