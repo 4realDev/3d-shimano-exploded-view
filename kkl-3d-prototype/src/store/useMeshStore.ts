@@ -43,14 +43,10 @@ export const setMeshChildVisibility = (toggledRoomName: string, toggledMeshName:
 	// Overwrite properties in each child of children array in item copy
 	if (itemIndex !== -1 && item.children) {
 		item.children.forEach((child, i, array) => {
-			console.log(child.name.replace(/[0-9]/g, ''));
 			// Toggle visibility of selected child / chair formation
 			// Make all other children / formations in children array of the item invisible
 			// child.name.replace(/[0-9]/g, '') to remove BLENDERS suffix for duplicated objects
 			// -> "chair_formation_circle001" to "chair_formation_circle"
-			console.log(category);
-			console.log(child.name.substr(0, child.name.lastIndexOf('_')));
-			console.log(child.name.substr(0, child.name.lastIndexOf('_')) === category);
 			array[i] = {
 				...child,
 				// if child is toggledMesh -> toggle visiblity of child
