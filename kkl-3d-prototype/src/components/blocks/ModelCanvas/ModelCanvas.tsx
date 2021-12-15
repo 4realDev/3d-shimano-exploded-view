@@ -2,13 +2,12 @@ import { OrbitControlsProps, Stats } from '@react-three/drei';
 import { Canvas, PerspectiveCameraProps } from '@react-three/fiber';
 import React from 'react';
 // npm install @react-three/fiber
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { Suspense, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { CANVAS_DEBUG } from '../../../App';
 import { roomModelList } from '../../../data/roomData';
-import { setIdleState, showAllRoomsFromAbove, showClickedRoom, useCameraStore } from '../../../store/useCameraStore';
+import { setIdleState, useCameraStore } from '../../../store/useCameraStore';
 import CameraControls from '../../threeJs/CameraControls';
-import SimpleModel from '../../threeJs/SimpleModel';
 import RoomPositionMarkers from '../../threeJs/RoomPositionMarkers';
 import styles from './ModelCanvas.module.scss';
 

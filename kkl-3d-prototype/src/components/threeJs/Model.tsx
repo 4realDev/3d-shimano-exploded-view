@@ -6,7 +6,7 @@ import { GLTF } from 'three-stdlib';
 import * as THREE from 'three';
 import { GroupProps } from '@react-three/fiber';
 import { setMeshList, useMeshStore } from '../../store/useMeshStore';
-import { showAllRoomsFromAbove, showClickedRoom, useCameraStore } from '../../store/useCameraStore';
+import { showAllRoomsFromAbove, showSelectedRoom, useCameraStore } from '../../store/useCameraStore';
 import { CANVAS_DEBUG } from '../../App';
 
 // TODO: Performance issues due to lineSegment Material -> Could be fixed in 3D production
@@ -192,7 +192,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 						event.stopPropagation();
 						event.object.userData.customName === 'roof'
 							? showAllRoomsFromAbove()
-							: showClickedRoom(event.object.userData.customName);
+							: showSelectedRoom(event.object.userData.customName);
 					}
 				}}
 				// Pointer click outside of mesh

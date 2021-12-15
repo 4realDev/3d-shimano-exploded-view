@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
-import { resetScene, showClickedRoom } from '../../../store/useCameraStore';
+import { resetScene, showSelectedRoom } from '../../../store/useCameraStore';
 import { roomInfoList } from '../../../data/roomData';
 import Chevron from '../../icons/Chevron';
 import CheckMark from '../../icons/CheckMark';
@@ -62,7 +62,7 @@ const AccordionItem = ({ id, title, seats, area, height, img, children, selected
 	const handleOnClick = (id: number) => {
 		// both methods manipulate selectedMeshes and will be catched in useEffect([selectedMeshes]) above
 		if (!isActive) {
-			showClickedRoom(`room_${id}`);
+			showSelectedRoom(`room_${id}`);
 		} else {
 			resetScene();
 		}

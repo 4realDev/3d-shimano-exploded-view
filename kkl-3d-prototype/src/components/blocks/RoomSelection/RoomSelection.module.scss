@@ -39,6 +39,32 @@
 			width: 100%;
 		}
 
+		.card__inputWrapper {
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: flex-start;
+			width: 100%;
+			margin-top: 16px;
+		}
+
+		.card__inputText {
+			font-weight: 700;
+			min-width: 30%;
+			height: 100%;
+			justify-content: center;
+			align-items: center;
+		}
+
+		input[type='text'] {
+			border: 2px solid #ffef00;
+			width: 100%;
+			cursor: pointer;
+			transition: all 0.15s ease-out;
+			padding: 13px 15px;
+			border-radius: 10px;
+		}
+
 		.card__button:hover {
 			background-color: #fff88b;
 		}
