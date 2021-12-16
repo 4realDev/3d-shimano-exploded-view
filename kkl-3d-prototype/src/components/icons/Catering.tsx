@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Service = ({ ...props }) => {
+const Catering = ({ ...props }) => {
 	return (
 		<svg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg' {...props}>
 			<path
@@ -11,4 +11,4 @@ const Service = ({ ...props }) => {
 	);
 };
 
-export default Service;
+export default Catering;

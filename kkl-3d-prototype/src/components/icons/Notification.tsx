@@ -1,0 +1,12 @@
+const Notification = ({ ...props }) => {
+	return (
+		<svg width='32' height='32' viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg' {...props}>
+			<path
+				d='M22 34H26V22H22V34ZM24 4C12.95 4 4 12.95 4 24C4 35.05 12.95 44 24 44C35.05 44 44 35.05 44 24C44 12.95 35.05 4 24 4ZM24 40C15.18 40 8 32.82 8 24C8 15.18 15.18 8 24 8C32.82 8 40 15.18 40 24C40 32.82 32.82 40 24 40ZM22 18H26V14H22V18Z'
+				fill='#575B64'
+			/>
+		</svg>
+	);
+};
+
+export default Notification;
