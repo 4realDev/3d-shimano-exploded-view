@@ -6,8 +6,9 @@ import { GLTF } from 'three-stdlib';
 import * as THREE from 'three';
 import { GroupProps } from '@react-three/fiber';
 import { setMeshList, useMeshStore } from '../../store/useMeshStore';
-import { showAllRoomsFromAbove, showSelectedRoom, useCameraStore } from '../../store/useCameraStore';
+import { showSelectedRoom, showSelectedRooms, useCameraStore } from '../../store/useCameraStore';
 import { CANVAS_DEBUG } from '../../App';
+import { roomModelList } from '../../data/roomData';
 
 // TODO: Performance issues due to lineSegment Material -> Could be fixed in 3D production
 
@@ -191,7 +192,10 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 					if (event.object.visible && event.object.userData.customName) {
 						event.stopPropagation();
 						event.object.userData.customName === 'roof'
-							? showAllRoomsFromAbove()
+							? showSelectedRooms(
+									roomModelList.map((room) => room.meshName),
+									false
+							  )
 							: showSelectedRoom(event.object.userData.customName);
 					}
 				}}

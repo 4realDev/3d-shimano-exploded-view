@@ -5,7 +5,7 @@ import { resetMeshVisibility, setMeshVisibility } from './useMeshStore';
 
 export const defaultCameraPosition = new THREE.Vector3(20, 15, 0);
 export const defaultCameraTargetPosition = new THREE.Vector3(0, 0, 0);
-export const aboveCameraPosition = new THREE.Vector3(0, 25, 2);
+export const overviewCameraPosition = new THREE.Vector3(0, 25, 2);
 export const camHeightOffset = 15;
 
 interface CameraStore {
@@ -16,6 +16,7 @@ interface CameraStore {
 	hoveredMesh: string | null;
 	clickedMesh: string | null;
 	selectedMeshes: string[];
+	filteredMeshes: string[];
 }
 
 export const useCameraStore = create<CameraStore>((set) => ({
@@ -26,26 +27,25 @@ export const useCameraStore = create<CameraStore>((set) => ({
 	hoveredMesh: null,
 	clickedMesh: null,
 	selectedMeshes: [],
+	filteredMeshes: [],
 }));
 
 export const setSelectedMeshes = (selectedMeshes: string[]) =>
 	useCameraStore.setState((state) => ({ selectedMeshes: selectedMeshes }));
 
-export const setCameraPosition = (cameraPosition: THREE.Vector3) => {
+export const setFilteredMeshes = (filteredMeshes: string[]) =>
+	useCameraStore.setState((state) => ({ filteredMeshes: filteredMeshes }));
+
+export const setCameraPosition = (cameraPosition: THREE.Vector3) =>
 	useCameraStore.setState((state) => ({ cameraPosition: cameraPosition }));
-};
 
-export const setCameraTarget = (cameraTarget: THREE.Vector3) => {
+export const setCameraTarget = (cameraTarget: THREE.Vector3) =>
 	useCameraStore.setState((state) => ({ cameraTarget: cameraTarget }));
-};
 
-export const setHasAnimation = (hasAnimation: boolean) => {
+export const setHasAnimation = (hasAnimation: boolean) =>
 	useCameraStore.setState((state) => ({ hasAnimation: hasAnimation }));
-};
 
-export const setIdleState = (idleState: boolean) => {
-	useCameraStore.setState((state) => ({ idleState: idleState }));
-};
+export const setIdleState = (idleState: boolean) => useCameraStore.setState((state) => ({ idleState: idleState }));
 
 export const showSelectedRoom = (selectedMesh: string) => {
 	setIdleState(false);
@@ -61,30 +61,18 @@ export const showSelectedRoom = (selectedMesh: string) => {
 	}
 };
 
-export const showSelectedRooms = (selectedMeshes: string[]) => {
+export const showSelectedRooms = (
+	selectedMeshes: string[],
+	selectMesh = true,
+	camPos = overviewCameraPosition,
+	camTarget = defaultCameraTargetPosition
+) => {
 	setIdleState(false);
 	setHasAnimation(true);
 	setMeshVisibility('roof', false);
-	setSelectedMeshes(selectedMeshes);
-	setCameraPosition(aboveCameraPosition);
-	setCameraTarget(defaultCameraTargetPosition);
-};
-
-export const showAllRoomsFromAbove = () => {
-	setIdleState(false);
-	setHasAnimation(true);
-	setMeshVisibility('roof', false);
-	setCameraPosition(aboveCameraPosition);
-	setCameraTarget(defaultCameraTargetPosition);
-};
-
-export const showAndSelectAllRooms = () => {
-	setIdleState(false);
-	setHasAnimation(true);
-	setMeshVisibility('roof', false);
-	setSelectedMeshes(roomModelList.map((room) => room.meshName));
-	setCameraPosition(aboveCameraPosition);
-	setCameraTarget(defaultCameraTargetPosition);
+	selectMesh && setSelectedMeshes(selectedMeshes);
+	setCameraPosition(camPos);
+	setCameraTarget(camTarget);
 };
 
 export const resetScene = () => {

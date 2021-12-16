@@ -1,12 +1,6 @@
 import { useState } from 'react';
-import { roomList } from '../../../data/roomData';
-import {
-	resetScene,
-	setSelectedMeshes,
-	showAndSelectAllRooms,
-	showSelectedRoom,
-	showSelectedRooms,
-} from '../../../store/useCameraStore';
+import { roomList, roomModelList } from '../../../data/roomData';
+import { resetScene, setFilteredMeshes, showSelectedRoom, showSelectedRooms } from '../../../store/useCameraStore';
 import Accordion from '../../ui/Accordion/Accordion';
 import styles from './RoomSelection.module.scss';
 
@@ -18,13 +12,14 @@ const RoomSelection = () => {
 	};
 
 	const filterRoomSelection = () => {
-		const filteredRoomList = roomList.filter((room) => room.info.seats >= parseInt(personNumber));
+		const filteredRoomList = roomList.filter((room) => room.info.personCapacity >= parseInt(personNumber));
 		const filteredRoomListMeshNames = filteredRoomList.map((room) => room.model.meshName);
 		if (filteredRoomListMeshNames.length === 1) {
 			showSelectedRoom(filteredRoomListMeshNames[0]);
 		} else {
 			showSelectedRooms(filteredRoomListMeshNames);
 		}
+		setFilteredMeshes(filteredRoomListMeshNames);
 	};
 
 	return (
@@ -42,7 +37,7 @@ const RoomSelection = () => {
 				<button
 					className={styles.card__button}
 					onClick={() => {
-						showAndSelectAllRooms();
+						showSelectedRooms(roomModelList.map((room) => room.meshName));
 					}}
 				>
 					SHOW ALL ROOMS

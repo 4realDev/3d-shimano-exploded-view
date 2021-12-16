@@ -1,4 +1,8 @@
 .chairFormationToggle {
 	height: 100px;
 	width: 100px;
+
+	&--active {
+		border: 5px #ffef00 solid;
+	}
 }

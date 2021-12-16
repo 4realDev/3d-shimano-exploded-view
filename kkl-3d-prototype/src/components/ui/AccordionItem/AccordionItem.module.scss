@@ -2,8 +2,6 @@
 
 /* Style the accordion / buttons that are used to open and close the accordion panel */
 .accordion {
-	$self: &;
-
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -22,12 +20,20 @@
 
 	/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 	&:hover,
-	.active {
+	&--active {
 		background-color: #1b202c;
 	}
 
+	&--disabled {
+		// background-color: grey;
+		cursor: auto;
+		// opacity: 0.75;
+		filter: grayscale(1);
+		pointer-events: none;
+	}
+
 	/* Style to rotate icon when state is active */
-	.rotate {
+	&--rotate {
 		transform: rotate(90deg);
 	}
 
@@ -38,7 +44,7 @@
 		align-items: center;
 		width: 100%;
 
-		#{ $self }__infoColumn {
+		.accordion__infoColumn {
 			display: flex;
 			flex-wrap: wrap;
 			flex-direction: row;
@@ -47,7 +53,7 @@
 			margin-right: 20px;
 
 			/* Style the accordion content title */
-			#{ $self }__title {
+			.accordion__title {
 				/* flex: 0 0 100%; /* flex-grow, flex-shrink, flex-basis */
 				width: 100%;
 				text-align: start;
@@ -57,7 +63,7 @@
 				line-height: 22px;
 			}
 
-			#{ $self }__details {
+			.accordion__details {
 				display: flex;
 				flex-direction: column;
 				width: 60%;
@@ -68,7 +74,7 @@
 				font-size: 14px;
 				line-height: 18px;
 
-				#{ $self }__detailsItem {
+				.accordion__detailsItem {
 					/* flex: 1; */
 					text-align: start;
 					padding-bottom: 12px;
@@ -76,13 +82,13 @@
 					font-size: 14px;
 					line-height: 18px;
 
-					#{ $self }__checkMark {
+					.accordion__checkMark {
 						margin-right: 8px;
 					}
 				}
 			}
 
-			#{ $self }__detailsIcons {
+			.accordion__detailsIcons {
 				display: inline-flex;
 				flex-direction: row;
 				flex-wrap: wrap;
@@ -90,7 +96,7 @@
 				text-align: start;
 				padding-bottom: 12px;
 
-				#{ $self }__detailsIcon {
+				.accordion__detailsIcon {
 					display: flex;
 					justify-content: center;
 					align-items: center;
@@ -104,7 +110,7 @@
 			}
 		}
 
-		#{ $self }__image {
+		.accordion__image {
 			width: 160px;
 			height: 120px;
 			margin-right: 20px;
@@ -112,7 +118,7 @@
 		}
 
 		/* Style the accordion chevron icon */
-		#{ $self }__icon {
+		.accordion__icon {
 			transition: transform 0.6s ease;
 		}
 	}
@@ -143,12 +149,20 @@
 			color: rgba(255, 255, 255, 0.6);
 			padding: 2rem;
 		}
+	}
 
-		&--open {
-			width: 100%;
-			overflow: none;
-			max-height: 40rem;
-			transition: max-height 1000ms;
+	.accordion__disabledText {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		text-align: left;
+		font-size: 14px;
+		color: white;
+		width: 100%;
+		margin-top: 8px;
+		p {
+			margin-left: 8px;
 		}
 	}
 }

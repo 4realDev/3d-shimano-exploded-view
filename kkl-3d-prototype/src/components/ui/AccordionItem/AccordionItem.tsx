@@ -1,20 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
-import { resetScene, showSelectedRoom } from '../../../store/useCameraStore';
-import { roomInfoList } from '../../../data/roomData';
+import { resetScene, showSelectedRoom, useCameraStore } from '../../../store/useCameraStore';
+import { roomInfoList, roomModelList } from '../../../data/roomData';
 import Chevron from '../../icons/Chevron';
 import CheckMark from '../../icons/CheckMark';
-import Buffet from '../../icons/Buffet';
-import Service from '../../icons/Service';
-import Drinks from '../../icons/Drinks';
-import Invalid from '../../icons/Invalid';
+import Catering from '../../icons/Catering';
+import Apero from '../../icons/Apero';
 import Seats from '../../icons/Seats';
 import styles from './AccordionItem.module.scss';
+import Accessibility from '../../icons/Accessibility';
+import Notification from '../../icons/Notification';
+import NoSeats from '../../icons/NoSeats';
 
 type AccordionItem = {
 	id: number;
 	title: string;
-	seats: number;
+	personCapacity: number;
 	area: number;
 	height: number;
 	img: string;
@@ -22,11 +23,13 @@ type AccordionItem = {
 	selectedMeshes: string[];
 };
 
-const AccordionItem = ({ id, title, seats, area, height, img, children, selectedMeshes }: AccordionItem) => {
+const AccordionItem = ({ id, title, personCapacity, area, height, img, children, selectedMeshes }: AccordionItem) => {
 	const content = useRef<null | HTMLDivElement>(null);
 	// All content should be initially hidden / accordion items should be closed -> maxHeight: 0px
 	const [contentHeight, setHeight] = useState(0);
 	const [isActive, setIsActive] = useState<boolean>(false);
+	const filteredMeshes = useCameraStore((state) => state.filteredMeshes);
+	const isDisabled = filteredMeshes.length !== 0 && !filteredMeshes.includes(roomModelList[id - 1].meshName);
 
 	// On first render scroll to top
 	useEffect(() => {
@@ -70,16 +73,16 @@ const AccordionItem = ({ id, title, seats, area, height, img, children, selected
 
 	const getFittingIcon = (fitting: string) => {
 		switch (fitting) {
-			case 'hasBuffet':
-				return <Buffet />;
-			case 'hasService':
-				return <Service />;
-			case 'hasDrinks':
-				return <Drinks />;
-			case 'hasInvalid':
-				return <Invalid />;
+			case 'hasCatering':
+				return <Catering />;
+			case 'hasApero':
+				return <Apero />;
+			case 'hasAccessibleEnv':
+				return <Accessibility />;
 			case 'hasSeats':
 				return <Seats />;
+			case 'hasNoSeats':
+				return <NoSeats />;
 			default:
 				return null;
 		}
@@ -90,7 +93,7 @@ const AccordionItem = ({ id, title, seats, area, height, img, children, selected
 			<div className={styles.accordion__details}>
 				<div className={styles.accordion__detailsItem}>
 					<CheckMark className={styles.accordion__checkMark} width={16} fill='#ffffff' />
-					<span>{seats} Sitzplätze</span>
+					<span>{personCapacity} Sitzplätze</span>
 				</div>
 				<div className={styles.accordion__detailsItem}>
 					<CheckMark className={styles.accordion__checkMark} width={16} fill='#ffffff' />
@@ -118,16 +121,26 @@ const AccordionItem = ({ id, title, seats, area, height, img, children, selected
 
 	return (
 		<div>
-			<button className={cn(styles.accordion, { [styles.active]: isActive })}>
+			<button
+				className={cn(
+					styles.accordion,
+					{ [styles['accordion--active']]: isActive },
+					{ [styles['accordion--disabled']]: isDisabled }
+				)}
+			>
 				{/* whenever we click on the link, it will navigate to what it matches as id */}
-				<div className={styles.accordion__header} onClick={() => handleOnClick(id)}>
+				<div className={styles.accordion__header} onClick={() => !isDisabled && handleOnClick(id)}>
 					<div className={styles.accordion__infoColumn}>
 						<h1 className={styles.accordion__title}>{title}</h1>
 						{renderDetails()}
 						{renderDetailsIcons()}
 					</div>
 					<img className={styles.accordion__image} src={img} alt={title} />
-					<Chevron className={cn(styles.accordion__icon, { [styles.rotate]: isActive })} width={24} fill='#ffffff' />
+					<Chevron
+						className={cn(styles.accordion__icon, { [styles['accordion--rotate']]: isActive })}
+						width={24}
+						fill='#ffffff'
+					/>
 				</div>
 
 				<div ref={content} className={cn(styles.accordion__content)} style={{ maxHeight: `${contentHeight}px` }}>
@@ -137,6 +150,12 @@ const AccordionItem = ({ id, title, seats, area, height, img, children, selected
 					</p>
 					{children}
 				</div>
+				{isDisabled && (
+					<div className={styles.accordion__disabledText}>
+						<Notification />
+						<p>Dieser Raum erfüllt nicht die Filterkriterien.</p>
+					</div>
+				)}
 			</button>
 		</div>
 	);

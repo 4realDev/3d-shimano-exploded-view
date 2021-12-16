@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import {
 	CHAIR_FORMATION,
 	EQUIPMENT,
@@ -58,7 +57,7 @@ const Accordion = ({ roomList }: Accordion) => {
 				<AccordionItem
 					id={room.id}
 					title={room.title}
-					seats={room.seats}
+					personCapacity={room.personCapacity}
 					area={room.area}
 					height={room.height}
 					img={room.img}
