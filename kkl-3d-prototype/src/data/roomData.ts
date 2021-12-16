@@ -11,43 +11,19 @@ export type RoomItemsList = {
 	info: {
 		id: number;
 		title: string;
-		seats: number;
+		personCapacity: number;
 		area: number;
 		height: number;
 		img: string;
 		chairFormations?: string[];
 		equipment?: string[];
 		fittings?: {
-			hasBuffet?: boolean;
-			hasService?: boolean;
-			hasDrinks?: boolean;
-			hasInvalid?: boolean;
+			hasCatering?: boolean;
+			hasApero?: boolean;
+			hasAccessibleEnv?: boolean;
 			hasSeats?: boolean;
+			hasNoSeats?: boolean;
 		};
-	};
-};
-
-export type RoomModelsList = {
-	meshName: string;
-	camPos: THREE.Vector3;
-	camTarget: THREE.Vector3;
-};
-
-export type RoomInfosList = {
-	id: number;
-	title: string;
-	seats: number;
-	area: number;
-	height: number;
-	img: string;
-	chairFormations?: string[];
-	equipment?: string[];
-	fittings: {
-		hasBuffet: boolean;
-		hasService: boolean;
-		hasDrinks: boolean;
-		hasInvalid: boolean;
-		hasSeats: boolean;
 	};
 };
 
@@ -55,16 +31,28 @@ export enum CHAIR_FORMATION {
 	shuffle = 'chair_formation_shuffle',
 	square = 'chair_formation_square',
 	circle = 'chair_formation_circle',
+	concert = 'chair_formation_concert',
+	seminar = 'chair_formation_seminar',
+	bankett = 'chair_formation_bankett',
 }
 
 export enum EQUIPMENT {
 	stage = 'equipment_stage',
 	podium = 'equipment_podium',
+	beamer = 'beamer',
 }
 
 export enum ROOM_ADDITIONS_CATEGORY {
 	chairFormation = 'chair_formation',
 	equipment = 'equipment',
+}
+
+export enum EVENT_TYPES {
+	concert = 'concert',
+	apero = 'apero',
+	congress = 'congress',
+	fair = 'fair',
+	exhibition = 'exhibition',
 }
 
 export const roomList = [
@@ -77,15 +65,14 @@ export const roomList = [
 		info: {
 			id: 1,
 			title: 'Konzertsaal',
-			seats: 1898,
+			personCapacity: 1898,
 			area: 2100,
 			height: 12,
 			img: './images/Konzertsaal.jpg',
-			chairFormations: [CHAIR_FORMATION.square, CHAIR_FORMATION.circle],
 			equipment: [EQUIPMENT.stage, EQUIPMENT.podium],
+			chairFormation: [CHAIR_FORMATION.concert],
 			fittings: {
-				hasService: true,
-				hasInvalid: true,
+				hasAccessibleEnv: true,
 				hasSeats: true,
 			},
 		},
@@ -99,14 +86,18 @@ export const roomList = [
 		info: {
 			id: 2,
 			title: 'Luzerner Saal',
-			seats: 1044,
+			personCapacity: 1044,
 			area: 760,
 			height: 12,
 			img: './images/LuzernerSaal.jpg',
+			equipment: [EQUIPMENT.stage, EQUIPMENT.podium, EQUIPMENT.beamer],
 			chairFormations: [CHAIR_FORMATION.shuffle, CHAIR_FORMATION.square, CHAIR_FORMATION.circle],
 			fittings: {
-				hasBuffet: true,
-				hasInvalid: true,
+				hasCatering: true,
+				hasApero: true,
+				hasAccessibleEnv: true,
+				hasSeats: true,
+				hasExhibition: true,
 			},
 		},
 	},
@@ -118,18 +109,20 @@ export const roomList = [
 		},
 		info: {
 			id: 3,
-			title: 'Auditorium',
-			seats: 271,
-			area: 200,
+			title: 'Clubraum',
+			personCapacity: 30,
+			area: 48,
 			height: 12,
-			img: './images/Auditorium.jpg',
-			chairFormations: [CHAIR_FORMATION.shuffle, CHAIR_FORMATION.circle],
+			img: './images/Clubraeume.jpg',
+			equipment: [EQUIPMENT.podium, EQUIPMENT.beamer],
+			chairFormations: [CHAIR_FORMATION.seminar, CHAIR_FORMATION.bankett],
 			fittings: {
-				hasBuffet: true,
-				hasService: true,
-				hasDrinks: true,
-				hasInvalid: true,
+				hasCatering: true,
+				hasApero: true,
+				hasAccessibleEnv: true,
 				hasSeats: true,
+				hasExhibition: true,
+				hasDayLight: true,
 			},
 		},
 	},
@@ -141,15 +134,17 @@ export const roomList = [
 		},
 		info: {
 			id: 4,
-			title: 'BREAKOUT ROOM 1',
-			seats: 15,
+			title: 'Business- und Medienräume',
+			personCapacity: 15,
 			area: 32,
 			height: 12,
-			img: './images/Clubraeume.jpg',
-			chairFormations: [CHAIR_FORMATION.shuffle, CHAIR_FORMATION.square],
+			img: './images/BusinessMedienraeume.jpg',
+			equipment: [EQUIPMENT.podium, EQUIPMENT.beamer],
+			chairFormations: [CHAIR_FORMATION.seminar, CHAIR_FORMATION.bankett],
 			fittings: {
-				hasDrinks: true,
-				hasInvalid: true,
+				hasAccessibleEnv: true,
+				hasSeats: true,
+				hasDayLight: true,
 			},
 		},
 	},
@@ -161,17 +156,15 @@ export const roomList = [
 		},
 		info: {
 			id: 5,
-			title: 'BREAKOUT ROOM 2',
-			seats: 30,
-			area: 48,
+			title: 'Auditorium',
+			personCapacity: 271,
+			area: 200,
 			height: 12,
-			img: './images/Clubraeume.jpg',
-			chairFormations: [CHAIR_FORMATION.shuffle, CHAIR_FORMATION.square, CHAIR_FORMATION.circle],
+			img: './images/Auditorium.jpg',
+			equipment: [EQUIPMENT.podium],
+			chairFormation: [CHAIR_FORMATION.concert],
 			fittings: {
-				hasBuffet: true,
-				hasService: true,
-				hasDrinks: false,
-				hasInvalid: true,
+				hasAccessibleEnv: true,
 				hasSeats: true,
 			},
 		},
@@ -184,16 +177,16 @@ export const roomList = [
 		},
 		info: {
 			id: 6,
-			title: 'BREAKOUT ROOM 3',
-			seats: 50,
+			title: 'Eingangsfoyer',
+			personCapacity: 50,
 			area: 65,
 			height: 12,
-			img: './images/Clubraeume.jpg',
-			chairFormations: [CHAIR_FORMATION.square],
+			img: './images/EingangsFoyer.jpg',
+			equipment: [EQUIPMENT.podium, EQUIPMENT.beamer],
 			fittings: {
-				hasBuffet: true,
-				hasDrinks: true,
-				hasSeats: true,
+				hasAccessibleEnv: true,
+				hasNoSeats: true,
+				hasDayLight: true,
 			},
 		},
 	},
