@@ -7,6 +7,7 @@ import * as THREE from 'three';
 import { CANVAS_DEBUG } from '../../../App';
 import { roomModelList } from '../../../data/roomData';
 import { setIdleState, useCameraStore } from '../../../store/useCameraStore';
+import { setHoveredMesh, setIdleState, useCameraStore } from '../../../store/useCameraStore';
 import CameraControls from '../../threeJs/CameraControls';
 import RoomPositionMarkers from '../../threeJs/RoomPositionMarkers';
 import styles from './ModelCanvas.module.scss';
@@ -21,7 +22,8 @@ const Model = React.lazy(() =>
 const ModelCanvas = () => {
 	const hasAnimation = useCameraStore((state) => state.hasAnimation);
 
-	const [hoveredMesh, setHoveredMesh] = useState<null | string>(null);
+	// const [hoveredMesh, setHoveredMesh] = useState<null | string>(null);
+	const hoveredMesh = useCameraStore((state) => state.hoveredMesh);
 	const [mouseDown, setMouseDown] = useState(false);
 
 	const controlsRef = useRef<OrbitControlsProps>();
@@ -29,6 +31,7 @@ const ModelCanvas = () => {
 
 	return (
 		<div
+			id='canvas'
 			className={styles.canvas}
 			onMouseDown={() => {
 				setIdleState(false);
