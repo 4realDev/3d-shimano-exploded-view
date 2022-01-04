@@ -1,10 +1,12 @@
 import styles from './MeshVisibilityButton.module.scss';
+import cn from 'classnames';
 
 type MeshVisiblityButtonProps = {
 	toggledRoomName: string;
 	toggledMeshName: string;
 	toggleIcon: React.ReactNode;
 	category: string;
+	isActive: boolean;
 	onClick: (toggledRoomName: string, toggledMeshName: string, category: string) => void;
 };
 
@@ -13,11 +15,12 @@ const MeshVisibilityButton = ({
 	toggledMeshName,
 	toggleIcon,
 	category,
+	isActive,
 	onClick,
 }: MeshVisiblityButtonProps) => {
 	return (
 		<button
-			className={styles.chairFormationToggle}
+			className={cn(styles.roomAdditionsToggle, { [styles['roomAdditionsToggle--active']]: isActive })}
 			onClick={() => {
 				onClick(toggledRoomName, toggledMeshName, category);
 			}}
