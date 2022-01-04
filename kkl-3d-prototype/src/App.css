@@ -12,3 +12,35 @@
 	width: 100%;
 	/* height: 100vh; */
 }
+
+/* Overriding specific properties in MUI components, which are difficult to override inside theme.tsx */
+
+.MuiOutlinedInput-notchedOutline {
+	border-color: white !important;
+}
+
+/* left arrow inside open MuiCalendarPicker */
+.css-ezjjhh-MuiButtonBase-root-MuiIconButton-root {
+	color: black !important;
+}
+
+.css-ezjjhh-MuiButtonBase-root-MuiIconButton-root.Mui-disabled {
+	color: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* right arrow inside open MuiCalendarPicker */
+.css-72as13-MuiButtonBase-root-MuiIconButton-root {
+	color: black !important;
+}
+
+.css-72as13-MuiButtonBase-root-MuiIconButton-root.Mui-disabled {
+	color: rgba(0, 0, 0, 0.25) !important;
+}
+
+.MuiStepIcon-root.Mui-active > text {
+	fill: black !important;
+}
+
+.MuiStepIcon-root > text {
+	fill: white !important;
+}
