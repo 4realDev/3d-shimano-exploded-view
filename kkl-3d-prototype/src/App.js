@@ -5,6 +5,8 @@ import Cursor from './components/Cursor';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './theme';
 import ModelCanvas from './components/blocks/ModelCanvas/ModelCanvas';
+import ThreeJsDataDebugger from './components/blocks/ThreeJsDataDebugger/ThreeJsDataDebugger';
+import WizardDataDebugger from './components/blocks/WizardDataDebugger/WizardDataDebugger';
 
 export const CANVAS_DEBUG = false;
 
@@ -15,6 +17,8 @@ function App() {
 				<Cursor />
 				<RoomSelection />
 				<ModelCanvas />
+				<ThreeJsDataDebugger />
+				<WizardDataDebugger />
 			</div>
 		</ThemeProvider>
 	);
