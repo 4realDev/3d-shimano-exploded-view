@@ -5,3 +5,9 @@
 	justify-content: space-evenly;
 	padding: 25px 0 25px 0;
 }
+
+.accordion {
+	& > button:last-of-type {
+		margin-bottom: 0;
+	}
+}

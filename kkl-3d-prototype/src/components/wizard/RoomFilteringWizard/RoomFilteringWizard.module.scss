@@ -1,0 +1,28 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+
+	width: 100%;
+	padding: 32px 32px 24px 32px;
+
+	background-color: #283042;
+	box-shadow: 0.5rem 2px 0.5rem rgba(0, 0, 0, 0.1);
+	color: rgba(255, 255, 255, 0.8);
+	border-radius: 0.4rem;
+
+	overflow-wrap: break-word;
+	z-index: 2;
+
+	.datePicker__wrapper {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+		justify-content: space-between;
+
+		div:not(:last-child) {
+			margin-right: 12px;
+		}
+	}
+}

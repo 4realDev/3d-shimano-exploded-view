@@ -1,7 +1,6 @@
 /* .active and .rotate will be passed to React state on Accordion.js */
 
-/* Style the accordion / buttons that are used to open and close the accordion panel */
-.accordion {
+.accordionItem {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -16,20 +15,18 @@
 	color: rgba(255, 255, 255, 0.8);
 	box-shadow: 0.5rem 2px 0.5rem rgba(0, 0, 0, 0.1);
 	border-radius: 0.4rem;
-	transition: background-color 0.6s ease;
+	transition: background-color 0.6s ease, margin 0.6s ease;
 
 	/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-	&:hover,
-	&--active {
+	&:hover {
 		background-color: #1b202c;
 	}
 
-	&--disabled {
-		// background-color: grey;
-		cursor: auto;
-		// opacity: 0.75;
-		filter: grayscale(1);
-		pointer-events: none;
+	&--active {
+		background-color: #1b202c;
+		border: 3px solid #ffef00;
+		margin-top: 40px;
+		margin-bottom: 40px;
 	}
 
 	/* Style to rotate icon when state is active */
@@ -44,7 +41,7 @@
 		align-items: center;
 		width: 100%;
 
-		.accordion__infoColumn {
+		.accordionItem__infoColumn {
 			display: flex;
 			flex-wrap: wrap;
 			flex-direction: row;
@@ -53,7 +50,7 @@
 			margin-right: 20px;
 
 			/* Style the accordion content title */
-			.accordion__title {
+			.accordionItem__title {
 				/* flex: 0 0 100%; /* flex-grow, flex-shrink, flex-basis */
 				width: 100%;
 				text-align: start;
@@ -63,18 +60,13 @@
 				line-height: 22px;
 			}
 
-			.accordion__details {
+			.accordionItem__details {
 				display: flex;
 				flex-direction: column;
 				width: 60%;
-				/* flex: 0; */
-				text-align: start;
 				padding-bottom: 12px;
-				font-weight: 400;
-				font-size: 14px;
-				line-height: 18px;
 
-				.accordion__detailsItem {
+				.accordionItem__detailsItem {
 					/* flex: 1; */
 					text-align: start;
 					padding-bottom: 12px;
@@ -82,13 +74,13 @@
 					font-size: 14px;
 					line-height: 18px;
 
-					.accordion__checkMark {
+					.accordionItem__checkMark {
 						margin-right: 8px;
 					}
 				}
 			}
 
-			.accordion__detailsIcons {
+			.accordionItem__detailsIcons {
 				display: inline-flex;
 				flex-direction: row;
 				flex-wrap: wrap;
@@ -96,7 +88,7 @@
 				text-align: start;
 				padding-bottom: 12px;
 
-				.accordion__detailsIcon {
+				.accordionItem__detailsIcon {
 					display: flex;
 					justify-content: center;
 					align-items: center;
@@ -110,7 +102,7 @@
 			}
 		}
 
-		.accordion__image {
+		.accordionItem__image {
 			width: 160px;
 			height: 120px;
 			margin-right: 20px;
@@ -118,7 +110,7 @@
 		}
 
 		/* Style the accordion chevron icon */
-		.accordion__icon {
+		.accordionItem__icon {
 			transition: transform 0.6s ease;
 		}
 	}
@@ -148,21 +140,6 @@
 			font-size: 1.4rem;
 			color: rgba(255, 255, 255, 0.6);
 			padding: 2rem;
-		}
-	}
-
-	.accordion__disabledText {
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-start;
-		align-items: center;
-		text-align: left;
-		font-size: 14px;
-		color: white;
-		width: 100%;
-		margin-top: 8px;
-		p {
-			margin-left: 8px;
 		}
 	}
 }

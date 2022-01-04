@@ -8,11 +8,13 @@ import { GroupProps } from '@react-three/fiber';
 import { setMeshList, useMeshStore } from '../../store/useMeshStore';
 import { showSelectedRoom, showSelectedRooms, useCameraStore } from '../../store/useCameraStore';
 import { CANVAS_DEBUG } from '../../App';
-import { roomModelList } from '../../data/roomData';
+import { INTERACTABLE_MESH_NAMES, roomList } from '../../data/roomData';
+import { getMeshObjectByMeshName } from '../../utils/formatRoom';
+import { updateWizardData } from '../../store/useWizardStore';
 
 // TODO: Performance issues due to lineSegment Material -> Could be fixed in 3D production
 
-// https://githubmemory.com/repo/pmndrs/drei/issues/469
+// https://githubmemory.com/repo/pmndrs/drei/issuesF/469
 export type DreiGLTF = GLTF & {
 	nodes: { [name: string]: THREE.Mesh };
 	materials: { [name: string]: THREE.Material };
@@ -153,10 +155,10 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 									visible={childObject.isVisible}
 									opacity={childObject.opacity}
 								/>
-								<lineSegments>
+								{/* <lineSegments>
 									<edgesGeometry attach='geometry' args={[childObject.geometry]} />
 									<lineBasicMaterial color='black' attach='material' transparent opacity={childObject.opacity} />
-								</lineSegments>
+								</lineSegments> */}
 							</mesh>
 						);
 					})}
@@ -191,12 +193,19 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 					// only meshes which have a customName are interactable
 					if (event.object.visible && event.object.userData.customName) {
 						event.stopPropagation();
-						event.object.userData.customName === 'roof'
-							? showSelectedRooms(
-									roomModelList.map((room) => room.meshName),
-									false
-							  )
-							: showSelectedRoom(event.object.userData.customName);
+						if (event.object.userData.customName === INTERACTABLE_MESH_NAMES.roof) {
+							showSelectedRooms(
+								roomList.map((room) => room.model.meshName),
+								false
+							);
+						} else {
+							showSelectedRoom(event.object.userData.customName);
+							// if the clicked room has side rooms, it is a main room and will be set as the new activeMainRoom
+							// else it is a side room and will be set as the new activeSideRoom
+							getMeshObjectByMeshName(event.object.userData.customName)?.info.fittingSideRoom
+								? updateWizardData(event.object.userData.customName, 'activeMainRoom')
+								: updateWizardData(event.object.userData.customName, 'activeSideRoom');
+						}
 					}
 				}}
 				// Pointer click outside of mesh
@@ -214,11 +223,11 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 							: colorOpacityValueSelectedAndDefault
 					}
 				/>
-				<lineSegments>
+				{/* Due limitations of OpenGL Core Profile with WebGL renderer on most platforms linewidth will always be 1 regardless of set value.  */}
+				{/* <lineSegments>
 					<edgesGeometry attach='geometry' args={[meshObject.geometry]} />
-					{/* Due limitations of OpenGL Core Profile with WebGL renderer on most platforms linewidth will always be 1 regardless of set value.  */}
 					<lineBasicMaterial color='black' attach='material' transparent opacity={setOutlineOpacity(meshObject)} />
-				</lineSegments>
+				</lineSegments> */}
 			</mesh>
 		);
 	};

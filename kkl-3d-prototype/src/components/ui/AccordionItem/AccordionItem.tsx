@@ -1,7 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import cn from 'classnames';
-import { resetScene, showSelectedRoom, useCameraStore } from '../../../store/useCameraStore';
-import { roomInfoList, roomModelList } from '../../../data/roomData';
 import Chevron from '../../icons/Chevron';
 import CheckMark from '../../icons/CheckMark';
 import Catering from '../../icons/Catering';
@@ -9,29 +7,53 @@ import Apero from '../../icons/Apero';
 import Seats from '../../icons/Seats';
 import styles from './AccordionItem.module.scss';
 import Accessibility from '../../icons/Accessibility';
-import Notification from '../../icons/Notification';
 import NoSeats from '../../icons/NoSeats';
+import { getMeshNameById } from '../../../utils/formatRoom';
+import { roomList } from '../../../data/roomData';
 
-type AccordionItem = {
+type AccordionItemProps = {
 	id: number;
 	title: string;
 	personCapacity: number;
 	area: number;
 	height: number;
 	img: string;
+	isActive: boolean;
+	activeRoom: string | null;
+	handleOnOpen: (meshNameCorrespondingToId: string) => void;
+	handleOnClose: (meshNameCorrespondingToId: string) => void;
 	children: React.ReactNode;
-	selectedMeshes: string[];
 };
 
-const AccordionItem = ({ id, title, personCapacity, area, height, img, children, selectedMeshes }: AccordionItem) => {
+const AccordionItem = ({
+	id,
+	title,
+	personCapacity,
+	area,
+	height,
+	img,
+	isActive,
+	activeRoom,
+	handleOnOpen,
+	handleOnClose,
+	children,
+}: AccordionItemProps) => {
 	const content = useRef<null | HTMLDivElement>(null);
-	// All content should be initially hidden / accordion items should be closed -> maxHeight: 0px
-	const [contentHeight, setHeight] = useState(0);
-	const [isActive, setIsActive] = useState<boolean>(false);
-	const filteredMeshes = useCameraStore((state) => state.filteredMeshes);
-	const isDisabled = filteredMeshes.length !== 0 && !filteredMeshes.includes(roomModelList[id - 1].meshName);
 
-	// On first render scroll to top
+	// All content should be initially hidden / accordion items should be closed -> maxHeight: 0px
+	const [contentHeight, setContentHeight] = useState(0);
+
+	const meshNameCorrespondingToId = useMemo<string>(() => {
+		const meshCorrespondingToId = getMeshNameById(id);
+		if (meshCorrespondingToId) {
+			return meshCorrespondingToId.model.meshName;
+		} else {
+			console.error(`There is no matching mesh object with the (AccordionItem) id ${id}.`);
+			return '';
+		}
+	}, [id]);
+
+	// // On first render scroll to top
 	useEffect(() => {
 		window.scrollTo({
 			top: 0,
@@ -39,17 +61,20 @@ const AccordionItem = ({ id, title, personCapacity, area, height, img, children,
 		});
 	}, []);
 
+	// TODO: Find better way then useEffect!
+	// TODO: Ensure that accordionItems are not selected and open at the first selection
 	// Triggered by handleOnClick from UI interaction as well as by interacting with 3D Modell
 	useEffect(() => {
 		// use effect is triggered in every accordion item
 		// check which one is the clicked item
 		// activate it, open and scroll to it (otherwise deactivate and close it)
-		if (selectedMeshes.includes(`room_${id}`)) {
-			setIsActive(true);
-			content.current && setHeight(content.current.scrollHeight);
+		// same item is called twice or multiple times, it will still stay active
+		if (activeRoom === meshNameCorrespondingToId) {
+			content.current && setContentHeight(content.current.scrollHeight);
 
 			// TODO: Put delay in scss const
 			// Delay scrolling to the clicked accordion item by the translation delay of the opening and closing of the item to get the correct scrollHeight
+
 			setTimeout(() => {
 				window.scrollTo({
 					top: content.current ? content.current.offsetTop - content.current.scrollHeight : 0,
@@ -57,17 +82,18 @@ const AccordionItem = ({ id, title, personCapacity, area, height, img, children,
 				});
 			}, 500);
 		} else {
-			setIsActive(false);
-			setHeight(0);
+			setContentHeight(0);
 		}
-	}, [selectedMeshes]);
+	}, [activeRoom]);
 
-	const handleOnClick = (id: number) => {
-		// both methods manipulate selectedMeshes and will be catched in useEffect([selectedMeshes]) above
-		if (!isActive) {
-			showSelectedRoom(`room_${id}`);
+	const handleClick = (id: number, content: any) => {
+		// both methods manipulate active and will be catched in useEffect([selectedMeshes]) above
+		if (contentHeight === 0) {
+			content.current && setContentHeight(content.current.scrollHeight);
+			handleOnOpen(meshNameCorrespondingToId);
 		} else {
-			resetScene();
+			setContentHeight(0);
+			handleOnClose(meshNameCorrespondingToId);
 		}
 	};
 
@@ -90,17 +116,17 @@ const AccordionItem = ({ id, title, personCapacity, area, height, img, children,
 
 	const renderDetails = () => {
 		return (
-			<div className={styles.accordion__details}>
-				<div className={styles.accordion__detailsItem}>
-					<CheckMark className={styles.accordion__checkMark} width={16} fill='#ffffff' />
+			<div className={styles.accordionItem__details}>
+				<div className={styles.accordionItem__detailsItem}>
+					<CheckMark className={styles.accordionItem__checkMark} width={16} fill='#ffffff' />
 					<span>{personCapacity} Sitzplätze</span>
 				</div>
-				<div className={styles.accordion__detailsItem}>
-					<CheckMark className={styles.accordion__checkMark} width={16} fill='#ffffff' />
+				<div className={styles.accordionItem__detailsItem}>
+					<CheckMark className={styles.accordionItem__checkMark} width={16} fill='#ffffff' />
 					<span>{area} m²</span>
 				</div>
-				<div className={styles.accordion__detailsItem}>
-					<CheckMark className={styles.accordion__checkMark} width={16} fill='#ffffff' />
+				<div className={styles.accordionItem__detailsItem}>
+					<CheckMark className={styles.accordionItem__checkMark} width={16} fill='#ffffff' />
 					<span>{height} m Raumhöhe</span>
 				</div>
 			</div>
@@ -109,10 +135,12 @@ const AccordionItem = ({ id, title, personCapacity, area, height, img, children,
 
 	const renderDetailsIcons = () => {
 		return (
-			<div className={styles.accordion__detailsIcons}>
-				{Object.entries(roomInfoList[id - 1].fittings).map((fittingEntry: [string, unknown]) => {
+			<div className={styles.accordionItem__detailsIcons}>
+				{Object.entries(roomList[id - 1].info.fittings).map((fittingEntry: [string, unknown]) => {
 					return (
-						fittingEntry[1] && <div className={styles.accordion__detailsIcon}>{getFittingIcon(fittingEntry[0])}</div>
+						fittingEntry[1] && (
+							<div className={styles.accordionItem__detailsIcon}>{getFittingIcon(fittingEntry[0])}</div>
+						)
 					);
 				})}
 			</div>
@@ -120,44 +148,28 @@ const AccordionItem = ({ id, title, personCapacity, area, height, img, children,
 	};
 
 	return (
-		<div>
-			<button
-				className={cn(
-					styles.accordion,
-					{ [styles['accordion--active']]: isActive },
-					{ [styles['accordion--disabled']]: isDisabled }
-				)}
-			>
+		<>
+			<button className={cn(styles.accordionItem, { [styles['accordionItem--active']]: isActive })}>
 				{/* whenever we click on the link, it will navigate to what it matches as id */}
-				<div className={styles.accordion__header} onClick={() => !isDisabled && handleOnClick(id)}>
-					<div className={styles.accordion__infoColumn}>
-						<h1 className={styles.accordion__title}>{title}</h1>
+				<div className={styles.accordionItem__header} onClick={() => handleClick(id, content)}>
+					<div className={styles.accordionItem__infoColumn}>
+						<h1 className={styles.accordionItem__title}>{title}</h1>
 						{renderDetails()}
 						{renderDetailsIcons()}
 					</div>
-					<img className={styles.accordion__image} src={img} alt={title} />
+					<img className={styles.accordionItem__image} src={img} alt={title} />
 					<Chevron
-						className={cn(styles.accordion__icon, { [styles['accordion--rotate']]: isActive })}
+						className={cn(styles.accordionItem__icon, { [styles['accordionItem--rotate']]: contentHeight === 0 })}
 						width={24}
 						fill='#ffffff'
 					/>
 				</div>
 
-				<div ref={content} className={cn(styles.accordion__content)} style={{ maxHeight: `${contentHeight}px` }}>
-					<p>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, molestiae impedit facilis error at
-						eveniet sunt eos, id ipsam, earum hic.
-					</p>
+				<div ref={content} className={cn(styles.accordionItem__content)} style={{ maxHeight: `${contentHeight}px` }}>
 					{children}
 				</div>
-				{isDisabled && (
-					<div className={styles.accordion__disabledText}>
-						<Notification />
-						<p>Dieser Raum erfüllt nicht die Filterkriterien.</p>
-					</div>
-				)}
 			</button>
-		</div>
+		</>
 	);
 };
 

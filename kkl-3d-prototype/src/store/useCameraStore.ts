@@ -1,12 +1,12 @@
 import * as THREE from 'three';
 import create from 'zustand';
-import { roomModelList } from '../data/roomData';
+import { INTERACTABLE_MESH_NAMES } from '../data/roomData';
+import { getMeshObjectByMeshName } from '../utils/formatRoom';
 import { resetMeshVisibility, setMeshVisibility } from './useMeshStore';
 
 export const defaultCameraPosition = new THREE.Vector3(20, 15, 0);
 export const defaultCameraTargetPosition = new THREE.Vector3(0, 0, 0);
 export const overviewCameraPosition = new THREE.Vector3(0, 25, 2);
-export const camHeightOffset = 15;
 
 interface CameraStore {
 	cameraPosition: THREE.Vector3;
@@ -14,9 +14,7 @@ interface CameraStore {
 	hasAnimation: boolean;
 	idleState: boolean;
 	hoveredMesh: string | null;
-	clickedMesh: string | null;
 	selectedMeshes: string[];
-	filteredMeshes: string[];
 }
 
 export const useCameraStore = create<CameraStore>((set) => ({
@@ -25,16 +23,14 @@ export const useCameraStore = create<CameraStore>((set) => ({
 	hasAnimation: false, // initially false so idleRotation in idleState works
 	idleState: true,
 	hoveredMesh: null,
-	clickedMesh: null,
 	selectedMeshes: [],
-	filteredMeshes: [],
 }));
 
 export const setSelectedMeshes = (selectedMeshes: string[]) =>
 	useCameraStore.setState((state) => ({ selectedMeshes: selectedMeshes }));
 
-export const setFilteredMeshes = (filteredMeshes: string[]) =>
-	useCameraStore.setState((state) => ({ filteredMeshes: filteredMeshes }));
+export const setHoveredMesh = (hoveredMesh: string | null) =>
+	useCameraStore.setState((state) => ({ hoveredMesh: hoveredMesh }));
 
 export const setCameraPosition = (cameraPosition: THREE.Vector3) =>
 	useCameraStore.setState((state) => ({ cameraPosition: cameraPosition }));
@@ -50,14 +46,12 @@ export const setIdleState = (idleState: boolean) => useCameraStore.setState((sta
 export const showSelectedRoom = (selectedMesh: string) => {
 	setIdleState(false);
 	setHasAnimation(true);
-	setMeshVisibility('roof', false);
-	const clickedRoom = roomModelList.find((room) => {
-		if (room.meshName === selectedMesh) return room;
-	});
+	setMeshVisibility(INTERACTABLE_MESH_NAMES.roof, false);
+	const clickedRoom = getMeshObjectByMeshName(selectedMesh);
 	if (typeof clickedRoom != 'undefined') {
-		setSelectedMeshes([clickedRoom.meshName]);
-		setCameraPosition(clickedRoom.camPos);
-		setCameraTarget(clickedRoom.camTarget);
+		setSelectedMeshes([clickedRoom.model.meshName]);
+		setCameraPosition(clickedRoom.model.camPos);
+		setCameraTarget(clickedRoom.model.camTarget);
 	}
 };
 
@@ -69,7 +63,7 @@ export const showSelectedRooms = (
 ) => {
 	setIdleState(false);
 	setHasAnimation(true);
-	setMeshVisibility('roof', false);
+	setMeshVisibility(INTERACTABLE_MESH_NAMES.roof, false);
 	selectMesh && setSelectedMeshes(selectedMeshes);
 	setCameraPosition(camPos);
 	setCameraTarget(camTarget);
