@@ -191,6 +191,3 @@ export const roomList = [
 		},
 	},
 ];
-
-export const roomModelList = roomList.map((room) => room.model);
-export const roomInfoList = roomList.map((room) => room.info);
