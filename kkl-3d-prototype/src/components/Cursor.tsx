@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import { roomList } from '../data/roomData';
 import { useCameraStore } from '../store/useCameraStore';
+import { getRoomTitleByMeshName } from '../utils/formatRoom';
 
 const Cursor = () => {
 	const hoveredMesh = useCameraStore((state) => state.hoveredMesh);
 	// Cursor showing current color
 	useEffect(() => {
-		const hoveredRoomName = roomList.find((room) => room.model.meshName === hoveredMesh)?.info.title;
+		const hoveredRoomName = hoveredMesh && getRoomTitleByMeshName(hoveredMesh);
 		// assumption: char width ~ 6px | margin-right ~ 30px
 		const rectWidth = hoveredRoomName ? hoveredRoomName.length * 6 + 30 : 0;
 		const fontSize = rectWidth > 128 ? 10 : 12;
