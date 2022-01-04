@@ -10,8 +10,8 @@ const NoSeats = ({ ...props }) => {
 			<path
 				d='M1.00024 12.6L13.0002 0.599976M1.00024 0.599976L13.0002 12.6'
 				stroke='#575B64'
-				stroke-linecap='round'
-				stroke-linejoin='round'
+				strokeLinecap='round'
+				strokeLinejoin='round'
 			/>
 		</svg>
 	);
