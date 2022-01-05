@@ -24,13 +24,13 @@ const RoomAdditionalOptionsWizard = ({ handleChange, wizardData }: RoomAdditiona
 			<h3>Hauptraum</h3>
 			<p>Raum: {chosenMainRoom ? getRoomTitleByMeshName(chosenMainRoom.room) : 'Es wurde kein Hauptraum ausgewählt'}</p>
 			<p>Equipment: {chosenMainRoom ? chosenMainRoom.equipment : '-'}</p>
-			<p>Stuhlformation: {chosenMainRoom ? chosenMainRoom.chairFormation : '-'}</p>
+			<p>Stuhlformation: {chosenMainRoom ? chosenMainRoom.chair_formation : '-'}</p>
 			<br />
 
 			<h3>Nebenraum</h3>
 			<p>Raum: {chosenSideRoom ? getRoomTitleByMeshName(chosenSideRoom.room) : 'Es wurde kein Nebenraum ausgewählt'}</p>
 			<p>Equipment: {chosenSideRoom ? chosenSideRoom.equipment : '-'}</p>
-			<p>Stuhlformation: {chosenSideRoom ? chosenSideRoom.chairFormation : '-'}</p>
+			<p>Stuhlformation: {chosenSideRoom ? chosenSideRoom.chair_formation : '-'}</p>
 			<br />
 
 			<h3>Kriterien</h3>

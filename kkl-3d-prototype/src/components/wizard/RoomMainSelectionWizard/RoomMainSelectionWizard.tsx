@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
-import { EVENT_TYPES, RoomItemsList, roomList } from '../../../data/roomData';
+import { EVENT_TYPES, RoomItemsList, roomList, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
 import { showSelectedRoom, showSelectedRooms } from '../../../store/useCameraStore';
 import { setMeshChildVisibility } from '../../../store/useMeshStore';
-import { WizardData } from '../../../store/useWizardStore';
+import { handleRoomAdditionsChange, handleRoomDataChange, WizardData } from '../../../store/useWizardStore';
 import Accordion from '../../ui/Accordion/Accordion';
 
 interface RoomMainSelectionWizardProps {
-	handleChange: (value: any, inputField: any) => void;
 	wizardData: WizardData;
+	handleChange: (value: any, inputField: any) => void;
 }
 
-const RoomMainSelectionWizard = ({ handleChange, wizardData }: RoomMainSelectionWizardProps) => {
+const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelectionWizardProps) => {
 	const [filteredRoomMeshesNames, setFilteredRoomMeshesNames] = useState<string[] | null>([]);
 	const filteredRoomMeshes = roomList.filter((room) => {
 		return filteredRoomMeshesNames?.includes(room.model.meshName);
@@ -89,111 +89,22 @@ const RoomMainSelectionWizard = ({ handleChange, wizardData }: RoomMainSelection
 		setFilteredRoomMeshesNames(filteredRoomMeshNames);
 	};
 
-	const handleOnOpen = (meshName: string) => {
-		showSelectedRoom(meshName);
-
-		const mainRoomAdditions = wizardData.mainRoom;
-
-		if (wizardData.mainRoom.map((item) => item.room).includes(meshName)) {
-			console.log('OVERWRITE EXISTING ITEM');
-			const index = wizardData.mainRoom.findIndex((item) => item.room === meshName);
-			mainRoomAdditions[index] = {
-				room: meshName,
-				equipment: wizardData.mainRoom[index].equipment,
-				chairFormation: wizardData.mainRoom[index].chairFormation,
-			};
-			handleChange(mainRoomAdditions, 'mainRoom');
-		} else {
-			console.log('ADD NEW ITEM');
-			const newRoomValue = [
-				...wizardData.mainRoom,
-				{
-					room: meshName,
-					equipment: '',
-					chairFormation: '',
-				},
-			];
-			handleChange(newRoomValue, 'mainRoom');
-		}
-		handleChange(meshName, 'activeMainRoom');
+	const handleOnOpen = (toggledMeshName: string) => {
+		handleRoomDataChange(toggledMeshName);
+		showSelectedRoom(toggledMeshName);
 	};
 
-	const handleOnClose = (meshNameCorrespondingToId: string) => {
+	const handleOnClose = (toggledMeshName: string) => {
 		filteredRoomMeshesNames && showSelectedRooms(filteredRoomMeshesNames, false);
+		wizardData.activeMainRoom === toggledMeshName && handleChange('', 'activeMainRoom');
 	};
 
-	const handleOnEquipmentSelected = (toggledRoomName: string, toggledMeshName: string, category?: string) => {
-		const newMainRoomAdditions = wizardData.mainRoom;
-
-		if (newMainRoomAdditions.map((item) => item.room).includes(toggledRoomName)) {
-			console.log('OVERWRITE EXISTING ITEM');
-			const index = newMainRoomAdditions.findIndex((item) => item.room === toggledRoomName);
-
-			if (
-				newMainRoomAdditions[index].room === toggledRoomName &&
-				newMainRoomAdditions[index].equipment === toggledMeshName
-			) {
-				console.log('RESET EXISTING ITEM');
-				newMainRoomAdditions[index] = {
-					room: toggledRoomName,
-					equipment: '', // reset the selected equipment to empty string
-					chairFormation: newMainRoomAdditions[index].chairFormation, // set the already existing chairFormation value of this room
-				};
-			} else {
-				newMainRoomAdditions[index] = {
-					room: toggledRoomName,
-					equipment: toggledMeshName, // set the selected equipment
-					chairFormation: newMainRoomAdditions[index].chairFormation, // set the already existing chairFormation value of this room
-				};
-			}
-
-			handleChange(newMainRoomAdditions, 'mainRoom');
-		} else {
-			console.log('ADD NEW ITEM');
-			// add the selected room (toggledRoomName) with the selected equipment (toggledMeshName) to the wizardData
-			const newRoomEquipmentValue = [
-				...wizardData.mainRoom,
-				{ room: toggledRoomName, equipment: toggledMeshName, chairFormation: '' },
-			];
-			handleChange(newRoomEquipmentValue, 'mainRoom');
-		}
-		setMeshChildVisibility(toggledRoomName, toggledMeshName, category);
-	};
-
-	const handleOnChairFormationSelected = (toggledRoomName: string, toggledMeshName: string, category?: string) => {
-		const newEquipmentList = wizardData.mainRoom;
-
-		if (newEquipmentList.map((item) => item.room).includes(toggledRoomName)) {
-			console.log('OVERWRITE EXISTING ITEM');
-			const index = newEquipmentList.findIndex((item) => item.room === toggledRoomName);
-
-			if (
-				newEquipmentList[index].room === toggledRoomName &&
-				newEquipmentList[index].chairFormation === toggledMeshName
-			) {
-				console.log('RESET EXISTING ITEM');
-				newEquipmentList[index] = {
-					room: toggledRoomName,
-					equipment: newEquipmentList[index].equipment, // set the already existing chairFormation value of this room
-					chairFormation: '', // reset the selected chairFormation to empty string
-				};
-			} else {
-				newEquipmentList[index] = {
-					room: toggledRoomName,
-					equipment: newEquipmentList[index].equipment, // set the already existing equipment value of this room
-					chairFormation: toggledMeshName, // set the selected chairFormation
-				};
-			}
-			handleChange(newEquipmentList, 'mainRoom');
-		} else {
-			console.log('ADD NEW ITEM');
-			// add the selected room (toggledRoomName) with the selected chairFormation (toggledMeshName) to the wizardData
-			const newRoomEquipmentValue = [
-				...wizardData.mainRoom,
-				{ room: toggledRoomName, equipment: '', chairFormation: toggledMeshName },
-			];
-			handleChange(newRoomEquipmentValue, 'mainRoom');
-		}
+	const handleAdditionsOnChange = (
+		toggledRoomName: string,
+		toggledMeshName: string,
+		category: ROOM_ADDITIONS_CATEGORY
+	) => {
+		handleRoomAdditionsChange(toggledRoomName, toggledMeshName, category);
 		setMeshChildVisibility(toggledRoomName, toggledMeshName, category);
 	};
 
@@ -204,8 +115,7 @@ const RoomMainSelectionWizard = ({ handleChange, wizardData }: RoomMainSelection
 			roomAdditionsData={wizardData.mainRoom}
 			handleOnOpen={handleOnOpen}
 			handleOnClose={handleOnClose}
-			handleOnEquipmentSelected={handleOnEquipmentSelected}
-			handleOnChairFormationSelected={handleOnChairFormationSelected}
+			handleAdditionsOnChange={handleAdditionsOnChange}
 		/>
 	);
 };

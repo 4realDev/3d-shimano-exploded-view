@@ -1,13 +1,14 @@
 import styles from './MeshVisibilityButton.module.scss';
 import cn from 'classnames';
+import { ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
 
 type MeshVisiblityButtonProps = {
 	toggledRoomName: string;
 	toggledMeshName: string;
 	toggleIcon: React.ReactNode;
-	category: string;
+	category: ROOM_ADDITIONS_CATEGORY;
 	isActive: boolean;
-	onClick: (toggledRoomName: string, toggledMeshName: string, category: string) => void;
+	onClick: (toggledRoomName: string, toggledMeshName: string, category: ROOM_ADDITIONS_CATEGORY) => void;
 };
 
 const MeshVisibilityButton = ({

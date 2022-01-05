@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from './RoomSelection.module.scss';
-
+import Checkbox from '@mui/material/Checkbox';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import RoomFilteringWizard from '../../wizard/RoomFilteringWizard/RoomFilteringWizard';
@@ -8,9 +8,11 @@ import RoomAdditionalOptionsWizard from '../../wizard/RoomAdditionalOptionsWizar
 import RoomSideSelectionWizard from '../../wizard/RoomSideSelectionWizard/RoomSideSelectionWizard';
 import RoomMainSelectionWizard from '../../wizard/RoomMainSelectionWizard/RoomMainSelectionWizard';
 import { StepButton } from '@mui/material';
-import { resetWizardData, updateWizardData, useWizardStore } from '../../../store/useWizardStore';
 import { resetScene } from '../../../store/useCameraStore';
 import Notification from '../../icons/Notification';
+import { setMeshChildVisibility } from '../../../store/useMeshStore';
+import { getMeshObjectByMeshName } from '../../../utils/formatRoom';
+import { ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
 
 // yarn add @mui/material @emotion/react @emotion/styled
 // yarn add @mui/lab
@@ -93,13 +95,13 @@ const RoomSelection = () => {
 	const renderStep = () => {
 		switch (step) {
 			case 0:
-				return <RoomFilteringWizard handleChange={handleChange} wizardData={wizardData} />;
+				return <RoomFilteringWizard wizardData={wizardData} handleChange={handleChange} />;
 			case 1:
-				return <RoomMainSelectionWizard handleChange={handleChange} wizardData={wizardData} />;
+				return <RoomMainSelectionWizard wizardData={wizardData} handleChange={handleChange} />;
 			case 2:
-				return <RoomSideSelectionWizard handleChange={handleChange} wizardData={wizardData} />;
+				return <RoomSideSelectionWizard wizardData={wizardData} handleChange={handleChange} />;
 			case 3:
-				return <RoomAdditionalOptionsWizard handleChange={handleChange} wizardData={wizardData} />;
+				return <RoomAdditionalOptionsWizard wizardData={wizardData} handleChange={handleChange} />;
 			default:
 			// do nothing
 		}

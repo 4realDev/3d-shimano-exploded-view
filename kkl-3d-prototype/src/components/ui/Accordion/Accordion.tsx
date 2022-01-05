@@ -16,8 +16,11 @@ type AccordionProps = {
 	roomAdditionsData: WizardRoomData[] | null;
 	handleOnOpen: (meshNameCorrespondingToId: string) => void;
 	handleOnClose: (meshNameCorrespondingToId: string) => void;
-	handleOnEquipmentSelected: (toggledRoomName: string, toggledMeshName: string, category?: string) => void;
-	handleOnChairFormationSelected: (toggledRoomName: string, toggledMeshName: string, category?: string) => void;
+	handleAdditionsOnChange: (
+		toggledRoomName: string,
+		toggledMeshName: string,
+		category: ROOM_ADDITIONS_CATEGORY
+	) => void;
 };
 
 const Accordion = ({
@@ -26,8 +29,7 @@ const Accordion = ({
 	roomAdditionsData,
 	handleOnOpen,
 	handleOnClose,
-	handleOnEquipmentSelected,
-	handleOnChairFormationSelected,
+	handleAdditionsOnChange,
 }: AccordionProps) => {
 	const getFormationIcon = (formation: string) => {
 		switch (formation) {
@@ -68,10 +70,10 @@ const Accordion = ({
 				return true;
 			}
 			return false;
-		} else if (category === ROOM_ADDITIONS_CATEGORY.chairFormation) {
+		} else if (category === ROOM_ADDITIONS_CATEGORY.chair_formation) {
 			const chairFormationCorrespondingToAccordionItem = roomAdditionsData?.find(
 				(item) => item.room === accordionItemMeshName
-			)?.chairFormation;
+			)?.chair_formation;
 			console.log(chairFormationCorrespondingToAccordionItem);
 			console.log(accordionItemRoomAddition);
 			if (chairFormationCorrespondingToAccordionItem === accordionItemRoomAddition) {
@@ -105,13 +107,13 @@ const Accordion = ({
 										toggledRoomName={roomList[roomIndex].model.meshName}
 										toggledMeshName={formation}
 										toggleIcon={getFormationIcon(formation)}
-										category={ROOM_ADDITIONS_CATEGORY.chairFormation}
+										category={ROOM_ADDITIONS_CATEGORY.chair_formation}
 										isActive={getActiveStateOfRoomAdditionIcons(
 											roomList[roomIndex].model.meshName,
 											formation,
-											ROOM_ADDITIONS_CATEGORY.chairFormation
+											ROOM_ADDITIONS_CATEGORY.chair_formation
 										)}
-										onClick={handleOnChairFormationSelected}
+										onClick={handleAdditionsOnChange}
 									/>
 								);
 							})}
@@ -132,7 +134,7 @@ const Accordion = ({
 											equipment,
 											ROOM_ADDITIONS_CATEGORY.equipment
 										)}
-										onClick={handleOnEquipmentSelected}
+										onClick={handleAdditionsOnChange}
 									/>
 								);
 							})}

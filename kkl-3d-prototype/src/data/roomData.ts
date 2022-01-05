@@ -52,11 +52,11 @@ export enum CHAIR_FORMATION {
 export enum EQUIPMENT {
 	stage = 'equipment_stage',
 	podium = 'equipment_podium',
-	beamer = 'beamer',
+	beamer = 'equipment_beamer',
 }
 
 export enum ROOM_ADDITIONS_CATEGORY {
-	chairFormation = 'chair_formation',
+	chair_formation = 'chair_formation',
 	equipment = 'equipment',
 }
 
@@ -88,7 +88,7 @@ export const roomList = [
 			height: 12,
 			img: './images/Konzertsaal.jpg',
 			equipment: [EQUIPMENT.stage, EQUIPMENT.podium],
-			chairFormation: [CHAIR_FORMATION.concert],
+			chairFormations: [CHAIR_FORMATION.concert],
 			fittings: {
 				hasAccessibleEnv: true,
 				hasSeats: true,
