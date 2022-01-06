@@ -1,3 +1,5 @@
+@import '../../../styles/colors.scss';
+
 .container {
 	display: flex;
 	flex-direction: column;
@@ -7,8 +9,8 @@
 	width: 100%;
 	padding: 32px 32px 24px 32px;
 
-	background-color: #283042;
-	box-shadow: 0.5rem 2px 0.5rem rgba(0, 0, 0, 0.1);
+	background-color: $color-dark-grey;
+	box-shadow: 0.5rem 2px 0.5rem $color-shadow;
 	color: rgba(255, 255, 255, 0.8);
 	border-radius: 0.4rem;
 

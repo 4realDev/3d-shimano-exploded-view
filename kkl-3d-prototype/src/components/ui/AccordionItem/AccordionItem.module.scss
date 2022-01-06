@@ -1,3 +1,5 @@
+@import '../../../styles/colors.scss';
+
 /* .active and .rotate will be passed to React state on Accordion.js */
 
 .accordionItem {
@@ -11,20 +13,21 @@
 	cursor: pointer;
 	border: none;
 	outline: none;
-	background-color: #283042;
+	background-color: $color-dark-grey;
 	color: rgba(255, 255, 255, 0.8);
-	box-shadow: 0.5rem 2px 0.5rem rgba(0, 0, 0, 0.1);
+	box-shadow: 0.5rem 2px 0.5rem $color-shadow;
 	border-radius: 0.4rem;
 	transition: background-color 0.6s ease, margin 0.6s ease;
 
 	/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 	&:hover {
-		background-color: #1b202c;
+		background-color: $color-dark-grey-hovered;
 	}
 
 	&--active {
-		background-color: #1b202c;
-		border: 3px solid #ffef00;
+		background-color: $color-dark-grey-hovered;
+		border: 5px solid $color-dark-yellow;
+		border-radius: 4px;
 		margin-top: 40px;
 		margin-bottom: 40px;
 	}
@@ -97,7 +100,7 @@
 					border-radius: 12px;
 					height: 24px;
 					width: 24px;
-					background-color: rgba(255, 239, 0, 0.75);
+					background-color: $color-dark-yellow;
 				}
 			}
 		}
@@ -120,7 +123,7 @@
 		width: 100%;
 		overflow: hidden;
 		max-height: 0;
-		background-color: #212838;
+		background-color: $color-dark-blue;
 		/* for sudo decoration line */
 		position: relative;
 		transition: max-height 0.6s ease;
@@ -130,7 +133,7 @@
 			position: absolute;
 			width: 0.6rem;
 			height: 90%;
-			background-color: #8fc660;
+			background-color: $color-dark-yellow;
 			left: 0;
 			top: 50%;
 			transform: translateY(-50%);

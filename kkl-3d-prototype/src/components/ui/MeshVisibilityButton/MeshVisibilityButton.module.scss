@@ -1,8 +1,18 @@
+@import '../../../styles/colors.scss';
+
 .roomAdditionsToggle {
 	height: 100px;
 	width: 100px;
-
+	background: rgba(255, 255, 255, 0.9);
+	border-radius: 4px;
+	outline: none;
+	border: none;
+	transition: background 0.6s ease;
+	&:hover {
+		background: rgba(255, 255, 255, 1);
+	}
 	&--active {
-		border: 5px #ffef00 solid;
+		border: 5px solid $color-dark-yellow;
+		border-radius: 4px;
 	}
 }

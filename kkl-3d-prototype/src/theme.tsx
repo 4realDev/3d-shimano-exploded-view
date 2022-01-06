@@ -24,7 +24,7 @@ export const theme = createTheme({
 	spacing: 8,
 	// Overrides of components
 	components: {
-		// MUI STEPPER ADJUSTMENTS
+		// *** MUI STEPPER ADJUSTMENTS ***
 		MuiStepper: {
 			styleOverrides: {
 				root: { width: '100%', transition: 'all ease-in-out 0.5' },
@@ -58,8 +58,8 @@ export const theme = createTheme({
 					},
 				},
 				text: {
-					fontSize: '1.6rem',
-					fontFamily: 'Lyon Display',
+					fontSize: '1.2rem',
+					fontFamily: 'Verdana, sans-serif',
 					fontWeight: 900,
 					transform: 'translateY(1px)',
 
@@ -70,8 +70,9 @@ export const theme = createTheme({
 				},
 			},
 		},
+		// *** MUI STEPPER ADJUSTMENTS ***
 
-		// MUI TEXTFIELD ADJUSTMENTS
+		// *** MUI TEXTFIELD ADJUSTMENTS ***
 		// TextField will start expanded and there will be no animations
 		MuiTextField: {
 			styleOverrides: {
@@ -141,5 +142,23 @@ export const theme = createTheme({
 				},
 			},
 		},
+		// *** MUI TEXTFIELD ADJUSTMENTS ***
+
+		// *** MUI CHECKBOX ADJUSTMENTS ***
+		MuiCheckbox: {
+			styleOverrides: {
+				root: {
+					'&.Mui-checked': {
+						color: '#ff0000',
+					},
+					color: '#ff0000',
+				},
+			},
+			defaultProps: {
+				disableRipple: true,
+				disableTouchRipple: true,
+			},
+		},
+		// *** MUI CHECKBOX ADJUSTMENTS ***
 	},
 });
