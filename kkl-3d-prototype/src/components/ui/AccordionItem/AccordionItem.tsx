@@ -10,6 +10,7 @@ import Accessibility from '../../icons/Accessibility';
 import NoSeats from '../../icons/NoSeats';
 import { getMeshNameById } from '../../../utils/formatRoom';
 import { roomList } from '../../../data/roomData';
+import { useWizardStore } from '../../../store/useWizardStore';
 
 type AccordionItemProps = {
 	id: number;
@@ -136,10 +137,12 @@ const AccordionItem = ({
 	const renderDetailsIcons = () => {
 		return (
 			<div className={styles.accordionItem__detailsIcons}>
-				{Object.entries(roomList[id - 1].info.fittings).map((fittingEntry: [string, unknown]) => {
+				{Object.entries(roomList[id - 1].info.fittings).map((fittingEntry: [string, boolean | undefined], index) => {
 					return (
 						fittingEntry[1] && (
-							<div className={styles.accordionItem__detailsIcon}>{getFittingIcon(fittingEntry[0])}</div>
+							<div key={index} className={styles.accordionItem__detailsIcon}>
+								{getFittingIcon(fittingEntry[0])}
+							</div>
 						)
 					);
 				})}
@@ -161,7 +164,7 @@ const AccordionItem = ({
 					<Chevron
 						className={cn(styles.accordionItem__icon, { [styles['accordionItem--rotate']]: contentHeight === 0 })}
 						width={24}
-						fill='#ffffff'
+						fill={contentHeight === 0 ? '#fff' : '#ffef00bf'}
 					/>
 				</div>
 

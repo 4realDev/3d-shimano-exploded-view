@@ -4,7 +4,7 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import Notification from '../../icons/Notification';
 import RoomFilteringWizard from '../../wizard/RoomFilteringWizard/RoomFilteringWizard';
-import RoomAdditionalOptionsWizard from '../../wizard/RoomAdditionalOptionsWizard/RoomAdditionalOptionsWizard';
+import RoomSummaryWizard from '../../wizard/RoomSummaryWizard/RoomSummaryWizard';
 import RoomSideSelectionWizard from '../../wizard/RoomSideSelectionWizard/RoomSideSelectionWizard';
 import RoomMainSelectionWizard from '../../wizard/RoomMainSelectionWizard/RoomMainSelectionWizard';
 import { StepButton } from '@mui/material';
@@ -103,7 +103,7 @@ const RoomSelection = () => {
 			case 2:
 				return <RoomSideSelectionWizard wizardData={wizardData} handleChange={handleChange} />;
 			case 3:
-				return <RoomAdditionalOptionsWizard wizardData={wizardData} handleChange={handleChange} />;
+				return <RoomSummaryWizard wizardData={wizardData} handleChange={handleChange} />;
 			default:
 			// do nothing
 		}

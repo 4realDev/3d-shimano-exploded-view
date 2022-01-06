@@ -1,0 +1,137 @@
+@import '../../../styles/colors.scss';
+
+.roomCard {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding: 24px 32px 24px 32px;
+	margin-bottom: 1rem;
+	font-size: 1.6rem;
+	cursor: default;
+	background-color: $color-dark-grey-hovered;
+	color: rgba(255, 255, 255, 0.8);
+	box-shadow: 0.5rem 2px 0.5rem $color-shadow;
+	border-radius: 0.4rem;
+
+	&__header {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+
+		.roomCard__infoColumn {
+			display: flex;
+			flex-wrap: wrap;
+			flex-direction: row;
+			align-items: flex-start;
+			width: 100%;
+			margin-right: 20px;
+
+			/* Style the accordion content title */
+			.roomCard__title {
+				/* flex: 0 0 100%; /* flex-grow, flex-shrink, flex-basis */
+				width: 100%;
+				text-align: start;
+				padding-bottom: 24px;
+				font-weight: 700;
+				font-size: 18px;
+				line-height: 22px;
+			}
+
+			.roomCard__details {
+				display: flex;
+				flex-direction: column;
+				width: 60%;
+				padding-bottom: 12px;
+
+				.roomCard__detailsItem {
+					/* flex: 1; */
+					text-align: start;
+					padding-bottom: 12px;
+					font-weight: 400;
+					font-size: 14px;
+					line-height: 18px;
+
+					.roomCard__checkMark {
+						margin-right: 8px;
+					}
+				}
+			}
+
+			.roomCard__detailsIcons {
+				display: inline-flex;
+				flex-direction: row;
+				flex-wrap: wrap;
+				width: 40%;
+				text-align: start;
+				padding-bottom: 12px;
+
+				.roomCard__detailsIcon {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					margin-left: 10px;
+					margin-bottom: 10px;
+					border-radius: 12px;
+					height: 24px;
+					width: 24px;
+					background-color: $color-dark-yellow;
+				}
+			}
+		}
+
+		.roomCard__image {
+			width: 160px;
+			height: 120px;
+			object-fit: cover;
+		}
+	}
+
+	.roomCard__roomAdditionsGrid {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		margin-top: 8px;
+
+		.roomCard__roomAdditionsColumn {
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			flex: 1;
+			width: 100%;
+			border-top: solid 1px rgba(255, 255, 255, 0.25);
+			padding-top: 12px;
+
+			h3 {
+				width: 100%;
+				padding-bottom: 12px;
+				font-weight: 700;
+				font-size: 14px;
+				line-height: 22px;
+				flex: 0.7;
+			}
+
+			p {
+				padding-bottom: 12px;
+				font-weight: 400;
+				font-size: 14px;
+				line-height: 18px;
+				flex: 1;
+			}
+
+			.roomCard__roomAdditions__icon {
+				height: 35px;
+				width: 35px;
+				padding: 6px;
+				background: rgba(255, 255, 255, 0.9);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				border-radius: 4px;
+				margin-bottom: 12px;
+			}
+		}
+	}
+}
