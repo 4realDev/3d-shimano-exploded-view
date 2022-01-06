@@ -69,16 +69,15 @@ export const showSelectedRooms = (
 	setCameraTarget(camTarget);
 };
 
-export const resetScene = () => {
+export const resetScene = (enableInitialAnimation = true) => {
 	setIdleState(true);
-	setHasAnimation(true);
+	enableInitialAnimation && setHasAnimation(true);
 	resetMeshVisibility();
 	setSelectedMeshes([]);
 	setCameraPosition(defaultCameraPosition);
 	setCameraTarget(defaultCameraTargetPosition);
 
-	// TODO: Figure out better way to deactivate hasAnimation
-	// after the position as damped to the defaultCameraPosition
+	// // after the position has damped to the defaultCameraPosition, disable
 	// setTimeout(() => {
 	// 	setIdleState(true);
 	// 	setHasAnimation(false);

@@ -58,7 +58,6 @@ const RoomFilteringWizard = ({ handleChange, wizardData }: RoomFilteringWizardPr
 	};
 
 	const handleDateInput = (date: Date | null, inputField: string) => {
-		console.log(date);
 		handleChange(date, inputField);
 	};
 

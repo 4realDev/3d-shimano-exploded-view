@@ -64,8 +64,6 @@ const Accordion = ({
 			const equipmentCorrespondingToAccordionItem = roomAdditionsData?.find(
 				(item) => item.room === accordionItemMeshName
 			)?.equipment;
-			console.log(equipmentCorrespondingToAccordionItem);
-			console.log(accordionItemRoomAddition);
 			if (equipmentCorrespondingToAccordionItem === accordionItemRoomAddition) {
 				return true;
 			}
@@ -74,8 +72,6 @@ const Accordion = ({
 			const chairFormationCorrespondingToAccordionItem = roomAdditionsData?.find(
 				(item) => item.room === accordionItemMeshName
 			)?.chair_formation;
-			console.log(chairFormationCorrespondingToAccordionItem);
-			console.log(accordionItemRoomAddition);
 			if (chairFormationCorrespondingToAccordionItem === accordionItemRoomAddition) {
 				return true;
 			}
@@ -88,6 +84,7 @@ const Accordion = ({
 		<div className={styles.accordion}>
 			{roomList.map((room, roomIndex) => (
 				<AccordionItem
+					key={roomIndex}
 					id={room.info.id}
 					title={room.info.title}
 					personCapacity={room.info.personCapacity}
@@ -101,9 +98,10 @@ const Accordion = ({
 				>
 					{room.info.chairFormations && (
 						<div className={styles.visibilityToggleContainer}>
-							{Object.values(room.info.chairFormations).map((formation) => {
+							{Object.values(room.info.chairFormations).map((formation, index) => {
 								return (
 									<MeshVisibilityButton
+										key={index}
 										toggledRoomName={roomList[roomIndex].model.meshName}
 										toggledMeshName={formation}
 										toggleIcon={getFormationIcon(formation)}
@@ -122,9 +120,10 @@ const Accordion = ({
 
 					{room.info.equipment && (
 						<div className={styles.visibilityToggleContainer}>
-							{Object.values(room.info.equipment).map((equipment) => {
+							{Object.values(room.info.equipment).map((equipment, index) => {
 								return (
 									<MeshVisibilityButton
+										key={index}
 										toggledRoomName={roomList[roomIndex].model.meshName}
 										toggledMeshName={equipment}
 										toggleIcon={getEquipmentIcon(equipment)}

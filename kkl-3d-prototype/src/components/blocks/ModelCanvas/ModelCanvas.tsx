@@ -4,11 +4,11 @@ import React from 'react';
 // npm install @react-three/fiber
 import { Suspense, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { CANVAS_DEBUG } from '../../../App';
 import { roomList } from '../../../data/roomData';
 import { setHoveredMesh, setIdleState, useCameraStore } from '../../../store/useCameraStore';
+import { useDebugStore } from '../../../store/useDebugStore';
 import CameraControls from '../../threeJs/CameraControls';
-import RoomPositionMarkers from '../../threeJs/RoomPositionMarkers';
+import CameraPositionMarkers from '../../threeJs/CameraPositionMarkers';
 import styles from './ModelCanvas.module.scss';
 
 const Model = React.lazy(() =>
@@ -24,6 +24,10 @@ const ModelCanvas = () => {
 
 	const controlsRef = useRef<OrbitControlsProps>();
 	const cameraRef = useRef<PerspectiveCameraProps>();
+
+	const isCameraPositionMarkersActive = useDebugStore((state) => state.isCameraPositionMarkersActive);
+	const isStatesActive = useDebugStore((state) => state.isStatesActive);
+	const isAxisHelperActive = useDebugStore((state) => state.isAxisHelperActive);
 
 	return (
 		// id for better getting the element with document. inside Cursor.tsx
@@ -52,15 +56,15 @@ const ModelCanvas = () => {
 				<Suspense fallback={null}>
 					<Model hoveredMesh={hoveredMesh} setHoveredMesh={setHoveredMesh} />
 
-					{CANVAS_DEBUG && (
-						<RoomPositionMarkers
+					{isCameraPositionMarkersActive && (
+						<CameraPositionMarkers
 							markerPositions={roomList.map((room) => room.model.camPos)}
 							targetPoints={roomList.map((room) => room.model.camTarget)}
 						/>
 					)}
 				</Suspense>
-				{CANVAS_DEBUG && <Stats />}
-				{CANVAS_DEBUG && <primitive object={new THREE.AxesHelper(100)} />}
+				{isStatesActive && <Stats />}
+				{isAxisHelperActive && <primitive object={new THREE.AxesHelper(100)} />}
 			</Canvas>
 		</div>
 	);

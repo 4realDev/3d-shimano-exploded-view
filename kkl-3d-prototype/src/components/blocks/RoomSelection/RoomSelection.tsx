@@ -1,18 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './RoomSelection.module.scss';
-import Checkbox from '@mui/material/Checkbox';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
+import Notification from '../../icons/Notification';
 import RoomFilteringWizard from '../../wizard/RoomFilteringWizard/RoomFilteringWizard';
 import RoomAdditionalOptionsWizard from '../../wizard/RoomAdditionalOptionsWizard/RoomAdditionalOptionsWizard';
 import RoomSideSelectionWizard from '../../wizard/RoomSideSelectionWizard/RoomSideSelectionWizard';
 import RoomMainSelectionWizard from '../../wizard/RoomMainSelectionWizard/RoomMainSelectionWizard';
 import { StepButton } from '@mui/material';
+import { resetWizardData, setStep, updateWizardData, useWizardStore } from '../../../store/useWizardStore';
 import { resetScene } from '../../../store/useCameraStore';
-import Notification from '../../icons/Notification';
-import { setMeshChildVisibility } from '../../../store/useMeshStore';
-import { getMeshObjectByMeshName } from '../../../utils/formatRoom';
-import { ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
+import DebugControlPanel from '../../debug/DebugControlPanel/DebugControlPanel';
 
 // yarn add @mui/material @emotion/react @emotion/styled
 // yarn add @mui/lab
@@ -40,7 +38,7 @@ const steps = [
 
 const RoomSelection = () => {
 	const wizardData = useWizardStore((state) => state.wizardData);
-	const [step, setStep] = useState(0);
+	const step = useWizardStore((state) => state.step);
 	const [validationPassed, setValidationPassed] = useState<boolean | null>(null);
 
 	const nextStep = () => {
@@ -67,24 +65,28 @@ const RoomSelection = () => {
 		updateWizardData(value, inputField);
 	};
 
-	const validateNextStep = () => {
-		switch (step) {
+	const validateStep = (index: number) => {
+		switch (index) {
 			case 0:
 				setValidationPassed(true);
 				return true;
 			case 1:
-				// TODO: Add validation hint for missing selection of activeMainRoom
-				if (wizardData.activeMainRoom) {
+				setValidationPassed(true);
+				return true;
+
+			case 2:
+				if (!!wizardData.activeMainRoom) {
 					setValidationPassed(true);
 					return true;
 				} else {
 					setValidationPassed(false);
 					return false;
 				}
-			case 2:
+			case 3:
 				setValidationPassed(true);
 				return true;
-			case 3:
+			// submit case
+			case 4:
 				setValidationPassed(true);
 				return true;
 			default:
@@ -118,11 +120,13 @@ const RoomSelection = () => {
 								<StepButton
 									color='inherit'
 									onClick={() => {
-										// steps back do not need any validation
+										// do not run validation process on steps back
 										if (index < step) {
 											setStep(index);
-										} else {
-											validateNextStep() && setStep(index);
+										}
+										// do not allow to jump over wizard steps
+										else if (index <= step + 1) {
+											validateStep(index) && setStep(index);
 										}
 									}}
 								></StepButton>
@@ -143,7 +147,7 @@ const RoomSelection = () => {
 						)}
 						<button
 							className={styles.card__button}
-							onClick={() => validateNextStep() && (step < 3 ? nextStep() : submitForm())}
+							onClick={() => validateStep(step + 1) && (step < 3 ? nextStep() : submitForm())}
 						>
 							{step === 0 ? 'Zum Raumplaner' : step < 3 ? 'Weiter' : 'Senden'}
 						</button>
@@ -155,6 +159,9 @@ const RoomSelection = () => {
 						</div>
 					)}
 				</div>
+			</div>
+			<div className={styles.card}>
+				<DebugControlPanel />
 			</div>
 		</div>
 	);

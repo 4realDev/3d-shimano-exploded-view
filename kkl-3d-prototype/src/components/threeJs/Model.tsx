@@ -7,10 +7,10 @@ import * as THREE from 'three';
 import { GroupProps } from '@react-three/fiber';
 import { setMeshList, useMeshStore } from '../../store/useMeshStore';
 import { showSelectedRoom, showSelectedRooms, useCameraStore } from '../../store/useCameraStore';
-import { CANVAS_DEBUG } from '../../App';
 import { INTERACTABLE_MESH_NAMES, roomList } from '../../data/roomData';
 import { getMeshObjectByMeshName } from '../../utils/formatRoom';
 import { updateWizardData } from '../../store/useWizardStore';
+import { useDebugStore } from '../../store/useDebugStore';
 
 // TODO: Performance issues due to lineSegment Material -> Could be fixed in 3D production
 
@@ -139,6 +139,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 					meshObject.children.map((childObject) => {
 						return (
 							<mesh
+								key={childObject.name}
 								name={childObject.name}
 								visible={childObject.isVisible}
 								userData={childObject.userData}
@@ -155,10 +156,10 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 									visible={childObject.isVisible}
 									opacity={childObject.opacity}
 								/>
-								{/* <lineSegments>
+								<lineSegments>
 									<edgesGeometry attach='geometry' args={[childObject.geometry]} />
 									<lineBasicMaterial color='black' attach='material' transparent opacity={childObject.opacity} />
-								</lineSegments> */}
+								</lineSegments>
 							</mesh>
 						);
 					})}
@@ -169,6 +170,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 	const renderMesh = (meshObject: MeshObject) => {
 		return (
 			<mesh
+				key={meshObject.name}
 				name={meshObject.name}
 				visible={meshObject.isVisible}
 				userData={meshObject.userData}
@@ -224,26 +226,28 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 					}
 				/>
 				{/* Due limitations of OpenGL Core Profile with WebGL renderer on most platforms linewidth will always be 1 regardless of set value.  */}
-				{/* <lineSegments>
+				<lineSegments>
 					<edgesGeometry attach='geometry' args={[meshObject.geometry]} />
 					<lineBasicMaterial color='black' attach='material' transparent opacity={setOutlineOpacity(meshObject)} />
-				</lineSegments> */}
+				</lineSegments>
 			</mesh>
 		);
 	};
 
 	return (
 		<>
-			{CANVAS_DEBUG && <primitive object={new THREE.BoxHelper(group.current as any, 'black')} />}
+			{useDebugStore((state) => state.isBoxHelperActive) && (
+				<primitive object={new THREE.BoxHelper(group.current as any, 'black')} />
+			)}
 			{/* // Drei: Calculates a boundary box and centers its children accordingly. */}
 			<Center>
 				<group scale={0.01} position={[0, 0, 0]} ref={group}>
-					{meshList.map((meshObject: MeshObject) => {
+					{meshList.map((meshObject: MeshObject, index: number) => {
 						return (
-							<>
+							<mesh key={index}>
 								{renderMeshChildren(meshObject)}
 								{renderMesh(meshObject)}
-							</>
+							</mesh>
 						);
 					})}
 				</group>

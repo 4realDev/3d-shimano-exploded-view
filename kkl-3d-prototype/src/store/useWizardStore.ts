@@ -8,6 +8,11 @@ export type WizardRoomData = {
 	equipment: string;
 };
 
+export enum ROOM_TYPE {
+	mainRoom = 'mainRoom',
+	sideRoom = 'sideRoom',
+}
+
 export type WizardData = {
 	eventType: EVENT_TYPES;
 	personNum: string;
@@ -21,6 +26,7 @@ export type WizardData = {
 
 type WizardState = {
 	wizardData: WizardData;
+	step: number;
 };
 
 export const useWizardStore = create<WizardState>((set, get) => ({
@@ -34,7 +40,12 @@ export const useWizardStore = create<WizardState>((set, get) => ({
 		activeMainRoom: '',
 		activeSideRoom: '',
 	},
+	step: 0,
 }));
+
+export const setStep = (step: number) => {
+	useWizardStore.setState({ step: step });
+};
 
 export const resetWizardData = () => {
 	useWizardStore.setState({
@@ -58,21 +69,22 @@ export const updateWizardData = (value: any, inputField: any) => {
 
 export const handleRoomDataChange = (toggledRoomName: string) => {
 	const wizardData = useWizardStore.getState().wizardData;
-	const roomType = getMeshObjectByMeshName(toggledRoomName)?.info.fittingSideRoom ? 'mainRoom' : 'sideRoom';
+	const roomType = getMeshObjectByMeshName(toggledRoomName)?.info.fittingSideRoom
+		? ROOM_TYPE.mainRoom
+		: ROOM_TYPE.sideRoom;
 
 	const mainRoomAdditions = wizardData[roomType];
 
 	if (wizardData[roomType].map((item) => item.room).includes(toggledRoomName)) {
-		console.log('OVERWRITE EXISTING ITEM');
+		// OVERWRITE EXISTING ROOM ITEM
 		const index = wizardData[roomType].findIndex((item) => item.room === toggledRoomName);
 		mainRoomAdditions[index] = {
+			...wizardData[roomType][index],
 			room: toggledRoomName,
-			equipment: wizardData[roomType][index].equipment,
-			chair_formation: wizardData[roomType][index].chair_formation,
 		};
 		updateWizardData(mainRoomAdditions, roomType);
 	} else {
-		console.log('ADD NEW ITEM');
+		// ADD NEW ROOM ITEM
 		const newRoomValue = [
 			...wizardData[roomType],
 			{
@@ -83,7 +95,7 @@ export const handleRoomDataChange = (toggledRoomName: string) => {
 		];
 		updateWizardData(newRoomValue, roomType);
 	}
-	updateWizardData(toggledRoomName, roomType === 'mainRoom' ? 'activeMainRoom' : 'activeSideRoom');
+	updateWizardData(toggledRoomName, roomType === ROOM_TYPE.mainRoom ? 'activeMainRoom' : 'activeSideRoom');
 };
 
 export const handleRoomAdditionsChange = (
@@ -92,7 +104,9 @@ export const handleRoomAdditionsChange = (
 	category: ROOM_ADDITIONS_CATEGORY
 ) => {
 	const wizardData = useWizardStore.getState().wizardData;
-	const roomType = getMeshObjectByMeshName(toggledRoomName)?.info.fittingSideRoom ? 'mainRoom' : 'sideRoom';
+	const roomType = getMeshObjectByMeshName(toggledRoomName)?.info.fittingSideRoom
+		? ROOM_TYPE.mainRoom
+		: ROOM_TYPE.sideRoom;
 	const newRoomAdditions = wizardData[roomType];
 
 	if (newRoomAdditions.map((item) => item.room).includes(toggledRoomName)) {
