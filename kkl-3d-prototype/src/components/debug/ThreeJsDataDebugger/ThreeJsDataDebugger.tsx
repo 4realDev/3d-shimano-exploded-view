@@ -21,6 +21,18 @@ const ThreeJsDataDebugger = () => {
 				</p>
 			</div>
 			<div className={styles.debugger__container__rowSection}>
+				<p>filteredMeshes: </p>
+				<p>
+					[
+					{cameraStoreState.filteredMeshes.map((filteredMeshes, index) => {
+						return index !== cameraStoreState.filteredMeshes.length - 1
+							? `${filteredMeshes} (${getRoomTitleByMeshName(filteredMeshes)}), `
+							: `${filteredMeshes} (${getRoomTitleByMeshName(filteredMeshes)})`;
+					})}
+					]
+				</p>
+			</div>
+			<div className={styles.debugger__container__rowSection}>
 				<p>hoveredMesh: </p>
 				<p>{cameraStoreState.hoveredMesh}</p>
 			</div>
