@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { RoomItemsList, roomList, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
 import {
+	setFilteredMeshes,
+	setSelectedMeshes,
 	showAndSelectRoom,
+	showAndSelectRooms,
 	showRoomsOverview,
 } from '../../../store/useCameraStore';
 import { setMeshChildVisibility } from '../../../store/useMeshStore';
@@ -15,8 +18,6 @@ interface RoomSideSelectionWizardProps {
 }
 
 const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelectionWizardProps) => {
-	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
-
 	const [fittingSideRooms, setFittingSideRooms] = useState<RoomItemsList[]>([]);
 
 	useEffect(() => {
@@ -24,7 +25,13 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 		const fittingSideRooms = roomList.filter((room) => {
 			return activeMainRoom?.info.fittingSideRoom?.includes(room.model.meshName);
 		});
+		const fittingSideRoomMeshNames = fittingSideRooms.map((sideRoom) => sideRoom.model.meshName);
+
+		// show overview of all fittingSideRooms
+		showAndSelectRooms(fittingSideRoomMeshNames);
+
 		setFittingSideRooms(fittingSideRooms);
+		setFilteredMeshes(fittingSideRoomMeshNames);
 	}, []);
 
 	const handleOnOpen = (toggledMeshName: string) => {
@@ -33,6 +40,7 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 	};
 
 	const handleOnClose = (toggledMeshName: string) => {
+		setSelectedMeshes([]);
 		showRoomsOverview();
 		wizardData.activeSideRoom === toggledMeshName && handleChange('', 'activeSideRoom');
 	};

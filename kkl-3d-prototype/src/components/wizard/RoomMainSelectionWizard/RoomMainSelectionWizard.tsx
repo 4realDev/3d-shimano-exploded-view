@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { EVENT_TYPES, RoomItemsList, roomList, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
 import {
+	setFilteredMeshes,
 	setSelectedMeshes,
 	showAndSelectRoom,
 	showAndSelectRooms,
 	showRoomsOverview,
+	useCameraStore,
 } from '../../../store/useCameraStore';
 import { setMeshChildVisibility } from '../../../store/useMeshStore';
 import { handleRoomAdditionsChange, handleRoomDataChange, WizardData } from '../../../store/useWizardStore';
@@ -16,9 +18,9 @@ interface RoomMainSelectionWizardProps {
 }
 
 const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelectionWizardProps) => {
-	const [filteredRoomMeshesNames, setFilteredRoomMeshesNames] = useState<string[] | null>([]);
+	const filteredMeshes = useCameraStore((state) => state.filteredMeshes);
 	const filteredRoomMeshes = roomList.filter((room) => {
-		return filteredRoomMeshesNames?.includes(room.model.meshName);
+		return filteredMeshes?.includes(room.model.meshName);
 	});
 
 	useEffect(() => {
@@ -82,7 +84,7 @@ const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelection
 		filteredMainRoomList = filterAfterPersonNum(filteredMainRoomList);
 		filteredMainRoomList = filterAfterEventType(filteredMainRoomList);
 		filteredMainRoomList = filterAfterDate(filteredMainRoomList);
-		const filteredRoomMeshNames = filteredMainRoomList.map((room) => room.model.meshName);
+		const filteredMainRoomMeshNames = filteredMainRoomList.map((room) => room.model.meshName);
 
 		// if there is only one resulting fitting mainRoom,
 		// set it as the activeMainRoom and show it inside the model (make it the only selectedModel)
@@ -94,7 +96,10 @@ const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelection
 		else {
 			showAndSelectRooms(filteredMainRoomMeshNames);
 		}
-		setFilteredRoomMeshesNames(filteredRoomMeshNames);
+
+		// Setting selectedMeshes inside the store, will automatically refilter the selectedFilteredRooms, which is passed into the Accordion
+		// setFilteredRoomMeshesNames(filteredMainRoomMeshNames);
+		setFilteredMeshes(filteredMainRoomMeshNames);
 	};
 
 	const handleOnOpen = (toggledMeshName: string) => {
@@ -103,7 +108,7 @@ const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelection
 	};
 
 	const handleOnClose = (toggledMeshName: string) => {
-		filteredRoomMeshesNames && showSelectedRooms(filteredRoomMeshesNames, false);
+		setSelectedMeshes([]);
 		showRoomsOverview();
 		wizardData.activeMainRoom === toggledMeshName && handleChange('', 'activeMainRoom');
 	};

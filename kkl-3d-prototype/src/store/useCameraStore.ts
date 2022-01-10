@@ -15,6 +15,7 @@ interface CameraStore {
 	idleState: boolean;
 	hoveredMesh: string | null;
 	selectedMeshes: string[];
+	filteredMeshes: string[];
 }
 
 export const useCameraStore = create<CameraStore>((set) => ({
@@ -24,10 +25,14 @@ export const useCameraStore = create<CameraStore>((set) => ({
 	idleState: true,
 	hoveredMesh: null,
 	selectedMeshes: [],
+	filteredMeshes: [],
 }));
 
 export const setSelectedMeshes = (selectedMeshes: string[]) =>
 	useCameraStore.setState((state) => ({ selectedMeshes: selectedMeshes }));
+
+export const setFilteredMeshes = (filteredMeshes: string[]) =>
+	useCameraStore.setState((state) => ({ filteredMeshes: filteredMeshes }));
 
 export const setHoveredMesh = (hoveredMesh: string | null) =>
 	useCameraStore.setState((state) => ({ hoveredMesh: hoveredMesh }));
@@ -81,12 +86,7 @@ export const resetScene = (enableInitialAnimation = true) => {
 	enableInitialAnimation && setHasAnimation(true);
 	resetMeshVisibility();
 	setSelectedMeshes([]);
+	setFilteredMeshes([]);
 	setCameraPosition(defaultCameraPosition);
 	setCameraTarget(defaultCameraTargetPosition);
-
-	// // after the position has damped to the defaultCameraPosition, disable
-	// setTimeout(() => {
-	// 	setIdleState(true);
-	// 	setHasAnimation(false);
-	// }, 2250);
 };

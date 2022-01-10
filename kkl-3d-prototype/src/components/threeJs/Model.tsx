@@ -8,8 +8,7 @@ import { GroupProps } from '@react-three/fiber';
 import { setMeshList, useMeshStore } from '../../store/useMeshStore';
 import { showSelectedRoom, showSelectedRooms, useCameraStore } from '../../store/useCameraStore';
 import { INTERACTABLE_MESH_NAMES, roomList } from '../../data/roomData';
-import { getMeshObjectByMeshName } from '../../utils/formatRoom';
-import { updateWizardData } from '../../store/useWizardStore';
+import { handleRoomDataChange, useWizardStore } from '../../store/useWizardStore';
 import { useDebugStore } from '../../store/useDebugStore';
 
 // TODO: Performance issues due to lineSegment Material -> Could be fixed in 3D production
@@ -42,6 +41,8 @@ type ModelProps = {
 const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 	const meshList = useMeshStore((state) => state.meshList);
 	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
+	const filteredMeshes = useCameraStore((state) => state.filteredMeshes);
+	const wizardStep = useWizardStore((state) => state.step);
 
 	const group = useRef<GroupProps>();
 	const model = useGLTF('/house-model.glb') as DreiGLTF;
@@ -196,17 +197,18 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 					if (event.object.visible && event.object.userData.customName) {
 						event.stopPropagation();
 						if (event.object.userData.customName === INTERACTABLE_MESH_NAMES.roof) {
-							showSelectedRooms(
-								roomList.map((room) => room.model.meshName),
-								false
-							);
+							showRoomsOverview();
 						} else {
-							showSelectedRoom(event.object.userData.customName);
-							// if the clicked room has side rooms, it is a main room and will be set as the new activeMainRoom
-							// else it is a side room and will be set as the new activeSideRoom
-							getMeshObjectByMeshName(event.object.userData.customName)?.info.fittingSideRoom
-								? updateWizardData(event.object.userData.customName, 'activeMainRoom')
-								: updateWizardData(event.object.userData.customName, 'activeSideRoom');
+							// if wizardStep is the first filtering step, show every clicked room, but don't set the clicked room as activeRoom in wizardData
+							if (wizardStep === 0) {
+								showAndSelectRoom(event.object.userData.customName);
+							}
+							// if wizardStep if > 0 and the room is included in the filtering meshes, set the clicked room as activeRoom and show the the selected room
+							else if (wizardStep > 0 && filteredMeshes.includes(event.object.userData.customName)) {
+								// Add or overwrite the wizardData with the clicked RoomData to update the AccordionItems
+								handleRoomDataChange(event.object.userData.customName);
+								showAndSelectRoom(event.object.userData.customName);
+							}
 						}
 					}
 				}}
