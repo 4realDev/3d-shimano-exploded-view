@@ -43,7 +43,7 @@ export const setHasAnimation = (hasAnimation: boolean) =>
 
 export const setIdleState = (idleState: boolean) => useCameraStore.setState((state) => ({ idleState: idleState }));
 
-export const showSelectedRoom = (selectedMesh: string) => {
+export const showAndSelectRoom = (selectedMesh: string) => {
 	setIdleState(false);
 	setHasAnimation(true);
 	setMeshVisibility(INTERACTABLE_MESH_NAMES.roof, false);
@@ -55,16 +55,23 @@ export const showSelectedRoom = (selectedMesh: string) => {
 	}
 };
 
-export const showSelectedRooms = (
+export const showAndSelectRooms = (
 	selectedMeshes: string[],
-	selectMesh = true,
 	camPos = overviewCameraPosition,
 	camTarget = defaultCameraTargetPosition
 ) => {
 	setIdleState(false);
 	setHasAnimation(true);
 	setMeshVisibility(INTERACTABLE_MESH_NAMES.roof, false);
-	selectMesh && setSelectedMeshes(selectedMeshes);
+	setSelectedMeshes(selectedMeshes);
+	setCameraPosition(camPos);
+	setCameraTarget(camTarget);
+};
+
+export const showRoomsOverview = (camPos = overviewCameraPosition, camTarget = defaultCameraTargetPosition) => {
+	setIdleState(false);
+	setHasAnimation(true);
+	setMeshVisibility(INTERACTABLE_MESH_NAMES.roof, false);
 	setCameraPosition(camPos);
 	setCameraTarget(camTarget);
 };

@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { roomList } from '../../../data/roomData';
+import { showRoomsOverview } from '../../../store/useCameraStore';
 import { ROOM_TYPE, WizardData } from '../../../store/useWizardStore';
 import { formatDate } from '../../../utils/formatDate';
 import RoomCard from '../../ui/RoomCard/RoomCard';
@@ -36,6 +37,7 @@ const RoomSummaryWizard = ({ handleChange, wizardData }: RoomSummaryWizardProps)
 			top: 0,
 			behavior: 'smooth',
 		});
+		showRoomsOverview();
 	}, []);
 
 	return (

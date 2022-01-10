@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import { EVENT_TYPES, RoomItemsList, roomList, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
-import { showSelectedRoom, showSelectedRooms } from '../../../store/useCameraStore';
+import {
+	setSelectedMeshes,
+	showAndSelectRoom,
+	showAndSelectRooms,
+	showRoomsOverview,
+} from '../../../store/useCameraStore';
 import { setMeshChildVisibility } from '../../../store/useMeshStore';
 import { handleRoomAdditionsChange, handleRoomDataChange, WizardData } from '../../../store/useWizardStore';
 import Accordion from '../../ui/Accordion/Accordion';
@@ -79,23 +84,27 @@ const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelection
 		filteredMainRoomList = filterAfterDate(filteredMainRoomList);
 		const filteredRoomMeshNames = filteredMainRoomList.map((room) => room.model.meshName);
 
-		// Setting selectedMeshes inside the store, will automatically refilter the selectedFilteredRooms, which is passed into the Accordion
-		if (filteredRoomMeshNames.length === 1) {
-			showSelectedRoom(filteredRoomMeshNames[0]);
-			handleChange(filteredRoomMeshNames[0], 'activeMainRoom');
-		} else {
-			showSelectedRooms(filteredRoomMeshNames);
+		// if there is only one resulting fitting mainRoom,
+		// set it as the activeMainRoom and show it inside the model (make it the only selectedModel)
+		if (filteredMainRoomMeshNames.length === 1) {
+			showAndSelectRoom(filteredMainRoomMeshNames[0]);
+			handleChange(filteredMainRoomMeshNames[0], 'activeMainRoom');
+		}
+		// show overview of all filteredMainRooms
+		else {
+			showAndSelectRooms(filteredMainRoomMeshNames);
 		}
 		setFilteredRoomMeshesNames(filteredRoomMeshNames);
 	};
 
 	const handleOnOpen = (toggledMeshName: string) => {
 		handleRoomDataChange(toggledMeshName);
-		showSelectedRoom(toggledMeshName);
+		showAndSelectRoom(toggledMeshName);
 	};
 
 	const handleOnClose = (toggledMeshName: string) => {
 		filteredRoomMeshesNames && showSelectedRooms(filteredRoomMeshesNames, false);
+		showRoomsOverview();
 		wizardData.activeMainRoom === toggledMeshName && handleChange('', 'activeMainRoom');
 	};
 

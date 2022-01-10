@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react';
 import { RoomItemsList, roomList, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
-import { showSelectedRoom, showSelectedRooms, useCameraStore } from '../../../store/useCameraStore';
+import {
+	showAndSelectRoom,
+	showRoomsOverview,
+} from '../../../store/useCameraStore';
 import { setMeshChildVisibility } from '../../../store/useMeshStore';
 import { handleRoomAdditionsChange, handleRoomDataChange, WizardData } from '../../../store/useWizardStore';
 import { getMeshObjectByMeshName } from '../../../utils/formatRoom';
@@ -26,11 +29,11 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 
 	const handleOnOpen = (toggledMeshName: string) => {
 		handleRoomDataChange(toggledMeshName);
-		showSelectedRoom(toggledMeshName);
+		showAndSelectRoom(toggledMeshName);
 	};
 
 	const handleOnClose = (toggledMeshName: string) => {
-		showSelectedRooms(selectedMeshes, false);
+		showRoomsOverview();
 		wizardData.activeSideRoom === toggledMeshName && handleChange('', 'activeSideRoom');
 	};
 
