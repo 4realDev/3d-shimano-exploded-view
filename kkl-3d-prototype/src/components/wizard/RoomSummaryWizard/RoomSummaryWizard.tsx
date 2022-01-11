@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 import { roomList } from '../../../data/roomData';
-import { showRoomsOverview } from '../../../store/useCameraStore';
+import { setFilteredMeshes, setSelectedMeshes, showRoomsOverview } from '../../../store/useCameraStore';
 import { ROOM_TYPE, WizardData } from '../../../store/useWizardStore';
 import { formatDate } from '../../../utils/formatDate';
 import RoomCard from '../../ui/RoomCard/RoomCard';
@@ -38,6 +38,9 @@ const RoomSummaryWizard = ({ handleChange, wizardData }: RoomSummaryWizardProps)
 			behavior: 'smooth',
 		});
 		showRoomsOverview();
+		// set filteredMeshes and selctedMeshes to highlight them inside the model
+		setFilteredMeshes([wizardData.activeMainRoom, wizardData.activeSideRoom]);
+		setSelectedMeshes([wizardData.activeMainRoom, wizardData.activeSideRoom]);
 	}, []);
 
 	return (
