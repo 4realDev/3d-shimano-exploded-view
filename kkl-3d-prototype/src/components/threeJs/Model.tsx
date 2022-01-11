@@ -6,7 +6,7 @@ import { GLTF } from 'three-stdlib';
 import * as THREE from 'three';
 import { GroupProps } from '@react-three/fiber';
 import { setMeshList, useMeshStore } from '../../store/useMeshStore';
-import { showSelectedRoom, showSelectedRooms, useCameraStore } from '../../store/useCameraStore';
+import { showAndSelectRoom, showRoomsOverview, useCameraStore } from '../../store/useCameraStore';
 import { INTERACTABLE_MESH_NAMES, roomList } from '../../data/roomData';
 import { handleRoomDataChange, useWizardStore } from '../../store/useWizardStore';
 import { useDebugStore } from '../../store/useDebugStore';
@@ -47,36 +47,69 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 	const group = useRef<GroupProps>();
 	const model = useGLTF('/house-model.glb') as DreiGLTF;
 
-	const outlineOpacityValueUnselected = 0.2;
-	const outlineOpacityValueSelectedAndDefault = 1;
-	const colorOpacityValueUnselected = 0.15;
-	const colorOpacityValueSelectedAndDefault = 1;
-	const colorHovered = '#FF7F7F';
-	const outlineOpacityValueHovered = 0.5;
+	// colors from AVASTA: https://avasta.ch/20-best-pastel-color-palettes-for-2021/ #20
+	const colorFilteredMainRoom = '#ffcaaf';
+	const colorFilteredSideRoom = '#f1ffc4';
+	const colorSelectedOrHoveredMainRoom = '#ffd9c6';
+	const colorSelectedOrHoveredSideRoom = '#f6ffda';
 
 	useEffect(() => {
 		const initialMeshList = convertGLTFToMeshList(model.nodes);
 		setMeshList(initialMeshList);
 	}, []);
 
-	const setMeshColor = (meshObject: MeshObject) => {
-		if (hoveredMesh !== meshObject.name) return meshObject.color;
-		if (selectedMeshes.includes(meshObject.name) && selectedMeshes.length <= 1) return meshObject.color;
-		else return colorHovered;
+	/**
+	 * Returns color hex value according to mesh objects state and wizardStep (hovered, selected, included in filteredMeshes array).
+	 * @param meshObject The mesh object from which the color will be determined.
+	 * @return The resulting color hex value according to meshObject's state.
+	 */
+	const getMeshColor = (meshObject: MeshObject) => {
+		let colorFiltered;
+		let colorSelectedOrHovered;
+		const hasFittingSideRoom = roomList.find((room) => room.model.meshName === meshObject.name)?.info.fittingSideRoom;
+		const isHovered = hoveredMesh === meshObject.name;
+		const isSelected = selectedMeshes.includes(meshObject.name);
+
+		// if room has fittingSideRooms, it is a mainRoom and receives the hovered / active color for main rooms
+		// else it is a sideRoom and receives the hovered / active color for side rooms
+		if (hasFittingSideRoom) {
+			colorFiltered = colorFilteredMainRoom;
+			colorSelectedOrHovered = colorSelectedOrHoveredMainRoom;
+		} else {
+			colorFiltered = colorFilteredSideRoom;
+			colorSelectedOrHovered = colorSelectedOrHoveredSideRoom;
+		}
+
+		// special state for the selection through the model, without filtering in the wizard before
+		if (wizardStep === 0) return isSelected || isHovered ? colorSelectedOrHovered : meshObject.color;
+
+		// normal state which differentiates between filtered, hovered and selected meshes
+		if (filteredMeshes.includes(meshObject.name)) {
+			return isSelected || isHovered ? colorSelectedOrHovered : colorFiltered;
+		} else {
+			return meshObject.color;
+		}
 	};
 
-	const setOutlineOpacity = (meshObject: MeshObject) => {
-		// current mesh is non of the selectedMeshes
-		if (selectedMeshes.length > 0 && !selectedMeshes.includes(meshObject.name)) {
-			// current mesh is non of the selecteMeshes and is hovered
-			if (hoveredMesh === meshObject.name) {
-				return outlineOpacityValueHovered;
-			}
-			// current mesh is non of the selectedMeshes and is not hovered
-			return outlineOpacityValueUnselected;
+	/**
+	 * Returns float opacity value according to mesh objects state and wizardStep (hovered, selected, included in filteredMeshes array).
+	 * @param meshObject The mesh object from which the opacity will be determined.
+	 * @return The resulting opacity value according to meshObject's state.
+	 */
+	const getMeshMaterialOpacity = (meshObject: MeshObject) => {
+		const isHovered = hoveredMesh === meshObject.name;
+		const isSelected = selectedMeshes.includes(meshObject.name);
+
+		// default state, before a room was selected
+		if (selectedMeshes.length === 0) return 1.0;
+		// special state for the selection through the model, without filtering in the wizard before
+		if (wizardStep === 0) return isSelected || isHovered ? 1.0 : 0.15;
+		// normal state which differentiates between filtered, hovered and selected meshes
+		if (filteredMeshes.includes(meshObject.name)) {
+			return isSelected || isHovered ? 1.0 : 0.5;
+		} else {
+			return 0.15;
 		}
-		// current mesh is selected or there are no selected meshes yet
-		return outlineOpacityValueSelectedAndDefault;
 	};
 
 	const convertGLTFToMeshList = (nodes: { [name: string]: THREE.Mesh }) => {
@@ -132,6 +165,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 		return initialMeshList;
 	};
 
+	// render rooms children elements (equipment & chair_formation)
 	const renderMeshChildren = (meshObject: MeshObject) => {
 		return (
 			<>
@@ -150,16 +184,23 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 								scale={childObject.scale}
 							>
 								<bufferGeometry attach='geometry' {...childObject.geometry} />
+
+								{/* passing the opacity and color of the parent meshObject to the materials */}
 								<meshBasicMaterial
 									attach='material'
-									color={childObject.color}
+									color={getMeshColor(meshObject)}
 									transparent
 									visible={childObject.isVisible}
-									opacity={childObject.opacity}
+									opacity={getMeshMaterialOpacity(meshObject)}
 								/>
 								<lineSegments>
 									<edgesGeometry attach='geometry' args={[childObject.geometry]} />
-									<lineBasicMaterial color='black' attach='material' transparent opacity={childObject.opacity} />
+									<lineBasicMaterial
+										color='black'
+										attach='material'
+										transparent
+										opacity={getMeshMaterialOpacity(meshObject)}
+									/>
 								</lineSegments>
 							</mesh>
 						);
@@ -218,19 +259,15 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 				<bufferGeometry attach='geometry' {...meshObject.geometry} />
 				<meshBasicMaterial
 					attach='material'
-					color={setMeshColor(meshObject)}
+					color={getMeshColor(meshObject)}
 					transparent
 					visible={meshObject.isVisible}
-					opacity={
-						selectedMeshes.length > 0 && !selectedMeshes.includes(meshObject.name)
-							? colorOpacityValueUnselected
-							: colorOpacityValueSelectedAndDefault
-					}
+					opacity={getMeshMaterialOpacity(meshObject)}
 				/>
 				{/* Due limitations of OpenGL Core Profile with WebGL renderer on most platforms linewidth will always be 1 regardless of set value.  */}
 				<lineSegments>
 					<edgesGeometry attach='geometry' args={[meshObject.geometry]} />
-					<lineBasicMaterial color='black' attach='material' transparent opacity={setOutlineOpacity(meshObject)} />
+					<lineBasicMaterial color='black' attach='material' transparent opacity={getMeshMaterialOpacity(meshObject)} />
 				</lineSegments>
 			</mesh>
 		);
@@ -243,7 +280,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 			)}
 			{/* // Drei: Calculates a boundary box and centers its children accordingly. */}
 			<Center>
-				<group scale={0.01} position={[0, 0, 0]} ref={group}>
+				<group scale={0.0075} position={[0, 0, 0]} ref={group}>
 					{meshList.map((meshObject: MeshObject, index: number) => {
 						return (
 							<mesh key={index}>
