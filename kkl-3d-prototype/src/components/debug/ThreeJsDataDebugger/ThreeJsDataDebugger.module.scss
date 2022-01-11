@@ -1,9 +1,7 @@
 @import '../../../styles/colors.scss';
+@import '../../../styles/viewport.scss';
 
 .debugger__container {
-	position: absolute;
-	top: 0;
-	right: 0;
 	z-index: 99;
 	background: white;
 	display: flex;
@@ -13,7 +11,7 @@
 	width: 285px;
 	height: auto;
 	padding-bottom: 16px;
-	margin-top: 50px;
+	margin-bottom: 50px;
 	margin-left: 50px;
 	margin-right: 50px;
 	padding: 28px 24px 28px 24px;
@@ -22,6 +20,13 @@
 	overflow-wrap: break-word;
 	font-size: 1.1rem;
 	line-height: 22px;
+
+	@include md {
+		position: absolute;
+		top: 0;
+		right: 0;
+		margin-top: 50px;
+	}
 
 	&__rowSection {
 		display: flex;

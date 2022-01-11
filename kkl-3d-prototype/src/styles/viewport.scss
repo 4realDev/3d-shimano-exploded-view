@@ -1,0 +1,54 @@
+// yarn add node-sass
+
+$xs: 481px;
+$sm: 769px;
+$md: 993px;
+$lg: 1241px;
+
+@mixin xs {
+	@media (min-width: $xs) {
+		@content;
+	}
+}
+
+@mixin xs-max {
+	@media (max-width: ($xs - 1px)) {
+		@content;
+	}
+}
+
+@mixin sm {
+	@media (min-width: $sm) {
+		@content;
+	}
+}
+
+@mixin sm-max {
+	@media (max-width: ($sm - 1px)) {
+		@content;
+	}
+}
+
+@mixin md {
+	@media (min-width: $md) {
+		@content;
+	}
+}
+
+@mixin md-max {
+	@media (max-width: ($md - 1px)) {
+		@content;
+	}
+}
+
+@mixin lg {
+	@media (min-width: $lg) {
+		@content;
+	}
+}
+
+@mixin lg-max {
+	@media (max-width: ($lg - 1px)) {
+		@content;
+	}
+}

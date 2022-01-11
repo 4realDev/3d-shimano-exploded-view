@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 
 import RoomSelection from './components/blocks/RoomSelection/RoomSelection';
 import Cursor from './components/Cursor';

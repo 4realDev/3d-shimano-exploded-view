@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styles from './RoomSelection.module.scss';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -11,6 +11,8 @@ import { StepButton } from '@mui/material';
 import { resetWizardData, setStep, updateWizardData, useWizardStore } from '../../../store/useWizardStore';
 import { resetScene } from '../../../store/useCameraStore';
 import DebugControlPanel from '../../debug/DebugControlPanel/DebugControlPanel';
+import { useDebugStore } from '../../../store/useDebugStore';
+import cn from 'classnames';
 
 // yarn add @mui/material @emotion/react @emotion/styled
 // yarn add @mui/lab
@@ -37,6 +39,7 @@ const steps = [
 ];
 
 const RoomSelection = () => {
+	const isModelActive = useDebugStore((state) => state.isModelActive);
 	const wizardData = useWizardStore((state) => state.wizardData);
 	const step = useWizardStore((state) => state.step);
 	const [validationPassed, setValidationPassed] = useState<boolean | null>(null);
@@ -110,7 +113,7 @@ const RoomSelection = () => {
 	};
 
 	return (
-		<div className={styles.container}>
+		<div className={cn(styles.container, { [styles['container--modelCanvasTopMargin']]: isModelActive })}>
 			<div className={styles.card}>
 				<div className={styles.card__headingStepperContainer}>
 					<h1 className={styles.card__heading}>{steps[step].title}</h1>
