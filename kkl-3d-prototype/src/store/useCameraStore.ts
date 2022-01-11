@@ -82,7 +82,6 @@ export const showRoomsOverview = (camPos = overviewCameraPosition, camTarget = d
 };
 
 export const resetScene = (enableInitialAnimation = true) => {
-	setIdleState(true);
 	enableInitialAnimation && setHasAnimation(true);
 	resetMeshVisibility();
 	setSelectedMeshes([]);

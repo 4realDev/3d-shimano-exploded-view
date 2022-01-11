@@ -29,9 +29,9 @@ const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }:
 
 	// ANIMATED UPDATE FOR CAMERA MOVEMENT ONCLICK/ONSELECT
 	useFrame((state, delta) => {
-		if (!mouseDown && hasAnimation && camera.current && controls.current) {
-			damp(camera.current.position, cameraPosition, dampSpeed, delta);
-			damp(controls.current.target, cameraTarget, dampSpeed, delta);
+		if (!mouseDown && hasAnimation && !idleState) {
+			camera.current && damp(camera.current.position, cameraPosition, dampSpeed, delta);
+			controls.current && damp(controls.current.target, cameraTarget, dampSpeed, delta);
 		}
 		controls?.current?.update!(); // Workaround
 		camera?.current?.updateProjectionMatrix!(); // Workaround
