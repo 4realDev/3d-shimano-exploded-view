@@ -9,6 +9,7 @@ import styles from './Accordion.module.scss';
 import Stage from '../../icons/Stage';
 import Podium from '../../icons/Podium';
 import { WizardRoomData } from '../../../store/useWizardStore';
+import Beamer from '../../icons/Beamer';
 
 type AccordionProps = {
 	roomList: RoomItemsList[];
@@ -47,9 +48,11 @@ const Accordion = ({
 	const getEquipmentIcon = (equipment: string) => {
 		switch (equipment) {
 			case EQUIPMENT.stage:
-				return <Stage />;
+				return <Stage fill='#000000' />;
 			case EQUIPMENT.podium:
-				return <Podium />;
+				return <Podium fill='#000000' />;
+			case EQUIPMENT.beamer:
+				return <Beamer fill='#000000' />;
 			default:
 				return null;
 		}

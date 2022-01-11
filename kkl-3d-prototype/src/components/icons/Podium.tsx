@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Podium = ({ ...props }) => {
 	return (
 		<svg
@@ -9,9 +7,10 @@ const Podium = ({ ...props }) => {
 			height='32'
 			viewBox='0 0 97 97'
 			preserveAspectRatio='xMidYMid meet'
+			fill='#575B64'
 			{...props}
 		>
-			<g transform='translate(0,97) scale(0.1,-0.1)' fill='#000000' stroke='none'>
+			<g transform='translate(0,97) scale(0.1,-0.1)' stroke='none'>
 				<path
 					d='M208 920 c-36 -37 -48 -58 -48 -80 0 -17 -8 -45 -17 -63 -9 -18 -19
 					-50 -22 -72 l-6 -40 -55 -5 -55 -5 -3 -70 c-3 -63 -1 -72 20 -88 20 -17 25
