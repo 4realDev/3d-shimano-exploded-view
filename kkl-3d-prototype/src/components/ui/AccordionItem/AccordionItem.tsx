@@ -11,6 +11,9 @@ import NoSeats from '../../icons/NoSeats';
 import { getMeshNameById } from '../../../utils/formatRoom';
 import { roomList } from '../../../data/roomData';
 import { useWizardStore } from '../../../store/useWizardStore';
+import Exhibition from '../../icons/Exhibition';
+import AdditionalRooms from '../../icons/AdditionalRooms';
+import DayLight from '../../icons/DayLight';
 
 type AccordionItemProps = {
 	id: number;
@@ -110,6 +113,13 @@ const AccordionItem = ({
 				return <Seats />;
 			case 'hasNoSeats':
 				return <NoSeats />;
+			case 'hasExhibition':
+				return <Exhibition />;
+
+			case 'hasAdditionalRooms':
+				return <AdditionalRooms />;
+			case 'hasDayLight':
+				return <DayLight />;
 			default:
 				return null;
 		}

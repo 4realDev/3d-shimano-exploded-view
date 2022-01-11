@@ -12,6 +12,9 @@ import ChairFormationSquare from '../../icons/ChairFormationSquare';
 import Podium from '../../icons/Podium';
 import Stage from '../../icons/Stage';
 import { ROOM_TYPE } from '../../../store/useWizardStore';
+import AdditionalRooms from '../../icons/AdditionalRooms';
+import Exhibition from '../../icons/Exhibition';
+import DayLight from '../../icons/DayLight';
 
 type RoomCardProps = {
 	id: number;
@@ -72,6 +75,12 @@ const RoomCard = ({
 				return <Seats />;
 			case 'hasNoSeats':
 				return <NoSeats />;
+			case 'hasExhibition':
+				return <Exhibition />;
+			case 'hasAdditionalRooms':
+				return <AdditionalRooms />;
+			case 'hasDayLight':
+				return <DayLight />;
 			default:
 				return null;
 		}
