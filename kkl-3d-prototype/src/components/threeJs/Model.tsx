@@ -186,14 +186,15 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 								<bufferGeometry attach='geometry' {...childObject.geometry} />
 
 								{/* passing the opacity and color of the parent meshObject to the materials */}
-								<meshBasicMaterial
+								<meshStandardMaterial
 									attach='material'
 									color={getMeshColor(meshObject)}
 									transparent
 									visible={childObject.isVisible}
 									opacity={getMeshMaterialOpacity(meshObject)}
+									metalness={0.5}
 								/>
-								<lineSegments>
+								{/* <lineSegments>
 									<edgesGeometry attach='geometry' args={[childObject.geometry]} />
 									<lineBasicMaterial
 										color='black'
@@ -201,7 +202,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 										transparent
 										opacity={getMeshMaterialOpacity(meshObject)}
 									/>
-								</lineSegments>
+								</lineSegments> */}
 							</mesh>
 						);
 					})}
@@ -257,18 +258,19 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 				onPointerMissed={(event) => {}}
 			>
 				<bufferGeometry attach='geometry' {...meshObject.geometry} />
-				<meshBasicMaterial
+				<meshStandardMaterial
 					attach='material'
 					color={getMeshColor(meshObject)}
 					transparent
 					visible={meshObject.isVisible}
 					opacity={getMeshMaterialOpacity(meshObject)}
+					metalness={0.5}
 				/>
 				{/* Due limitations of OpenGL Core Profile with WebGL renderer on most platforms linewidth will always be 1 regardless of set value.  */}
-				<lineSegments>
+				{/* <lineSegments>
 					<edgesGeometry attach='geometry' args={[meshObject.geometry]} />
 					<lineBasicMaterial color='black' attach='material' transparent opacity={getMeshMaterialOpacity(meshObject)} />
-				</lineSegments>
+				</lineSegments> */}
 			</mesh>
 		);
 	};
