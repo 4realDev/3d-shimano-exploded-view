@@ -23,7 +23,7 @@
 			margin-top: calc(40vh + 48px);
 		}
 
-		@include md {
+		@include lg {
 			margin-top: 48px;
 		}
 	}
@@ -36,7 +36,7 @@
 		padding: 0 48px !important;
 	}
 
-	@include md {
+	@include lg {
 		width: auto;
 		padding: 0 50px !important;
 	}

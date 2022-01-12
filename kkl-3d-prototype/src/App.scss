@@ -13,7 +13,7 @@
 	overflow: hidden;
 	width: 100%;
 
-	@include md {
+	@include lg {
 		flex-direction: column;
 		align-items: flex-start;
 	}
