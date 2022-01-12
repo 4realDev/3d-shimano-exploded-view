@@ -10,6 +10,7 @@ interface DebugStore {
 	isStatesActive: boolean;
 	isAxisHelperActive: boolean;
 	isBoxHelperActive: boolean;
+	isModelLoading: boolean | null;
 }
 
 export const useDebugStore = create<DebugStore>((set) => ({
@@ -20,17 +21,30 @@ export const useDebugStore = create<DebugStore>((set) => ({
 	isStatesActive: false,
 	isAxisHelperActive: false,
 	isBoxHelperActive: false,
+	isModelLoading: null,
 }));
 
 export const toggleIsModelActive = () => {
 	useDebugStore.setState({ isModelActive: !useDebugStore.getState().isModelActive });
-	setStep(0);
-	resetScene(false);
-	resetWizardData();
+	if (useDebugStore.getState().isModelActive) {
+		setStep(0);
+		resetScene(false);
+		resetWizardData();
+	}
+
 	window.scrollTo({
 		top: 0,
 		behavior: 'smooth',
 	});
+
+	if (useDebugStore.getState().isModelLoading === false) {
+		useDebugStore.setState({ isModelLoading: null });
+	} else {
+		useDebugStore.setState({ isModelLoading: true });
+		setTimeout(() => {
+			useDebugStore.setState({ isModelLoading: false });
+		}, 15000);
+	}
 };
 
 export const toggleIsWizardDataDebuggerActive = () => {
