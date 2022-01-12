@@ -15,6 +15,7 @@ import { ROOM_TYPE } from '../../../store/useWizardStore';
 import AdditionalRooms from '../../icons/AdditionalRooms';
 import Exhibition from '../../icons/Exhibition';
 import DayLight from '../../icons/DayLight';
+import Beamer from '../../icons/Beamer';
 
 type RoomCardProps = {
 	id: number;
@@ -58,6 +59,8 @@ const RoomCard = ({
 				return <Stage />;
 			case EQUIPMENT.podium:
 				return <Podium />;
+			case EQUIPMENT.beamer:
+				return <Beamer />;
 			default:
 				return null;
 		}
@@ -81,6 +84,32 @@ const RoomCard = ({
 				return <AdditionalRooms />;
 			case 'hasDayLight':
 				return <DayLight />;
+			default:
+				return null;
+		}
+	};
+
+	const getFormationText = (formation: string) => {
+		switch (formation) {
+			case CHAIR_FORMATION.shuffle:
+				return 'Bla 1';
+			case CHAIR_FORMATION.square:
+				return 'Bla 2';
+			case CHAIR_FORMATION.circle:
+				return 'Bla 3';
+			default:
+				return null;
+		}
+	};
+
+	const getEquipmentText = (equipment: string) => {
+		switch (equipment) {
+			case EQUIPMENT.stage:
+				return 'Bühne';
+			case EQUIPMENT.podium:
+				return 'Podium';
+			case EQUIPMENT.beamer:
+				return 'Beamer';
 			default:
 				return null;
 		}
@@ -146,15 +175,15 @@ const RoomCard = ({
 				<div className={styles.roomCard__roomAdditionsGrid}>
 					{equipment !== '' && (
 						<div className={styles.roomCard__roomAdditionsColumn}>
-							<h3>Equipment:</h3>
-							<p>{equipment}</p>
+							<h3>Equipment: </h3>
+							<p>{getEquipmentText(equipment)}</p>
 							<div className={styles.roomCard__roomAdditions__icon}>{getEquipmentIcon(equipment)}</div>
 						</div>
 					)}
 					{chairFormation !== '' && (
 						<div className={styles.roomCard__roomAdditionsColumn}>
 							<h3>Stuhlformation: </h3>
-							<p>{chairFormation}</p>
+							<p>{getFormationText(chairFormation)}</p>
 							<div className={styles.roomCard__roomAdditions__icon}>{getFormationIcon(chairFormation)}</div>
 						</div>
 					)}
