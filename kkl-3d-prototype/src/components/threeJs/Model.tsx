@@ -11,8 +11,6 @@ import { INTERACTABLE_MESH_NAMES, roomList } from '../../data/roomData';
 import { handleRoomDataChange, useWizardStore } from '../../store/useWizardStore';
 import { useDebugStore } from '../../store/useDebugStore';
 
-// TODO: Performance issues due to lineSegment Material -> Could be fixed in 3D production
-
 // https://githubmemory.com/repo/pmndrs/drei/issuesF/469
 export type DreiGLTF = GLTF & {
 	nodes: { [name: string]: THREE.Mesh };
@@ -48,10 +46,12 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 	const model = useGLTF('/house-model.glb') as DreiGLTF;
 
 	// colors from AVASTA: https://avasta.ch/20-best-pastel-color-palettes-for-2021/ #20
-	const colorFilteredMainRoom = '#ffcaaf';
-	const colorFilteredSideRoom = '#f1ffc4';
-	const colorSelectedOrHoveredMainRoom = '#ffd9c6';
-	const colorSelectedOrHoveredSideRoom = '#f6ffda';
+	const colorModelDefault = '#D4D4D4';
+	const colorModelChildrenDefault = '#BEBEBE';
+	const colorFilteredMainRoom = '#c4aeae';
+	const colorFilteredSideRoom = '#c7d0af';
+	const colorSelectedOrHoveredMainRoom = '#ceadad';
+	const colorSelectedOrHoveredSideRoom = '#cbd5ac';
 
 	useEffect(() => {
 		const initialMeshList = convertGLTFToMeshList(model.nodes);
@@ -103,12 +103,12 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 		// default state, before a room was selected
 		if (selectedMeshes.length === 0) return 1.0;
 		// special state for the selection through the model, without filtering in the wizard before
-		if (wizardStep === 0) return isSelected || isHovered ? 1.0 : 0.15;
+		if (wizardStep === 0) return isSelected || isHovered ? 1.0 : 0.25;
 		// normal state which differentiates between filtered, hovered and selected meshes
 		if (filteredMeshes.includes(meshObject.name)) {
 			return isSelected || isHovered ? 1.0 : 0.5;
 		} else {
-			return 0.15;
+			return 0.25;
 		}
 	};
 
@@ -137,7 +137,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 						name: child.userData.customName ?? child.name,
 						geometry: child.geometry,
 						material: child.material as any,
-						color: 'white',
+						color: colorModelChildrenDefault,
 						opacity: 1,
 						isVisible: false,
 						userData: 'customName' in child.userData ? { customName: child.userData.customName } : undefined,
@@ -153,7 +153,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 					name: mesh.userData.customName ?? mesh.name,
 					geometry: mesh.geometry,
 					material: mesh.material as any,
-					color: 'white',
+					color: colorModelDefault,
 					opacity: 1,
 					isVisible: true,
 					userData: 'customName' in mesh.userData ? { customName: mesh.userData.customName } : undefined,
@@ -188,7 +188,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 								{/* passing the opacity and color of the parent meshObject to the materials */}
 								<meshStandardMaterial
 									attach='material'
-									color={getMeshColor(meshObject)}
+									color={childObject.color}
 									transparent
 									visible={childObject.isVisible}
 									opacity={getMeshMaterialOpacity(meshObject)}
