@@ -168,7 +168,7 @@ export const roomList = [
 	{
 		model: {
 			meshName: INTERACTABLE_MESH_NAMES.businessMediaRoom,
-			camPos: new THREE.Vector3(4.4, -0.5 + camHeightOffset, 0),
+			camPos: new THREE.Vector3(7.4, -3.5 + camHeightOffset, 0),
 			camTarget: new THREE.Vector3(0.4, -0.5, 0),
 		},
 		info: {
