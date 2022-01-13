@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Chevron = ({ ...props }) => {
 	return (
 		<svg

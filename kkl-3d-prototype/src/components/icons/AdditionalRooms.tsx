@@ -1,5 +1,3 @@
-import React from 'react';
-
 const AdditionalRooms = ({ ...props }) => {
 	return (
 		<svg width='17' height='17' viewBox='-2 1 24 24' fill='#575B64' xmlns='http://www.w3.org/2000/svg' {...props}>

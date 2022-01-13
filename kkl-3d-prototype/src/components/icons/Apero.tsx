@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Apero = ({ ...props }) => {
 	return (
 		<svg width='14' height='12' viewBox='0 0 12 10' fill='#575B64' xmlns='http://www.w3.org/2000/svg' {...props}>
