@@ -10,7 +10,6 @@ import Accessibility from '../../icons/Accessibility';
 import NoSeats from '../../icons/NoSeats';
 import { getMeshNameById } from '../../../utils/formatRoom';
 import { roomList } from '../../../data/roomData';
-import { useWizardStore } from '../../../store/useWizardStore';
 import Exhibition from '../../icons/Exhibition';
 import AdditionalRooms from '../../icons/AdditionalRooms';
 import DayLight from '../../icons/DayLight';
@@ -65,9 +64,7 @@ const AccordionItem = ({
 		});
 	}, []);
 
-	// TODO: Find better way then useEffect!
-	// TODO: Ensure that accordionItems are not selected and open at the first selection
-	// Triggered by handleOnClick from UI interaction as well as by interacting with 3D Modell
+	// Triggered by handleClick from UI interaction as well as by interacting with 3D Modell
 	useEffect(() => {
 		// use effect is triggered in every accordion item
 		// check which one is the clicked item
@@ -115,7 +112,6 @@ const AccordionItem = ({
 				return <NoSeats />;
 			case 'hasExhibition':
 				return <Exhibition />;
-
 			case 'hasAdditionalRooms':
 				return <AdditionalRooms />;
 			case 'hasDayLight':
