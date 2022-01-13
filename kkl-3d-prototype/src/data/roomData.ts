@@ -41,12 +41,10 @@ export enum INTERACTABLE_MESH_NAMES {
 }
 
 export enum CHAIR_FORMATION {
-	shuffle = 'chair_formation_shuffle',
-	square = 'chair_formation_square',
-	circle = 'chair_formation_circle',
 	concert = 'chair_formation_concert',
 	seminar = 'chair_formation_seminar',
 	bankett = 'chair_formation_bankett',
+	uform = 'chair_formation_uform',
 }
 
 export enum EQUIPMENT {
@@ -120,7 +118,7 @@ export const roomList = [
 			height: 12,
 			img: './images/LuzernerSaal.jpg',
 			equipment: [EQUIPMENT.stage, EQUIPMENT.podium, EQUIPMENT.beamer],
-			chairFormations: [CHAIR_FORMATION.shuffle, CHAIR_FORMATION.square, CHAIR_FORMATION.circle],
+			chairFormations: [CHAIR_FORMATION.bankett, CHAIR_FORMATION.seminar, CHAIR_FORMATION.concert],
 			fittings: {
 				hasCatering: true,
 				hasApero: true,

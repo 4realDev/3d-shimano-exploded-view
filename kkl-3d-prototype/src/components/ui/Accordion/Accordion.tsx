@@ -1,15 +1,14 @@
 import { CHAIR_FORMATION, EQUIPMENT, RoomItemsList, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
-import ChairFormationCircle from '../../icons/ChairFormationCircle';
-import ChairFormationShuffled from '../../icons/ChairFormationShuffled';
-import ChairFormationSquare from '../../icons/ChairFormationSquare';
 import MeshVisibilityButton from '../MeshVisibilityButton/MeshVisibilityButton';
-// npm i classnames
 import AccordionItem from '../AccordionItem/AccordionItem';
 import styles from './Accordion.module.scss';
 import Stage from '../../icons/Stage';
 import Podium from '../../icons/Podium';
 import { WizardRoomData } from '../../../store/useWizardStore';
 import Beamer from '../../icons/Beamer';
+import ChairFormationBankett from '../../icons/ChairFormationBankett';
+import ChairFormationConcert from '../../icons/ChairFormationConcert';
+import ChairFormationSeminar from '../../icons/ChairFormationSeminar';
 
 type AccordionProps = {
 	roomList: RoomItemsList[];
@@ -34,12 +33,12 @@ const Accordion = ({
 }: AccordionProps) => {
 	const getFormationIcon = (formation: string) => {
 		switch (formation) {
-			case CHAIR_FORMATION.shuffle:
-				return <ChairFormationShuffled />;
-			case CHAIR_FORMATION.square:
-				return <ChairFormationSquare />;
-			case CHAIR_FORMATION.circle:
-				return <ChairFormationCircle />;
+			case CHAIR_FORMATION.bankett:
+				return <ChairFormationBankett />;
+			case CHAIR_FORMATION.seminar:
+				return <ChairFormationSeminar />;
+			case CHAIR_FORMATION.concert:
+				return <ChairFormationConcert />;
 			default:
 				return null;
 		}

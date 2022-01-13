@@ -6,9 +6,6 @@ import styles from './RoomCard.module.scss';
 import Accessibility from '../../icons/Accessibility';
 import NoSeats from '../../icons/NoSeats';
 import { CHAIR_FORMATION, EQUIPMENT, roomList } from '../../../data/roomData';
-import ChairFormationShuffled from '../../icons/ChairFormationShuffled';
-import ChairFormationCircle from '../../icons/ChairFormationCircle';
-import ChairFormationSquare from '../../icons/ChairFormationSquare';
 import Podium from '../../icons/Podium';
 import Stage from '../../icons/Stage';
 import { ROOM_TYPE } from '../../../store/useWizardStore';
@@ -16,6 +13,9 @@ import AdditionalRooms from '../../icons/AdditionalRooms';
 import Exhibition from '../../icons/Exhibition';
 import DayLight from '../../icons/DayLight';
 import Beamer from '../../icons/Beamer';
+import ChairFormationBankett from '../../icons/ChairFormationBankett';
+import ChairFormationSeminar from '../../icons/ChairFormationSeminar';
+import ChairFormationConcert from '../../icons/ChairFormationConcert';
 
 type RoomCardProps = {
 	id: number;
@@ -42,12 +42,12 @@ const RoomCard = ({
 }: RoomCardProps) => {
 	const getFormationIcon = (formation: string) => {
 		switch (formation) {
-			case CHAIR_FORMATION.shuffle:
-				return <ChairFormationShuffled />;
-			case CHAIR_FORMATION.square:
-				return <ChairFormationSquare />;
-			case CHAIR_FORMATION.circle:
-				return <ChairFormationCircle />;
+			case CHAIR_FORMATION.bankett:
+				return <ChairFormationBankett />;
+			case CHAIR_FORMATION.seminar:
+				return <ChairFormationSeminar />;
+			case CHAIR_FORMATION.concert:
+				return <ChairFormationConcert />;
 			default:
 				return null;
 		}
@@ -91,12 +91,12 @@ const RoomCard = ({
 
 	const getFormationText = (formation: string) => {
 		switch (formation) {
-			case CHAIR_FORMATION.shuffle:
-				return 'Bla 1';
-			case CHAIR_FORMATION.square:
-				return 'Bla 2';
-			case CHAIR_FORMATION.circle:
-				return 'Bla 3';
+			case CHAIR_FORMATION.bankett:
+				return 'bankett';
+			case CHAIR_FORMATION.seminar:
+				return 'seminar';
+			case CHAIR_FORMATION.concert:
+				return 'concert';
 			default:
 				return null;
 		}
