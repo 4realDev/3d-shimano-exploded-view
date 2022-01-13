@@ -11,8 +11,6 @@ import { StepButton } from '@mui/material';
 import { resetWizardData, setStep, updateWizardData, useWizardStore } from '../../../store/useWizardStore';
 import { resetScene } from '../../../store/useCameraStore';
 import DebugControlPanel from '../../debug/DebugControlPanel/DebugControlPanel';
-import { useDebugStore } from '../../../store/useDebugStore';
-import cn from 'classnames';
 
 // yarn add @mui/material @emotion/react @emotion/styled
 // yarn add @mui/lab
@@ -39,8 +37,6 @@ const steps = [
 ];
 
 const RoomSelection = () => {
-	const isModelActive = useDebugStore((state) => state.isModelActive);
-	const isModelLoading = useDebugStore((state) => state.isModelLoading);
 	const wizardData = useWizardStore((state) => state.wizardData);
 	const step = useWizardStore((state) => state.step);
 	const [validationPassed, setValidationPassed] = useState<boolean | null>(null);
@@ -114,64 +110,60 @@ const RoomSelection = () => {
 	};
 
 	return (
-		<>
-			{isModelLoading && <span className={styles.containerCover} />}
-			{/* attemped: with pointer-events: none, e.stopPropagation, making div a button and disable button */}
-			<div className={cn(styles.container, { [styles['container--modelCanvasTopMargin']]: isModelActive })}>
-				<div className={styles.card}>
-					<div className={styles.card__headingStepperContainer}>
-						<h1 className={styles.card__heading}>{steps[step].title}</h1>
-						<Stepper nonLinear activeStep={step} variant='outlined'>
-							{steps.map((stepItem, index) => (
-								<Step key={stepItem.title}>
-									<StepButton
-										color='inherit'
-										onClick={() => {
-											// do not run validation process on steps back
-											if (index < step) {
-												setStep(index);
-											}
-											// do not allow to jump over wizard steps
-											else if (index <= step + 1) {
-												validateStep(index) && setStep(index);
-											}
-										}}
-									></StepButton>
-								</Step>
-							))}
-						</Stepper>
-						{steps[step].description && <p className={styles.card__description}>{steps[step].description}</p>}
-					</div>
-				</div>
-				<div className={styles.card}>{renderStep()}</div>
-				<div className={styles.card}>
-					<div className={styles.card__buttonContainer}>
-						<div className={styles.card__buttonWrapper}>
-							{step > 0 && (
-								<button className={styles.card__button} onClick={() => prevStep()}>
-									Zurück
-								</button>
-							)}
-							<button
-								className={styles.card__button}
-								onClick={() => validateStep(step + 1) && (step < 3 ? nextStep() : submitForm())}
-							>
-								{step === 0 ? 'Zum Raumplaner' : step < 3 ? 'Weiter' : 'Senden'}
-							</button>
-						</div>
-						{step === 1 && !validationPassed && (
-							<div className={styles.card__validationHint}>
-								<Notification fill={'#ff0000'} />
-								<p>Bitte wählen Sie einen Hauptraum aus.</p>
-							</div>
-						)}
-					</div>
-				</div>
-				<div className={styles.card}>
-					<DebugControlPanel />
+		<div className={styles.container}>
+			<div className={styles.card}>
+				<div className={styles.card__headingStepperContainer}>
+					<h1 className={styles.card__heading}>{steps[step].title}</h1>
+					<Stepper nonLinear activeStep={step} variant='outlined'>
+						{steps.map((stepItem, index) => (
+							<Step key={stepItem.title}>
+								<StepButton
+									color='inherit'
+									onClick={() => {
+										// do not run validation process on steps back
+										if (index < step) {
+											setStep(index);
+										}
+										// do not allow to jump over wizard steps
+										else if (index <= step + 1) {
+											validateStep(index) && setStep(index);
+										}
+									}}
+								></StepButton>
+							</Step>
+						))}
+					</Stepper>
+					{steps[step].description && <p className={styles.card__description}>{steps[step].description}</p>}
 				</div>
 			</div>
-		</>
+			<div className={styles.card}>{renderStep()}</div>
+			<div className={styles.card}>
+				<div className={styles.card__buttonContainer}>
+					<div className={styles.card__buttonWrapper}>
+						{step > 0 && (
+							<button className={styles.card__button} onClick={() => prevStep()}>
+								Zurück
+							</button>
+						)}
+						<button
+							className={styles.card__button}
+							onClick={() => validateStep(step + 1) && (step < 3 ? nextStep() : submitForm())}
+						>
+							{step === 0 ? 'Zum Raumplaner' : step < 3 ? 'Weiter' : 'Senden'}
+						</button>
+					</div>
+					{step === 1 && !validationPassed && (
+						<div className={styles.card__validationHint}>
+							<Notification fill={'#ff0000'} />
+							<p>Bitte wählen Sie einen Hauptraum aus.</p>
+						</div>
+					)}
+				</div>
+			</div>
+			<div className={styles.card}>
+				<DebugControlPanel />
+			</div>
+		</div>
 	);
 };
 

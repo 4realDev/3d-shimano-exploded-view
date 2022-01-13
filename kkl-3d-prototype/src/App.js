@@ -10,8 +10,6 @@ import WizardDataDebugger from './components/debug/WizardDataDebugger/WizardData
 import { useDebugStore } from './store/useDebugStore';
 
 function App() {
-	const isModelActive = useDebugStore((state) => state.isModelActive);
-	const isModelLoading = useDebugStore((state) => state.isModelLoading);
 	const isThreeJsDataDebuggerActive = useDebugStore((state) => state.isThreeJsDataDebuggerActive);
 	const isWizardDataDebuggerActive = useDebugStore((state) => state.isWizardDataDebuggerActive);
 	return (
@@ -19,16 +17,7 @@ function App() {
 			<div className='container'>
 				<Cursor />
 				<RoomSelection />
-				{isModelLoading && (
-					<div className='modelCanvasLoadingScreen'>
-						<p>Um das Model zu laden, aktivieren Sie die Checkbox "3D Model"</p>
-						<p>Die Ladezeit des Models beträgt 15-30 Sekunden.</p>
-						<p>Wir danken Ihnen für ihre Gedult.</p>
-						<img src='./images/modelOverlay.png' alt='model overlay' />
-						{isModelLoading && <p className='loadingText'>LOADING ...</p>}
-					</div>
-				)}
-				{isModelActive && <ModelCanvas />}
+				<ModelCanvas />
 				{isThreeJsDataDebuggerActive && <ThreeJsDataDebugger />}
 				{isWizardDataDebuggerActive && <WizardDataDebugger />}
 			</div>
