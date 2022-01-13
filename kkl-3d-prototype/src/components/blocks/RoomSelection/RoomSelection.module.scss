@@ -10,18 +10,22 @@
 	align-items: center;
 	width: 100%;
 	transition: margin 0.25s ease;
+	margin-top: calc(25vh + 32px);
 
 	@include xs {
 		padding: 0 32px !important;
+		margin-top: calc(30vh + 32px);
 	}
 
 	@include sm {
 		padding: 0 48px !important;
+		margin-top: calc(40vh + 32px);
 	}
 
 	@include lg {
 		width: auto;
 		padding: 0 50px !important;
+		margin-top: 48px;
 	}
 
 	.card {
