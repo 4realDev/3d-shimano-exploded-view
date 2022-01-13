@@ -1,6 +1,6 @@
+import React from 'react';
 import { OrbitControlsProps, Stats } from '@react-three/drei';
 import { Canvas, PerspectiveCameraProps } from '@react-three/fiber';
-import React from 'react';
 // npm install @react-three/fiber
 import { Suspense, useRef, useState } from 'react';
 import * as THREE from 'three';
@@ -10,6 +10,7 @@ import { useDebugStore } from '../../../store/useDebugStore';
 import CameraControls from '../../threeJs/CameraControls';
 import CameraPositionMarkers from '../../threeJs/CameraPositionMarkers';
 import styles from './ModelCanvas.module.scss';
+import Lights from '../../threeJs/Lights';
 
 const Model = React.lazy(() =>
 	import('../../threeJs/Model').then((module) => ({
@@ -42,7 +43,8 @@ const ModelCanvas = () => {
 				setMouseDown(false);
 			}}
 		>
-			<Canvas>
+			{/* dpr = dynamic pixel ratio - sets pixel ratio based on device hardware capabilities */}
+			<Canvas dpr={window.devicePixelRatio}>
 				<CameraControls
 					camera={cameraRef}
 					controls={controlsRef}
@@ -52,10 +54,10 @@ const ModelCanvas = () => {
 					far={200}
 				/>
 
-				{/* create Loader UI as fallback before useLoader promise is returned */}
+				<Lights />
+
 				<Suspense fallback={null}>
 					<Model hoveredMesh={hoveredMesh} setHoveredMesh={setHoveredMesh} />
-
 					{isCameraPositionMarkersActive && (
 						<CameraPositionMarkers
 							markerPositions={roomList.map((room) => room.model.camPos)}
@@ -63,6 +65,7 @@ const ModelCanvas = () => {
 						/>
 					)}
 				</Suspense>
+
 				{isStatesActive && <Stats />}
 				{isAxisHelperActive && <primitive object={new THREE.AxesHelper(100)} />}
 			</Canvas>
