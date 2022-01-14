@@ -5,20 +5,17 @@
 	flex-direction: row;
 	width: 100%;
 	justify-content: space-evenly;
-	padding: 16px 0 16px 0;
+	padding-top: 16px;
 
 	@include xs {
-		padding: 32px 0 32px 0;
+		padding-top: 32px;
 	}
 
 	&:last-child {
-		padding-top: 0px;
-	}
-}
+		padding-bottom: 16px;
 
-.accordion {
-	width: 100%;
-	& > button:last-of-type {
-		margin-bottom: 0;
+		@include xs {
+			padding-bottom: 32px;
+		}
 	}
 }

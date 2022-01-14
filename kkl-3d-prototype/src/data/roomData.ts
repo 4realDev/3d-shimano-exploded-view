@@ -92,7 +92,6 @@ export const roomList = [
 			height: 12,
 			img: './images/Konzertsaal.jpg',
 			equipment: [EQUIPMENT.stage, EQUIPMENT.podium],
-			chairFormations: [CHAIR_FORMATION.concert],
 			fittings: {
 				hasAccessibleEnv: true,
 				hasSeats: true,
@@ -204,7 +203,6 @@ export const roomList = [
 			height: 12,
 			img: './images/Auditorium.jpg',
 			equipment: [EQUIPMENT.podium],
-			chairFormations: [CHAIR_FORMATION.concert],
 			fittings: {
 				hasAccessibleEnv: true,
 				hasSeats: true,

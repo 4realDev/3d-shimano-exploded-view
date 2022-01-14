@@ -57,33 +57,34 @@ const Accordion = ({
 		}
 	};
 
-	const getActiveStateOfRoomAdditionIcons = (
-		accordionItemMeshName: string,
-		accordionItemRoomAddition: string,
-		category: string
+	const getActiveStateOfRoomChairFormationMeshButton = (
+		accordionItemRoomName: string,
+		accordionItemMeshButtonChairFormation: string
 	) => {
-		if (category === ROOM_ADDITIONS_CATEGORY.equipment) {
-			const equipmentCorrespondingToAccordionItem = roomAdditionsData?.find(
-				(item) => item.room === accordionItemMeshName
-			)?.equipment;
-			if (equipmentCorrespondingToAccordionItem === accordionItemRoomAddition) {
-				return true;
-			}
-			return false;
-		} else if (category === ROOM_ADDITIONS_CATEGORY.chair_formation) {
-			const chairFormationCorrespondingToAccordionItem = roomAdditionsData?.find(
-				(item) => item.room === accordionItemMeshName
-			)?.chair_formation;
-			if (chairFormationCorrespondingToAccordionItem === accordionItemRoomAddition) {
-				return true;
-			}
-			return false;
+		// get current selected chairFormation of room shown in the AccordionItem (if any is selected)
+		const chairFormation = roomAdditionsData?.find((item) => item.room === accordionItemRoomName)?.chair_formation;
+		// check if this selected chairFormation is the chairFormation shown in the MeshButton
+		if (chairFormation === accordionItemMeshButtonChairFormation) {
+			return true;
+		}
+		return false;
+	};
+
+	const getActiveStateOfRoomEquipmentMeshButton = (
+		accordionItemRoomName: string,
+		accordionItemMeshButtonEquipment: string
+	) => {
+		// get current selected equipment of room shown in the AccordionItem (if any is selected)
+		const equipment = roomAdditionsData?.find((item) => item.room === accordionItemRoomName)?.equipment;
+		// check if this selected equipment is the equipment shown in the MeshButton
+		if (equipment === accordionItemMeshButtonEquipment) {
+			return true;
 		}
 		return false;
 	};
 
 	return (
-		<div className={styles.accordion}>
+		<div>
 			{roomList.map((room, roomIndex) => (
 				<AccordionItem
 					key={roomIndex}
@@ -108,10 +109,9 @@ const Accordion = ({
 										toggledMeshName={formation}
 										toggleIcon={getFormationIcon(formation)}
 										category={ROOM_ADDITIONS_CATEGORY.chair_formation}
-										isActive={getActiveStateOfRoomAdditionIcons(
+										isActive={getActiveStateOfRoomChairFormationMeshButton(
 											roomList[roomIndex].model.meshName,
-											formation,
-											ROOM_ADDITIONS_CATEGORY.chair_formation
+											formation
 										)}
 										onClick={handleAdditionsOnChange}
 									/>
@@ -130,11 +130,7 @@ const Accordion = ({
 										toggledMeshName={equipment}
 										toggleIcon={getEquipmentIcon(equipment)}
 										category={ROOM_ADDITIONS_CATEGORY.equipment}
-										isActive={getActiveStateOfRoomAdditionIcons(
-											roomList[roomIndex].model.meshName,
-											equipment,
-											ROOM_ADDITIONS_CATEGORY.equipment
-										)}
+										isActive={getActiveStateOfRoomEquipmentMeshButton(roomList[roomIndex].model.meshName, equipment)}
 										onClick={handleAdditionsOnChange}
 									/>
 								);
