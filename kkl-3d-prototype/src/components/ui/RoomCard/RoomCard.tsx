@@ -56,11 +56,11 @@ const RoomCard = ({
 	const getEquipmentIcon = (equipment: string) => {
 		switch (equipment) {
 			case EQUIPMENT.stage:
-				return <Stage />;
+				return <Stage fill='#000000' />;
 			case EQUIPMENT.podium:
-				return <Podium />;
+				return <Podium fill='#000000' />;
 			case EQUIPMENT.beamer:
-				return <Beamer />;
+				return <Beamer fill='#000000' />;
 			default:
 				return null;
 		}
