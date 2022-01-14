@@ -11,6 +11,7 @@ import {
 import { setMeshChildVisibility } from '../../../store/useMeshStore';
 import { handleRoomAdditionsChange, handleRoomDataChange, WizardData } from '../../../store/useWizardStore';
 import Accordion from '../../ui/Accordion/Accordion';
+import NoResults from '../../ui/NoResults/NoResults';
 
 interface RoomMainSelectionWizardProps {
 	wizardData: WizardData;
@@ -122,7 +123,12 @@ const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelection
 		setMeshChildVisibility(toggledRoomName, toggledMeshName, category);
 	};
 
-	return (
+	return filteredMeshes.length === 0 ? (
+		<NoResults
+			message='Leider entspricht kein Raum den angegebenen Filterkriterien.'
+			hint='Sie können aber jeder Zeit einen Schritt zurück gehen und ihre Filterkriterien anpassen.'
+		/>
+	) : (
 		<Accordion
 			roomList={filteredRoomMeshes}
 			activeRoom={wizardData.activeMainRoom}

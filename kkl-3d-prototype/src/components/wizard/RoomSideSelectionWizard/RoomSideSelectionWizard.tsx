@@ -11,6 +11,7 @@ import { setMeshChildVisibility } from '../../../store/useMeshStore';
 import { handleRoomAdditionsChange, handleRoomDataChange, WizardData } from '../../../store/useWizardStore';
 import { getMeshObjectByMeshName } from '../../../utils/formatRoom';
 import Accordion from '../../ui/Accordion/Accordion';
+import NoResults from '../../ui/NoResults/NoResults';
 
 interface RoomSideSelectionWizardProps {
 	wizardData: WizardData;
@@ -31,6 +32,7 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 		showAndSelectRooms(fittingSideRoomMeshNames);
 
 		setFittingSideRooms(fittingSideRooms);
+		// update filteredMeshes inside useCameraStore to update visualisation on 3D Model
 		setFilteredMeshes(fittingSideRoomMeshNames);
 	}, []);
 
@@ -54,7 +56,9 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 		setMeshChildVisibility(toggledRoomName, toggledMeshName, category);
 	};
 
-	return (
+	return fittingSideRooms.length === 0 ? (
+		<NoResults message='Für diesen Raum stehen keine Nebenräume zur Verfügung.' />
+	) : (
 		<Accordion
 			roomList={fittingSideRooms}
 			activeRoom={wizardData.activeSideRoom}
