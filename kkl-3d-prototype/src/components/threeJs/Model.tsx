@@ -103,12 +103,12 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 		// default state, before a room was selected
 		if (selectedMeshes.length === 0) return 1.0;
 		// special state for the selection through the model, without filtering in the wizard before
-		if (wizardStep === 0) return isSelected || isHovered ? 1.0 : 0.25;
+		if (wizardStep === 0) return isSelected || isHovered ? 1.0 : 0.35;
 		// normal state which differentiates between filtered, hovered and selected meshes
 		if (filteredMeshes.includes(meshObject.name)) {
-			return isSelected || isHovered ? 1.0 : 0.5;
+			return isSelected || isHovered ? 1.0 : 0.7;
 		} else {
-			return 0.25;
+			return 0.35;
 		}
 	};
 

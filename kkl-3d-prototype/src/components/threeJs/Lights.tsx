@@ -7,7 +7,7 @@ const Lights = () => {
             - cannot be used to cast shadows as it has no direction
             - intensity influences the color of all objects 
             */}
-			<ambientLight intensity={0.25} />
+			<ambientLight intensity={0.2} />
 			{/*  
             Directional Light:
             - lights in specific direction
