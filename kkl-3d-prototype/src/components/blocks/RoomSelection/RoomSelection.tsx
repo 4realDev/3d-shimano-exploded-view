@@ -18,21 +18,24 @@ import DebugControlPanel from '../../debug/DebugControlPanel/DebugControlPanel';
 
 const steps = [
 	{
-		title: 'Kongresse, Meetings & Events',
+		title: 'Finde den passenden Raum',
 		description:
-			'Ob Kongress, Kundenanlass oder Mitarbeiterevent: Unser Team hilft Ihnen gerne bei der Organisation Ihrer Veranstaltung.',
+			'Nutze die Filterfunktionen um den passenden Raum für deinen Anlass zu finden. Sag uns nur, was dein Event ist, wie viele Leute daran Teilnehmen und wann es beginnt und endet? Falls dir eine oder mehrere Filteroptionen nicht bekannt sind, lass sie einfach leer.',
 	},
 	{
 		title: 'Wähle einen Hauptraum',
-		description: '',
+		description:
+			'Alle verfügbaren Haupträume werden in der Liste unten angezeigt und im Model rot markiert. Wähle und konfiguriere einen Hauptraum nach Belieben. Nutze das 3D Model, um einen besseren Eindruck vom Raum zu bekommen.',
 	},
 	{
-		title: 'Wähle deine Nebenräume',
-		description: '',
+		title: 'Wähle einen Nebenraum',
+		description:
+			'Alle zum Hauptraum dazu passenden Nebenräume werden in der Liste unten angezeigt und im 3D Model grün markiert. Gerne kannst du einen Nebenraum optional als Breakout Room oder als Versammlungsraum für danach dazu wählen.',
 	},
 	{
-		title: 'Wähle die Zusatzoptionen',
-		description: '',
+		title: 'Überprüfe deine Auswahl & Buche',
+		description:
+			'Der ausgewählte Hauptraum, sowie der ausgewählte Nebenraum (falls vorhanden) werden im 3D Model markiert. Klicke Sie an, um Sie nochmals mit den ausgewählten Konfigurationen zu sehen.',
 	},
 ];
 
