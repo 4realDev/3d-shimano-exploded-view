@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { EVENT_TYPES, RoomItemsList, roomList, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
+import { EVENT_TYPES, RoomFetchedInfo, roomList, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
 import {
 	setFilteredMeshes,
 	setSelectedMeshes,
@@ -28,18 +28,18 @@ const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelection
 		filterRoomSelection();
 	}, []);
 
-	const filterMainRooms = (roomList: RoomItemsList[]) => {
+	const filterMainRooms = (roomList: RoomFetchedInfo[]) => {
 		return roomList.filter((room) => room.info.fittings?.hasAdditionalRooms === true);
 	};
 
-	const filterAfterPersonNum = (roomList: RoomItemsList[]) => {
+	const filterAfterPersonNum = (roomList: RoomFetchedInfo[]) => {
 		if (wizardData.personNum !== '') {
 			return roomList.filter((room) => room.info.personCapacity >= parseInt(wizardData.personNum));
 		}
 		return roomList;
 	};
 
-	const filterAfterEventType = (roomList: RoomItemsList[]) => {
+	const filterAfterEventType = (roomList: RoomFetchedInfo[]) => {
 		if (wizardData.eventType !== EVENT_TYPES.all) {
 			return roomList.filter((room) => room.info.fittingEventTypes?.includes(wizardData.eventType!!));
 		}

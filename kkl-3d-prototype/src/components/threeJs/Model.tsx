@@ -1,7 +1,5 @@
-// npm i --save-dev @types/react
 import React, { useEffect, useRef } from 'react';
 import { Center, useGLTF } from '@react-three/drei';
-// npm i --save-dev @types/three
 import { GLTF } from 'three-stdlib';
 import * as THREE from 'three';
 import { GroupProps } from '@react-three/fiber';
@@ -45,7 +43,6 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 	const group = useRef<GroupProps>();
 	const model = useGLTF('/house-model.glb') as DreiGLTF;
 
-	// colors from AVASTA: https://avasta.ch/20-best-pastel-color-palettes-for-2021/ #20
 	const colorModelDefault = '#D4D4D4';
 	const colorModelChildrenDefault = '#BEBEBE';
 	const colorFilteredMainRoom = '#c4aeae';
@@ -184,8 +181,6 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 								scale={childObject.scale}
 							>
 								<bufferGeometry attach='geometry' {...childObject.geometry} />
-
-								{/* passing the opacity and color of the parent meshObject to the materials */}
 								<meshStandardMaterial
 									attach='material'
 									color={childObject.color}
@@ -194,15 +189,6 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 									opacity={getMeshMaterialOpacity(meshObject)}
 									metalness={0.5}
 								/>
-								{/* <lineSegments>
-									<edgesGeometry attach='geometry' args={[childObject.geometry]} />
-									<lineBasicMaterial
-										color='black'
-										attach='material'
-										transparent
-										opacity={getMeshMaterialOpacity(meshObject)}
-									/>
-								</lineSegments> */}
 							</mesh>
 						);
 					})}
@@ -218,8 +204,9 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 				visible={meshObject.isVisible}
 				userData={meshObject.userData}
 				material={meshObject.material}
+				// Pointer on mesh (similar to onHover)
 				onPointerOver={(event) => {
-					// check to prevent event on not visible meshes
+					// Only visible meshes with a userData.customName (defined inside Blender) can be hovered
 					if (event.object.visible && event.object.userData.customName) {
 						event.stopPropagation();
 						setHoveredMesh(event.object.name);
@@ -231,13 +218,13 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 				onPointerOut={(event) => {
 					event.intersections.length === 0 && setHoveredMesh(null);
 				}}
-				// Pointer click on mesh
+				// Pointer click on mesh (similar to onClick)
 				// stopPropagation and set current object inside state to the one clicked
 				onPointerDown={(event) => {
-					// check to prevent event on not visible meshes
-					// only meshes which have a customName are interactable
+					// Only visible meshes with a userData.customName (defined inside Blender) can be clicked
 					if (event.object.visible && event.object.userData.customName) {
 						event.stopPropagation();
+						// if the roof is clicked, show the rooms overview
 						if (event.object.userData.customName === INTERACTABLE_MESH_NAMES.roof) {
 							showRoomsOverview();
 						} else {
@@ -245,10 +232,11 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 							if (wizardStep === 0) {
 								showAndSelectRoom(event.object.userData.customName);
 							}
-							// if wizardStep if > 0 and the room is included in the filtering meshes, set the clicked room as activeRoom and show the the selected room
+							// if wizardStep if > 0 and the room is included in the filtering meshes
 							else if (wizardStep > 0 && filteredMeshes.includes(event.object.userData.customName)) {
-								// Add or overwrite the wizardData with the clicked RoomData to update the AccordionItems
+								// Add or overwrite the wizardData with the clicked RoomData and set the clicked room as activeRoom to update the AccordionItems
 								handleRoomDataChange(event.object.userData.customName);
+								// Show the clicked room as the selected room
 								showAndSelectRoom(event.object.userData.customName);
 							}
 						}
@@ -266,11 +254,6 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 					opacity={getMeshMaterialOpacity(meshObject)}
 					metalness={0.5}
 				/>
-				{/* Due limitations of OpenGL Core Profile with WebGL renderer on most platforms linewidth will always be 1 regardless of set value.  */}
-				{/* <lineSegments>
-					<edgesGeometry attach='geometry' args={[meshObject.geometry]} />
-					<lineBasicMaterial color='black' attach='material' transparent opacity={getMeshMaterialOpacity(meshObject)} />
-				</lineSegments> */}
 			</mesh>
 		);
 	};
@@ -280,7 +263,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 			{useDebugStore((state) => state.isBoxHelperActive) && (
 				<primitive object={new THREE.BoxHelper(group.current as any, 'black')} />
 			)}
-			{/* // Drei: Calculates a boundary box and centers its children accordingly. */}
+			{/* // Drei Center: Calculates a boundary box and centers its children accordingly. */}
 			<Center>
 				<group scale={0.0075} position={[0, 0, 0]} ref={group}>
 					{meshList.map((meshObject: MeshObject, index: number) => {

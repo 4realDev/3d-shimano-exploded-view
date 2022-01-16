@@ -2,7 +2,6 @@ import { PerspectiveCameraProps, useFrame, Vector3 } from '@react-three/fiber';
 import * as THREE from 'three';
 import { OrbitControls, OrbitControlsProps, PerspectiveCamera } from '@react-three/drei';
 import { useCameraStore } from '../../store/useCameraStore';
-// npm install @react-three/drei
 
 type CameraControlsProps = {
 	camera: React.MutableRefObject<PerspectiveCameraProps | undefined>;
@@ -27,14 +26,14 @@ const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }:
 		}
 	};
 
-	// ANIMATED UPDATE FOR CAMERA MOVEMENT ONCLICK/ONSELECT
+	// Hook which allow to render 3D component (mesh objects animation, effects, transformation...) based on every frame update
 	useFrame((state, delta) => {
 		if (!mouseDown && hasAnimation && !idleState) {
 			camera.current && damp(camera.current.position, cameraPosition, dampSpeed, delta);
 			controls.current && damp(controls.current.target, cameraTarget, dampSpeed, delta);
 		}
-		controls?.current?.update!(); // Workaround
-		camera?.current?.updateProjectionMatrix!(); // Workaround
+		controls?.current?.update!!(); // Workaround
+		camera?.current?.updateProjectionMatrix!!(); // Workaround
 	});
 
 	return (

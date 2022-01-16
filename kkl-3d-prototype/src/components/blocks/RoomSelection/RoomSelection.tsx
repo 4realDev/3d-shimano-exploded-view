@@ -12,10 +12,6 @@ import { resetWizardData, setStep, updateWizardData, useWizardStore } from '../.
 import { resetScene } from '../../../store/useCameraStore';
 import DebugControlPanel from '../../debug/DebugControlPanel/DebugControlPanel';
 
-// yarn add @mui/material @emotion/react @emotion/styled
-// yarn add @mui/lab
-// yarn add date-fns @date-io/date-fns
-
 const steps = [
 	{
 		title: 'Finde den passenden Raum',

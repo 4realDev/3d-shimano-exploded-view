@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { RoomItemsList, roomList, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
+import { RoomFetchedInfo, roomList, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
 import {
 	setFilteredMeshes,
 	setSelectedMeshes,
@@ -19,7 +19,7 @@ interface RoomSideSelectionWizardProps {
 }
 
 const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelectionWizardProps) => {
-	const [fittingSideRooms, setFittingSideRooms] = useState<RoomItemsList[]>([]);
+	const [fittingSideRooms, setFittingSideRooms] = useState<RoomFetchedInfo[]>([]);
 
 	useEffect(() => {
 		const activeMainRoom = getMeshObjectByMeshName(wizardData.activeMainRoom);
@@ -31,7 +31,9 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 		// show overview of all fittingSideRooms
 		showAndSelectRooms(fittingSideRoomMeshNames);
 
+		// set fitting side rooms state to update the accordion items
 		setFittingSideRooms(fittingSideRooms);
+
 		// update filteredMeshes inside useCameraStore to update visualisation on 3D Model
 		setFilteredMeshes(fittingSideRoomMeshNames);
 	}, []);

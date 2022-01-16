@@ -1,3 +1,4 @@
+// Takes Date object and converts it into a string like '2012-03-01'
 export const formatDate = (date: Date) => {
 	let month = '' + (date.getMonth() + 1);
 	let day = '' + date.getDate();
@@ -6,5 +7,5 @@ export const formatDate = (date: Date) => {
 	if (month.length < 2) month = '0' + month;
 	if (day.length < 2) day = '0' + day;
 
-	return [year, month, day].join('-'); // Result: e.g. '2012-03-01'
+	return [year, month, day].join('-');
 };

@@ -25,7 +25,7 @@ export const setMeshVisibility = (meshName: string, visible: boolean) => {
 	setMeshList(newList);
 };
 
-// Makes all mesh objects visible (e.g. roof) and makes their children (equipment & chair_formation) invisible
+// Makes all mesh objects visible and makes their as "interactable" with customProps marked children (equipment & chair_formation) invisible
 export const resetMeshVisibility = () => {
 	let newList: MeshObject[] = useMeshStore.getState().meshList;
 	newList.forEach((item, i, array) => {

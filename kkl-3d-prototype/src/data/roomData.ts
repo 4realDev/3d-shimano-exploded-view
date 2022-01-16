@@ -1,7 +1,6 @@
 import * as THREE from 'three';
-// npm install three
 
-export type RoomItemsList = {
+export type RoomFetchedInfo = {
 	model: {
 		meshName: string;
 		camPos: THREE.Vector3;
@@ -70,12 +69,6 @@ export enum EVENT_TYPES {
 }
 
 export const camHeightOffset = 15;
-
-// TODO: AJAX Service - Live Abfrage auf dem Server simulieren - Server sendet ja oder nein -> sendet die verfügbaren räume zurück.
-// Spinner
-// Annahme dokumentieren, dass daten problemlos auf client gehen dürfen
-// Datum als booked Array mit start und end tuppel
-// booked: [{startDate}
 
 export const roomList = [
 	{

@@ -12,16 +12,10 @@ export const theme = createTheme({
 	},
 	typography: {
 		fontFamily: 'Arial',
-		// body2: {
-		// 	fontFamily: 'Times New Roman',
-		// 	fontSize: '1.1rem',
-		// },
 	},
 	shape: {
 		borderRadius: 6,
 	},
-	// setting size for Theme.Spacing component
-	spacing: 8,
 	// Overrides of components
 	components: {
 		// *** MUI STEPPER ADJUSTMENTS ***

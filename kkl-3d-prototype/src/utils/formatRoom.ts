@@ -1,5 +1,3 @@
-// TODO: Write functions to convert meshname into title and title into meshname
-
 import { roomList } from '../data/roomData';
 
 // Takes meshname like "room_3" and returns the title of the room like "Konzertsaal"

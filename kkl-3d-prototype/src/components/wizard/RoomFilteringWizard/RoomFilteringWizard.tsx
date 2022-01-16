@@ -1,11 +1,8 @@
-// npm install @material-ui/pickers
-// npm install date-fns @date-io/date-fns@1
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import deLocale from 'date-fns/locale/de';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
 import { TextField, MenuItem } from '@mui/material';
-
 import styles from './RoomFilteringWizard.module.scss';
 import { EVENT_TYPES } from '../../../data/roomData';
 import { WizardData } from '../../../store/useWizardStore';

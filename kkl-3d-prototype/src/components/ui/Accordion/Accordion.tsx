@@ -1,4 +1,4 @@
-import { CHAIR_FORMATION, EQUIPMENT, RoomItemsList, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
+import { CHAIR_FORMATION, EQUIPMENT, RoomFetchedInfo, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
 import MeshVisibilityButton from '../MeshVisibilityButton/MeshVisibilityButton';
 import AccordionItem from '../AccordionItem/AccordionItem';
 import styles from './Accordion.module.scss';
@@ -11,7 +11,7 @@ import ChairFormationConcert from '../../icons/ChairFormationConcert';
 import ChairFormationSeminar from '../../icons/ChairFormationSeminar';
 
 type AccordionProps = {
-	roomList: RoomItemsList[];
+	roomList: RoomFetchedInfo[];
 	activeRoom: string | null;
 	roomAdditionsData: WizardRoomData[] | null;
 	handleOnOpen: (meshNameCorrespondingToId: string) => void;

@@ -37,7 +37,10 @@ const RoomSummaryWizard = ({ handleChange, wizardData }: RoomSummaryWizardProps)
 			top: 0,
 			behavior: 'smooth',
 		});
+
+		// show rooms overview
 		showRoomsOverview();
+
 		// set filteredMeshes and selctedMeshes to highlight them inside the model
 		setFilteredMeshes([wizardData.activeMainRoom, wizardData.activeSideRoom]);
 		setSelectedMeshes([wizardData.activeMainRoom, wizardData.activeSideRoom]);

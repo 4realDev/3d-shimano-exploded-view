@@ -56,7 +56,7 @@ const AccordionItem = ({
 		}
 	}, [id]);
 
-	// // On first render scroll to top
+	// On first render scroll to top
 	useEffect(() => {
 		window.scrollTo({
 			top: 0,
@@ -64,7 +64,7 @@ const AccordionItem = ({
 		});
 	}, []);
 
-	// Triggered by handleClick from UI interaction as well as by interacting with 3D Modell
+	// Triggered by handleClick from UI interaction as well as by onPointerDown from interacting with the 3D Model
 	useEffect(() => {
 		// use effect is triggered in every accordion item
 		// check which one is the clicked item
@@ -73,9 +73,7 @@ const AccordionItem = ({
 		if (activeRoom === meshNameCorrespondingToId) {
 			content.current && setContentHeight(content.current.scrollHeight);
 
-			// TODO: Put delay in scss const
 			// Delay scrolling to the clicked accordion item by the translation delay of the opening and closing of the item to get the correct scrollHeight
-
 			setTimeout(() => {
 				window.scrollTo({
 					top: content.current ? content.current.offsetTop - content.current.scrollHeight : 0,
@@ -87,8 +85,8 @@ const AccordionItem = ({
 		}
 	}, [activeRoom]);
 
+	// Manipulate activeRoom and will be catched in useEffect([selectedMeshes]) above
 	const handleClick = (id: number, content: any) => {
-		// both methods manipulate active and will be catched in useEffect([selectedMeshes]) above
 		if (contentHeight === 0) {
 			content.current && setContentHeight(content.current.scrollHeight);
 			handleOnOpen(meshNameCorrespondingToId);
@@ -159,7 +157,6 @@ const AccordionItem = ({
 	return (
 		<>
 			<button className={cn(styles.accordionItem, { [styles['accordionItem--active']]: isActive })}>
-				{/* whenever we click on the link, it will navigate to what it matches as id */}
 				<div className={styles.accordionItem__header} onClick={() => handleClick(id, content)}>
 					<div className={styles.accordionItem__infoColumn}>
 						<h1 className={styles.accordionItem__title}>{title}</h1>
