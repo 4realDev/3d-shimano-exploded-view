@@ -1,7 +1,6 @@
 import React from 'react';
 import { OrbitControlsProps, Stats } from '@react-three/drei';
 import { Canvas, PerspectiveCameraProps } from '@react-three/fiber';
-// npm install @react-three/fiber
 import { Suspense, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { roomList } from '../../../data/roomData';
@@ -31,7 +30,7 @@ const ModelCanvas = () => {
 	const isAxisHelperActive = useDebugStore((state) => state.isAxisHelperActive);
 
 	return (
-		// id for better getting the element with document. inside Cursor.tsx
+		// id for better getting the element with document.getElementById() inside Cursor.tsx
 		<div
 			id='canvas'
 			className={styles.canvas}
