@@ -1,5 +1,4 @@
 import { FormControlLabel, Checkbox } from '@mui/material';
-import { useState } from 'react';
 import {
 	useDebugStore,
 	toggleIsCameraPositionMarkersActive,
@@ -13,7 +12,6 @@ import {
 import styles from './DebugControlPanel.module.scss';
 
 const DebugControlPanel = () => {
-	const [isModelVisualDebuggerActive, setModelVisualDebugger] = useState<boolean>(false);
 	const isCameraPositionMarkersActive = useDebugStore((state) => state.isCameraPositionMarkersActive);
 	const isStatesActive = useDebugStore((state) => state.isStatesActive);
 	const isAxisHelperActive = useDebugStore((state) => state.isAxisHelperActive);
