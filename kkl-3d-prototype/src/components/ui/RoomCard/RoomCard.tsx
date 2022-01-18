@@ -5,7 +5,7 @@ import Seats from '../../icons/Seats';
 import styles from './RoomCard.module.scss';
 import Accessibility from '../../icons/Accessibility';
 import NoSeats from '../../icons/NoSeats';
-import { CHAIR_FORMATION, EQUIPMENT, roomList } from '../../../data/roomData';
+import { CHAIR_FORMATION, EQUIPMENT, roomList, ROOM_FITTINGS } from '../../../data/roomData';
 import Podium from '../../icons/Podium';
 import Stage from '../../icons/Stage';
 import { ROOM_TYPE } from '../../../store/useWizardStore';
@@ -66,23 +66,23 @@ const RoomCard = ({
 		}
 	};
 
-	const getFittingIcon = (fitting: string) => {
+	const getFittingIcon = (fitting: ROOM_FITTINGS) => {
 		switch (fitting) {
-			case 'hasCatering':
+			case ROOM_FITTINGS.catering:
 				return <Catering />;
-			case 'hasApero':
+			case ROOM_FITTINGS.apero:
 				return <Apero />;
-			case 'hasAccessibleEnv':
+			case ROOM_FITTINGS.accessibleEnv:
 				return <Accessibility />;
-			case 'hasSeats':
+			case ROOM_FITTINGS.seats:
 				return <Seats />;
-			case 'hasNoSeats':
+			case ROOM_FITTINGS.noSeats:
 				return <NoSeats />;
-			case 'hasExhibition':
+			case ROOM_FITTINGS.exhibition:
 				return <Exhibition />;
-			case 'hasAdditionalRooms':
+			case ROOM_FITTINGS.additionalRooms:
 				return <AdditionalRooms />;
-			case 'hasDayLight':
+			case ROOM_FITTINGS.dayLight:
 				return <DayLight />;
 			default:
 				return null;
@@ -137,11 +137,11 @@ const RoomCard = ({
 	const renderDetailsIcons = () => {
 		return (
 			<div className={styles.roomCard__detailsIcons}>
-				{Object.entries(roomList[id - 1].info.fittings).map((fittingEntry: [string, boolean | undefined], index) => {
+				{roomList[id - 1].info.fittings.map((fitting, index) => {
 					return (
-						fittingEntry[1] && (
+						fitting && (
 							<div key={index} className={styles.roomCard__detailsIcon}>
-								{getFittingIcon(fittingEntry[0])}
+								{getFittingIcon(fitting)}
 							</div>
 						)
 					);

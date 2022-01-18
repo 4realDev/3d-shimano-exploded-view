@@ -9,7 +9,7 @@ import styles from './AccordionItem.module.scss';
 import Accessibility from '../../icons/Accessibility';
 import NoSeats from '../../icons/NoSeats';
 import { getMeshNameById } from '../../../utils/formatRoom';
-import { roomList } from '../../../data/roomData';
+import { roomList, ROOM_FITTINGS } from '../../../data/roomData';
 import Exhibition from '../../icons/Exhibition';
 import AdditionalRooms from '../../icons/AdditionalRooms';
 import DayLight from '../../icons/DayLight';
@@ -96,23 +96,23 @@ const AccordionItem = ({
 		}
 	};
 
-	const getFittingIcon = (fitting: string) => {
+	const getFittingIcon = (fitting: ROOM_FITTINGS) => {
 		switch (fitting) {
-			case 'hasCatering':
+			case ROOM_FITTINGS.catering:
 				return <Catering />;
-			case 'hasApero':
+			case ROOM_FITTINGS.apero:
 				return <Apero />;
-			case 'hasAccessibleEnv':
+			case ROOM_FITTINGS.accessibleEnv:
 				return <Accessibility />;
-			case 'hasSeats':
+			case ROOM_FITTINGS.seats:
 				return <Seats />;
-			case 'hasNoSeats':
+			case ROOM_FITTINGS.noSeats:
 				return <NoSeats />;
-			case 'hasExhibition':
+			case ROOM_FITTINGS.exhibition:
 				return <Exhibition />;
-			case 'hasAdditionalRooms':
+			case ROOM_FITTINGS.additionalRooms:
 				return <AdditionalRooms />;
-			case 'hasDayLight':
+			case ROOM_FITTINGS.dayLight:
 				return <DayLight />;
 			default:
 				return null;
@@ -141,11 +141,11 @@ const AccordionItem = ({
 	const renderDetailsIcons = () => {
 		return (
 			<div className={styles.accordionItem__detailsIcons}>
-				{Object.entries(roomList[id - 1].info.fittings).map((fittingEntry: [string, boolean | undefined], index) => {
+				{roomList[id - 1].info.fittings.map((fitting, index) => {
 					return (
-						fittingEntry[1] && (
+						fitting && (
 							<div key={index} className={styles.accordionItem__detailsIcon}>
-								{getFittingIcon(fittingEntry[0])}
+								{getFittingIcon(fitting)}
 							</div>
 						)
 					);
@@ -160,7 +160,7 @@ const AccordionItem = ({
 				<div className={styles.accordionItem__header} onClick={() => handleClick(id, content)}>
 					<div className={styles.accordionItem__infoColumn}>
 						<h1 className={styles.accordionItem__title}>{title}</h1>
-						{renderDetails()}
+						{renderDetails(roomList[id - 1].info.fittings.includes(ROOM_FITTINGS.seats))}
 						{renderDetailsIcons()}
 					</div>
 					<img className={styles.accordionItem__image} src={img} alt={title} />

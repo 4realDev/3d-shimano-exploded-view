@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
-import { EVENT_TYPES, RoomFetchedInfo, roomList, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
 import { CircularProgress } from '@mui/material';
+import { EVENT_TYPES, RoomFetchedInfo, roomList, ROOM_ADDITIONS_CATEGORY, ROOM_FITTINGS } from '../../../data/roomData';
 import {
 	setFilteredMeshes,
 	setSelectedMeshes,
@@ -37,7 +36,7 @@ const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelection
 	}, []);
 
 	const filterMainRooms = (roomList: RoomFetchedInfo[]) => {
-		return roomList.filter((room) => room.info.fittings?.hasAdditionalRooms === true);
+		return roomList.filter((room) => room.info.fittings?.includes(ROOM_FITTINGS.additionalRooms));
 	};
 
 	const filterAfterPersonNum = (roomList: RoomFetchedInfo[]) => {

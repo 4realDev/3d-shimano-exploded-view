@@ -13,19 +13,12 @@ export type RoomFetchedInfo = {
 		area: number;
 		height: number;
 		img: string;
-		chairFormations?: string[];
-		equipment?: string[];
-		fittings?: {
-			hasCatering?: boolean;
-			hasApero?: boolean;
-			hasAccessibleEnv?: boolean;
-			hasSeats?: boolean;
-			hasNoSeats?: boolean;
-			hasAdditionalRooms?: boolean;
-		};
-		fittingEventTypes?: string[];
 		bookedStartDate?: string;
 		bookedEndDate?: string;
+		chairFormations?: CHAIR_FORMATION[];
+		equipment?: EQUIPMENT[];
+		fittings?: ROOM_FITTINGS[];
+		fittingEventTypes?: EVENT_TYPES[];
 	};
 };
 
@@ -50,6 +43,17 @@ export enum EQUIPMENT {
 	stage = 'equipment_stage',
 	podium = 'equipment_podium',
 	beamer = 'equipment_beamer',
+}
+
+export enum ROOM_FITTINGS {
+	catering = 'catering',
+	apero = 'apero',
+	accessibleEnv = 'accessibleEnv',
+	seats = 'seats',
+	noSeats = 'noSeats',
+	exhibition = 'exhibition',
+	additionalRooms = 'additionalRooms',
+	dayLight = 'dayLight',
 }
 
 export enum ROOM_ADDITIONS_CATEGORY {
@@ -85,11 +89,7 @@ export const roomList = [
 			height: 12,
 			img: './images/Konzertsaal.jpg',
 			equipment: [EQUIPMENT.stage, EQUIPMENT.podium],
-			fittings: {
-				hasAccessibleEnv: true,
-				hasSeats: true,
-				hasAdditionalRooms: true,
-			},
+			fittings: [ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.seats, ROOM_FITTINGS.additionalRooms],
 			fittingEventTypes: [EVENT_TYPES.concert],
 			fittingSideRoom: [INTERACTABLE_MESH_NAMES.clubroom, INTERACTABLE_MESH_NAMES.businessMediaRoom],
 			bookedStartDate: '2022-01-01',
@@ -111,14 +111,14 @@ export const roomList = [
 			img: './images/LuzernerSaal.jpg',
 			equipment: [EQUIPMENT.stage, EQUIPMENT.podium, EQUIPMENT.beamer],
 			chairFormations: [CHAIR_FORMATION.bankett, CHAIR_FORMATION.seminar, CHAIR_FORMATION.concert],
-			fittings: {
-				hasCatering: true,
-				hasApero: true,
-				hasAccessibleEnv: true,
-				hasSeats: true,
-				hasExhibition: true,
-				hasAdditionalRooms: true,
-			},
+			fittings: [
+				ROOM_FITTINGS.catering,
+				ROOM_FITTINGS.apero,
+				ROOM_FITTINGS.accessibleEnv,
+				ROOM_FITTINGS.seats,
+				ROOM_FITTINGS.exhibition,
+				ROOM_FITTINGS.additionalRooms,
+			],
 			fittingEventTypes: [EVENT_TYPES.concert, EVENT_TYPES.congress, EVENT_TYPES.apero],
 			fittingSideRoom: [
 				INTERACTABLE_MESH_NAMES.entryFoyer,
@@ -144,14 +144,14 @@ export const roomList = [
 			img: './images/Clubraeume.jpg',
 			equipment: [EQUIPMENT.podium, EQUIPMENT.beamer],
 			chairFormations: [CHAIR_FORMATION.seminar, CHAIR_FORMATION.bankett],
-			fittings: {
-				hasCatering: true,
-				hasApero: true,
-				hasAccessibleEnv: true,
-				hasSeats: true,
-				hasExhibition: true,
-				hasDayLight: true,
-			},
+			fittings: [
+				ROOM_FITTINGS.catering,
+				ROOM_FITTINGS.apero,
+				ROOM_FITTINGS.accessibleEnv,
+				ROOM_FITTINGS.seats,
+				ROOM_FITTINGS.exhibition,
+				ROOM_FITTINGS.dayLight,
+			],
 			fittingEventTypes: [EVENT_TYPES.apero, EVENT_TYPES.exhibition, EVENT_TYPES.meeting, EVENT_TYPES.workshop],
 			bookedStartDate: '2022-01-01',
 			bookedEndDate: '2022-01-05',
@@ -172,11 +172,7 @@ export const roomList = [
 			img: './images/BusinessMedienraeume.jpg',
 			equipment: [EQUIPMENT.podium, EQUIPMENT.beamer],
 			chairFormations: [CHAIR_FORMATION.seminar, CHAIR_FORMATION.bankett],
-			fittings: {
-				hasAccessibleEnv: true,
-				hasSeats: true,
-				hasDayLight: true,
-			},
+			fittings: [ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.seats, ROOM_FITTINGS.dayLight],
 			fittingEventTypes: [EVENT_TYPES.apero, EVENT_TYPES.exhibition, EVENT_TYPES.meeting, EVENT_TYPES.workshop],
 			bookedStartDate: '2022-01-01',
 			bookedEndDate: '2022-01-05',
@@ -196,11 +192,7 @@ export const roomList = [
 			height: 12,
 			img: './images/Auditorium.jpg',
 			equipment: [EQUIPMENT.podium],
-			fittings: {
-				hasAccessibleEnv: true,
-				hasSeats: true,
-				hasAdditionalRooms: true,
-			},
+			fittings: [ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.seats, ROOM_FITTINGS.additionalRooms],
 			fittingEventTypes: [EVENT_TYPES.congress, EVENT_TYPES.exhibition, EVENT_TYPES.workshop],
 			fittingSideRoom: [INTERACTABLE_MESH_NAMES.entryFoyer, INTERACTABLE_MESH_NAMES.businessMediaRoom],
 			bookedStartDate: '2022-01-01',
@@ -221,12 +213,7 @@ export const roomList = [
 			height: 12,
 			img: './images/EingangsFoyer.jpg',
 			equipment: [EQUIPMENT.podium, EQUIPMENT.beamer],
-			fittings: {
-				hasAccessibleEnv: true,
-				hasApero: true,
-				hasNoSeats: true,
-				hasDayLight: true,
-			},
+			fittings: [ROOM_FITTINGS.apero, ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.noSeats, ROOM_FITTINGS.dayLight],
 			fittingEventTypes: [EVENT_TYPES.apero],
 			bookedStartDate: '2022-01-01',
 			bookedEndDate: '2022-01-05',
