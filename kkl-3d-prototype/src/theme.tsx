@@ -21,7 +21,7 @@ export const theme = createTheme({
 		// *** MUI STEPPER ADJUSTMENTS ***
 		MuiStepper: {
 			styleOverrides: {
-				root: { width: '100%', transition: 'all ease-in-out 0.5' },
+				root: { width: '100%', transition: 'all ease-in-out 0.5', cursor: 'default' },
 			},
 		},
 
@@ -154,5 +154,16 @@ export const theme = createTheme({
 			},
 		},
 		// *** MUI CHECKBOX ADJUSTMENTS ***
+
+		MuiCircularProgress: {
+			styleOverrides: {
+				root: {
+					marginTop: '64px',
+					marginBottom: '64px',
+					color: '#575B64',
+					size: '60',
+				},
+			},
+		},
 	},
 });

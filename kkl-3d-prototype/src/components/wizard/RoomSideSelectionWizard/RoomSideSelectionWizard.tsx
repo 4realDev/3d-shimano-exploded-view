@@ -1,3 +1,4 @@
+import { CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { RoomFetchedInfo, roomList, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
 import {
@@ -19,6 +20,9 @@ interface RoomSideSelectionWizardProps {
 }
 
 const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelectionWizardProps) => {
+	const accordionItemsMaximumRenderTime = 150;
+	const [accordionItemsLoading, setAccordionItemsLoading] = useState(true);
+
 	const [fittingSideRooms, setFittingSideRooms] = useState<RoomFetchedInfo[]>([]);
 
 	useEffect(() => {
@@ -36,6 +40,10 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 
 		// update filteredMeshes inside useCameraStore to update visualisation on 3D Model
 		setFilteredMeshes(fittingSideRoomMeshNames);
+
+		setTimeout(() => {
+			setAccordionItemsLoading(false);
+		}, accordionItemsMaximumRenderTime);
 	}, []);
 
 	const handleOnOpen = (toggledMeshName: string) => {
@@ -70,6 +78,32 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 			handleAdditionsOnChange={handleAdditionsOnChange}
 		/>
 	);
+	const renderAccordionItems = () => {
+		if (accordionItemsLoading) {
+			return <CircularProgress size={60} />;
+		}
+		if (fittingSideRooms.length === 0) {
+			return (
+				<NoResults
+					message='Für diesen Raum stehen keine Nebenräume zur Verfügung.'
+					hint='Sie können aber jeder Zeit einen Schritt zurück gehen und ihre Filterkriterien anpassen.'
+				/>
+			);
+		}
+
+		return (
+			<Accordion
+				roomList={fittingSideRooms}
+				activeRoom={wizardData.activeSideRoom}
+				roomAdditionsData={wizardData.sideRoom}
+				handleOnOpen={handleOnOpen}
+				handleOnClose={handleOnClose}
+				handleAdditionsOnChange={handleAdditionsOnChange}
+			/>
+		);
+	};
+
+	return renderAccordionItems();
 };
 
 export default RoomSideSelectionWizard;

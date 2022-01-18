@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { EVENT_TYPES, RoomFetchedInfo, roomList, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
+import { CircularProgress } from '@mui/material';
 import {
 	setFilteredMeshes,
 	setSelectedMeshes,
@@ -19,6 +20,9 @@ interface RoomMainSelectionWizardProps {
 }
 
 const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelectionWizardProps) => {
+	const accordionItemsMaximumRenderTime = 150;
+	const [accordionItemsLoading, setAccordionItemsLoading] = useState(true);
+
 	const filteredMeshes = useCameraStore((state) => state.filteredMeshes);
 	const filteredRoomMeshes = roomList.filter((room) => {
 		return filteredMeshes?.includes(room.model.meshName);
@@ -26,6 +30,10 @@ const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelection
 
 	useEffect(() => {
 		filterRoomSelection();
+
+		setTimeout(() => {
+			setAccordionItemsLoading(false);
+		}, accordionItemsMaximumRenderTime);
 	}, []);
 
 	const filterMainRooms = (roomList: RoomFetchedInfo[]) => {
@@ -123,21 +131,32 @@ const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelection
 		setMeshChildVisibility(toggledRoomName, toggledMeshName, category);
 	};
 
-	return filteredMeshes.length === 0 ? (
-		<NoResults
-			message='Leider entspricht kein Raum den angegebenen Filterkriterien.'
-			hint='Sie können aber jeder Zeit einen Schritt zurück gehen und ihre Filterkriterien anpassen.'
-		/>
-	) : (
-		<Accordion
-			roomList={filteredRoomMeshes}
-			activeRoom={wizardData.activeMainRoom}
-			roomAdditionsData={wizardData.mainRoom}
-			handleOnOpen={handleOnOpen}
-			handleOnClose={handleOnClose}
-			handleAdditionsOnChange={handleAdditionsOnChange}
-		/>
-	);
+	const renderAccordionItems = () => {
+		if (accordionItemsLoading) {
+			return <CircularProgress size={60} />;
+		}
+		if (filteredMeshes.length === 0) {
+			return (
+				<NoResults
+					message='Leider entspricht kein Raum den angegebenen Filterkriterien.'
+					hint='Sie können aber jeder Zeit einen Schritt zurück gehen und ihre Filterkriterien anpassen.'
+				/>
+			);
+		}
+
+		return (
+			<Accordion
+				roomList={filteredRoomMeshes}
+				activeRoom={wizardData.activeMainRoom}
+				roomAdditionsData={wizardData.mainRoom}
+				handleOnOpen={handleOnOpen}
+				handleOnClose={handleOnClose}
+				handleAdditionsOnChange={handleAdditionsOnChange}
+			/>
+		);
+	};
+
+	return renderAccordionItems();
 };
 
 export default RoomMainSelectionWizard;
