@@ -7,9 +7,8 @@ import RoomFilteringWizard from '../../wizard/RoomFilteringWizard/RoomFilteringW
 import RoomSummaryWizard from '../../wizard/RoomSummaryWizard/RoomSummaryWizard';
 import RoomSideSelectionWizard from '../../wizard/RoomSideSelectionWizard/RoomSideSelectionWizard';
 import RoomMainSelectionWizard from '../../wizard/RoomMainSelectionWizard/RoomMainSelectionWizard';
-import { StepButton } from '@mui/material';
+import { StepButton, StepLabel } from '@mui/material';
 import { resetWizardData, setStep, updateWizardData, useWizardStore } from '../../../store/useWizardStore';
-import { resetScene } from '../../../store/useCameraStore';
 import DebugControlPanel from '../../debug/DebugControlPanel/DebugControlPanel';
 
 const steps = [
@@ -116,19 +115,7 @@ const RoomSelection = () => {
 					<Stepper nonLinear activeStep={step} variant='outlined'>
 						{steps.map((stepItem, index) => (
 							<Step key={stepItem.title}>
-								<StepButton
-									color='inherit'
-									onClick={() => {
-										// do not run validation process on steps back
-										if (index < step) {
-											setStep(index);
-										}
-										// do not allow to jump over wizard steps
-										else if (index <= step + 1) {
-											validateStep(index) && setStep(index);
-										}
-									}}
-								></StepButton>
+								<StepLabel />
 							</Step>
 						))}
 					</Stepper>
