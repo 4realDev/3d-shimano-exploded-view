@@ -119,12 +119,14 @@ const AccordionItem = ({
 		}
 	};
 
-	const renderDetails = () => {
+	const renderDetails = (hasSeats: boolean) => {
 		return (
 			<div className={styles.accordionItem__details}>
 				<div className={styles.accordionItem__detailsItem}>
 					<CheckMark className={styles.accordionItem__checkMark} width={16} fill='#ffffff' />
-					<span>{personCapacity} Sitzplätze</span>
+					<span>
+						{personCapacity} {hasSeats ? 'Sitzplätze' : 'Stehplätze'}
+					</span>
 				</div>
 				<div className={styles.accordionItem__detailsItem}>
 					<CheckMark className={styles.accordionItem__checkMark} width={16} fill='#ffffff' />
