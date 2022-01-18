@@ -21,12 +21,12 @@ const steps = [
 	{
 		title: 'Wähle einen Hauptraum',
 		description:
-			'Alle verfügbaren Haupträume werden in der Liste unten angezeigt und im Model rot markiert. Wähle und konfiguriere einen Hauptraum nach Belieben. Nutze das 3D Model, um einen besseren Eindruck vom Raum zu bekommen.',
+			'Alle verfügbaren Haupträume werden in der Liste unten angezeigt und im Model rot markiert. Wähle und konfiguriere einen Hauptraum nach Belieben. Rotiere das 3D Model, um einen besseren Eindruck vom Raum zu bekommen.',
 	},
 	{
 		title: 'Wähle einen Nebenraum',
 		description:
-			'Alle zum Hauptraum dazu passenden Nebenräume werden in der Liste unten angezeigt und im 3D Model grün markiert. Gerne kannst du einen Nebenraum optional als Breakout Room oder als Versammlungsraum für danach dazu wählen.',
+			'Alle zum Hauptraum dazu passenden Nebenräume werden in der Liste unten angezeigt und im 3D Model grün markiert. Gerne kannst du einen Nebenraum optional als Breakout Room oder als Versammlungsraum dazu wählen.',
 	},
 	{
 		title: 'Überprüfe deine Auswahl & Buche',
