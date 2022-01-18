@@ -9,6 +9,7 @@ import RoomSideSelectionWizard from '../../wizard/RoomSideSelectionWizard/RoomSi
 import RoomMainSelectionWizard from '../../wizard/RoomMainSelectionWizard/RoomMainSelectionWizard';
 import { StepButton, StepLabel } from '@mui/material';
 import { resetWizardData, setStep, updateWizardData, useWizardStore } from '../../../store/useWizardStore';
+import { resetScene, setFilteredMeshes, setSelectedMeshes, showRoomsOverview } from '../../../store/useCameraStore';
 import DebugControlPanel from '../../debug/DebugControlPanel/DebugControlPanel';
 
 const steps = [
@@ -44,6 +45,15 @@ const RoomSelection = () => {
 	};
 
 	const prevStep = () => {
+		// Clean up date, everytime user moves back to filter step
+		// But leave room configuration as they are
+		if (step === 1) {
+			showRoomsOverview();
+			setSelectedMeshes([]);
+			setFilteredMeshes([]);
+			handleChange('', 'activeMainRoom');
+			handleChange('', 'activeSideRoom');
+		}
 		setStep(step - 1);
 	};
 
