@@ -66,18 +66,6 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 		setMeshChildVisibility(toggledRoomName, toggledMeshName, category);
 	};
 
-	return fittingSideRooms.length === 0 ? (
-		<NoResults message='Für diesen Raum stehen keine Nebenräume zur Verfügung.' />
-	) : (
-		<Accordion
-			roomList={fittingSideRooms}
-			activeRoom={wizardData.activeSideRoom}
-			roomAdditionsData={wizardData.sideRoom}
-			handleOnOpen={handleOnOpen}
-			handleOnClose={handleOnClose}
-			handleAdditionsOnChange={handleAdditionsOnChange}
-		/>
-	);
 	const renderAccordionItems = () => {
 		if (accordionItemsLoading) {
 			return <CircularProgress size={60} />;
