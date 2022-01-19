@@ -1,6 +1,6 @@
 const Beamer = ({ ...props }) => {
 	return (
-		<svg width='38' height='38' viewBox='0 0 24 24' fill='#575B64' xmlns='http://www.w3.org/2000/svg' {...props}>
+		<svg width='36' height='36' viewBox='0 0 24 24' fill='#575B64' xmlns='http://www.w3.org/2000/svg' {...props}>
 			<g clipPath='url(#clip0_227_183)'>
 				<path d='M18.79 8V9.69998H21.31V17.41H2.7V9.69998H10.29V8H1V19.11H23V8H18.79Z' />
 				<path d='M6.49008 19.11H4.33008V19.61H6.49008V19.11Z' />
