@@ -7,7 +7,7 @@ import RoomFilteringWizard from '../../wizard/RoomFilteringWizard/RoomFilteringW
 import RoomSummaryWizard from '../../wizard/RoomSummaryWizard/RoomSummaryWizard';
 import RoomSideSelectionWizard from '../../wizard/RoomSideSelectionWizard/RoomSideSelectionWizard';
 import RoomMainSelectionWizard from '../../wizard/RoomMainSelectionWizard/RoomMainSelectionWizard';
-import { StepButton, StepLabel } from '@mui/material';
+import { StepLabel } from '@mui/material';
 import { resetWizardData, setStep, updateWizardData, useWizardStore } from '../../../store/useWizardStore';
 import { resetScene, setFilteredMeshes, setSelectedMeshes, showRoomsOverview } from '../../../store/useCameraStore';
 import DebugControlPanel from '../../debug/DebugControlPanel/DebugControlPanel';
@@ -17,21 +17,31 @@ const steps = [
 		title: 'Finde den passenden Raum',
 		description:
 			'Nutze die Filterfunktionen um den passenden Raum für deinen Anlass zu finden. Sag uns nur, was dein Event ist, wie viele Leute daran Teilnehmen und wann es beginnt und endet? Falls dir eine oder mehrere Filteroptionen nicht bekannt sind, lass sie einfach leer.',
+		hint: 'Hinweis: Du kannst auch mit dem 3D Model interagieren. Durch die Rotation des Models oder das Anklicken einzelner Räume, kannst du dir einen besseren Eindruck von den Räumen, deren Position sowie Proportionen verschaffen.',
+		prevButton: '',
+		nextButton: 'Passende Räumen suchen',
 	},
 	{
-		title: 'Wähle einen Hauptraum',
+		title: 'Wähle und Konfiguriere einen Hauptraum',
 		description:
-			'Alle verfügbaren Haupträume werden in der Liste unten angezeigt und im Model rot markiert. Wähle und konfiguriere einen Hauptraum nach Belieben. Rotiere das 3D Model, um einen besseren Eindruck vom Raum zu bekommen.',
+			'Alle verfügbaren Haupträume werden in der Liste unten angezeigt und im Model rot markiert. Wähle und konfiguriere einen Hauptraum nach Belieben.',
+		prevButton: 'Zurück',
+		nextButton: 'Weiter',
 	},
 	{
-		title: 'Wähle einen Nebenraum',
+		title: 'Wähle und Konfiguriere einen Nebenraum',
 		description:
 			'Alle zum Hauptraum dazu passenden Nebenräume werden in der Liste unten angezeigt und im 3D Model grün markiert. Gerne kannst du einen Nebenraum optional als Breakout Room oder als Versammlungsraum dazu wählen.',
+		prevButton: 'Zurück',
+		nextButton: 'Weiter',
 	},
 	{
 		title: 'Überprüfe deine Auswahl & Buche',
 		description:
-			'Der ausgewählte Hauptraum, sowie der ausgewählte Nebenraum (falls vorhanden) werden im 3D Model markiert. Klicke Sie an, um Sie nochmals mit den ausgewählten Konfigurationen zu sehen.',
+			'Der ausgewählte Hauptraum, sowie der ausgewählte Nebenraum (falls vorhanden) werden im 3D Model markiert.',
+		hint: 'Hinweis: Klicke Sie an, um Sie nochmals mit den ausgewählten Konfigurationen zu sehen.',
+		prevButton: 'Zurück',
+		nextButton: 'Buchen',
 	},
 ];
 
@@ -130,6 +140,7 @@ const RoomSelection = () => {
 						))}
 					</Stepper>
 					{steps[step].description && <p className={styles.card__description}>{steps[step].description}</p>}
+					{steps[step].hint && <p className={styles.card__hint}>{steps[step].hint}</p>}
 				</div>
 			</div>
 			<div className={styles.card}>{renderStep()}</div>
@@ -138,14 +149,14 @@ const RoomSelection = () => {
 					<div className={styles.card__buttonWrapper}>
 						{step > 0 && (
 							<button className={styles.card__button} onClick={() => prevStep()}>
-								Zurück
+								{steps[step].prevButton}
 							</button>
 						)}
 						<button
 							className={styles.card__button}
 							onClick={() => validateStep(step + 1) && (step < 3 ? nextStep() : submitForm())}
 						>
-							{step === 0 ? 'Zum Raumplaner' : step < 3 ? 'Weiter' : 'Senden'}
+							{steps[step].nextButton}
 						</button>
 					</div>
 					{step === 1 && !validationPassed && (
