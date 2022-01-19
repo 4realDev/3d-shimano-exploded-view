@@ -92,7 +92,7 @@ const Accordion = ({
 					title={room.info.title}
 					personCapacity={room.info.personCapacity}
 					area={room.info.area}
-					height={room.info.height}
+					roomHeight={room.info.height}
 					img={room.info.img}
 					isActive={room.model.meshName === activeRoom}
 					activeRoom={activeRoom}

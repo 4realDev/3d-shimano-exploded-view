@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './RoomSelection.module.scss';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -73,10 +73,6 @@ const RoomSelection = () => {
 		resetScene();
 		resetWizardData();
 		setValidationPassed(null);
-		window.scrollTo({
-			top: 0,
-			behavior: 'smooth',
-		});
 	};
 
 	const handleChange = (value: any, inputField: any) => {

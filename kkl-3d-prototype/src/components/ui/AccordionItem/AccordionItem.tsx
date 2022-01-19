@@ -13,13 +13,14 @@ import { roomList, ROOM_FITTINGS } from '../../../data/roomData';
 import Exhibition from '../../icons/Exhibition';
 import AdditionalRooms from '../../icons/AdditionalRooms';
 import DayLight from '../../icons/DayLight';
+import useWindowDimensions from '../../../hooks/useWindowDimensions';
 
 type AccordionItemProps = {
 	id: number;
 	title: string;
 	personCapacity: number;
 	area: number;
-	height: number;
+	roomHeight: number;
 	img: string;
 	isActive: boolean;
 	activeRoom: string | null;
@@ -33,7 +34,7 @@ const AccordionItem = ({
 	title,
 	personCapacity,
 	area,
-	height,
+	roomHeight,
 	img,
 	isActive,
 	activeRoom,
@@ -46,6 +47,9 @@ const AccordionItem = ({
 	// All content should be initially hidden / accordion items should be closed -> maxHeight: 0px
 	const [contentHeight, setContentHeight] = useState(0);
 
+	const { width } = useWindowDimensions();
+	const [additionalDistanceToScreenTop, setAdditionalDistanceToScreenTop] = useState(0);
+
 	const meshNameCorrespondingToId = useMemo<string>(() => {
 		const meshCorrespondingToId = getMeshNameById(id);
 		if (meshCorrespondingToId) {
@@ -56,10 +60,25 @@ const AccordionItem = ({
 		}
 	}, [id]);
 
+	const calculateViewportHeight = (v: number) => {
+		var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+		return (v * h) / 100;
+	};
+
 	// On first render scroll to top
+	// On tablet and mobile ModelCanvas is above RoomSelection -> therefore scroll value must be a high negative number to scroll "really" to the top
 	useEffect(() => {
+		setAdditionalDistanceToScreenTop(
+			width < 480
+				? calculateViewportHeight(25)
+				: width < 768
+				? calculateViewportHeight(30)
+				: width < 992
+				? calculateViewportHeight(40)
+				: 0
+		);
 		window.scrollTo({
-			top: 0,
+			top: 0 - additionalDistanceToScreenTop,
 			behavior: 'smooth',
 		});
 	}, []);
@@ -76,7 +95,9 @@ const AccordionItem = ({
 			// Delay scrolling to the clicked accordion item by the translation delay of the opening and closing of the item to get the correct scrollHeight
 			setTimeout(() => {
 				window.scrollTo({
-					top: content.current ? content.current.offsetTop - content.current.scrollHeight : 0,
+					top: content.current
+						? content.current.offsetHeight - content.current.scrollHeight - additionalDistanceToScreenTop
+						: 0,
 					behavior: 'smooth',
 				});
 			}, 500);
@@ -134,7 +155,7 @@ const AccordionItem = ({
 				</div>
 				<div className={styles.accordionItem__detailsItem}>
 					<CheckMark className={styles.accordionItem__checkMark} width={16} fill='#ffffff' />
-					<span>{height} m Raumhöhe</span>
+					<span>{roomHeight} m Raumhöhe</span>
 				</div>
 			</div>
 		);

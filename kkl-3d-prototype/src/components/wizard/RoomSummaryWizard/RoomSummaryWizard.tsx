@@ -33,8 +33,11 @@ const RoomSummaryWizard = ({ handleChange, wizardData }: RoomSummaryWizardProps)
 	);
 
 	useEffect(() => {
+		// On first render scroll to top of the screen
+		// Use high negative number as an easy workaround to scroll to the top on every viewport
+		// Necessary for mobile and tablet because they have marginTop according to viewport-height of ModelCanvas
 		window.scrollTo({
-			top: 0,
+			top: -1080,
 			behavior: 'smooth',
 		});
 

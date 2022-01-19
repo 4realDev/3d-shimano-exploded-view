@@ -6,6 +6,7 @@ import { TextField, MenuItem } from '@mui/material';
 import styles from './RoomFilteringWizard.module.scss';
 import { EVENT_TYPES } from '../../../data/roomData';
 import { WizardData } from '../../../store/useWizardStore';
+import { useEffect } from 'react';
 
 const eventType = [
 	{
@@ -48,6 +49,16 @@ interface RoomFilteringWizardProps {
 }
 
 const RoomFilteringWizard = ({ handleChange, wizardData }: RoomFilteringWizardProps) => {
+	useEffect(() => {
+		// On first render scroll to top of the screen
+		// Use high negative number as an easy workaround to scroll to the top on every viewport
+		// Necessary for mobile and tablet because they have marginTop according to viewport-height of ModelCanvas
+		window.scrollTo({
+			top: -1080,
+			behavior: 'smooth',
+		});
+	}, []);
+
 	const handleNumberInput = (value: string, inputField: string) => {
 		const onlyNums: string = value.replace(/[^0-9]/g, '');
 		const onlyNumValue = onlyNums.length === 0 ? '' : onlyNums;
