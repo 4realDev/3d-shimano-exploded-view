@@ -34,11 +34,11 @@ const ModelCanvas = () => {
 		<div
 			id='canvas'
 			className={styles.canvas}
-			onMouseDown={() => {
+			onPointerDown={() => {
 				setIdleState(false);
 				setMouseDown(true);
 			}}
-			onMouseUp={() => {
+			onPointerUp={() => {
 				setMouseDown(false);
 			}}
 		>
