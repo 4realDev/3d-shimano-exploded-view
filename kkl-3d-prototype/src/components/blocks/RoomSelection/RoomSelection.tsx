@@ -16,7 +16,7 @@ const steps = [
 	{
 		title: 'Finde den passenden Raum',
 		description:
-			'Nutze die Filterfunktionen um den passenden Raum für deinen Anlass zu finden. Sag uns nur, was dein Event ist, wie viele Leute daran Teilnehmen und wann es beginnt und endet? Falls dir eine oder mehrere Filteroptionen nicht bekannt sind, lass sie einfach leer.',
+			'Nutze die Filterfunktionen um den passenden Raum für deinen Anlass zu finden. Sag uns nur, was dein Event ist, wie viele Leute daran teilnehmen und wann es beginnt und endet? Falls dir eine oder mehrere Informationen nicht bekannt sind, kannst du diese leer lassen.',
 		hint: 'Hinweis: Du kannst auch mit dem 3D Model interagieren. Durch die Rotation des Models oder das Anklicken einzelner Räume, kannst du dir einen besseren Eindruck von den Räumen, deren Position sowie Proportionen verschaffen.',
 		prevButton: '',
 		nextButton: 'Passende Räumen suchen',
@@ -38,8 +38,8 @@ const steps = [
 	{
 		title: 'Überprüfe deine Auswahl & Buche',
 		description:
-			'Der ausgewählte Hauptraum, sowie der ausgewählte Nebenraum (falls vorhanden) werden im 3D Model markiert.',
-		hint: 'Hinweis: Klicke Sie an, um Sie nochmals mit den ausgewählten Konfigurationen zu sehen.',
+			'Der ausgewählte Hauptraum, sowie der ausgewählte Nebenraum (falls vorhanden) werden in der Liste unten angezeigt und im 3D Model markiert.',
+		hint: 'Hinweis: Du kannst den ausgewählten Haupt- und Nebenraum im 3D Model auswählen, um eine Nahansicht vom Raum mit den ausgewählten Konfigurationen zu bekommen.',
 		prevButton: 'Zurück',
 		nextButton: 'Buchen',
 	},
