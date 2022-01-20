@@ -8,7 +8,7 @@ import Seats from '../../icons/Seats';
 import styles from './AccordionItem.module.scss';
 import Accessibility from '../../icons/Accessibility';
 import NoSeats from '../../icons/NoSeats';
-import { getMeshNameById } from '../../../utils/formatRoom';
+import { getMeshNameById } from '../../../utils/room';
 import { roomList, ROOM_FITTINGS } from '../../../data/roomData';
 import Exhibition from '../../icons/Exhibition';
 import AdditionalRooms from '../../icons/AdditionalRooms';

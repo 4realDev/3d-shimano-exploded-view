@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCameraStore } from '../../../store/useCameraStore';
-import { getRoomTitleByMeshName } from '../../../utils/formatRoom';
+import { getRoomTitleByMeshName } from '../../../utils/room';
 import styles from './ThreeJsDataDebugger.module.scss';
 
 const ThreeJsDataDebugger = () => {

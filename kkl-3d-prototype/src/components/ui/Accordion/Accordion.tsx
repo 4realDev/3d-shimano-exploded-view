@@ -1,14 +1,9 @@
-import { CHAIR_FORMATION, EQUIPMENT, RoomFetchedInfo, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
+import { RoomFetchedInfo, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
 import MeshVisibilityButton from '../MeshVisibilityButton/MeshVisibilityButton';
 import AccordionItem from '../AccordionItem/AccordionItem';
 import styles from './Accordion.module.scss';
-import Stage from '../../icons/Stage';
-import Podium from '../../icons/Podium';
 import { WizardRoomData } from '../../../store/useWizardStore';
-import Beamer from '../../icons/Beamer';
-import ChairFormationBankett from '../../icons/ChairFormationBankett';
-import ChairFormationConcert from '../../icons/ChairFormationConcert';
-import ChairFormationSeminar from '../../icons/ChairFormationSeminar';
+import { getFormationIcon, getEquipmentIcon } from '../../../utils/room';
 
 type AccordionProps = {
 	roomList: RoomFetchedInfo[];
@@ -31,32 +26,6 @@ const Accordion = ({
 	handleOnClose,
 	handleAdditionsOnChange,
 }: AccordionProps) => {
-	const getFormationIcon = (formation: string) => {
-		switch (formation) {
-			case CHAIR_FORMATION.bankett:
-				return <ChairFormationBankett />;
-			case CHAIR_FORMATION.seminar:
-				return <ChairFormationSeminar />;
-			case CHAIR_FORMATION.concert:
-				return <ChairFormationConcert />;
-			default:
-				return null;
-		}
-	};
-
-	const getEquipmentIcon = (equipment: string) => {
-		switch (equipment) {
-			case EQUIPMENT.stage:
-				return <Stage fill='#000000' />;
-			case EQUIPMENT.podium:
-				return <Podium fill='#000000' />;
-			case EQUIPMENT.beamer:
-				return <Beamer fill='#000000' />;
-			default:
-				return null;
-		}
-	};
-
 	const getActiveStateOfRoomChairFormationMeshButton = (
 		accordionItemRoomName: string,
 		accordionItemMeshButtonChairFormation: string

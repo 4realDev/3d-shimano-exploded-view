@@ -1,6 +1,4 @@
 import create from 'zustand';
-import { EVENT_TYPES, ROOM_ADDITIONS_CATEGORY } from '../data/roomData';
-import { getMeshObjectByMeshName } from '../utils/formatRoom';
 
 export type WizardRoomData = {
 	room: string;

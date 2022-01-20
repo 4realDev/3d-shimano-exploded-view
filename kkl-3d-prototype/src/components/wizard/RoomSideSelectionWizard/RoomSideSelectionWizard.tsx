@@ -10,7 +10,7 @@ import {
 } from '../../../store/useCameraStore';
 import { setMeshChildVisibility } from '../../../store/useMeshStore';
 import { handleRoomAdditionsChange, handleRoomDataChange, WizardData } from '../../../store/useWizardStore';
-import { getMeshObjectByMeshName } from '../../../utils/formatRoom';
+import { getMeshObjectByMeshName } from '../../../utils/room';
 import Accordion from '../../ui/Accordion/Accordion';
 import NoResults from '../../ui/NoResults/NoResults';
 

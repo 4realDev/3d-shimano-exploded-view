@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import create from 'zustand';
 import { INTERACTABLE_MESH_NAMES } from '../data/roomData';
-import { getMeshObjectByMeshName } from '../utils/formatRoom';
+import { getMeshObjectByMeshName } from '../utils/room';
 import { resetMeshVisibility, setMeshVisibility } from './useMeshStore';
 
 export const defaultCameraPosition = new THREE.Vector3(20, 15, 0);

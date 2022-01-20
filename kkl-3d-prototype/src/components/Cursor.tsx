@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useCameraStore } from '../store/useCameraStore';
-import { getRoomTitleByMeshName } from '../utils/formatRoom';
+import { getRoomTitleByMeshName } from '../utils/room';
 
 const Cursor = () => {
 	const hoveredMesh = useCameraStore((state) => state.hoveredMesh);

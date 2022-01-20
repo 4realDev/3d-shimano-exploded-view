@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { roomList } from '../../../data/roomData';
 import { setFilteredMeshes, setSelectedMeshes, showRoomsOverview } from '../../../store/useCameraStore';
 import { ROOM_TYPE, WizardData } from '../../../store/useWizardStore';
-import { formatDate } from '../../../utils/formatDate';
+import { formatDate } from '../../../utils/date';
 import RoomCard from '../../ui/RoomCard/RoomCard';
 import styles from './RoomSummaryWizard.module.scss';
 
