@@ -1,14 +1,14 @@
 @import '../../../styles/colors.scss';
 
-.filterCriteria {
+.summaryCard {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
-	padding: 24px 32px 24px 32px;
+	padding: 36px 32px 32px 32px;
 	margin-bottom: 1rem;
 	font-size: 1.6rem;
 	cursor: default;
-	background-color: $color-dark-grey-hovered;
+	background-color: $color-dark-grey;
 	color: rgba(255, 255, 255, 0.8);
 	box-shadow: 0.5rem 2px 0.5rem $color-shadow;
 	border-radius: 0.4rem;
@@ -22,12 +22,25 @@
 		font-size: 14px;
 		line-height: 18px;
 
+		&:last-child {
+			padding-bottom: 0px !important;
+		}
+
 		&__key {
 			flex: 0.75;
 		}
 		&__value {
 			flex: 1;
 			color: white;
+		}
+
+		&__textfield {
+			padding-top: 6px !important;
+			padding-bottom: 6px !important;
+
+			& > div {
+				margin-bottom: 0px !important;
+			}
 		}
 	}
 
@@ -36,7 +49,7 @@
 		text-align: start;
 		padding-bottom: 24px;
 		font-weight: 700;
-		font-size: 18px;
+		font-size: 24px;
 		line-height: 22px;
 	}
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './RoomSelection.module.scss';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -51,7 +51,8 @@ const RoomSelection = () => {
 	const [validationPassed, setValidationPassed] = useState<boolean | null>(null);
 
 	const nextStep = () => {
-		setStep(step + 1);
+		if (step === 1 && wizardData.additionalRooms === false) setStep(step + 2);
+		else setStep(step + 1);
 	};
 
 	const prevStep = () => {
@@ -64,7 +65,8 @@ const RoomSelection = () => {
 			handleChange('', 'activeMainRoom');
 			handleChange('', 'activeSideRoom');
 		}
-		setStep(step - 1);
+		if (step === 3 && wizardData.additionalRooms === false) setStep(step - 2);
+		else setStep(step - 1);
 	};
 
 	const submitForm = () => {
@@ -108,7 +110,7 @@ const RoomSelection = () => {
 		}
 	};
 
-	const renderStep = () => {
+	const renderWizardStep = () => {
 		switch (step) {
 			case 0:
 				return <RoomFilteringWizard wizardData={wizardData} handleChange={handleChange} />;
@@ -128,18 +130,24 @@ const RoomSelection = () => {
 			<div className={styles.card}>
 				<div className={styles.card__headingStepperContainer}>
 					<h1 className={styles.card__heading}>{steps[step].title}</h1>
+					{/* When additionalRooms are selected, there should be an extra step inside the wizard */}
+					{/* Else step "3" should not be rendered inside the stepper and step "4" should be visualized as the removed step "3" */}
 					<Stepper nonLinear activeStep={step} variant='outlined'>
-						{steps.map((stepItem, index) => (
-							<Step key={stepItem.title}>
-								<StepLabel />
-							</Step>
-						))}
+						{steps.map((stepItem, index) => {
+							return index === 2 && !wizardData.additionalRooms ? (
+								<></>
+							) : (
+								<Step key={stepItem.title}>
+									<StepLabel icon={index === 3 && !wizardData.additionalRooms ? index : index + 1} />
+								</Step>
+							);
+						})}
 					</Stepper>
 					{steps[step].description && <p className={styles.card__description}>{steps[step].description}</p>}
 					{steps[step].hint && <p className={styles.card__hint}>{steps[step].hint}</p>}
 				</div>
 			</div>
-			<div className={styles.card}>{renderStep()}</div>
+			<div className={styles.card}>{renderWizardStep()}</div>
 			<div className={styles.card}>
 				<div className={styles.card__buttonContainer}>
 					<div className={styles.card__buttonWrapper}>
@@ -163,9 +171,7 @@ const RoomSelection = () => {
 					)}
 				</div>
 			</div>
-			<div className={styles.card}>
-				<DebugControlPanel />
-			</div>
+			<div className={styles.card}>{<DebugControlPanel />}</div>
 		</div>
 	);
 };

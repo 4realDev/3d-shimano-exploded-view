@@ -2,10 +2,13 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import deLocale from 'date-fns/locale/de';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-import { TextField, MenuItem } from '@mui/material';
+import { TextField, MenuItem, Checkbox, FormControlLabel } from '@mui/material';
 import styles from './RoomFilteringWizard.module.scss';
 import { EVENT_TYPES } from '../../../data/roomData';
-import { WizardData } from '../../../store/useWizardStore';
+import {
+	checkAllRoomsChairFormationAndCapacityAfterPersonNumUpdate,
+	WizardDataType,
+} from '../../../store/useWizardStore';
 import { useEffect } from 'react';
 
 const eventType = [
@@ -45,7 +48,7 @@ const eventType = [
 
 interface RoomFilteringWizardProps {
 	handleChange: (value: any, inputField: any) => void;
-	wizardData: WizardData;
+	wizardData: WizardDataType;
 }
 
 const RoomFilteringWizard = ({ handleChange, wizardData }: RoomFilteringWizardProps) => {
@@ -91,7 +94,10 @@ const RoomFilteringWizard = ({ handleChange, wizardData }: RoomFilteringWizardPr
 				id='outlined-select-personNum'
 				label='Anzahl Teilnehmer'
 				value={wizardData.personNum}
-				onChange={(e) => handleNumberInput(e.target.value, 'personNum')}
+				onChange={(e) => {
+					handleNumberInput(e.target.value, 'personNum');
+					checkAllRoomsChairFormationAndCapacityAfterPersonNumUpdate();
+				}}
 				variant='outlined'
 				fullWidth
 			/>
@@ -117,6 +123,17 @@ const RoomFilteringWizard = ({ handleChange, wizardData }: RoomFilteringWizardPr
 					/>
 				</div>
 			</LocalizationProvider>
+
+			<FormControlLabel
+				label='Mit Zusatzräumen'
+				className={styles.formControl}
+				control={
+					<Checkbox
+						checked={wizardData.additionalRooms}
+						onChange={() => handleChange(!wizardData.additionalRooms, 'additionalRooms')}
+					/>
+				}
+			/>
 		</div>
 	);
 };

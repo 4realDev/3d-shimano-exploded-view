@@ -13,7 +13,8 @@ import NoSeats from '../components/icons/NoSeats';
 import Podium from '../components/icons/Podium';
 import Seats from '../components/icons/Seats';
 import Stage from '../components/icons/Stage';
-import { CHAIR_FORMATION, EQUIPMENT, roomList, ROOM_FITTINGS } from '../data/roomData';
+import { CHAIR_FORMATION, EQUIPMENT, RoomFetchedDataType, roomList, ROOM_FITTINGS } from '../data/roomData';
+import { WizardRoomDataType } from '../store/useWizardStore';
 
 // Takes meshname like "room_3" and returns the title of the room like "Konzertsaal"
 export const getRoomTitleByMeshName = (meshName: string) => {
@@ -25,7 +26,7 @@ export const getMeshNameById = (id: number) => {
 	return roomList.find((room) => room.info.id === id);
 };
 
-// Takes meshname like "room_3" and returns the MeshObject of the room
+// Takes meshname like "room_3" and returns the MeshObjectType of the room
 export const getMeshObjectByMeshName = (meshName: string) => {
 	return roomList.find((room) => room.model.meshName === meshName);
 };

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-export type RoomFetchedInfo = {
+export type RoomFetchedDataType = {
 	model: {
 		meshName: string;
 		camPos: THREE.Vector3;
@@ -9,17 +9,21 @@ export type RoomFetchedInfo = {
 	info: {
 		id: number;
 		title: string;
-		personCapacity: number;
+		personCapacity: number | number[];
 		area: number;
 		height: number;
 		img: string;
-		bookedStartDate?: string;
-		bookedEndDate?: string;
-		chairFormations?: CHAIR_FORMATION[];
+		chairFormations?: { name: CHAIR_FORMATION; capacity: number }[];
 		equipment?: EQUIPMENT[];
 		fittings?: ROOM_FITTINGS[];
 		fittingEventTypes?: EVENT_TYPES[];
+		bookedDates: { start: string; end: string }[];
 	};
+};
+
+export type ChairFormationType = {
+	name: CHAIR_FORMATION;
+	capacity: number;
 };
 
 export enum INTERACTABLE_MESH_NAMES {
@@ -36,7 +40,6 @@ export enum CHAIR_FORMATION {
 	concert = 'chair_formation_concert',
 	seminar = 'chair_formation_seminar',
 	bankett = 'chair_formation_bankett',
-	uform = 'chair_formation_uform',
 }
 
 export enum EQUIPMENT {
@@ -92,8 +95,11 @@ export const roomList = [
 			fittings: [ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.seats, ROOM_FITTINGS.additionalRooms],
 			fittingEventTypes: [EVENT_TYPES.concert],
 			fittingSideRoom: [INTERACTABLE_MESH_NAMES.clubroom, INTERACTABLE_MESH_NAMES.businessMediaRoom],
-			bookedStartDate: '2022-01-01',
-			bookedEndDate: '2022-01-05',
+			bookedDates: [
+				{ start: '2022-02-10', end: '2022-02-12' },
+				{ start: '2022-02-14', end: '2022-02-16' },
+				{ start: '2022-02-18', end: '2022-02-20' },
+			],
 		},
 	},
 	{
@@ -105,12 +111,16 @@ export const roomList = [
 		info: {
 			id: 2,
 			title: 'Luzerner Saal',
-			personCapacity: 1044,
+			personCapacity: [470, 1044],
 			area: 760,
 			height: 12,
 			img: './images/LuzernerSaal.jpg',
 			equipment: [EQUIPMENT.stage, EQUIPMENT.podium, EQUIPMENT.beamer],
-			chairFormations: [CHAIR_FORMATION.bankett, CHAIR_FORMATION.seminar, CHAIR_FORMATION.concert],
+			chairFormations: [
+				{ name: CHAIR_FORMATION.bankett, capacity: 940 },
+				{ name: CHAIR_FORMATION.seminar, capacity: 470 },
+				{ name: CHAIR_FORMATION.concert, capacity: 1044 },
+			],
 			fittings: [
 				ROOM_FITTINGS.catering,
 				ROOM_FITTINGS.apero,
@@ -125,8 +135,11 @@ export const roomList = [
 				INTERACTABLE_MESH_NAMES.clubroom,
 				INTERACTABLE_MESH_NAMES.businessMediaRoom,
 			],
-			bookedStartDate: '2022-01-01',
-			bookedEndDate: '2022-01-31',
+			bookedDates: [
+				{ start: '2022-02-10', end: '2022-02-12' },
+				{ start: '2022-02-14', end: '2022-02-16' },
+				{ start: '2022-02-22', end: '2022-02-24' },
+			],
 		},
 	},
 	{
@@ -137,13 +150,17 @@ export const roomList = [
 		},
 		info: {
 			id: 3,
-			title: 'Clubraum',
-			personCapacity: 150,
+			title: 'Clubraum (Gross)',
+			personCapacity: [120, 300],
 			area: 250,
 			height: 12,
 			img: './images/Clubraeume.jpg',
 			equipment: [EQUIPMENT.podium, EQUIPMENT.beamer],
-			chairFormations: [CHAIR_FORMATION.seminar, CHAIR_FORMATION.bankett],
+			chairFormations: [
+				{ name: CHAIR_FORMATION.seminar, capacity: 120 },
+				{ name: CHAIR_FORMATION.bankett, capacity: 160 },
+				{ name: CHAIR_FORMATION.concert, capacity: 300 },
+			],
 			fittings: [
 				ROOM_FITTINGS.catering,
 				ROOM_FITTINGS.apero,
@@ -153,29 +170,38 @@ export const roomList = [
 				ROOM_FITTINGS.dayLight,
 			],
 			fittingEventTypes: [EVENT_TYPES.apero, EVENT_TYPES.exhibition, EVENT_TYPES.meeting, EVENT_TYPES.workshop],
-			bookedStartDate: '2022-01-01',
-			bookedEndDate: '2022-01-05',
+			bookedDates: [
+				{ start: '2022-01-01', end: '2022-01-05' },
+				{ start: '2022-01-07', end: '2022-01-08' },
+				{ start: '2022-01-10', end: '2022-01-11' },
+			],
 		},
 	},
 	{
 		model: {
 			meshName: INTERACTABLE_MESH_NAMES.businessMediaRoom,
-			camPos: new THREE.Vector3(7.4, -3.5 + camHeightOffset, 0),
+			camPos: new THREE.Vector3(0.6, -7.5 + camHeightOffset, 0),
 			camTarget: new THREE.Vector3(0.4, -0.5, 0),
 		},
 		info: {
 			id: 4,
-			title: 'Medienraum',
-			personCapacity: 15,
+			title: 'Medienraum (Gross)',
+			personCapacity: [20, 50],
 			area: 32,
 			height: 12,
 			img: './images/BusinessMedienraeume.jpg',
 			equipment: [EQUIPMENT.podium, EQUIPMENT.beamer],
-			chairFormations: [CHAIR_FORMATION.seminar, CHAIR_FORMATION.bankett],
+			chairFormations: [
+				{ name: CHAIR_FORMATION.seminar, capacity: 20 },
+				{ name: CHAIR_FORMATION.bankett, capacity: 50 },
+			],
 			fittings: [ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.seats, ROOM_FITTINGS.dayLight],
 			fittingEventTypes: [EVENT_TYPES.apero, EVENT_TYPES.exhibition, EVENT_TYPES.meeting, EVENT_TYPES.workshop],
-			bookedStartDate: '2022-01-01',
-			bookedEndDate: '2022-01-05',
+			bookedDates: [
+				{ start: '2022-02-10', end: '2022-02-12' },
+				{ start: '2022-02-14', end: '2022-02-16' },
+				{ start: '2022-02-18', end: '2022-02-20' },
+			],
 		},
 	},
 	{
@@ -195,8 +221,11 @@ export const roomList = [
 			fittings: [ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.seats, ROOM_FITTINGS.additionalRooms],
 			fittingEventTypes: [EVENT_TYPES.congress, EVENT_TYPES.exhibition, EVENT_TYPES.workshop],
 			fittingSideRoom: [INTERACTABLE_MESH_NAMES.entryFoyer, INTERACTABLE_MESH_NAMES.businessMediaRoom],
-			bookedStartDate: '2022-01-01',
-			bookedEndDate: '2022-01-05',
+			bookedDates: [
+				{ start: '2022-02-10', end: '2022-02-12' },
+				{ start: '2022-02-14', end: '2022-02-16' },
+				{ start: '2022-02-18', end: '2022-02-20' },
+			],
 		},
 	},
 	{
@@ -208,15 +237,18 @@ export const roomList = [
 		info: {
 			id: 6,
 			title: 'Eingangsfoyer',
-			personCapacity: 50,
-			area: 65,
+			personCapacity: 200,
+			area: 520,
 			height: 12,
 			img: './images/EingangsFoyer.jpg',
 			equipment: [EQUIPMENT.podium, EQUIPMENT.beamer],
 			fittings: [ROOM_FITTINGS.apero, ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.noSeats, ROOM_FITTINGS.dayLight],
 			fittingEventTypes: [EVENT_TYPES.apero],
-			bookedStartDate: '2022-01-01',
-			bookedEndDate: '2022-01-05',
+			bookedDates: [
+				{ start: '2022-02-10', end: '2022-02-12' },
+				{ start: '2022-02-14', end: '2022-02-16' },
+				{ start: '2022-02-18', end: '2022-02-20' },
+			],
 		},
 	},
 ];

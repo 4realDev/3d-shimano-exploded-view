@@ -1,19 +1,20 @@
+import { TextField } from '@mui/material';
 import { useEffect, useMemo } from 'react';
-import { roomList } from '../../../data/roomData';
+import { EVENT_TYPES, roomList } from '../../../data/roomData';
 import { setFilteredMeshes, setSelectedMeshes, showRoomsOverview } from '../../../store/useCameraStore';
-import { ROOM_TYPE, WizardData } from '../../../store/useWizardStore';
+import { ROOM_TYPE, WizardDataType } from '../../../store/useWizardStore';
 import { formatDate } from '../../../utils/date';
 import RoomCard from '../../ui/RoomCard/RoomCard';
 import styles from './RoomSummaryWizard.module.scss';
 
 interface RoomSummaryWizardProps {
 	handleChange: (value: any, inputField: any) => void;
-	wizardData: WizardData;
+	wizardData: WizardDataType;
 }
 
 const RoomSummaryWizard = ({ handleChange, wizardData }: RoomSummaryWizardProps) => {
 	const chosenWizardMainRoomData = useMemo(
-		() => wizardData.mainRoom.find((mainRoom) => mainRoom.room === wizardData.activeMainRoom),
+		() => wizardData.mainRooms.find((mainRoom) => mainRoom.room === wizardData.activeMainRoom),
 		[wizardData]
 	);
 
@@ -23,7 +24,7 @@ const RoomSummaryWizard = ({ handleChange, wizardData }: RoomSummaryWizardProps)
 	);
 
 	const chosenWizardSideRoomData = useMemo(
-		() => wizardData.sideRoom.find((sideRoom) => sideRoom.room === wizardData.activeSideRoom),
+		() => wizardData.sideRooms.find((sideRoom) => sideRoom.room === wizardData.activeSideRoom),
 		[wizardData]
 	);
 
@@ -53,53 +54,81 @@ const RoomSummaryWizard = ({ handleChange, wizardData }: RoomSummaryWizardProps)
 		<>
 			{chosenMainRoomObject && chosenWizardMainRoomData && (
 				<RoomCard
-					id={chosenMainRoomObject.info.id}
 					title={chosenMainRoomObject.info.title}
-					personCapacity={chosenMainRoomObject.info.personCapacity}
+					personCapacity={
+						chosenWizardMainRoomData.capacity !== undefined
+							? chosenWizardMainRoomData.capacity
+							: chosenMainRoomObject.info.personCapacity
+					}
 					area={chosenMainRoomObject.info.area}
 					height={chosenMainRoomObject.info.height}
 					img={chosenMainRoomObject.info.img}
+					roomFitting={chosenMainRoomObject.info.fittings}
 					equipment={chosenWizardMainRoomData.equipment}
 					chairFormation={chosenWizardMainRoomData.chair_formation}
-					roomType={ROOM_TYPE.mainRoom}
+					roomType={ROOM_TYPE.mainRooms}
 				/>
 			)}
 
 			{chosenSideRoomInfoObject && chosenWizardSideRoomData && (
 				<RoomCard
-					id={chosenSideRoomInfoObject.info.id}
 					title={chosenSideRoomInfoObject.info.title}
 					personCapacity={chosenSideRoomInfoObject.info.personCapacity}
 					area={chosenSideRoomInfoObject.info.area}
 					height={chosenSideRoomInfoObject.info.height}
 					img={chosenSideRoomInfoObject.info.img}
+					roomFitting={chosenSideRoomInfoObject.info.fittings}
 					equipment={chosenWizardSideRoomData.equipment}
 					chairFormation={chosenWizardSideRoomData.chair_formation}
-					roomType={ROOM_TYPE.sideRoom}
+					roomType={ROOM_TYPE.sideRooms}
 				/>
 			)}
 
-			<div className={styles.filterCriteria}>
-				<h3 className={styles.filterCriteria__title}>Kriterien</h3>
-				<div className={styles.filterCriteria__item}>
-					<div className={styles.filterCriteria__item__key}>Art des Events: </div>
-					<div className={styles.filterCriteria__item__value}>{wizardData.eventType}</div>
-				</div>
-				<div className={styles.filterCriteria__item}>
-					<div className={styles.filterCriteria__item__key}>Anzahl Teilnehmer: </div>
-					<div className={styles.filterCriteria__item__value}>{wizardData.personNum}</div>
-				</div>
-				<div className={styles.filterCriteria__item}>
-					<div className={styles.filterCriteria__item__key}>Startdatum:</div>
-					<div className={styles.filterCriteria__item__value}>
-						{wizardData.startDate ? formatDate(wizardData.startDate) : 'Es wurde kein Startdatum ausgewählt'}
+			<div className={styles.summaryCard}>
+				<h3 className={styles.summaryCard__title}>Kriterien</h3>
+				<div className={styles.summaryCard__item}>
+					<div className={styles.summaryCard__item__key}>Art des Events: </div>
+					<div className={styles.summaryCard__item__value}>
+						{wizardData.eventType === EVENT_TYPES.all ? 'undefiniert' : wizardData.eventType}
 					</div>
 				</div>
-				<div className={styles.filterCriteria__item}>
-					<div className={styles.filterCriteria__item__key}>Enddatum:</div>
-					<div className={styles.filterCriteria__item__value}>
-						{wizardData.endDate ? formatDate(wizardData.endDate) : 'Es wurde kein Enddatum ausgewählt'}
+				<div className={styles.summaryCard__item}>
+					<div className={styles.summaryCard__item__key}>Anzahl Teilnehmer: </div>
+					<div className={styles.summaryCard__item__value}>
+						{wizardData.personNum !== '' ? wizardData.personNum : 'undefiniert'}
 					</div>
+				</div>
+				<div className={styles.summaryCard__item}>
+					<div className={styles.summaryCard__item__key}>Startdatum:</div>
+					<div className={styles.summaryCard__item__value}>
+						{wizardData.startDate ? formatDate(wizardData.startDate) : 'undefiniert'}
+					</div>
+				</div>
+				<div className={styles.summaryCard__item}>
+					<div className={styles.summaryCard__item__key}>Enddatum:</div>
+					<div className={styles.summaryCard__item__value}>
+						{wizardData.endDate ? formatDate(wizardData.endDate) : 'undefiniert'}
+					</div>
+				</div>
+			</div>
+
+			<div className={styles.summaryCard}>
+				<h3 className={styles.summaryCard__title}>Zusätzliche Dienstleistungen</h3>
+				<div className={styles.summaryCard__item}>
+					<div>
+						Haben Sie spezielle Wünsche betreffend Technik, Projektmanagement, Ticketing, Dekoration, Gästebetreung oder
+						Sicherheit?
+					</div>
+				</div>
+				<div className={styles.summaryCard__item}>
+					<TextField
+						className={styles.summaryCard__item__textfield}
+						id='outlined-multiline-static'
+						multiline
+						value={wizardData.additionalService}
+						onChange={(e) => handleChange(e.target.value, 'additionalService')}
+						rows={4}
+					/>
 				</div>
 			</div>
 		</>

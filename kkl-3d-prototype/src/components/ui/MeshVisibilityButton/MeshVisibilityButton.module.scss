@@ -29,4 +29,8 @@
 		border: none !important;
 		background: $color-main-yellow-hovered;
 	}
+
+	&--disabled {
+		opacity: 0.15;
+	}
 }

@@ -15,7 +15,7 @@ export type DreiGLTF = GLTF & {
 	materials: { [name: string]: THREE.Material };
 };
 
-export type MeshObject = {
+export type MeshObjectType = {
 	name: string;
 	geometry: THREE.BufferGeometry;
 	position?: THREE.Vector3;
@@ -26,7 +26,7 @@ export type MeshObject = {
 	opacity: number;
 	isVisible: boolean;
 	userData: Record<string, string> | undefined;
-	children?: MeshObject[];
+	children?: MeshObjectType[];
 };
 
 type ModelProps = {
@@ -44,7 +44,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 	const model = useGLTF('/house-model.glb') as DreiGLTF;
 
 	const colorModelDefault = '#D4D4D4';
-	const colorModelChildrenDefault = '#BEBEBE';
+	const colorModelChildrenDefault = '#5d5d5d'; // TODO: Adjust child color to darker one
 	const colorFilteredMainRoom = '#c4aeae';
 	const colorFilteredSideRoom = '#c7d0af';
 	const colorSelectedOrHoveredMainRoom = '#ceadad';
@@ -60,7 +60,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 	 * @param meshObject The mesh object from which the color will be determined.
 	 * @return The resulting color hex value according to meshObject's state.
 	 */
-	const getMeshColor = (meshObject: MeshObject) => {
+	const getMeshColor = (meshObject: MeshObjectType) => {
 		let colorFiltered;
 		let colorSelectedOrHovered;
 		const hasFittingSideRoom = roomList.find((room) => room.model.meshName === meshObject.name)?.info.fittingSideRoom;
@@ -93,7 +93,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 	 * @param meshObject The mesh object from which the opacity will be determined.
 	 * @return The resulting opacity value according to meshObject's state.
 	 */
-	const getMeshMaterialOpacity = (meshObject: MeshObject) => {
+	const getMeshMaterialOpacity = (meshObject: MeshObjectType) => {
 		const isHovered = hoveredMesh === meshObject.name;
 		const isSelected = selectedMeshes.includes(meshObject.name);
 
@@ -110,13 +110,13 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 	};
 
 	const convertGLTFToMeshList = (nodes: { [name: string]: THREE.Mesh }) => {
-		const initialMeshList: MeshObject[] = [];
+		const initialMeshList: MeshObjectType[] = [];
 		delete nodes.Scene;
 		delete nodes.Camera;
 		delete nodes.Light;
 
 		Object.values(nodes).forEach((mesh) => {
-			const children: MeshObject[] = [];
+			const children: MeshObjectType[] = [];
 
 			// *** NAMING LOGIC OF THE MESHES ***
 			// For the naming of the meshes, we use the "Custom Properties" from the Blender Software
@@ -136,7 +136,9 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 						material: child.material as any,
 						color: colorModelChildrenDefault,
 						opacity: 1,
-						isVisible: false,
+						// interactable mesh children (from which the visibility can be toggled) have a customName and are by default invisible
+						// other child meshes are visible according their visibility state inside blender
+						isVisible: 'customName' in child.userData ? false : child.visible,
 						userData: 'customName' in child.userData ? { customName: child.userData.customName } : undefined,
 						position: child.position,
 						rotation: child.rotation,
@@ -163,7 +165,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 	};
 
 	// render rooms children elements (equipment & chair_formation)
-	const renderMeshChildren = (meshObject: MeshObject) => {
+	const renderMeshChildren = (meshObject: MeshObjectType) => {
 		return (
 			<>
 				{meshObject.children !== undefined &&
@@ -196,7 +198,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 		);
 	};
 
-	const renderMesh = (meshObject: MeshObject) => {
+	const renderMesh = (meshObject: MeshObjectType) => {
 		return (
 			<mesh
 				key={meshObject.name}
@@ -266,7 +268,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 			{/* // Drei Center: Calculates a boundary box and centers its children accordingly. */}
 			<Center>
 				<group scale={0.0075} position={[0, 0, 0]} ref={group}>
-					{meshList.map((meshObject: MeshObject, index: number) => {
+					{meshList.map((meshObject: MeshObjectType, index: number) => {
 						return (
 							<mesh key={index}>
 								{renderMeshChildren(meshObject)}

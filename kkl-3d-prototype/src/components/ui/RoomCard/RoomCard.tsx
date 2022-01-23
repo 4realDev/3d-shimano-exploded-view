@@ -1,7 +1,7 @@
 import CheckMark from '../../icons/CheckMark';
 import styles from './RoomCard.module.scss';
 import { ROOM_TYPE } from '../../../store/useWizardStore';
-import { roomList } from '../../../data/roomData';
+import { ROOM_FITTINGS } from '../../../data/roomData';
 import {
 	getFittingIcon,
 	getEquipmentText,
@@ -11,35 +11,39 @@ import {
 } from '../../../utils/room';
 
 type RoomCardProps = {
-	id: number;
 	title: string;
-	personCapacity: number;
+	personCapacity: number | number[];
 	area: number;
 	height: number;
 	img: string;
+	roomFitting?: ROOM_FITTINGS[];
 	equipment: string;
 	chairFormation: string;
 	roomType: string;
 };
 
 const RoomCard = ({
-	id,
 	title,
 	personCapacity,
 	area,
 	height,
 	img,
+	roomFitting,
 	equipment,
 	chairFormation,
 	roomType,
 }: RoomCardProps) => {
-	const renderDetails = () => {
+	const renderDetails = (hasSeats?: boolean) => {
 		return (
 			<div className={styles.roomCard__details}>
 				<div className={styles.roomCard__detailsItem}>
 					<CheckMark className={styles.roomCard__checkMark} width={16} fill='#ffffff' />
-					<span>{personCapacity} Sitzplätze</span>
+					<span>
+						{Array.isArray(personCapacity) ? `${personCapacity[0]} - ${personCapacity[1]}` : personCapacity}
+						{hasSeats ? ' Sitzplätze' : ' Stehplätze'}
+					</span>
 				</div>
+
 				<div className={styles.roomCard__detailsItem}>
 					<CheckMark className={styles.roomCard__checkMark} width={16} fill='#ffffff' />
 					<span>{area} m²</span>
@@ -55,7 +59,7 @@ const RoomCard = ({
 	const renderDetailsIcons = () => {
 		return (
 			<div className={styles.roomCard__detailsIcons}>
-				{roomList[id - 1].info.fittings.map((fitting, index) => {
+				{roomFitting?.map((fitting, index) => {
 					return (
 						fitting && (
 							<div key={index} className={styles.roomCard__detailsIcon}>
@@ -75,16 +79,16 @@ const RoomCard = ({
 					<div className={styles.roomCard__header}>
 						<div className={styles.roomCard__infoColumn}>
 							<h1 className={styles.roomCard__title}>
-								{title}{' '}
+								{title}
 								<span style={{ fontWeight: '300', fontSize: 12 + 'px' }}>
-									{roomType === ROOM_TYPE.mainRoom
-										? '(als Hauptraum)'
-										: roomType === ROOM_TYPE.sideRoom
-										? '(als Nebenraum)'
+									{roomType === ROOM_TYPE.mainRooms
+										? ' (als Hauptraum)'
+										: roomType === ROOM_TYPE.sideRooms
+										? ' (als Nebenraum)'
 										: ''}
 								</span>
 							</h1>
-							{renderDetails()}
+							{renderDetails(roomFitting?.includes(ROOM_FITTINGS.seats))}
 							{renderDetailsIcons()}
 						</div>
 						<img className={styles.roomCard__image} src={img} alt={title} />

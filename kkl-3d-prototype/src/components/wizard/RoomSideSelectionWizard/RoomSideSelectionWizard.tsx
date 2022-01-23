@@ -1,6 +1,11 @@
 import { CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { RoomFetchedInfo, roomList, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
+import {
+	INTERACTABLE_MESH_NAMES,
+	RoomFetchedDataType,
+	roomList,
+	ROOM_ADDITIONS_CATEGORY,
+} from '../../../data/roomData';
 import {
 	setFilteredMeshes,
 	setSelectedMeshes,
@@ -9,13 +14,13 @@ import {
 	showRoomsOverview,
 } from '../../../store/useCameraStore';
 import { setMeshChildVisibility } from '../../../store/useMeshStore';
-import { handleRoomAdditionsChange, handleRoomDataChange, WizardData } from '../../../store/useWizardStore';
+import { handleRoomAdditionsChange, handleRoomDataChange, WizardDataType } from '../../../store/useWizardStore';
 import { getMeshObjectByMeshName } from '../../../utils/room';
 import Accordion from '../../ui/Accordion/Accordion';
 import NoResults from '../../ui/NoResults/NoResults';
 
 interface RoomSideSelectionWizardProps {
-	wizardData: WizardData;
+	wizardData: WizardDataType;
 	handleChange: (value: any, inputField: any) => void;
 }
 
@@ -23,7 +28,7 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 	const accordionItemsMaximumRenderTime = 150;
 	const [accordionItemsLoading, setAccordionItemsLoading] = useState(true);
 
-	const [fittingSideRooms, setFittingSideRooms] = useState<RoomFetchedInfo[]>([]);
+	const [fittingSideRooms, setFittingSideRooms] = useState<RoomFetchedDataType[]>([]);
 
 	useEffect(() => {
 		const activeMainRoom = getMeshObjectByMeshName(wizardData.activeMainRoom);
@@ -32,8 +37,15 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 		});
 		const fittingSideRoomMeshNames = fittingSideRooms.map((sideRoom) => sideRoom.model.meshName);
 
-		// show overview of all fittingSideRooms
-		showAndSelectRooms(fittingSideRoomMeshNames);
+		// if side room was already selected, show side room inside model (for stepping back and forth in stepper)
+		// else show overview of all fitting side rooms
+		wizardData.activeSideRoom !== ('' as INTERACTABLE_MESH_NAMES)
+			? showAndSelectRoom(wizardData.activeSideRoom)
+			: showAndSelectRooms(fittingSideRoomMeshNames);
+
+		// clean activeSideRoom inside Wizard if it is not included in the fittingSideRooms list of the current selected main room
+		// (for moving back to RoomMainSelectionWIzard and selecting a new main room, which does not include the before selected fitting side room)
+		!fittingSideRoomMeshNames.includes(wizardData.activeSideRoom) && handleChange('', 'activeSideRoom');
 
 		// set fitting side rooms state to update the accordion items
 		setFittingSideRooms(fittingSideRooms);
@@ -83,7 +95,7 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 			<Accordion
 				roomList={fittingSideRooms}
 				activeRoom={wizardData.activeSideRoom}
-				roomAdditionsData={wizardData.sideRoom}
+				roomAdditionsData={wizardData.sideRooms}
 				handleOnOpen={handleOnOpen}
 				handleOnClose={handleOnClose}
 				handleAdditionsOnChange={handleAdditionsOnChange}

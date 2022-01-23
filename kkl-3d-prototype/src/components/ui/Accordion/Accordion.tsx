@@ -1,14 +1,19 @@
-import { RoomFetchedInfo, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
+import {
+	ChairFormationType,
+	CHAIR_FORMATION,
+	RoomFetchedDataType,
+	ROOM_ADDITIONS_CATEGORY,
+} from '../../../data/roomData';
 import MeshVisibilityButton from '../MeshVisibilityButton/MeshVisibilityButton';
 import AccordionItem from '../AccordionItem/AccordionItem';
 import styles from './Accordion.module.scss';
-import { WizardRoomData } from '../../../store/useWizardStore';
-import { getFormationIcon, getEquipmentIcon } from '../../../utils/room';
+import { useWizardStore, WizardRoomDataType } from '../../../store/useWizardStore';
+import { getFormationIcon, getEquipmentIcon, getMeshObjectByMeshName } from '../../../utils/room';
 
 type AccordionProps = {
-	roomList: RoomFetchedInfo[];
+	roomList: RoomFetchedDataType[];
 	activeRoom: string | null;
-	roomAdditionsData: WizardRoomData[] | null;
+	roomAdditionsData: WizardRoomDataType[] | null;
 	handleOnOpen: (meshNameCorrespondingToId: string) => void;
 	handleOnClose: (meshNameCorrespondingToId: string) => void;
 	handleAdditionsOnChange: (
@@ -26,12 +31,26 @@ const Accordion = ({
 	handleOnClose,
 	handleAdditionsOnChange,
 }: AccordionProps) => {
+	const wizardData = useWizardStore((state) => state.wizardData);
+	const getRoomChairFormationPersonCapacity = (accordionItemRoom: RoomFetchedDataType) => {
+		const roomDataCorrespondingToAccordionItemRoom = roomAdditionsData?.find(
+			(data) => data.room === accordionItemRoom.model.meshName
+		);
+		if (
+			roomDataCorrespondingToAccordionItemRoom !== undefined &&
+			roomDataCorrespondingToAccordionItemRoom.capacity !== undefined
+		) {
+			return roomDataCorrespondingToAccordionItemRoom.capacity!!;
+		}
+		return accordionItemRoom.info.personCapacity;
+	};
+
 	const getActiveStateOfRoomChairFormationMeshButton = (
-		accordionItemRoomName: string,
+		accordionItemRoomMeshName: string,
 		accordionItemMeshButtonChairFormation: string
 	) => {
 		// get current selected chairFormation of room shown in the AccordionItem (if any is selected)
-		const chairFormation = roomAdditionsData?.find((item) => item.room === accordionItemRoomName)?.chair_formation;
+		const chairFormation = roomAdditionsData?.find((item) => item.room === accordionItemRoomMeshName)?.chair_formation;
 		// check if this selected chairFormation is the chairFormation shown in the MeshButton
 		if (chairFormation === accordionItemMeshButtonChairFormation) {
 			return true;
@@ -40,16 +59,31 @@ const Accordion = ({
 	};
 
 	const getActiveStateOfRoomEquipmentMeshButton = (
-		accordionItemRoomName: string,
+		accordionItemRoomMeshName: string,
 		accordionItemMeshButtonEquipment: string
 	) => {
 		// get current selected equipment of room shown in the AccordionItem (if any is selected)
-		const equipment = roomAdditionsData?.find((item) => item.room === accordionItemRoomName)?.equipment;
+		const equipment = roomAdditionsData?.find((item) => item.room === accordionItemRoomMeshName)?.equipment;
 		// check if this selected equipment is the equipment shown in the MeshButton
 		if (equipment === accordionItemMeshButtonEquipment) {
 			return true;
 		}
 		return false;
+	};
+
+	const isChairFormationImpossible = (accordionItemRoom: RoomFetchedDataType, formation: ChairFormationType) => {
+		// const chairFormationPersonCapacity = getRoomChairFormationPersonCapacity(accordionItemRoom);
+		const toggledChairFormationCapacity = getMeshObjectByMeshName(
+			accordionItemRoom.model.meshName
+		)?.info.chairFormations?.find((chairFormation) => chairFormation.name === formation.name)?.capacity;
+		if (
+			!Array.isArray(toggledChairFormationCapacity) &&
+			toggledChairFormationCapacity !== undefined &&
+			toggledChairFormationCapacity <= parseInt(wizardData.personNum)
+		) {
+			// TODO: SET ROOM CAPACITY TO UNDEFINED WHEN PERSONNUM IS CHANGED TO IMPOSSIBLE NUMBER
+			return true;
+		} else return false;
 	};
 
 	return (
@@ -59,11 +93,12 @@ const Accordion = ({
 					key={roomIndex}
 					id={room.info.id}
 					title={room.info.title}
-					personCapacity={room.info.personCapacity}
+					personCapacity={getRoomChairFormationPersonCapacity(room)}
 					area={room.info.area}
 					roomHeight={room.info.height}
 					img={room.info.img}
-					isActive={room.model.meshName === activeRoom}
+					roomFittings={room.info.fittings}
+					roomMeshName={room.model.meshName}
 					activeRoom={activeRoom}
 					handleOnOpen={handleOnOpen}
 					handleOnClose={handleOnClose}
@@ -75,14 +110,15 @@ const Accordion = ({
 									<MeshVisibilityButton
 										key={index}
 										toggledRoomName={roomList[roomIndex].model.meshName}
-										toggledMeshName={formation}
-										toggleIcon={getFormationIcon(formation)}
+										toggledMeshName={formation.name}
+										toggleIcon={getFormationIcon(formation.name)}
 										category={ROOM_ADDITIONS_CATEGORY.chair_formation}
 										isActive={getActiveStateOfRoomChairFormationMeshButton(
 											roomList[roomIndex].model.meshName,
-											formation
+											formation.name
 										)}
 										onClick={handleAdditionsOnChange}
+										isDisabled={isChairFormationImpossible(room, formation)}
 									/>
 								);
 							})}

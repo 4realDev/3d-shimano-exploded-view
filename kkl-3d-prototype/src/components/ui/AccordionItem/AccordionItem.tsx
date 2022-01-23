@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 import Chevron from '../../icons/Chevron';
 import CheckMark from '../../icons/CheckMark';
@@ -8,8 +8,7 @@ import Seats from '../../icons/Seats';
 import styles from './AccordionItem.module.scss';
 import Accessibility from '../../icons/Accessibility';
 import NoSeats from '../../icons/NoSeats';
-import { getMeshNameById } from '../../../utils/room';
-import { roomList, ROOM_FITTINGS } from '../../../data/roomData';
+import { ROOM_FITTINGS } from '../../../data/roomData';
 import Exhibition from '../../icons/Exhibition';
 import AdditionalRooms from '../../icons/AdditionalRooms';
 import DayLight from '../../icons/DayLight';
@@ -18,11 +17,12 @@ import useWindowDimensions from '../../../hooks/useWindowDimensions';
 type AccordionItemProps = {
 	id: number;
 	title: string;
-	personCapacity: number;
+	personCapacity: number | number[];
 	area: number;
 	roomHeight: number;
 	img: string;
-	isActive: boolean;
+	roomFittings: ROOM_FITTINGS[] | undefined;
+	roomMeshName: string;
 	activeRoom: string | null;
 	handleOnOpen: (meshNameCorrespondingToId: string) => void;
 	handleOnClose: (meshNameCorrespondingToId: string) => void;
@@ -36,7 +36,8 @@ const AccordionItem = ({
 	area,
 	roomHeight,
 	img,
-	isActive,
+	roomFittings,
+	roomMeshName,
 	activeRoom,
 	handleOnOpen,
 	handleOnClose,
@@ -49,16 +50,6 @@ const AccordionItem = ({
 
 	const { width } = useWindowDimensions();
 	const [additionalDistanceToScreenTop, setAdditionalDistanceToScreenTop] = useState(0);
-
-	const meshNameCorrespondingToId = useMemo<string>(() => {
-		const meshCorrespondingToId = getMeshNameById(id);
-		if (meshCorrespondingToId) {
-			return meshCorrespondingToId.model.meshName;
-		} else {
-			console.error(`There is no matching mesh object with the (AccordionItem) id ${id}.`);
-			return '';
-		}
-	}, [id]);
 
 	const calculateViewportHeight = (v: number) => {
 		var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
@@ -89,14 +80,14 @@ const AccordionItem = ({
 		// check which one is the clicked item
 		// activate it, open and scroll to it (otherwise deactivate and close it)
 		// same item is called twice or multiple times, it will still stay active
-		if (activeRoom === meshNameCorrespondingToId) {
+		if (activeRoom === roomMeshName) {
 			content.current && setContentHeight(content.current.scrollHeight);
 
 			// Delay scrolling to the clicked accordion item by the translation delay of the opening and closing of the item to get the correct scrollHeight
 			setTimeout(() => {
 				window.scrollTo({
 					top: content.current
-						? content.current.offsetHeight - content.current.scrollHeight - additionalDistanceToScreenTop
+						? content.current.offsetTop - content.current.scrollHeight - additionalDistanceToScreenTop
 						: 0,
 					behavior: 'smooth',
 				});
@@ -110,10 +101,10 @@ const AccordionItem = ({
 	const handleClick = (id: number, content: any) => {
 		if (contentHeight === 0) {
 			content.current && setContentHeight(content.current.scrollHeight);
-			handleOnOpen(meshNameCorrespondingToId);
+			handleOnOpen(roomMeshName);
 		} else {
 			setContentHeight(0);
-			handleOnClose(meshNameCorrespondingToId);
+			handleOnClose(roomMeshName);
 		}
 	};
 
@@ -140,13 +131,14 @@ const AccordionItem = ({
 		}
 	};
 
-	const renderDetails = (hasSeats: boolean) => {
+	const renderDetails = (hasSeats?: boolean) => {
 		return (
 			<div className={styles.accordionItem__details}>
 				<div className={styles.accordionItem__detailsItem}>
 					<CheckMark className={styles.accordionItem__checkMark} width={16} fill='#ffffff' />
 					<span>
-						{personCapacity} {hasSeats ? 'Sitzplätze' : 'Stehplätze'}
+						{Array.isArray(personCapacity) ? `${personCapacity[0]} - ${personCapacity[1]}` : personCapacity}
+						{hasSeats ? ' Sitzplätze' : ' Stehplätze'}
 					</span>
 				</div>
 				<div className={styles.accordionItem__detailsItem}>
@@ -164,7 +156,7 @@ const AccordionItem = ({
 	const renderDetailsIcons = () => {
 		return (
 			<div className={styles.accordionItem__detailsIcons}>
-				{roomList[id - 1].info.fittings.map((fitting, index) => {
+				{roomFittings?.map((fitting, index) => {
 					return (
 						fitting && (
 							<div key={index} className={styles.accordionItem__detailsIcon}>
@@ -179,11 +171,11 @@ const AccordionItem = ({
 
 	return (
 		<>
-			<button className={cn(styles.accordionItem, { [styles['accordionItem--active']]: isActive })}>
+			<button className={cn(styles.accordionItem, { [styles['accordionItem--active']]: activeRoom === roomMeshName })}>
 				<div className={styles.accordionItem__header} onClick={() => handleClick(id, content)}>
 					<div className={styles.accordionItem__infoColumn}>
 						<h1 className={styles.accordionItem__title}>{title}</h1>
-						{renderDetails(roomList[id - 1].info.fittings.includes(ROOM_FITTINGS.seats))}
+						{renderDetails(roomFittings?.includes(ROOM_FITTINGS.seats))}
 						{renderDetailsIcons()}
 					</div>
 					<img className={styles.accordionItem__image} src={img} alt={title} />

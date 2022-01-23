@@ -8,6 +8,7 @@ type MeshVisiblityButtonProps = {
 	toggleIcon: React.ReactNode;
 	category: ROOM_ADDITIONS_CATEGORY;
 	isActive: boolean;
+	isDisabled?: boolean;
 	onClick: (toggledRoomName: string, toggledMeshName: string, category: ROOM_ADDITIONS_CATEGORY) => void;
 };
 
@@ -17,13 +18,17 @@ const MeshVisibilityButton = ({
 	toggleIcon,
 	category,
 	isActive,
+	isDisabled = false,
 	onClick,
 }: MeshVisiblityButtonProps) => {
 	return (
 		<button
-			className={cn(styles.roomAdditionsToggle, { [styles['roomAdditionsToggle--active']]: isActive })}
+			className={cn(styles.roomAdditionsToggle, {
+				[styles['roomAdditionsToggle--active']]: isActive && !isDisabled,
+				[styles['roomAdditionsToggle--disabled']]: isDisabled,
+			})}
 			onClick={() => {
-				onClick(toggledRoomName, toggledMeshName, category);
+				!isDisabled && onClick(toggledRoomName, toggledMeshName, category);
 			}}
 		>
 			{toggleIcon}

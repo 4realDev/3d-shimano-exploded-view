@@ -1,20 +1,20 @@
 import create from 'zustand';
-import { MeshObject } from '../components/threeJs/Model';
+import { MeshObjectType } from '../components/threeJs/Model';
 
 interface MeshState {
-	meshList: MeshObject[];
+	meshList: MeshObjectType[];
 }
 
 export const useMeshStore = create<MeshState>((set, get) => ({
 	meshList: [],
 }));
 
-export const setMeshList = (meshList: MeshObject[]) => {
+export const setMeshList = (meshList: MeshObjectType[]) => {
 	useMeshStore.setState({ meshList: meshList });
 };
 
 export const setMeshVisibility = (meshName: string, visible: boolean) => {
-	let newList: MeshObject[] = useMeshStore.getState().meshList;
+	let newList: MeshObjectType[] = useMeshStore.getState().meshList;
 	let itemIndex = newList.findIndex((item) => item.name === meshName);
 	let item = newList[itemIndex];
 	item = {
@@ -26,8 +26,9 @@ export const setMeshVisibility = (meshName: string, visible: boolean) => {
 };
 
 // Makes all mesh objects visible and makes their as "interactable" with customProps marked children (equipment & chair_formation) invisible
+// TODO: Find out why static meshes are resetted too
 export const resetMeshVisibility = () => {
-	let newList: MeshObject[] = useMeshStore.getState().meshList;
+	let newList: MeshObjectType[] = useMeshStore.getState().meshList;
 	newList.forEach((item, i, array) => {
 		array[i] = {
 			...item,
@@ -39,7 +40,7 @@ export const resetMeshVisibility = () => {
 };
 
 export const setMeshChildVisibility = (toggledRoomName: string, toggledMeshName: string, category?: string) => {
-	let newList: MeshObject[] = useMeshStore.getState().meshList;
+	let newList: MeshObjectType[] = useMeshStore.getState().meshList;
 	let itemIndex = newList.findIndex((item) => item.name === toggledRoomName); // Find index of item you want to mutate
 	let item = newList[itemIndex]; // Make shallow copy of the selected item
 	// Overwrite properties in each child of children array in item copy
@@ -47,17 +48,20 @@ export const setMeshChildVisibility = (toggledRoomName: string, toggledMeshName:
 		item.children.forEach((child, i, array) => {
 			// Toggle visibility of selected child / chair formation
 			// Make all other children / formations in children array of the item invisible
-			// child.name.replace(/[0-9]/g, '') to remove BLENDERS suffix for duplicated objects
-			// -> "chair_formation_circle001" to "chair_formation_circle"
+
+			// Remove Blender suffix for duplicated object
+			// from "chair_formation_circle001" to "chair_formation_circle"
+			const childNameWithoutSuffix = child.name.replace(/[0-9]/g, '');
+			const isChildInteractable = child.userData !== undefined && 'customName' in child.userData;
 			array[i] = {
 				...child,
 				// if child is toggledMesh -> toggle visiblity of child
 				// for other children: if other children are in the same category -> make them invisible
 				// else leave their visiblity as it is
 				isVisible:
-					child.name.replace(/[0-9]/g, '') === toggledMeshName
+					childNameWithoutSuffix === toggledMeshName
 						? !child.isVisible
-						: child.name.substr(0, child.name.lastIndexOf('_')) === category
+						: child.name.substr(0, child.name.lastIndexOf('_')) === category && isChildInteractable
 						? false
 						: child.isVisible,
 			};
