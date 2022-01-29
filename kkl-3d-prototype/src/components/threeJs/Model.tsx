@@ -4,7 +4,7 @@ import { GLTF } from 'three-stdlib';
 import * as THREE from 'three';
 import { GroupProps } from '@react-three/fiber';
 import { setMeshList, useMeshStore } from '../../store/useMeshStore';
-import { setHoveredMesh, showAndSelectRoom, showRoomsOverview, useCameraStore } from '../../store/useCameraStore';
+import { showAndSelectRoom, showRoomsOverview, useCameraStore } from '../../store/useCameraStore';
 import { INTERACTABLE_MESH_NAMES, roomList } from '../../data/roomData';
 import { handleRoomDataChange, useWizardStore } from '../../store/useWizardStore';
 import { useDebugStore } from '../../store/useDebugStore';
@@ -30,12 +30,13 @@ export type MeshObjectType = {
 };
 
 type ModelProps = {
+	hoveredMesh: string | null;
+	setHoveredMesh: (value: string | null) => void;
 	longPress: boolean;
 };
 
-const Model: React.FC<ModelProps> = ({ longPress }) => {
+const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress }) => {
 	const meshList = useMeshStore((state) => state.meshList);
-	const hoveredMesh = useCameraStore((state) => state.hoveredMesh);
 	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
 	const filteredMeshes = useCameraStore((state) => state.filteredMeshes);
 	const wizardStep = useWizardStore((state) => state.step);
