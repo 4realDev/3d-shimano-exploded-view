@@ -20,8 +20,8 @@ const Model = React.lazy(() =>
 
 const ModelCanvas = () => {
 	const hasAnimation = useCameraStore((state) => state.hasAnimation);
-	const hoveredMesh = useCameraStore((state) => state.hoveredMesh);
 	const [mouseDown, setMouseDown] = useState(false);
+	// used for mesh material highlighting on hover -> if long press don't highlight mesh material on hover
 	const [longPress, setLongPress] = useState(false);
 	const longPressEvent = useLongPress(() => {
 		if (longPress === false) setLongPress(true);
