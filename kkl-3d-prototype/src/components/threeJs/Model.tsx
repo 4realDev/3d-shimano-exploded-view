@@ -4,7 +4,7 @@ import { GLTF } from 'three-stdlib';
 import * as THREE from 'three';
 import { GroupProps } from '@react-three/fiber';
 import { setMeshList, useMeshStore } from '../../store/useMeshStore';
-import { showAndSelectRoom, showRoomsOverview, useCameraStore } from '../../store/useCameraStore';
+import { setHoveredMesh, showAndSelectRoom, showRoomsOverview, useCameraStore } from '../../store/useCameraStore';
 import { INTERACTABLE_MESH_NAMES, roomList } from '../../data/roomData';
 import { handleRoomDataChange, useWizardStore } from '../../store/useWizardStore';
 import { useDebugStore } from '../../store/useDebugStore';
@@ -30,12 +30,12 @@ export type MeshObjectType = {
 };
 
 type ModelProps = {
-	hoveredMesh: string | null;
-	setHoveredMesh: (value: string | null) => void;
+	longPress: boolean;
 };
 
-const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
+const Model: React.FC<ModelProps> = ({ longPress }) => {
 	const meshList = useMeshStore((state) => state.meshList);
+	const hoveredMesh = useCameraStore((state) => state.hoveredMesh);
 	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
 	const filteredMeshes = useCameraStore((state) => state.filteredMeshes);
 	const wizardStep = useWizardStore((state) => state.step);
@@ -44,7 +44,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 	const model = useGLTF('/house-model.glb') as DreiGLTF;
 
 	const colorModelDefault = '#D4D4D4';
-	const colorModelChildrenDefault = '#5d5d5d'; // TODO: Adjust child color to darker one
+	const colorModelChildrenDefault = '#5d5d5d';
 	const colorFilteredMainRoom = '#c4aeae';
 	const colorFilteredSideRoom = '#c7d0af';
 	const colorSelectedOrHoveredMainRoom = '#ceadad';
@@ -209,7 +209,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh }) => {
 				// Pointer on mesh (similar to onHover)
 				onPointerOver={(event) => {
 					// Only visible meshes with a userData.customName (defined inside Blender) can be hovered
-					if (event.object.visible && event.object.userData.customName) {
+					if (event.object.visible && event.object.userData.customName && longPress === false) {
 						event.stopPropagation();
 						setHoveredMesh(event.object.name);
 					}

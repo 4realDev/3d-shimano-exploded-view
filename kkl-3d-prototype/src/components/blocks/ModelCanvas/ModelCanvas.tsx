@@ -10,6 +10,7 @@ import CameraControls from '../../threeJs/CameraControls';
 import CameraPositionMarkers from '../../threeJs/CameraPositionMarkers';
 import styles from './ModelCanvas.module.scss';
 import Lights from '../../threeJs/Lights';
+import useLongPress from '../../../hooks/useLongPress';
 
 const Model = React.lazy(() =>
 	import('../../threeJs/Model').then((module) => ({
@@ -21,6 +22,10 @@ const ModelCanvas = () => {
 	const hasAnimation = useCameraStore((state) => state.hasAnimation);
 	const hoveredMesh = useCameraStore((state) => state.hoveredMesh);
 	const [mouseDown, setMouseDown] = useState(false);
+	const [longPress, setLongPress] = useState(false);
+	const longPressEvent = useLongPress(() => {
+		if (longPress === false) setLongPress(true);
+	}, 200);
 
 	const controlsRef = useRef<OrbitControlsProps>();
 	const cameraRef = useRef<PerspectiveCameraProps>();
@@ -40,7 +45,9 @@ const ModelCanvas = () => {
 			}}
 			onPointerUp={() => {
 				setMouseDown(false);
+				setLongPress(false);
 			}}
+			{...longPressEvent}
 		>
 			{/* dpr = dynamic pixel ratio - sets pixel ratio based on device hardware capabilities */}
 			<Canvas dpr={window.devicePixelRatio}>
@@ -56,7 +63,7 @@ const ModelCanvas = () => {
 				<Lights />
 
 				<Suspense fallback={null}>
-					<Model hoveredMesh={hoveredMesh} setHoveredMesh={setHoveredMesh} />
+					<Model longPress={longPress} />
 					{isCameraPositionMarkersActive && (
 						<CameraPositionMarkers
 							markerPositions={roomList.map((room) => room.model.camPos)}
