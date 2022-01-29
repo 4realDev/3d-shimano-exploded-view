@@ -11,6 +11,7 @@ import CameraPositionMarkers from '../../threeJs/CameraPositionMarkers';
 import styles from './ModelCanvas.module.scss';
 import Lights from '../../threeJs/Lights';
 import useLongPress from '../../../hooks/useLongPress';
+import Cursor from '../../Cursor';
 
 const Model = React.lazy(() =>
 	import('../../threeJs/Model').then((module) => ({
@@ -50,6 +51,7 @@ const ModelCanvas = () => {
 			}}
 			{...longPressEvent}
 		>
+			<Cursor />
 			{/* dpr = dynamic pixel ratio - sets pixel ratio based on device hardware capabilities */}
 			<Canvas dpr={window.devicePixelRatio}>
 				<CameraControls

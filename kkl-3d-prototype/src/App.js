@@ -15,7 +15,6 @@ function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<div className='container'>
-				<Cursor />
 				<RoomSelection />
 				<ModelCanvas />
 				{isThreeJsDataDebuggerActive && <ThreeJsDataDebugger />}
