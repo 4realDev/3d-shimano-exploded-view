@@ -67,7 +67,6 @@ export enum EVENT_TYPES {
 	concert = 'concert',
 	apero = 'apero',
 	congress = 'congress',
-	fair = 'fair',
 	exhibition = 'exhibition',
 	meeting = 'meeting',
 	workshop = 'workshop',

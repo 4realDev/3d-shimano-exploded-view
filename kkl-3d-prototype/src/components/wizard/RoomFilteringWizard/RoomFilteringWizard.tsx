@@ -29,10 +29,6 @@ const eventType = [
 		label: 'Kongress',
 	},
 	{
-		value: EVENT_TYPES.fair,
-		label: 'Messe',
-	},
-	{
 		value: EVENT_TYPES.exhibition,
 		label: 'Ausstellung',
 	},
