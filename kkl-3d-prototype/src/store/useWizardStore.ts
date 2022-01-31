@@ -38,7 +38,7 @@ export const useWizardStore = create<WizardState>((set, get) => ({
 		personNum: '',
 		startDate: null,
 		endDate: null,
-		additionalRooms: false,
+		additionalRooms: true,
 		additionalService: '',
 		mainRooms: [],
 		sideRooms: [],
