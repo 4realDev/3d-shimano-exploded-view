@@ -166,36 +166,28 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 	};
 
 	// render rooms children elements (equipment & chair_formation)
-	const renderMeshChildren = (meshObject: MeshObjectType) => {
+	const renderMeshChild = (childMeshObject: MeshObjectType, parentMeshObject: MeshObjectType) => {
 		return (
-			<>
-				{meshObject.children !== undefined &&
-					meshObject.children?.length > 0 &&
-					meshObject.children.map((childObject) => {
-						return (
-							<mesh
-								key={childObject.name}
-								name={childObject.name}
-								visible={childObject.isVisible}
-								userData={childObject.userData}
-								material={childObject.material}
-								position={childObject.position}
-								rotation={childObject.rotation}
-								scale={childObject.scale}
-							>
-								<bufferGeometry attach='geometry' {...childObject.geometry} />
-								<meshStandardMaterial
-									attach='material'
-									color={childObject.color}
-									transparent
-									visible={childObject.isVisible}
-									opacity={getMeshMaterialOpacity(meshObject)}
-									metalness={0.5}
-								/>
-							</mesh>
-						);
-					})}
-			</>
+			<mesh
+				key={childMeshObject.name}
+				name={childMeshObject.name}
+				visible={childMeshObject.isVisible}
+				userData={childMeshObject.userData}
+				material={childMeshObject.material}
+				position={childMeshObject.position}
+				rotation={childMeshObject.rotation}
+				scale={childMeshObject.scale}
+			>
+				<bufferGeometry attach='geometry' {...childMeshObject.geometry} />
+				<meshStandardMaterial
+					attach='material'
+					color={childMeshObject.color}
+					transparent
+					visible={childMeshObject.isVisible}
+					opacity={getMeshMaterialOpacity(parentMeshObject)}
+					metalness={0.5}
+				/>
+			</mesh>
 		);
 	};
 
@@ -269,11 +261,15 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 			{/* // Drei Center: Calculates a boundary box and centers its children accordingly. */}
 			<Center>
 				<group scale={0.0075} position={[0, 0, 0]} ref={group}>
-					{meshList.map((meshObject: MeshObjectType, index: number) => {
+					{meshList.map((parentMeshObject: MeshObjectType, index: number) => {
 						return (
 							<mesh key={index}>
-								{renderMeshChildren(meshObject)}
-								{renderMesh(meshObject)}
+								{renderMesh(parentMeshObject)}
+								{parentMeshObject.children !== undefined &&
+									parentMeshObject.children?.length > 0 &&
+									parentMeshObject.children.map((childMeshObject) =>
+										renderMeshChild(childMeshObject, parentMeshObject)
+									)}
 							</mesh>
 						);
 					})}
