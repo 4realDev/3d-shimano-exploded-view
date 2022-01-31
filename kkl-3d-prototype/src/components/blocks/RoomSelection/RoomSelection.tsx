@@ -133,12 +133,10 @@ const RoomSelection = () => {
 					{/* When additionalRooms are selected, there should be an extra step inside the wizard */}
 					{/* Else step "3" should not be rendered inside the stepper and step "4" should be visualized as the removed step "3" */}
 					<Stepper nonLinear activeStep={step} variant='outlined'>
-						{steps.map((stepItem, index) => {
-							return index === 2 && !wizardData.additionalRooms ? (
-								<></>
-							) : (
-								<Step key={stepItem.title}>
-									<StepLabel icon={index === 3 && !wizardData.additionalRooms ? index : index + 1} />
+						{steps.map((_stepItem, index) => {
+							return index === 2 && !wizardData.additionalRooms ? null : (
+								<Step key={index}>
+									<StepLabel key={index} icon={index === 3 && !wizardData.additionalRooms ? index : index + 1} />
 								</Step>
 							);
 						})}
