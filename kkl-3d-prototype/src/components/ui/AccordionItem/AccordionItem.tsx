@@ -2,24 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 import Chevron from '../../icons/Chevron';
 import CheckMark from '../../icons/CheckMark';
-import Catering from '../../icons/Catering';
-import Apero from '../../icons/Apero';
-import Seats from '../../icons/Seats';
 import styles from './AccordionItem.module.scss';
-import Accessibility from '../../icons/Accessibility';
-import NoSeats from '../../icons/NoSeats';
 import { ROOM_FITTINGS } from '../../../data/roomData';
-import Exhibition from '../../icons/Exhibition';
-import AdditionalRooms from '../../icons/AdditionalRooms';
-import DayLight from '../../icons/DayLight';
 import useWindowDimensions from '../../../hooks/useWindowDimensions';
+import { getFittingIcon, getFittingText } from '../../../utils/room';
 
 type AccordionItemProps = {
-	id: number;
 	title: string;
 	personCapacity: number | number[];
 	area: number;
-	roomHeight: number;
 	img: string;
 	roomFittings: ROOM_FITTINGS[] | undefined;
 	roomMeshName: string;
@@ -30,11 +21,9 @@ type AccordionItemProps = {
 };
 
 const AccordionItem = ({
-	id,
 	title,
 	personCapacity,
 	area,
-	roomHeight,
 	img,
 	roomFittings,
 	roomMeshName,
@@ -98,7 +87,7 @@ const AccordionItem = ({
 	}, [activeRoom]);
 
 	// Manipulate activeRoom and will be catched in useEffect([selectedMeshes]) above
-	const handleClick = (id: number, content: any) => {
+	const handleClick = (content: any) => {
 		if (contentHeight === 0) {
 			content.current && setContentHeight(content.current.scrollHeight);
 			handleOnOpen(roomMeshName);
@@ -108,46 +97,19 @@ const AccordionItem = ({
 		}
 	};
 
-	const getFittingIcon = (fitting: ROOM_FITTINGS) => {
-		switch (fitting) {
-			case ROOM_FITTINGS.catering:
-				return <Catering />;
-			case ROOM_FITTINGS.apero:
-				return <Apero />;
-			case ROOM_FITTINGS.accessibleEnv:
-				return <Accessibility />;
-			case ROOM_FITTINGS.seats:
-				return <Seats />;
-			case ROOM_FITTINGS.noSeats:
-				return <NoSeats />;
-			case ROOM_FITTINGS.exhibition:
-				return <Exhibition />;
-			case ROOM_FITTINGS.additionalRooms:
-				return <AdditionalRooms />;
-			case ROOM_FITTINGS.dayLight:
-				return <DayLight />;
-			default:
-				return null;
-		}
-	};
-
 	const renderDetails = (hasSeats?: boolean) => {
 		return (
-			<div className={styles.accordionItem__details}>
-				<div className={styles.accordionItem__detailsItem}>
-					<CheckMark className={styles.accordionItem__checkMark} width={16} fill='#ffffff' />
+			<div className={styles.accordionItem__roomInfoContainer}>
+				<div className={styles.accordionItem__roomInfoItem}>
+					<CheckMark className={styles.accordionItem__roomInfoCheckMark} width={16} fill='#ffffff' />
 					<span>
 						{Array.isArray(personCapacity) ? `${personCapacity[0]} - ${personCapacity[1]}` : personCapacity}
 						{hasSeats ? ' Sitzplätze' : ' Stehplätze'}
 					</span>
 				</div>
-				<div className={styles.accordionItem__detailsItem}>
-					<CheckMark className={styles.accordionItem__checkMark} width={16} fill='#ffffff' />
+				<div className={styles.accordionItem__roomInfoItem}>
+					<CheckMark className={styles.accordionItem__roomInfoCheckMark} width={16} fill='#ffffff' />
 					<span>{area} m²</span>
-				</div>
-				<div className={styles.accordionItem__detailsItem}>
-					<CheckMark className={styles.accordionItem__checkMark} width={16} fill='#ffffff' />
-					<span>{roomHeight} m Raumhöhe</span>
 				</div>
 			</div>
 		);
@@ -155,14 +117,16 @@ const AccordionItem = ({
 
 	const renderDetailsIcons = () => {
 		return (
-			<div className={styles.accordionItem__detailsIcons}>
+			<div className={styles.accordionItem__fittingsContainer}>
 				{roomFittings?.map((fitting, index) => {
-					return (
-						fitting && (
-							<div key={index} className={styles.accordionItem__detailsIcon}>
+					// do not render seats icon but keep it inside ROOM_FITTINGS
+					return fitting.includes(ROOM_FITTINGS.seats) ? null : (
+						<div key={index} className={styles.accordionItem__fittingsItem}>
+							<div key={index} className={styles.accordionItem__fittingsIcon}>
 								{getFittingIcon(fitting)}
 							</div>
-						)
+							<span>{getFittingText(fitting)}</span>
+						</div>
 					);
 				})}
 			</div>
@@ -172,7 +136,7 @@ const AccordionItem = ({
 	return (
 		<>
 			<button className={cn(styles.accordionItem, { [styles['accordionItem--active']]: activeRoom === roomMeshName })}>
-				<div className={styles.accordionItem__header} onClick={() => handleClick(id, content)}>
+				<div className={styles.accordionItem__header} onClick={() => handleClick(content)}>
 					<div className={styles.accordionItem__infoColumn}>
 						<h1 className={styles.accordionItem__title}>{title}</h1>
 						{renderDetails(roomFittings?.includes(ROOM_FITTINGS.seats))}
@@ -180,7 +144,9 @@ const AccordionItem = ({
 					</div>
 					<img className={styles.accordionItem__image} src={img} alt={title} />
 					<Chevron
-						className={cn(styles.accordionItem__icon, { [styles['accordionItem--rotate']]: contentHeight === 0 })}
+						className={cn(styles.accordionItem__chevronIcon, {
+							[styles['accordionItem--rotate']]: contentHeight === 0,
+						})}
 						width={24}
 						fill={contentHeight === 0 ? '#fff' : '#ffef00bf'}
 					/>

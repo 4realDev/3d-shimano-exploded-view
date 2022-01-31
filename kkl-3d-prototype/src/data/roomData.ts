@@ -7,16 +7,15 @@ export type RoomFetchedDataType = {
 		camTarget: THREE.Vector3;
 	};
 	info: {
-		id: number;
 		title: string;
-		personCapacity: number | number[];
+		personCapacity: number | [number, number];
 		area: number;
-		height: number;
 		img: string;
 		chairFormations?: { name: CHAIR_FORMATION; capacity: number }[];
 		equipment?: EQUIPMENT[];
 		fittings?: ROOM_FITTINGS[];
 		fittingEventTypes?: EVENT_TYPES[];
+		fittingSideRoom?: string[];
 		bookedDates: { start: string; end: string }[];
 	};
 };
@@ -55,7 +54,6 @@ export enum ROOM_FITTINGS {
 	seats = 'seats',
 	noSeats = 'noSeats',
 	exhibition = 'exhibition',
-	additionalRooms = 'additionalRooms',
 	dayLight = 'dayLight',
 }
 
@@ -77,7 +75,7 @@ export enum EVENT_TYPES {
 
 export const camHeightOffset = 15;
 
-export const roomList = [
+export const roomList: RoomFetchedDataType[] = [
 	{
 		model: {
 			meshName: INTERACTABLE_MESH_NAMES.concertRoom,
@@ -85,14 +83,12 @@ export const roomList = [
 			camTarget: new THREE.Vector3(-3.8, -0.5, 2),
 		},
 		info: {
-			id: 1,
 			title: 'Konzertsaal',
 			personCapacity: 1898,
-			area: 2100,
-			height: 12,
+			area: 17823,
 			img: './images/Konzertsaal.jpg',
 			equipment: [EQUIPMENT.stage, EQUIPMENT.podium],
-			fittings: [ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.seats, ROOM_FITTINGS.additionalRooms],
+			fittings: [ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.seats],
 			fittingEventTypes: [EVENT_TYPES.concert],
 			fittingSideRoom: [INTERACTABLE_MESH_NAMES.clubroom, INTERACTABLE_MESH_NAMES.businessMediaRoom],
 			bookedDates: [
@@ -109,11 +105,9 @@ export const roomList = [
 			camTarget: new THREE.Vector3(-3.8, -0.5, -4),
 		},
 		info: {
-			id: 2,
 			title: 'Luzerner Saal',
 			personCapacity: [470, 1044],
 			area: 760,
-			height: 12,
 			img: './images/LuzernerSaal.jpg',
 			equipment: [EQUIPMENT.stage, EQUIPMENT.podium, EQUIPMENT.beamer],
 			chairFormations: [
@@ -127,7 +121,6 @@ export const roomList = [
 				ROOM_FITTINGS.accessibleEnv,
 				ROOM_FITTINGS.seats,
 				ROOM_FITTINGS.exhibition,
-				ROOM_FITTINGS.additionalRooms,
 			],
 			fittingEventTypes: [EVENT_TYPES.concert, EVENT_TYPES.congress, EVENT_TYPES.apero],
 			fittingSideRoom: [
@@ -149,17 +142,14 @@ export const roomList = [
 			camTarget: new THREE.Vector3(0.4, -0.5, 4),
 		},
 		info: {
-			id: 3,
-			title: 'Clubraum (Gross)',
+			title: 'Clubraum',
 			personCapacity: [120, 300],
 			area: 250,
-			height: 12,
 			img: './images/Clubraeume.jpg',
 			equipment: [EQUIPMENT.podium, EQUIPMENT.beamer],
 			chairFormations: [
 				{ name: CHAIR_FORMATION.seminar, capacity: 120 },
 				{ name: CHAIR_FORMATION.bankett, capacity: 160 },
-				{ name: CHAIR_FORMATION.concert, capacity: 300 },
 			],
 			fittings: [
 				ROOM_FITTINGS.catering,
@@ -184,11 +174,9 @@ export const roomList = [
 			camTarget: new THREE.Vector3(0.4, -0.5, 0),
 		},
 		info: {
-			id: 4,
-			title: 'Medienraum (Gross)',
+			title: 'Medienraum',
 			personCapacity: [20, 50],
 			area: 32,
-			height: 12,
 			img: './images/BusinessMedienraeume.jpg',
 			equipment: [EQUIPMENT.podium, EQUIPMENT.beamer],
 			chairFormations: [
@@ -211,14 +199,12 @@ export const roomList = [
 			camTarget: new THREE.Vector3(0.4, -0.5, -4),
 		},
 		info: {
-			id: 5,
 			title: 'Auditorium',
 			personCapacity: 271,
 			area: 200,
-			height: 12,
 			img: './images/Auditorium.jpg',
 			equipment: [EQUIPMENT.podium],
-			fittings: [ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.seats, ROOM_FITTINGS.additionalRooms],
+			fittings: [ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.seats],
 			fittingEventTypes: [EVENT_TYPES.congress, EVENT_TYPES.exhibition, EVENT_TYPES.workshop],
 			fittingSideRoom: [INTERACTABLE_MESH_NAMES.entryFoyer, INTERACTABLE_MESH_NAMES.businessMediaRoom],
 			bookedDates: [
@@ -235,11 +221,9 @@ export const roomList = [
 			camTarget: new THREE.Vector3(3.9, -0.5, -4),
 		},
 		info: {
-			id: 6,
 			title: 'Eingangsfoyer',
 			personCapacity: 200,
 			area: 520,
-			height: 12,
 			img: './images/EingangsFoyer.jpg',
 			equipment: [EQUIPMENT.podium, EQUIPMENT.beamer],
 			fittings: [ROOM_FITTINGS.apero, ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.noSeats, ROOM_FITTINGS.dayLight],

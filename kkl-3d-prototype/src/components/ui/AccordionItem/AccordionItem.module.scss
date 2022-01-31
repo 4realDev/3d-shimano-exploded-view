@@ -1,7 +1,8 @@
 @import '../../../styles/colors.scss';
 @import '../../../styles/viewport.scss';
 
-/* .active and .rotate will be passed to React state on Accordion.js */
+// styling is used in AccordionItem.tsx and RoomCard.tsx
+// .active and .rotate will be passed to React state on Accordion.js
 
 .accordionItem {
 	display: flex;
@@ -18,24 +19,37 @@
 	color: rgba(255, 255, 255, 0.8);
 	box-shadow: 0.5rem 2px 0.5rem $color-shadow;
 	border-radius: 0.4rem;
-	transition: background-color 0.6s ease, margin 0.6s ease;
+	transition: background-color, 0.6s ease, margin 0.6s ease;
 
 	/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
-	&:hover {
-		background-color: $color-dark-grey-hovered;
-	}
 
 	&--active {
 		background-color: $color-dark-grey-hovered;
-		border: 5px solid $color-dark-yellow;
+		outline: 5px solid $color-dark-yellow;
 		border-radius: 4px;
 		margin-top: 40px;
 		margin-bottom: 40px;
+
+		.accordionItem__fittingsContainer {
+			margin-bottom: 16px !important;
+		}
 	}
 
-	/* Style to rotate icon when state is active */
+	// check if component is button to ensure that hover does not work on RoomCard.tsx
+	&:is(button):hover {
+		background-color: $color-dark-grey-hovered;
+	}
+
+	// Style to rotate icon when state is active
 	&--rotate {
 		transform: rotate(90deg);
+	}
+
+	// necessary for deactivating hover on RoomCard
+	&--noHover {
+		.accordionItem:hover {
+			background-color: $color-dark-grey !important;
+		}
 	}
 
 	&__header {
@@ -51,14 +65,13 @@
 		.accordionItem__infoColumn {
 			display: flex;
 			flex-wrap: wrap;
-			flex-direction: row;
+			flex-direction: column;
 			align-items: flex-start;
 			width: 100%;
 			margin-right: 20px;
 
 			/* Style the accordion content title */
 			.accordionItem__title {
-				/* flex: 0 0 100%; /* flex-grow, flex-shrink, flex-basis */
 				width: 100%;
 				text-align: start;
 				padding-bottom: 24px;
@@ -67,44 +80,68 @@
 				line-height: 22px;
 			}
 
-			.accordionItem__details {
+			.accordionItem__roomInfoContainer {
 				display: flex;
 				flex-direction: column;
-				width: 60%;
-				padding-bottom: 12px;
 
-				.accordionItem__detailsItem {
-					/* flex: 1; */
+				.accordionItem__roomInfoItem {
+					display: flex;
+					justify-content: flex-start;
+					align-items: center;
 					text-align: start;
 					padding-bottom: 12px;
 					font-weight: 400;
 					font-size: 14px;
 					line-height: 18px;
 
-					.accordionItem__checkMark {
+					.accordionItem__roomInfoCheckMark {
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						height: 24px;
+						width: 24px;
+						padding: 6px;
 						margin-right: 8px;
 					}
 				}
 			}
 
-			.accordionItem__detailsIcons {
+			.accordionItem__fittingsContainer {
+				display: flex;
+				flex-direction: column;
 				display: inline-flex;
 				flex-direction: row;
 				flex-wrap: wrap;
-				width: 40%;
 				text-align: start;
-				padding-bottom: 12px;
+				margin-bottom: 16px;
+				transition: margin 0.6s ease;
 
-				.accordionItem__detailsIcon {
+				@include xs {
+					margin-bottom: 0px;
+				}
+
+				.accordionItem__fittingsItem {
+					/* flex: 1; */
 					display: flex;
-					justify-content: center;
+					justify-content: flex-start;
 					align-items: center;
-					margin-left: 10px;
-					margin-bottom: 10px;
-					border-radius: 12px;
-					height: 24px;
-					width: 24px;
-					background-color: $color-dark-yellow;
+					text-align: start;
+					padding-bottom: 12px;
+					padding-right: 16px;
+					font-weight: 400;
+					font-size: 14px;
+					line-height: 18px;
+
+					.accordionItem__fittingsIcon {
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						border-radius: 12px;
+						height: 24px;
+						width: 24px;
+						background-color: $color-dark-yellow;
+						margin-right: 8px;
+					}
 				}
 			}
 		}
@@ -113,17 +150,16 @@
 			width: 100%;
 			height: auto;
 			margin-right: 20px;
-			margin-bottom: 16px;
 			object-fit: cover;
 
 			@include xs {
-				width: 160px;
-				height: 120px;
+				width: 180px;
+				height: 135px;
 			}
 		}
 
 		/* Style the accordion chevron icon */
-		.accordionItem__icon {
+		.accordionItem__chevronIcon {
 			display: none;
 			transition: transform 0.6s ease;
 

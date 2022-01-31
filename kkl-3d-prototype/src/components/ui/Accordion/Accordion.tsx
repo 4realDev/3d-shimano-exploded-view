@@ -1,9 +1,4 @@
-import {
-	ChairFormationType,
-	CHAIR_FORMATION,
-	RoomFetchedDataType,
-	ROOM_ADDITIONS_CATEGORY,
-} from '../../../data/roomData';
+import { ChairFormationType, RoomFetchedDataType, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
 import MeshVisibilityButton from '../MeshVisibilityButton/MeshVisibilityButton';
 import AccordionItem from '../AccordionItem/AccordionItem';
 import styles from './Accordion.module.scss';
@@ -72,7 +67,6 @@ const Accordion = ({
 	};
 
 	const isChairFormationImpossible = (accordionItemRoom: RoomFetchedDataType, formation: ChairFormationType) => {
-		// const chairFormationPersonCapacity = getRoomChairFormationPersonCapacity(accordionItemRoom);
 		const toggledChairFormationCapacity = getMeshObjectByMeshName(
 			accordionItemRoom.model.meshName
 		)?.info.chairFormations?.find((chairFormation) => chairFormation.name === formation.name)?.capacity;
@@ -81,21 +75,18 @@ const Accordion = ({
 			toggledChairFormationCapacity !== undefined &&
 			toggledChairFormationCapacity <= parseInt(wizardData.personNum)
 		) {
-			// TODO: SET ROOM CAPACITY TO UNDEFINED WHEN PERSONNUM IS CHANGED TO IMPOSSIBLE NUMBER
 			return true;
 		} else return false;
 	};
 
 	return (
-		<div>
+		<>
 			{roomList.map((room, roomIndex) => (
 				<AccordionItem
 					key={roomIndex}
-					id={room.info.id}
 					title={room.info.title}
 					personCapacity={getRoomChairFormationPersonCapacity(room)}
 					area={room.info.area}
-					roomHeight={room.info.height}
 					img={room.info.img}
 					roomFittings={room.info.fittings}
 					roomMeshName={room.model.meshName}
@@ -144,7 +135,7 @@ const Accordion = ({
 					)}
 				</AccordionItem>
 			))}
-		</div>
+		</>
 	);
 };
 

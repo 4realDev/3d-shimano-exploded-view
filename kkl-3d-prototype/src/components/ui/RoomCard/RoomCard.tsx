@@ -1,5 +1,6 @@
 import CheckMark from '../../icons/CheckMark';
-import styles from './RoomCard.module.scss';
+import stylesFromRoomCard from './RoomCard.module.scss';
+import stylesFromAccordionItem from '../AccordionItem/AccordionItem.module.scss';
 import { ROOM_TYPE } from '../../../store/useWizardStore';
 import { ROOM_FITTINGS } from '../../../data/roomData';
 import {
@@ -8,15 +9,15 @@ import {
 	getEquipmentIcon,
 	getFormationText,
 	getFormationIcon,
+	getFittingText,
 } from '../../../utils/room';
 
 type RoomCardProps = {
 	title: string;
 	personCapacity: number | number[];
 	area: number;
-	height: number;
 	img: string;
-	roomFitting?: ROOM_FITTINGS[];
+	roomFittings?: ROOM_FITTINGS[];
 	equipment: string;
 	chairFormation: string;
 	roomType: string;
@@ -26,31 +27,25 @@ const RoomCard = ({
 	title,
 	personCapacity,
 	area,
-	height,
 	img,
-	roomFitting,
+	roomFittings,
 	equipment,
 	chairFormation,
 	roomType,
 }: RoomCardProps) => {
 	const renderDetails = (hasSeats?: boolean) => {
 		return (
-			<div className={styles.roomCard__details}>
-				<div className={styles.roomCard__detailsItem}>
-					<CheckMark className={styles.roomCard__checkMark} width={16} fill='#ffffff' />
+			<div className={stylesFromAccordionItem.accordionItem__roomInfoContainer}>
+				<div className={stylesFromAccordionItem.accordionItem__roomInfoItem}>
+					<CheckMark className={stylesFromAccordionItem.accordionItem__roomInfoCheckMark} width={16} fill='#ffffff' />
 					<span>
 						{Array.isArray(personCapacity) ? `${personCapacity[0]} - ${personCapacity[1]}` : personCapacity}
 						{hasSeats ? ' Sitzplätze' : ' Stehplätze'}
 					</span>
 				</div>
-
-				<div className={styles.roomCard__detailsItem}>
-					<CheckMark className={styles.roomCard__checkMark} width={16} fill='#ffffff' />
+				<div className={stylesFromAccordionItem.accordionItem__roomInfoItem}>
+					<CheckMark className={stylesFromAccordionItem.accordionItem__roomInfoCheckMark} width={16} fill='#ffffff' />
 					<span>{area} m²</span>
-				</div>
-				<div className={styles.roomCard__detailsItem}>
-					<CheckMark className={styles.roomCard__checkMark} width={16} fill='#ffffff' />
-					<span>{height} m Raumhöhe</span>
 				</div>
 			</div>
 		);
@@ -58,14 +53,16 @@ const RoomCard = ({
 
 	const renderDetailsIcons = () => {
 		return (
-			<div className={styles.roomCard__detailsIcons}>
-				{roomFitting?.map((fitting, index) => {
-					return (
-						fitting && (
-							<div key={index} className={styles.roomCard__detailsIcon}>
+			<div className={stylesFromAccordionItem.accordionItem__fittingsContainer}>
+				{roomFittings?.map((fitting, index) => {
+					// do not render seats icon but keep it inside ROOM_FITTINGS
+					return fitting.includes(ROOM_FITTINGS.seats) ? null : (
+						<div key={index} className={stylesFromAccordionItem.accordionItem__fittingsItem}>
+							<div key={index} className={stylesFromAccordionItem.accordionItem__fittingsIcon}>
 								{getFittingIcon(fitting)}
 							</div>
-						)
+							<span>{getFittingText(fitting)}</span>
+						</div>
 					);
 				})}
 			</div>
@@ -73,45 +70,42 @@ const RoomCard = ({
 	};
 
 	return (
-		<>
-			<div className={styles.roomCard}>
-				<div>
-					<div className={styles.roomCard__header}>
-						<div className={styles.roomCard__infoColumn}>
-							<h1 className={styles.roomCard__title}>
-								{title}
-								<span style={{ fontWeight: '300', fontSize: 12 + 'px' }}>
-									{roomType === ROOM_TYPE.mainRooms
-										? ' (als Hauptraum)'
-										: roomType === ROOM_TYPE.sideRooms
-										? ' (als Nebenraum)'
-										: ''}
-								</span>
-							</h1>
-							{renderDetails(roomFitting?.includes(ROOM_FITTINGS.seats))}
-							{renderDetailsIcons()}
-						</div>
-						<img className={styles.roomCard__image} src={img} alt={title} />
-					</div>
+		<div className={stylesFromAccordionItem.accordionItem}>
+			<div className={stylesFromAccordionItem.accordionItem__header}>
+				<div className={stylesFromAccordionItem.accordionItem__infoColumn}>
+					<h1 className={stylesFromAccordionItem.accordionItem__title}>
+						{title}
+						<span style={{ fontWeight: '300', fontSize: 12 + 'px' }}>
+							{roomType === ROOM_TYPE.mainRooms
+								? ' (als Hauptraum)'
+								: roomType === ROOM_TYPE.sideRooms
+								? ' (als Nebenraum)'
+								: ''}
+						</span>
+					</h1>
+					{renderDetails(roomFittings?.includes(ROOM_FITTINGS.seats))}
+					{renderDetailsIcons()}
 				</div>
-				<div className={styles.roomCard__roomAdditionsGrid}>
-					{equipment !== '' && (
-						<div className={styles.roomCard__roomAdditionsColumn}>
-							<h3>Equipment: </h3>
-							<p>{getEquipmentText(equipment)}</p>
-							<div className={styles.roomCard__roomAdditions__icon}>{getEquipmentIcon(equipment)}</div>
-						</div>
-					)}
-					{chairFormation !== '' && (
-						<div className={styles.roomCard__roomAdditionsColumn}>
-							<h3>Stuhlformation: </h3>
-							<p>{getFormationText(chairFormation)}</p>
-							<div className={styles.roomCard__roomAdditions__icon}>{getFormationIcon(chairFormation)}</div>
-						</div>
-					)}
-				</div>
+				<img className={stylesFromAccordionItem.accordionItem__image} src={img} alt={title} />
 			</div>
-		</>
+
+			<div className={stylesFromRoomCard.roomCard__roomAdditionsGrid}>
+				{equipment !== '' && (
+					<div className={stylesFromRoomCard.roomCard__roomAdditionsColumn}>
+						<h3>Equipment: </h3>
+						<p>{getEquipmentText(equipment)}</p>
+						<div className={stylesFromRoomCard.roomCard__roomAdditions__icon}>{getEquipmentIcon(equipment)}</div>
+					</div>
+				)}
+				{chairFormation !== '' && (
+					<div className={stylesFromRoomCard.roomCard__roomAdditionsColumn}>
+						<h3>Stuhlformation: </h3>
+						<p>{getFormationText(chairFormation)}</p>
+						<div className={stylesFromRoomCard.roomCard__roomAdditions__icon}>{getFormationIcon(chairFormation)}</div>
+					</div>
+				)}
+			</div>
+		</div>
 	);
 };
 
