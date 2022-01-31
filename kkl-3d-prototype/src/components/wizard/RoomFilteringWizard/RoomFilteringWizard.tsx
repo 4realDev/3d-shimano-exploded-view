@@ -125,7 +125,7 @@ const RoomFilteringWizard = ({ handleChange, wizardData }: RoomFilteringWizardPr
 			</LocalizationProvider>
 
 			<FormControlLabel
-				label='Mit Zusatzräumen'
+				label='Zusätzliche Nebenräumen buchen'
 				className={styles.formControl}
 				control={
 					<Checkbox
