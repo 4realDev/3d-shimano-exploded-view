@@ -1,6 +1,5 @@
 import React from 'react';
 import Accessibility from '../components/icons/Accessibility';
-import AdditionalRooms from '../components/icons/AdditionalRooms';
 import Apero from '../components/icons/Apero';
 import Beamer from '../components/icons/Beamer';
 import Catering from '../components/icons/Catering';
@@ -11,19 +10,12 @@ import DayLight from '../components/icons/DayLight';
 import Exhibition from '../components/icons/Exhibition';
 import NoSeats from '../components/icons/NoSeats';
 import Podium from '../components/icons/Podium';
-import Seats from '../components/icons/Seats';
 import Stage from '../components/icons/Stage';
-import { CHAIR_FORMATION, EQUIPMENT, RoomFetchedDataType, roomList, ROOM_FITTINGS } from '../data/roomData';
-import { WizardRoomDataType } from '../store/useWizardStore';
+import { CHAIR_FORMATION, EQUIPMENT, roomList, ROOM_FITTINGS } from '../data/roomData';
 
 // Takes meshname like "room_3" and returns the title of the room like "Konzertsaal"
 export const getRoomTitleByMeshName = (meshName: string) => {
 	return roomList.find((room) => room.model.meshName === meshName)?.info.title;
-};
-
-// Takes id like 3 and returns the meshname of the room like "room_3"
-export const getMeshNameById = (id: number) => {
-	return roomList.find((room) => room.info.id === id);
 };
 
 // Takes meshname like "room_3" and returns the MeshObjectType of the room
@@ -66,16 +58,31 @@ export const getFittingIcon = (fitting: ROOM_FITTINGS) => {
 			return <Apero />;
 		case ROOM_FITTINGS.accessibleEnv:
 			return <Accessibility />;
-		case ROOM_FITTINGS.seats:
-			return <Seats />;
 		case ROOM_FITTINGS.noSeats:
 			return <NoSeats />;
 		case ROOM_FITTINGS.exhibition:
 			return <Exhibition />;
-		case ROOM_FITTINGS.additionalRooms:
-			return <AdditionalRooms />;
 		case ROOM_FITTINGS.dayLight:
 			return <DayLight />;
+		default:
+			return null;
+	}
+};
+
+export const getFittingText = (fitting: ROOM_FITTINGS) => {
+	switch (fitting) {
+		case ROOM_FITTINGS.catering:
+			return 'Catering';
+		case ROOM_FITTINGS.apero:
+			return 'Apero';
+		case ROOM_FITTINGS.accessibleEnv:
+			return 'Barrierefrei';
+		case ROOM_FITTINGS.noSeats:
+			return 'Nur Stehplätze';
+		case ROOM_FITTINGS.exhibition:
+			return 'Ausstellungen';
+		case ROOM_FITTINGS.dayLight:
+			return 'Sonnenlicht';
 		default:
 			return null;
 	}
