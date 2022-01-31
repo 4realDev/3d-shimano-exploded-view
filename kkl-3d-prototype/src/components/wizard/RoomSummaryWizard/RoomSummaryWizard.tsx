@@ -61,9 +61,8 @@ const RoomSummaryWizard = ({ handleChange, wizardData }: RoomSummaryWizardProps)
 							: chosenMainRoomObject.info.personCapacity
 					}
 					area={chosenMainRoomObject.info.area}
-					height={chosenMainRoomObject.info.height}
 					img={chosenMainRoomObject.info.img}
-					roomFitting={chosenMainRoomObject.info.fittings}
+					roomFittings={chosenMainRoomObject.info.fittings}
 					equipment={chosenWizardMainRoomData.equipment}
 					chairFormation={chosenWizardMainRoomData.chair_formation}
 					roomType={ROOM_TYPE.mainRooms}
@@ -75,9 +74,8 @@ const RoomSummaryWizard = ({ handleChange, wizardData }: RoomSummaryWizardProps)
 					title={chosenSideRoomInfoObject.info.title}
 					personCapacity={chosenSideRoomInfoObject.info.personCapacity}
 					area={chosenSideRoomInfoObject.info.area}
-					height={chosenSideRoomInfoObject.info.height}
 					img={chosenSideRoomInfoObject.info.img}
-					roomFitting={chosenSideRoomInfoObject.info.fittings}
+					roomFittings={chosenSideRoomInfoObject.info.fittings}
 					equipment={chosenWizardSideRoomData.equipment}
 					chairFormation={chosenWizardSideRoomData.chair_formation}
 					roomType={ROOM_TYPE.sideRooms}
