@@ -25,15 +25,17 @@ export const setMeshVisibility = (meshName: string, visible: boolean) => {
 	setMeshList(newList);
 };
 
-// Makes all mesh objects visible and makes their as "interactable" with customProps marked children (equipment & chair_formation) invisible
-// TODO: Find out why static meshes are resetted too
+// Reset parent mesh visibility to true (roof, rooms..)
+// Set visibility of all "interactable" children with customName as userData (provided by Blender) to false (interactable / togglable chair_formations and equipment)
 export const resetMeshVisibility = () => {
 	let newList: MeshObjectType[] = useMeshStore.getState().meshList;
 	newList.forEach((item, i, array) => {
 		array[i] = {
 			...item,
 			isVisible: true,
-			children: array[i].children?.map((child) => ({ ...child, isVisible: false })),
+			children: array[i].children?.map((child) => {
+				return child.userData && 'customName' in child.userData ? { ...child, isVisible: false } : { ...child };
+			}),
 		};
 	});
 	setMeshList(newList);
