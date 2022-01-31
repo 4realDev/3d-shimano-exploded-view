@@ -54,7 +54,6 @@ export enum ROOM_FITTINGS {
 	seats = 'seats',
 	noSeats = 'noSeats',
 	exhibition = 'exhibition',
-	dayLight = 'dayLight',
 }
 
 export enum ROOM_ADDITIONS_CATEGORY {
@@ -156,7 +155,6 @@ export const roomList: RoomFetchedDataType[] = [
 				ROOM_FITTINGS.accessibleEnv,
 				ROOM_FITTINGS.seats,
 				ROOM_FITTINGS.exhibition,
-				ROOM_FITTINGS.dayLight,
 			],
 			fittingEventTypes: [EVENT_TYPES.apero, EVENT_TYPES.exhibition, EVENT_TYPES.meeting, EVENT_TYPES.workshop],
 			bookedDates: [
@@ -182,7 +180,7 @@ export const roomList: RoomFetchedDataType[] = [
 				{ name: CHAIR_FORMATION.seminar, capacity: 20 },
 				{ name: CHAIR_FORMATION.bankett, capacity: 50 },
 			],
-			fittings: [ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.seats, ROOM_FITTINGS.dayLight],
+			fittings: [ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.apero, ROOM_FITTINGS.seats, ROOM_FITTINGS.exhibition],
 			fittingEventTypes: [EVENT_TYPES.apero, EVENT_TYPES.exhibition, EVENT_TYPES.meeting, EVENT_TYPES.workshop],
 			bookedDates: [
 				{ start: '2022-02-10', end: '2022-02-12' },
@@ -225,7 +223,7 @@ export const roomList: RoomFetchedDataType[] = [
 			area: 520,
 			img: './images/EingangsFoyer.jpg',
 			equipment: [EQUIPMENT.podium, EQUIPMENT.beamer],
-			fittings: [ROOM_FITTINGS.apero, ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.noSeats, ROOM_FITTINGS.dayLight],
+			fittings: [ROOM_FITTINGS.apero, ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.noSeats],
 			fittingEventTypes: [EVENT_TYPES.apero],
 			bookedDates: [
 				{ start: '2022-02-10', end: '2022-02-12' },

@@ -6,7 +6,6 @@ import Catering from '../components/icons/Catering';
 import ChairFormationBankett from '../components/icons/ChairFormationBankett';
 import ChairFormationConcert from '../components/icons/ChairFormationConcert';
 import ChairFormationSeminar from '../components/icons/ChairFormationSeminar';
-import DayLight from '../components/icons/DayLight';
 import Exhibition from '../components/icons/Exhibition';
 import NoSeats from '../components/icons/NoSeats';
 import Podium from '../components/icons/Podium';
@@ -62,8 +61,6 @@ export const getFittingIcon = (fitting: ROOM_FITTINGS) => {
 			return <NoSeats />;
 		case ROOM_FITTINGS.exhibition:
 			return <Exhibition />;
-		case ROOM_FITTINGS.dayLight:
-			return <DayLight />;
 		default:
 			return null;
 	}
@@ -81,8 +78,6 @@ export const getFittingText = (fitting: ROOM_FITTINGS) => {
 			return 'Nur Stehplätze';
 		case ROOM_FITTINGS.exhibition:
 			return 'Ausstellungen';
-		case ROOM_FITTINGS.dayLight:
-			return 'Sonnenlicht';
 		default:
 			return null;
 	}
