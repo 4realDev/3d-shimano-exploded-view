@@ -67,9 +67,15 @@ const Accordion = ({
 	};
 
 	const isChairFormationImpossible = (accordionItemRoom: RoomFetchedDataType, formation: ChairFormationType) => {
+		// for SideRooms all chair_formations should be possible
+		if (accordionItemRoom.info.fittingSideRoom === undefined) return false;
+
+		// get the person capacity (seats) of the passed chair formation related to the passed accordionItemRoom
 		const toggledChairFormationCapacity = getMeshObjectByMeshName(
 			accordionItemRoom.model.meshName
 		)?.info.chairFormations?.find((chairFormation) => chairFormation.name === formation.name)?.capacity;
+
+		// for MainRooms the chair formations which offer less seats then the chosen personNum, are impossible and should be disabled
 		if (
 			!Array.isArray(toggledChairFormationCapacity) &&
 			toggledChairFormationCapacity !== undefined &&
@@ -108,8 +114,9 @@ const Accordion = ({
 											roomList[roomIndex].model.meshName,
 											formation.name
 										)}
-										onClick={handleAdditionsOnChange}
 										isDisabled={isChairFormationImpossible(room, formation)}
+										isFixed={room.info.chairFormations !== undefined && room.info.chairFormations.length === 1}
+										onClick={handleAdditionsOnChange}
 									/>
 								);
 							})}

@@ -91,13 +91,17 @@ export const handleRoomDataChange = (toggledRoomName: string) => {
 		};
 		updateWizardData(mainRoomAdditions, roomType);
 	} else {
+		// CHECK OF NEW ROOM ITEM HAS ONLY ONE POSSIBLE CHAIR_FORMATION
+		const newRoomChairFormation = getMeshObjectByMeshName(toggledRoomName)?.info.chairFormations;
+		// IF YES, SET IT AS THE DEFAULT VALUE
+		const newRoomChairFormationValue = newRoomChairFormation?.length === 1 ? newRoomChairFormation[0].name : '';
 		// ADD NEW ROOM ITEM
 		const newRoomValue = [
 			...wizardData[roomType],
 			{
 				room: toggledRoomName,
 				equipment: '',
-				chair_formation: '',
+				chair_formation: newRoomChairFormationValue,
 			},
 		];
 		updateWizardData(newRoomValue, roomType);
