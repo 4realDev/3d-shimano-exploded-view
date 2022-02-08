@@ -1,6 +1,8 @@
 import styles from './MeshVisibilityButton.module.scss';
 import cn from 'classnames';
 import { ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
+import { Tooltip } from '@mui/material';
+import { getEquipmentText, getFormationText } from '../../../utils/room';
 
 type MeshVisiblityButtonProps = {
 	toggledRoomName: string;
@@ -9,6 +11,7 @@ type MeshVisiblityButtonProps = {
 	category: ROOM_ADDITIONS_CATEGORY;
 	isActive: boolean;
 	isDisabled?: boolean;
+	isFixed?: boolean;
 	onClick: (toggledRoomName: string, toggledMeshName: string, category: ROOM_ADDITIONS_CATEGORY) => void;
 };
 
@@ -19,20 +22,41 @@ const MeshVisibilityButton = ({
 	category,
 	isActive,
 	isDisabled = false,
+	isFixed = false,
 	onClick,
 }: MeshVisiblityButtonProps) => {
 	return (
-		<button
-			className={cn(styles.roomAdditionsToggle, {
-				[styles['roomAdditionsToggle--active']]: isActive && !isDisabled,
-				[styles['roomAdditionsToggle--disabled']]: isDisabled,
-			})}
-			onClick={() => {
-				!isDisabled && onClick(toggledRoomName, toggledMeshName, category);
-			}}
+		<Tooltip
+			title={
+				<div style={{ textAlign: 'center' }}>
+					<div>
+						{category === ROOM_ADDITIONS_CATEGORY.chair_formation
+							? getFormationText(toggledMeshName)
+							: getEquipmentText(toggledMeshName)}
+						{isDisabled && ' (deaktiviert)'}
+						{isFixed && ' (gegebene Auswahl)'}
+					</div>
+					{isDisabled && <div>Zu wenige Sitzplätze.</div>}
+				</div>
+			}
+			placement='top'
+			arrow
+			followCursor
+			enterNextDelay={750}
 		>
-			{toggleIcon}
-		</button>
+			<button
+				className={cn(styles.roomAdditionsToggle, {
+					[styles['roomAdditionsToggle--active']]: (isActive || isFixed) && !isDisabled,
+					[styles['roomAdditionsToggle--disabled']]: isDisabled,
+					[styles['roomAdditionsToggle--fixed']]: isFixed,
+				})}
+				onClick={() => {
+					!isDisabled && !isFixed && onClick(toggledRoomName, toggledMeshName, category);
+				}}
+			>
+				{toggleIcon}
+			</button>
+		</Tooltip>
 	);
 };
 

@@ -155,6 +155,7 @@ export const theme = createTheme({
 		},
 		// *** MUI CHECKBOX ADJUSTMENTS ***
 
+		// *** MUI CIRCULAR PREGRESS ***
 		MuiCircularProgress: {
 			styleOverrides: {
 				root: {
@@ -165,5 +166,16 @@ export const theme = createTheme({
 				},
 			},
 		},
+		// *** MUI CIRCULAR PREGRESS ***
+
+		// *** MUI TOOLTIP ***
+		MuiTooltip: {
+			styleOverrides: {
+				tooltip: {
+					fontSize: '1.2rem',
+				},
+			},
+		},
+		// *** MUI TOOLTIP ***
 	},
 });

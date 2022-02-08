@@ -9,6 +9,7 @@
 	border: 5px solid $color-dark-blue !important;
 	height: 50px;
 	width: 50px;
+	cursor: pointer;
 
 	& > svg {
 		transform: scale(0.7);
