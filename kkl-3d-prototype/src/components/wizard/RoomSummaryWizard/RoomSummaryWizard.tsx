@@ -4,6 +4,7 @@ import { EVENT_TYPES, roomList } from '../../../data/roomData';
 import { setFilteredMeshes, setSelectedMeshes, showRoomsOverview } from '../../../store/useCameraStore';
 import { ROOM_TYPE, WizardDataType } from '../../../store/useWizardStore';
 import { formatDate } from '../../../utils/date';
+import { getEventTypeText } from '../../../utils/room';
 import RoomCard from '../../ui/RoomCard/RoomCard';
 import styles from './RoomSummaryWizard.module.scss';
 
@@ -72,7 +73,11 @@ const RoomSummaryWizard = ({ handleChange, wizardData }: RoomSummaryWizardProps)
 			{chosenSideRoomInfoObject && chosenWizardSideRoomData && (
 				<RoomCard
 					title={chosenSideRoomInfoObject.info.title}
-					personCapacity={chosenSideRoomInfoObject.info.personCapacity}
+					personCapacity={
+						chosenWizardSideRoomData.capacity !== undefined
+							? chosenWizardSideRoomData.capacity
+							: chosenSideRoomInfoObject.info.personCapacity
+					}
 					area={chosenSideRoomInfoObject.info.area}
 					img={chosenSideRoomInfoObject.info.img}
 					roomFittings={chosenSideRoomInfoObject.info.fittings}
@@ -86,9 +91,7 @@ const RoomSummaryWizard = ({ handleChange, wizardData }: RoomSummaryWizardProps)
 				<h3 className={styles.summaryCard__title}>Kriterien</h3>
 				<div className={styles.summaryCard__item}>
 					<div className={styles.summaryCard__item__key}>Art des Events: </div>
-					<div className={styles.summaryCard__item__value}>
-						{wizardData.eventType === EVENT_TYPES.all ? 'undefiniert' : wizardData.eventType}
-					</div>
+					<div className={styles.summaryCard__item__value}>{getEventTypeText(wizardData.eventType)}</div>
 				</div>
 				<div className={styles.summaryCard__item}>
 					<div className={styles.summaryCard__item__key}>Anzahl Teilnehmer: </div>
