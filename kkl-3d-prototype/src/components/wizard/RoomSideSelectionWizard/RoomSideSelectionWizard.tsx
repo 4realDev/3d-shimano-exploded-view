@@ -57,9 +57,12 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 		// update filteredMeshes inside useCameraStore to update visualisation on 3D Model
 		setFilteredMeshes(fittingSideRoomMeshNames);
 
-		setTimeout(() => {
+		const timeout = setTimeout(() => {
 			setAccordionItemsLoading(false);
 		}, accordionItemsMaximumRenderTime);
+		return () => {
+			clearTimeout(timeout);
+		};
 	}, []);
 
 	const handleOnOpen = (toggledMeshName: string) => {

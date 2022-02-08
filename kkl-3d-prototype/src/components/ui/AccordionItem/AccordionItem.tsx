@@ -73,7 +73,7 @@ const AccordionItem = ({
 			content.current && setContentHeight(content.current.scrollHeight);
 
 			// Delay scrolling to the clicked accordion item by the translation delay of the opening and closing of the item to get the correct scrollHeight
-			setTimeout(() => {
+			const timeout = setTimeout(() => {
 				window.scrollTo({
 					top: content.current
 						? content.current.offsetTop - content.current.scrollHeight - additionalDistanceToScreenTop
@@ -81,6 +81,9 @@ const AccordionItem = ({
 					behavior: 'smooth',
 				});
 			}, 500);
+			return () => {
+				clearTimeout(timeout);
+			};
 		} else {
 			setContentHeight(0);
 		}

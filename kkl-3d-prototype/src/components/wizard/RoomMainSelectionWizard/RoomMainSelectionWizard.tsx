@@ -37,10 +37,12 @@ const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelection
 
 	useEffect(() => {
 		filterRoomSelection();
-
-		setTimeout(() => {
+		const timeout = setTimeout(() => {
 			setAccordionItemsLoading(false);
 		}, accordionItemsMaximumRenderTime);
+		return () => {
+			clearTimeout(timeout);
+		};
 	}, []);
 
 	const filterMainRooms = (roomList: RoomFetchedDataType[]) => {
