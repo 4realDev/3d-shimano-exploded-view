@@ -126,7 +126,10 @@ const RoomFilteringWizard = ({ handleChange, wizardData }: RoomFilteringWizardPr
 				control={
 					<Checkbox
 						checked={wizardData.additionalRooms}
-						onChange={() => handleChange(!wizardData.additionalRooms, 'additionalRooms')}
+						onChange={() => {
+							wizardData.additionalRooms && handleChange('', 'activeSideRoom'); // if additionalRooms was true, then its no false and activeSideRoom must be empty
+							handleChange(!wizardData.additionalRooms, 'additionalRooms'); // toggle value of additionalRooms
+						}}
 					/>
 				}
 			/>
