@@ -51,26 +51,28 @@ const RoomSelection = () => {
 	const [validationPassed, setValidationPassed] = useState<boolean | null>(null);
 
 	const nextStep = () => {
+		// if additionalRooms are not active and the user is currently in the RoomMainSelectionWizard step, jump over the RoomSideSelectionWizard
 		if (step === 1 && wizardData.additionalRooms === false) setStep(step + 2);
 		else setStep(step + 1);
 	};
 
 	const prevStep = () => {
-		// Clean up date, everytime user moves back to filter step
-		// But leave room configuration as they are
+		// Clean up selectedMeshes and filteredMeshes to show clean 3D model without highlighting
+		// and show the model from the roomOverview perspective, everytime user moves back to filter step
+		// But leave room configuration saved in wizardData as they are for caching
 		if (step === 1) {
 			showRoomsOverview();
 			setSelectedMeshes([]);
 			setFilteredMeshes([]);
-			handleChange('', 'activeMainRoom');
-			handleChange('', 'activeSideRoom');
 		}
+		// if additionalRooms are not active and the user is currently in the RoomSummaryWizard step, jump over the RoomSideSelectionWizard
 		if (step === 3 && wizardData.additionalRooms === false) setStep(step - 2);
 		else setStep(step - 1);
 	};
 
 	const submitForm = () => {
 		console.log('SUBMITTING TO SERVER', wizardData);
+		// reset all data
 		setStep(0);
 		resetScene();
 		resetWizardData();
