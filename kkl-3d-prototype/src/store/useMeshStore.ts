@@ -41,19 +41,16 @@ export const resetMeshVisibility = () => {
 	setMeshList(newList);
 };
 
-export const setMeshChildVisibility = (toggledRoomName: string, toggledMeshName: string, category?: string) => {
+export const toggleMeshChildVisibility = (toggledRoomName: string, toggledMeshName: string, category?: string) => {
 	let newList: MeshObjectType[] = useMeshStore.getState().meshList;
-	let itemIndex = newList.findIndex((item) => item.name === toggledRoomName); // Find index of item you want to mutate
-	let item = newList[itemIndex]; // Make shallow copy of the selected item
+	const itemIndex = newList.findIndex((item) => item.name === toggledRoomName); // Find index of item you want to mutate
+	const item = newList[itemIndex]; // Make shallow copy of the selected item
 	// Overwrite properties in each child of children array in item copy
 	if (itemIndex !== -1 && item.children) {
 		item.children.forEach((child, i, array) => {
 			// Toggle visibility of selected child / chair formation
 			// Make all other children / formations in children array of the item invisible
 
-			// Remove Blender suffix for duplicated object
-			// from "chair_formation_circle001" to "chair_formation_circle"
-			const childNameWithoutSuffix = child.name.replace(/[0-9]/g, '');
 			const isChildInteractable = child.userData !== undefined && 'customName' in child.userData;
 			array[i] = {
 				...child,
@@ -61,7 +58,7 @@ export const setMeshChildVisibility = (toggledRoomName: string, toggledMeshName:
 				// for other children: if other children are in the same category -> make them invisible
 				// else leave their visiblity as it is
 				isVisible:
-					childNameWithoutSuffix === toggledMeshName
+					child.name === toggledMeshName
 						? !child.isVisible
 						: child.name.substr(0, child.name.lastIndexOf('_')) === category && isChildInteractable
 						? false
