@@ -135,6 +135,10 @@ const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelection
 		filteredMainRoomList = filterAfterDate(filteredMainRoomList);
 		const filteredMainRoomMeshNames = filteredMainRoomList.map((room) => room.model.meshName);
 
+		// If the activeMainRoom was already set and the filter was adjusted again (by stepping back to RoomFilterWizard and changing filter criteria),
+		// check if the activeMainRoom is still fitting the new filter criteria -> if not, empty activeMainRoom
+		filteredMainRoomMeshNames.includes(wizardData.activeMainRoom) === false && handleChange('', 'activeMainRoom');
+
 		// if main room was already selected, show main room inside model (for stepping back and forth with stepper)
 		// else show overview of all filtered main rooms
 		wizardData.activeMainRoom !== ('' as INTERACTABLE_MESH_NAMES)

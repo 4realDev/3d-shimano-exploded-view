@@ -37,15 +37,19 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 		});
 		const fittingSideRoomMeshNames = fittingSideRooms.map((sideRoom) => sideRoom.model.meshName);
 
-		// if side room was already selected, show side room inside model (for stepping back and forth in stepper)
+		// If the activeMainRoom was already set and the filter was adjusted again (by stepping back to RoomFilterWizard and changing filter criteria),
+		// check if the activeMainRoom is still fitting the new filter criteria -> if not, empty activeMainRoom
+
+		// If active activeSideRoom was already set and a new activeMainRoom was selected, which does not include the current activeSideRoom in its fittingSideRooms list
+		// (Edge Case which appears when user steps back and forth in wizard)
+		!fittingSideRoomMeshNames.includes(wizardData.activeSideRoom) && handleChange('', 'activeSideRoom');
+
+		// If side room was already selected, show side room inside model
 		// else show overview of all fitting side rooms
+		// (Edge Case which appears when user steps back and forth in wizard)
 		wizardData.activeSideRoom !== ('' as INTERACTABLE_MESH_NAMES)
 			? showAndSelectRoom(wizardData.activeSideRoom)
 			: showAndSelectRooms(fittingSideRoomMeshNames);
-
-		// clean activeSideRoom inside Wizard if it is not included in the fittingSideRooms list of the current selected main room
-		// (for moving back to RoomMainSelectionWIzard and selecting a new main room, which does not include the before selected fitting side room)
-		!fittingSideRoomMeshNames.includes(wizardData.activeSideRoom) && handleChange('', 'activeSideRoom');
 
 		// set fitting side rooms state to update the accordion items
 		setFittingSideRooms(fittingSideRooms);
