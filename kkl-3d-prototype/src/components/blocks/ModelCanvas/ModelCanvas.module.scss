@@ -22,8 +22,12 @@
 
 	@include lg {
 		position: fixed;
-		left: 15%;
+		left: 22.5%;
 		height: 100vh;
 		z-index: 1;
+	}
+
+	@include xl {
+		left: 15%;
 	}
 }

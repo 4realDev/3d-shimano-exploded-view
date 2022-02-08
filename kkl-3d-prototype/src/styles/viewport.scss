@@ -2,6 +2,7 @@ $xs: 481px;
 $sm: 769px;
 $md: 993px;
 $lg: 1241px;
+$xl: 1440px;
 
 @mixin xs {
 	@media (min-width: $xs) {
@@ -47,6 +48,18 @@ $lg: 1241px;
 
 @mixin lg-max {
 	@media (max-width: ($lg - 1px)) {
+		@content;
+	}
+}
+
+@mixin xl {
+	@media (min-width: $xl) {
+		@content;
+	}
+}
+
+@mixin xl-max {
+	@media (min-width: ($xl - 1px)) {
 		@content;
 	}
 }
