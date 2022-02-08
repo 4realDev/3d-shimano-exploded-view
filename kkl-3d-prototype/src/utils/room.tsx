@@ -10,7 +10,7 @@ import Exhibition from '../components/icons/Exhibition';
 import NoSeats from '../components/icons/NoSeats';
 import Podium from '../components/icons/Podium';
 import Stage from '../components/icons/Stage';
-import { CHAIR_FORMATION, EQUIPMENT, roomList, ROOM_FITTINGS } from '../data/roomData';
+import { CHAIR_FORMATION, EQUIPMENT, EVENT_TYPES, roomList, ROOM_FITTINGS } from '../data/roomData';
 
 // Takes meshname like "room_3" and returns the title of the room like "Konzertsaal"
 export const getRoomTitleByMeshName = (meshName: string) => {
@@ -66,6 +66,32 @@ export const getFittingIcon = (fitting: ROOM_FITTINGS) => {
 	}
 };
 
+export const getFormationText = (formation: string) => {
+	switch (formation) {
+		case CHAIR_FORMATION.bankett:
+			return 'Bankett';
+		case CHAIR_FORMATION.seminar:
+			return 'Seminar';
+		case CHAIR_FORMATION.concert:
+			return 'Konzert';
+		default:
+			return '';
+	}
+};
+
+export const getEquipmentText = (equipment: string) => {
+	switch (equipment) {
+		case EQUIPMENT.stage:
+			return 'Bühne';
+		case EQUIPMENT.podium:
+			return 'Podium';
+		case EQUIPMENT.beamer:
+			return 'Beamer';
+		default:
+			return '';
+	}
+};
+
 export const getFittingText = (fitting: ROOM_FITTINGS) => {
 	switch (fitting) {
 		case ROOM_FITTINGS.catering:
@@ -79,32 +105,27 @@ export const getFittingText = (fitting: ROOM_FITTINGS) => {
 		case ROOM_FITTINGS.exhibition:
 			return 'Ausstellungen';
 		default:
-			return null;
+			return '';
 	}
 };
 
-export const getFormationText = (formation: string) => {
-	switch (formation) {
-		case CHAIR_FORMATION.bankett:
-			return 'Bankett';
-		case CHAIR_FORMATION.seminar:
-			return 'Seminar';
-		case CHAIR_FORMATION.concert:
+export const getEventTypeText = (eventType: EVENT_TYPES) => {
+	switch (eventType) {
+		case EVENT_TYPES.all:
+			return 'undefiniert';
+		case EVENT_TYPES.apero:
+			return 'Apero';
+		case EVENT_TYPES.concert:
 			return 'Konzert';
+		case EVENT_TYPES.congress:
+			return 'Kongress';
+		case EVENT_TYPES.exhibition:
+			return 'Ausstellungen';
+		case EVENT_TYPES.meeting:
+			return 'Meeting';
+		case EVENT_TYPES.workshop:
+			return 'Workshop';
 		default:
-			return null;
-	}
-};
-
-export const getEquipmentText = (equipment: string) => {
-	switch (equipment) {
-		case EQUIPMENT.stage:
-			return 'Bühne';
-		case EQUIPMENT.podium:
-			return 'Podium';
-		case EQUIPMENT.beamer:
-			return 'Beamer';
-		default:
-			return null;
+			return '';
 	}
 };
