@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import create from 'zustand';
 import { INTERACTABLE_MESH_NAMES } from '../data/roomData';
 import { getMeshObjectByMeshName } from '../utils/room';
-import { resetMeshVisibility, setMeshVisibility } from './useMeshStore';
+import { resetMeshVisibility, setMeshParentVisibility } from './useMeshStore';
 
 export const defaultCameraPosition = new THREE.Vector3(20, 15, 0);
 export const defaultCameraTargetPosition = new THREE.Vector3(0, 0, 0);
@@ -51,7 +51,7 @@ export const setIdleState = (idleState: boolean) => useCameraStore.setState((sta
 export const showAndSelectRoom = (selectedMesh: string) => {
 	setIdleState(false);
 	setHasAnimation(true);
-	setMeshVisibility(INTERACTABLE_MESH_NAMES.roof, false);
+	setMeshParentVisibility(INTERACTABLE_MESH_NAMES.roof, false);
 	const clickedRoom = getMeshObjectByMeshName(selectedMesh);
 	if (typeof clickedRoom != 'undefined') {
 		setSelectedMeshes([clickedRoom.model.meshName]);
@@ -67,7 +67,7 @@ export const showAndSelectRooms = (
 ) => {
 	setIdleState(false);
 	setHasAnimation(true);
-	setMeshVisibility(INTERACTABLE_MESH_NAMES.roof, false);
+	setMeshParentVisibility(INTERACTABLE_MESH_NAMES.roof, false);
 	setSelectedMeshes(selectedMeshes);
 	setCameraPosition(camPos);
 	setCameraTarget(camTarget);
@@ -76,7 +76,7 @@ export const showAndSelectRooms = (
 export const showRoomsOverview = (camPos = overviewCameraPosition, camTarget = defaultCameraTargetPosition) => {
 	setIdleState(false);
 	setHasAnimation(true);
-	setMeshVisibility(INTERACTABLE_MESH_NAMES.roof, false);
+	setMeshParentVisibility(INTERACTABLE_MESH_NAMES.roof, false);
 	setCameraPosition(camPos);
 	setCameraTarget(camTarget);
 };

@@ -13,7 +13,7 @@ export const setMeshList = (meshList: MeshObjectType[]) => {
 	useMeshStore.setState({ meshList: meshList });
 };
 
-export const setMeshVisibility = (meshName: string, visible: boolean) => {
+export const setMeshParentVisibility = (meshName: string, visible: boolean) => {
 	let newList: MeshObjectType[] = useMeshStore.getState().meshList;
 	let itemIndex = newList.findIndex((item) => item.name === meshName);
 	let item = newList[itemIndex];

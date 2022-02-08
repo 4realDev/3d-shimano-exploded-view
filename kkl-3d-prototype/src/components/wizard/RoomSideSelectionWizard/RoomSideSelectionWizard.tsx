@@ -13,7 +13,7 @@ import {
 	showAndSelectRooms,
 	showRoomsOverview,
 } from '../../../store/useCameraStore';
-import { setMeshChildVisibility } from '../../../store/useMeshStore';
+import { toggleMeshChildVisibility } from '../../../store/useMeshStore';
 import { handleRoomAdditionsChange, handleRoomDataChange, WizardDataType } from '../../../store/useWizardStore';
 import { getMeshObjectByMeshName } from '../../../utils/room';
 import Accordion from '../../ui/Accordion/Accordion';
@@ -82,7 +82,7 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 		category: ROOM_ADDITIONS_CATEGORY
 	) => {
 		handleRoomAdditionsChange(toggledRoomName, toggledMeshName, category);
-		setMeshChildVisibility(toggledRoomName, toggledMeshName, category);
+		toggleMeshChildVisibility(toggledRoomName, toggledMeshName, category);
 	};
 
 	const renderAccordionItems = () => {

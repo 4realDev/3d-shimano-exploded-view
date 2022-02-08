@@ -6,7 +6,6 @@ import {
 	RoomFetchedDataType,
 	roomList,
 	ROOM_ADDITIONS_CATEGORY,
-	ROOM_FITTINGS,
 } from '../../../data/roomData';
 import {
 	setFilteredMeshes,
@@ -16,7 +15,7 @@ import {
 	showRoomsOverview,
 	useCameraStore,
 } from '../../../store/useCameraStore';
-import { setMeshChildVisibility } from '../../../store/useMeshStore';
+import { toggleMeshChildVisibility } from '../../../store/useMeshStore';
 import { handleRoomAdditionsChange, handleRoomDataChange, WizardDataType } from '../../../store/useWizardStore';
 import Accordion from '../../ui/Accordion/Accordion';
 import NoResults from '../../ui/NoResults/NoResults';
@@ -169,7 +168,7 @@ const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelection
 		category: ROOM_ADDITIONS_CATEGORY
 	) => {
 		handleRoomAdditionsChange(toggledRoomName, toggledMeshName, category);
-		setMeshChildVisibility(toggledRoomName, toggledMeshName, category);
+		toggleMeshChildVisibility(toggledRoomName, toggledMeshName, category);
 	};
 
 	const renderAccordionItems = () => {
