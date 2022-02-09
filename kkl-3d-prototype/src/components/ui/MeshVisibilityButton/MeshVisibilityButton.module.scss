@@ -9,7 +9,11 @@
 	border: 5px solid $color-dark-blue !important;
 	height: 50px;
 	width: 50px;
-	cursor: pointer;
+
+	// cursor pointer as click and hovering side effects on some mobile and tablet devices
+	@include lg {
+		cursor: pointer;
+	}
 
 	& > svg {
 		transform: scale(0.7);
