@@ -4,7 +4,13 @@ import { Canvas, PerspectiveCameraProps } from '@react-three/fiber';
 import { Suspense, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { roomList } from '../../../data/roomData';
-import { setHoveredMesh, setIdleState, useCameraStore } from '../../../store/useCameraStore';
+import {
+	resetScene,
+	setHoveredMesh,
+	setIdleState,
+	showRoomsOverview,
+	useCameraStore,
+} from '../../../store/useCameraStore';
 import { useDebugStore } from '../../../store/useDebugStore';
 import CameraControls from '../../threeJs/CameraControls';
 import CameraPositionMarkers from '../../threeJs/CameraPositionMarkers';
@@ -12,6 +18,7 @@ import styles from './ModelCanvas.module.scss';
 import Lights from '../../threeJs/Lights';
 import useLongPress from '../../../hooks/useLongPress';
 import Cursor from '../../ui/Cursor/Cursor';
+import Overview from '../../icons/Overview';
 
 const Model = React.lazy(() =>
 	import('../../threeJs/Model').then((module) => ({
@@ -51,6 +58,14 @@ const ModelCanvas = () => {
 			}}
 			{...longPressEvent}
 		>
+			<button
+				className={styles.overViewButton}
+				onClick={() => {
+					showRoomsOverview();
+				}}
+			>
+				<Overview fill='#575B64' stroke='#575B64' />
+			</button>
 			<Cursor />
 			{/* dpr = dynamic pixel ratio - sets pixel ratio based on device hardware capabilities */}
 			<Canvas dpr={window.devicePixelRatio}>
