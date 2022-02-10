@@ -1,9 +1,8 @@
 import { TextField } from '@mui/material';
 import { useEffect, useMemo } from 'react';
-import { EVENT_TYPES, roomList } from '../../../data/roomData';
+import { roomList } from '../../../data/roomData';
 import { setFilteredMeshes, setSelectedMeshes, showRoomsOverview } from '../../../store/useCameraStore';
 import { ROOM_TYPE, WizardDataType } from '../../../store/useWizardStore';
-import { formatDate } from '../../../utils/date';
 import { getEventTypeText } from '../../../utils/room';
 import RoomCard from '../../ui/RoomCard/RoomCard';
 import styles from './RoomSummaryWizard.module.scss';
@@ -33,6 +32,18 @@ const RoomSummaryWizard = ({ handleChange, wizardData }: RoomSummaryWizardProps)
 		() => roomList.find((room) => room.model.meshName === wizardData.activeSideRoom),
 		[wizardData]
 	);
+
+	// Takes Date object and converts it into a string like '2012-03-01'
+	const formatDate = (date: Date) => {
+		let month = '' + (date.getMonth() + 1);
+		let day = '' + date.getDate();
+		const year = date.getFullYear();
+
+		if (month.length < 2) month = '0' + month;
+		if (day.length < 2) day = '0' + day;
+
+		return [day, month, year].join('.');
+	};
 
 	useEffect(() => {
 		// On first render scroll to top of the screen
