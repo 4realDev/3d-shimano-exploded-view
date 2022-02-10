@@ -15,7 +15,7 @@ export type RoomFetchedDataType = {
 		equipment?: EQUIPMENT[];
 		fittings?: ROOM_FITTINGS[];
 		fittingEventTypes?: EVENT_TYPES[];
-		fittingSideRoom?: string[];
+		fittingSideRooms?: string[];
 		bookedDates: { start: string; end: string }[];
 	};
 };
@@ -89,7 +89,7 @@ export const roomList: RoomFetchedDataType[] = [
 			equipment: [EQUIPMENT.stage, EQUIPMENT.podium],
 			fittings: [ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.seats],
 			fittingEventTypes: [EVENT_TYPES.concert],
-			fittingSideRoom: [INTERACTABLE_MESH_NAMES.clubroom, INTERACTABLE_MESH_NAMES.businessMediaRoom],
+			fittingSideRooms: [INTERACTABLE_MESH_NAMES.clubroom, INTERACTABLE_MESH_NAMES.businessMediaRoom],
 			bookedDates: [
 				{ start: '2022-02-10', end: '2022-02-12' },
 				{ start: '2022-02-14', end: '2022-02-16' },
@@ -122,7 +122,7 @@ export const roomList: RoomFetchedDataType[] = [
 				ROOM_FITTINGS.exhibition,
 			],
 			fittingEventTypes: [EVENT_TYPES.concert, EVENT_TYPES.congress, EVENT_TYPES.apero],
-			fittingSideRoom: [
+			fittingSideRooms: [
 				INTERACTABLE_MESH_NAMES.entryFoyer,
 				INTERACTABLE_MESH_NAMES.clubroom,
 				INTERACTABLE_MESH_NAMES.businessMediaRoom,
@@ -205,7 +205,7 @@ export const roomList: RoomFetchedDataType[] = [
 			chairFormations: [{ name: CHAIR_FORMATION.concert, capacity: 200 }],
 			fittings: [ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.seats],
 			fittingEventTypes: [EVENT_TYPES.congress, EVENT_TYPES.exhibition, EVENT_TYPES.workshop],
-			fittingSideRoom: [INTERACTABLE_MESH_NAMES.entryFoyer, INTERACTABLE_MESH_NAMES.businessMediaRoom],
+			fittingSideRooms: [INTERACTABLE_MESH_NAMES.entryFoyer, INTERACTABLE_MESH_NAMES.businessMediaRoom],
 			bookedDates: [
 				{ start: '2022-02-10', end: '2022-02-12' },
 				{ start: '2022-02-14', end: '2022-02-16' },

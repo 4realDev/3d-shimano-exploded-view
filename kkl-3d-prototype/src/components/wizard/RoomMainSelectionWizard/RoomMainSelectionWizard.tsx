@@ -45,7 +45,7 @@ const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelection
 	}, []);
 
 	const filterMainRooms = (roomList: RoomFetchedDataType[]) => {
-		return roomList.filter((room) => room.info.fittingSideRoom);
+		return roomList.filter((room) => room.info.fittingSideRooms);
 	};
 
 	const filterAfterPersonNum = (roomList: RoomFetchedDataType[]) => {

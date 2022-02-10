@@ -68,7 +68,7 @@ const Accordion = ({
 
 	const isChairFormationImpossible = (accordionItemRoom: RoomFetchedDataType, formation: ChairFormationType) => {
 		// for SideRooms all chair_formations should be possible
-		if (accordionItemRoom.info.fittingSideRoom === undefined) return false;
+		if (accordionItemRoom.info.fittingSideRooms === undefined) return false;
 
 		// get the person capacity (seats) of the passed chair formation related to the passed accordionItemRoom
 		const toggledChairFormationCapacity = getMeshObjectByMeshName(

@@ -33,7 +33,7 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 	useEffect(() => {
 		const activeMainRoom = getMeshObjectByMeshName(wizardData.activeMainRoom);
 		const fittingSideRooms = roomList.filter((room) => {
-			return activeMainRoom?.info.fittingSideRoom?.includes(room.model.meshName);
+			return activeMainRoom?.info.fittingSideRooms?.includes(room.model.meshName);
 		});
 		const fittingSideRoomMeshNames = fittingSideRooms.map((sideRoom) => sideRoom.model.meshName);
 

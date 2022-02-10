@@ -64,7 +64,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 	const getMeshColor = (meshObject: MeshObjectType) => {
 		let colorFiltered;
 		let colorSelectedOrHovered;
-		const hasFittingSideRoom = roomList.find((room) => room.model.meshName === meshObject.name)?.info.fittingSideRoom;
+		const hasFittingSideRoom = roomList.find((room) => room.model.meshName === meshObject.name)?.info.fittingSideRooms;
 		const isHovered = hoveredMesh === meshObject.name;
 		const isSelected = selectedMeshes.includes(meshObject.name);
 
