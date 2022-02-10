@@ -1,7 +1,6 @@
 import './App.scss';
 
 import RoomSelection from './components/blocks/RoomSelection/RoomSelection';
-import Cursor from './components/Cursor';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './theme';
 import ModelCanvas from './components/blocks/ModelCanvas/ModelCanvas';

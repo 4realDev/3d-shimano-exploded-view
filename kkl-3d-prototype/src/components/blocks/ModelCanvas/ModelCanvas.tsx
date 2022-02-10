@@ -11,7 +11,7 @@ import CameraPositionMarkers from '../../threeJs/CameraPositionMarkers';
 import styles from './ModelCanvas.module.scss';
 import Lights from '../../threeJs/Lights';
 import useLongPress from '../../../hooks/useLongPress';
-import Cursor from '../../Cursor';
+import Cursor from '../../ui/Cursor/Cursor';
 
 const Model = React.lazy(() =>
 	import('../../threeJs/Model').then((module) => ({
