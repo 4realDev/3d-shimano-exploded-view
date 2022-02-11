@@ -4,13 +4,7 @@ import { Canvas, PerspectiveCameraProps } from '@react-three/fiber';
 import { Suspense, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { roomList } from '../../../data/roomData';
-import {
-	resetScene,
-	setHoveredMesh,
-	setIdleState,
-	showRoomsOverview,
-	useCameraStore,
-} from '../../../store/useCameraStore';
+import { setHoveredMesh, setIdleState, showRoomsOverview, useCameraStore } from '../../../store/useCameraStore';
 import { useDebugStore } from '../../../store/useDebugStore';
 import CameraControls from '../../threeJs/CameraControls';
 import CameraPositionMarkers from '../../threeJs/CameraPositionMarkers';
@@ -19,6 +13,7 @@ import Lights from '../../threeJs/Lights';
 import useLongPress from '../../../hooks/useLongPress';
 import Cursor from '../../ui/Cursor/Cursor';
 import Overview from '../../icons/Overview';
+import { ResizeObserver } from '@juggle/resize-observer';
 
 const Model = React.lazy(() =>
 	import('../../threeJs/Model').then((module) => ({
@@ -68,7 +63,7 @@ const ModelCanvas = () => {
 			</button>
 			<Cursor />
 			{/* dpr = dynamic pixel ratio - sets pixel ratio based on device hardware capabilities */}
-			<Canvas dpr={window.devicePixelRatio}>
+			<Canvas dpr={window.devicePixelRatio} resize={{ polyfill: ResizeObserver }}>
 				<CameraControls
 					camera={cameraRef}
 					controls={controlsRef}
