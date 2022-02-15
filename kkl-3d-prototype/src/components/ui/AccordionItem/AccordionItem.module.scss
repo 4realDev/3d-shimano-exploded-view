@@ -66,6 +66,12 @@
 			align-items: center;
 		}
 
+		@include md {
+			// Fixed calculated width as temporary workaround to deal with devices that does not take the width: 100% like Mac Book Pro with Safari
+			// TODO: Find reason for this and remove temporary workaround
+			width: calc(550px - 64px);
+		}
+
 		.accordionItem__infoColumn {
 			display: flex;
 			flex-wrap: wrap;
