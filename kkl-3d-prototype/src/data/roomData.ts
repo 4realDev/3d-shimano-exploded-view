@@ -93,7 +93,7 @@ export const roomList: RoomFetchedDataType[] = [
 			bookedDates: [
 				{ start: '2022-02-10', end: '2022-02-12' },
 				{ start: '2022-02-14', end: '2022-02-16' },
-				{ start: '2022-02-18', end: '2022-02-20' },
+				{ start: '2022-02-22', end: '2022-02-24' },
 			],
 		},
 	},
@@ -159,9 +159,9 @@ export const roomList: RoomFetchedDataType[] = [
 			],
 			fittingEventTypes: [EVENT_TYPES.apero, EVENT_TYPES.exhibition, EVENT_TYPES.meeting, EVENT_TYPES.workshop],
 			bookedDates: [
-				{ start: '2022-01-01', end: '2022-01-05' },
-				{ start: '2022-01-07', end: '2022-01-08' },
-				{ start: '2022-01-10', end: '2022-01-11' },
+				{ start: '2022-02-10', end: '2022-02-12' },
+				{ start: '2022-02-14', end: '2022-02-16' },
+				{ start: '2022-02-22', end: '2022-02-24' },
 			],
 		},
 	},
@@ -186,7 +186,7 @@ export const roomList: RoomFetchedDataType[] = [
 			bookedDates: [
 				{ start: '2022-02-10', end: '2022-02-12' },
 				{ start: '2022-02-14', end: '2022-02-16' },
-				{ start: '2022-02-18', end: '2022-02-20' },
+				{ start: '2022-02-22', end: '2022-02-24' },
 			],
 		},
 	},
@@ -209,7 +209,7 @@ export const roomList: RoomFetchedDataType[] = [
 			bookedDates: [
 				{ start: '2022-02-10', end: '2022-02-12' },
 				{ start: '2022-02-14', end: '2022-02-16' },
-				{ start: '2022-02-18', end: '2022-02-20' },
+				{ start: '2022-02-22', end: '2022-02-24' },
 			],
 		},
 	},
@@ -230,7 +230,7 @@ export const roomList: RoomFetchedDataType[] = [
 			bookedDates: [
 				{ start: '2022-02-10', end: '2022-02-12' },
 				{ start: '2022-02-14', end: '2022-02-16' },
-				{ start: '2022-02-18', end: '2022-02-20' },
+				{ start: '2022-02-22', end: '2022-02-24' },
 			],
 		},
 	},
