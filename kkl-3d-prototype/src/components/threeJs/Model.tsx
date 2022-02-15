@@ -25,7 +25,7 @@ export type MeshObjectType = {
 	color: string;
 	opacity: number;
 	isVisible: boolean;
-	userData: Record<string, string> | undefined;
+	userData?: Record<string, string>;
 	children?: MeshObjectType[];
 };
 
@@ -131,35 +131,37 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 			// between interactable meshes with a custonName and non-interactable meshen without a customName
 
 			if (mesh.children.length !== 0) {
-				Object.values(mesh.children).forEach((child: any) => {
-					children.push({
-						name: child.userData.customName ?? child.name,
+				mesh.children.forEach((child: any) => {
+					const converterMeshChild: MeshObjectType = {
+						name: isInteractable(child) ?? child.name,
 						geometry: child.geometry,
 						material: child.material as any,
 						color: colorModelChildrenDefault,
 						opacity: 1,
 						// interactable mesh children (from which the visibility can be toggled) have a customName and are by default invisible
-						// other child meshes are visible according their visibility state inside blender
-						isVisible: 'customName' in child.userData ? false : child.visible,
-						userData: 'customName' in child.userData ? { customName: child.userData.customName } : undefined,
+						// other child meshes are visible according their visibility state inside the 3D editing software
+						isVisible: isInteractable(child) ? false : child.visible,
 						position: child.position,
 						rotation: child.rotation,
 						scale: child.scale,
-					});
+					};
+					isInteractable(child) && (converterMeshChild.userData = { customName: child.userData.customName });
+					children.push(converterMeshChild);
 				});
 			}
 
 			if (mesh.parent?.name === 'Scene') {
-				initialMeshList.push({
-					name: mesh.userData.customName ?? mesh.name,
+				const convertedMeshParent: MeshObjectType = {
+					name: isInteractable(mesh) ?? mesh.name,
 					geometry: mesh.geometry,
 					material: mesh.material as any,
 					color: colorModelDefault,
 					opacity: 1,
 					isVisible: true,
-					userData: 'customName' in mesh.userData ? { customName: mesh.userData.customName } : undefined,
 					children: children,
-				});
+				};
+				isInteractable(mesh) && (convertedMeshParent.userData = { customName: mesh.userData.customName });
+				initialMeshList.push(convertedMeshParent);
 			}
 		});
 
