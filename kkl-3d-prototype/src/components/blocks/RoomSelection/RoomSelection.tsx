@@ -149,6 +149,15 @@ const RoomSelection = () => {
 					</Stepper>
 					{steps[step].description && <p className={styles.card__description}>{steps[step].description}</p>}
 					{steps[step].hint && <p className={styles.card__hint}>{steps[step].hint}</p>}
+					{step === 0 && (
+						<a
+							href={'https://www.youtube.com/channel/UChMXLvodc3Oqo4KALX6X45w'}
+							target='_blank'
+							className={styles.card__link}
+						>
+							Optionales Tutorial Video (3 min.)
+						</a>
+					)}
 				</div>
 			</div>
 			<div className={styles.card}>{renderWizardStep()}</div>
