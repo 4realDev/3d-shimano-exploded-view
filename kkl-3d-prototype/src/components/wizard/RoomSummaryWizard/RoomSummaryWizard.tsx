@@ -66,6 +66,7 @@ const RoomSummaryWizard = ({ handleChange, wizardData }: RoomSummaryWizardProps)
 
 	return (
 		<>
+			{/* MAIN ROOM CARD */}
 			{chosenMainRoomObject && chosenWizardMainRoomData && (
 				<RoomCard
 					title={chosenMainRoomObject.info.title}
@@ -85,7 +86,7 @@ const RoomSummaryWizard = ({ handleChange, wizardData }: RoomSummaryWizardProps)
 							<EditButton label='Hauptraum anpassen' onClick={() => setStep(1)} />
 							{chosenSideRoomInfoObject === undefined && chosenWizardSideRoomData === undefined && (
 								<EditButton
-									label='Zusätzlichen Nebenraum auswählen'
+									label='Zusätzliche Nebenräume buchen'
 									onClick={() => {
 										setStep(2);
 										handleChange(true, 'additionalRooms');
@@ -97,6 +98,7 @@ const RoomSummaryWizard = ({ handleChange, wizardData }: RoomSummaryWizardProps)
 				/>
 			)}
 
+			{/* SIDE ROOM CARD (if available) */}
 			{chosenSideRoomInfoObject && chosenWizardSideRoomData && (
 				<RoomCard
 					title={chosenSideRoomInfoObject.info.title}
@@ -115,6 +117,7 @@ const RoomSummaryWizard = ({ handleChange, wizardData }: RoomSummaryWizardProps)
 				/>
 			)}
 
+			{/* FILTER CRITERIA */}
 			<div className={styles.summaryCard}>
 				<h3 className={styles.summaryCard__title}>Filterkriterien</h3>
 				<div className={styles.summaryCard__item}>
@@ -144,6 +147,7 @@ const RoomSummaryWizard = ({ handleChange, wizardData }: RoomSummaryWizardProps)
 				</div>
 			</div>
 
+			{/* ADDITIONAL SERVICES */}
 			<div className={styles.summaryCard}>
 				<h3 className={styles.summaryCard__title}>Zusätzliche Dienstleistungen</h3>
 				<div className={styles.summaryCard__item}>
