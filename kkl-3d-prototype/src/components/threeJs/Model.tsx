@@ -35,6 +35,15 @@ type ModelProps = {
 	longPress: boolean;
 };
 
+export const isInteractable = (
+	meshObject:
+		| MeshObjectType
+		| THREE.Mesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>
+		| THREE.Object3D<THREE.Event>
+) => {
+	return meshObject.userData && meshObject.userData.customName;
+};
+
 const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress }) => {
 	const meshList = useMeshStore((state) => state.meshList);
 	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
@@ -203,45 +212,58 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 				userData={meshObject.userData}
 				material={meshObject.material}
 				// Pointer on mesh (similar to onHover)
-				onPointerOver={(event) => {
-					// Only visible meshes with a userData.customName (defined inside Blender) can be hovered
-					if (event.object.visible && event.object.userData.customName && longPress === false) {
-						event.stopPropagation();
-						setHoveredMesh(event.object.name);
-					}
-				}}
+				onPointerOver={
+					meshObject.userData === undefined
+						? undefined
+						: (event) => {
+								// Only visible meshes with a userData.customName (defined inside 3D Software) can be hovered
+								if (event.object.visible && isInteractable(event.object) && longPress === false) {
+									event.stopPropagation();
+									setHoveredMesh(event.object.name);
+								}
+						  }
+				}
 				// Pointer outside of mesh
 				// if pointer is outside of a mesh and does not intersect with any other mesh
 				// set the hoveredElement to null
-				onPointerOut={(event) => {
-					event.intersections.length === 0 && setHoveredMesh(null);
-				}}
+				onPointerOut={
+					meshObject.userData === undefined
+						? undefined
+						: (event) => {
+								event.intersections.length === 0 && setHoveredMesh(null);
+						  }
+				}
 				// Pointer click on mesh (similar to onClick)
 				// stopPropagation and set current object inside state to the one clicked
-				onPointerDown={(event) => {
-					// Only visible meshes with a userData.customName (defined inside Blender) can be clicked
-					if (event.object.visible && event.object.userData.customName) {
-						event.stopPropagation();
-						// if the roof is clicked, show the rooms overview
-						if (event.object.userData.customName === INTERACTABLE_MESH_NAMES.roof) {
-							showRoomsOverview();
-						} else {
-							// if wizardStep is the first filtering step, show every clicked room, but don't set the clicked room as activeRoom in wizardData
-							if (wizardStep === 0) {
-								showAndSelectRoom(event.object.userData.customName);
-							}
-							// if wizardStep if > 0 and the room is included in the filtering meshes
-							else if (wizardStep > 0 && filteredMeshes.includes(event.object.userData.customName)) {
-								// Add or overwrite the wizardData with the clicked RoomData and set the clicked room as activeRoom to update the AccordionItems
-								handleRoomDataChange(event.object.userData.customName);
-								// Show the clicked room as the selected room
-								showAndSelectRoom(event.object.userData.customName);
-							}
-						}
-					}
-				}}
-				// Pointer click outside of mesh
-				onPointerMissed={(event) => {}}
+				onPointerDown={
+					meshObject.userData === undefined
+						? undefined
+						: (event) => {
+								// Only visible meshes with a userData.customName (defined inside 3D Software) can be clicked
+								if (event.object.visible) {
+									event.stopPropagation();
+									const customName = event.object.userData.customName;
+
+									// if the roof is clicked, show the rooms overview
+									if (customName === INTERACTABLE_MESH_NAMES.roof) {
+										showRoomsOverview();
+									}
+									// Do not set the clicked room as activeRoom in wizardData when wizardStep === 0
+									else if (wizardStep === 0 || wizardStep === 4) {
+										showAndSelectRoom(event.object.userData.customName);
+									}
+									// if clicked mesh is inside filteredMeshes
+									// Add or overwrite the wizardData with the clicked RoomData
+									// This will set the clicked room as activeRoom as well,
+									// which will trigger the opening and scrolling to the corresponding AccordionItem
+									else if (wizardStep > 0 && filteredMeshes.includes(customName)) {
+										handleRoomDataChange(customName);
+										// Select and show the clicked room
+										showAndSelectRoom(customName);
+									}
+								}
+						  }
+				}
 			>
 				<bufferGeometry attach='geometry' {...meshObject.geometry} />
 				<meshStandardMaterial
