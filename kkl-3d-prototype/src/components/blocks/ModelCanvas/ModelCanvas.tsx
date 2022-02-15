@@ -51,6 +51,10 @@ const ModelCanvas = () => {
 				setMouseDown(false);
 				setLongPress(false);
 			}}
+			onPointerLeave={() => {
+				setMouseDown(false);
+				setLongPress(false);
+			}}
 			{...longPressEvent}
 		>
 			<button
