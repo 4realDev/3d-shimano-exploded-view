@@ -14,6 +14,7 @@ import useLongPress from '../../../hooks/useLongPress';
 import Cursor from '../../ui/Cursor/Cursor';
 import Overview from '../../icons/Overview';
 import { ResizeObserver } from '@juggle/resize-observer';
+import { Tooltip } from '@mui/material';
 
 const Model = React.lazy(() =>
 	import('../../threeJs/Model').then((module) => ({
@@ -57,14 +58,21 @@ const ModelCanvas = () => {
 			}}
 			{...longPressEvent}
 		>
-			<button
-				className={styles.overViewButton}
-				onClick={() => {
-					showRoomsOverview();
-				}}
+			<Tooltip
+				title={<div style={{ textAlign: 'center' }}>Raumübersicht anzeigen</div>}
+				placement='top'
+				arrow
+				enterNextDelay={1000}
 			>
-				<Overview fill='#575B64' stroke='#575B64' />
-			</button>
+				<button
+					className={styles.overViewButton}
+					onClick={() => {
+						showRoomsOverview();
+					}}
+				>
+					<Overview fill='#575B64' stroke='#575B64' />
+				</button>
+			</Tooltip>
 			<Cursor />
 			{/* dpr = dynamic pixel ratio - sets pixel ratio based on device hardware capabilities */}
 			<Canvas dpr={window.devicePixelRatio} resize={{ polyfill: ResizeObserver }}>
