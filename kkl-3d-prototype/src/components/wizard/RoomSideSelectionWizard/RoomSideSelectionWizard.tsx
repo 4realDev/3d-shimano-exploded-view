@@ -20,6 +20,7 @@ import { handleRoomAdditionsChange, handleRoomDataChange, WizardDataType } from 
 import { getMeshObjectByMeshName } from '../../../utils/room';
 import Accordion from '../../ui/Accordion/Accordion';
 import NoResults from '../../ui/NoResults/NoResults';
+import { filterAfterDate } from '../RoomMainSelectionWizard/RoomMainSelectionWizard';
 
 interface RoomSideSelectionWizardProps {
 	wizardData: WizardDataType;
@@ -37,7 +38,8 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 		const fittingSideRooms = roomList.filter((room) => {
 			return activeMainRoom?.info.fittingSideRooms?.includes(room.model.meshName);
 		});
-		const fittingSideRoomMeshNames = fittingSideRooms.map((sideRoom) => sideRoom.model.meshName);
+		const filteredFittingSideRooms = filterAfterDate(fittingSideRooms, wizardData.startDate, wizardData.endDate);
+		const fittingSideRoomMeshNames = filteredFittingSideRooms.map((sideRoom) => sideRoom.model.meshName);
 
 		// If the activeMainRoom was already set and the filter was adjusted again (by stepping back to RoomFilterWizard and changing filter criteria),
 		// check if the activeMainRoom is still fitting the new filter criteria -> if not, empty activeMainRoom
@@ -54,7 +56,7 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 			: showAndSelectRooms(fittingSideRoomMeshNames);
 
 		// set fitting side rooms state to update the accordion items
-		setFittingSideRooms(fittingSideRooms);
+		setFittingSideRooms(filteredFittingSideRooms);
 
 		// update filteredMeshes inside useCameraStore to update visualisation on 3D Model
 		setFilteredMeshes(fittingSideRoomMeshNames);

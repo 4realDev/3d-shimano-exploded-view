@@ -27,6 +27,67 @@ interface RoomMainSelectionWizardProps {
 	handleChange: (value: any, inputField: any) => void;
 }
 
+/**
+ * Returns only the rooms, where the optional selected start and / or enddate in the wizard does not intersect
+ * with the already booked dates inside the bookedDates array of the RoomFetchedItems.
+ * If neither the start or the end dates are selected, the passed roomList will not be filtered and will be returned as it was.
+ * @param roomList List of rooms which will be filtered according to the selected date.
+ * @param selectedWizardStartDate Start Date which was selected by the user in the wizard in RoomFilteringWizard
+ * @param selectedWizardEndDate End Date which was selected by the user in the wizard in RoomFilteringWizard
+ */
+export const filterAfterDate = (
+	roomList: RoomFetchedDataType[],
+	selectedWizardStartDate: Date | null,
+	selectedWizardEndDate: Date | null
+) => {
+	return roomList.filter((room) => {
+		let notBooked = true;
+		for (let date of room.info.bookedDates) {
+			const bookedStartDate = new Date(date.start);
+			const bookedEndDate = new Date(date.end);
+
+			// only startDate was entred
+			if (selectedWizardStartDate !== null && selectedWizardEndDate === null) {
+				// checks if selected date is NOT intersecting with all booked dates
+				if (selectedWizardStartDate < bookedStartDate || selectedWizardStartDate > bookedEndDate) {
+					// if selected date is not intersecting, continue checking all other dates of this room
+					continue;
+				}
+				// if selected date intersects with one of the booked dates
+				else {
+					// set flag false (room already booked), break loop and return false to filter room out of the list
+					notBooked = false;
+					break;
+				}
+			}
+
+			// only endDate was entred
+			else if (selectedWizardEndDate !== null && selectedWizardStartDate === null) {
+				if (selectedWizardEndDate < bookedStartDate || selectedWizardEndDate > bookedEndDate) {
+					continue;
+				} else {
+					notBooked = false;
+					break;
+				}
+			}
+
+			// both dates were entred
+			else if (selectedWizardStartDate !== null && selectedWizardEndDate !== null) {
+				if (
+					(selectedWizardStartDate < bookedStartDate && selectedWizardEndDate < bookedStartDate) ||
+					(selectedWizardStartDate > bookedEndDate && selectedWizardEndDate > bookedEndDate)
+				) {
+					continue;
+				} else {
+					notBooked = false;
+					break;
+				}
+			}
+		}
+		return notBooked;
+	});
+};
+
 const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelectionWizardProps) => {
 	const accordionItemsMaximumRenderTime = 150;
 	const [accordionItemsLoading, setAccordionItemsLoading] = useState(true);
@@ -70,63 +131,6 @@ const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelection
 		return roomList;
 	};
 
-	/**
-	 * Returns only the rooms, where the optional selected start and / or enddate in the wizard does not intersect
-	 * with the already booked dates inside the bookedDates array of the RoomFetchedItems.
-	 * If neither the start or the end dates are selected, the passed roomList will not be filtered and will be returned as it was.
-	 * @param roomList List of rooms which will be filtered according to the selected date.
-	 */
-	const filterAfterDate = (roomList: RoomFetchedDataType[]) => {
-		return roomList.filter((room) => {
-			let notBooked = true;
-			for (let date of room.info.bookedDates) {
-				const selectedStartDate = wizardData.startDate!!;
-				const selectedEndDate = wizardData.endDate!!;
-				const bookedStartDate = new Date(date.start);
-				const bookedEndDate = new Date(date.end);
-
-				// only startDate was entred
-				if (wizardData.startDate !== null && wizardData.endDate === null) {
-					// checks if selected date is NOT intersecting with all booked dates
-					if (selectedStartDate < bookedStartDate || selectedStartDate > bookedEndDate) {
-						// if selected date is not intersecting, continue checking all other dates of this room
-						continue;
-					}
-					// if selected date intersects with one of the booked dates
-					else {
-						// set flag false (room already booked), break loop and return false to filter room out of the list
-						notBooked = false;
-						break;
-					}
-				}
-
-				// only endDate was entred
-				else if (wizardData.endDate !== null && wizardData.startDate === null) {
-					if (selectedEndDate < bookedStartDate || selectedEndDate > bookedEndDate) {
-						continue;
-					} else {
-						notBooked = false;
-						break;
-					}
-				}
-
-				// both dates were entred
-				else if (wizardData.startDate !== null && wizardData.endDate !== null) {
-					if (
-						(selectedStartDate < bookedStartDate && selectedEndDate < bookedStartDate) ||
-						(selectedStartDate > bookedEndDate && selectedEndDate > bookedEndDate)
-					) {
-						continue;
-					} else {
-						notBooked = false;
-						break;
-					}
-				}
-			}
-			return notBooked;
-		});
-	};
-
 	const filterRoomSelection = () => {
 		let filteredList = roomList;
 		let filteredMainRoomList = filterMainRooms(filteredList);
@@ -135,14 +139,15 @@ const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelection
 		// If a field is not provided, the passed list will be directly returned
 		filteredMainRoomList = filterAfterPersonNum(filteredMainRoomList);
 		filteredMainRoomList = filterAfterEventType(filteredMainRoomList);
-		filteredMainRoomList = filterAfterDate(filteredMainRoomList);
+		filteredMainRoomList = filterAfterDate(filteredMainRoomList, wizardData.startDate, wizardData.endDate);
 		const filteredMainRoomMeshNames = filteredMainRoomList.map((room) => room.model.meshName);
 
 		// If the activeMainRoom was already set and the filter was adjusted again (by stepping back to RoomFilterWizard and changing filter criteria),
 		// check if the activeMainRoom is still fitting the new filter criteria -> if not, empty activeMainRoom
 		filteredMainRoomMeshNames.includes(wizardData.activeMainRoom) === false && handleChange('', 'activeMainRoom');
 
-		// if main room was already selected, show main room inside model (for stepping back and forth with stepper)
+		// if main room was already selected
+		// show main room inside model (for stepping back and forth with stepper)
 		// else show overview of all filtered main rooms
 		wizardData.activeMainRoom !== ('' as INTERACTABLE_MESH_NAMES)
 			? showAndSelectRoom(wizardData.activeMainRoom)
