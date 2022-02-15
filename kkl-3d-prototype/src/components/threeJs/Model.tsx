@@ -281,4 +281,4 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 
 export default Model;
 
-useGLTF.preload('/house-model.glb');
+useGLTF.preload('/model/house-model.glb');
