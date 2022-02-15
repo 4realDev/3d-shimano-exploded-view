@@ -1,4 +1,11 @@
-import { ChairFormationType, RoomFetchedDataType, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
+import {
+	ChairFormationType,
+	CHAIR_FORMATION,
+	EQUIPMENT,
+	INTERACTABLE_MESH_NAMES,
+	RoomFetchedDataType,
+	ROOM_ADDITIONS_CATEGORY,
+} from '../../../data/roomData';
 import MeshVisibilityButton from '../MeshVisibilityButton/MeshVisibilityButton';
 import AccordionItem from '../AccordionItem/AccordionItem';
 import styles from './Accordion.module.scss';
@@ -12,8 +19,8 @@ type AccordionProps = {
 	handleOnOpen: (meshNameCorrespondingToId: string) => void;
 	handleOnClose: (meshNameCorrespondingToId: string) => void;
 	handleAdditionsOnChange: (
-		toggledRoomName: string,
-		toggledMeshName: string,
+		toggledRoomName: INTERACTABLE_MESH_NAMES,
+		toggledMeshName: CHAIR_FORMATION | EQUIPMENT,
 		category: ROOM_ADDITIONS_CATEGORY
 	) => void;
 };

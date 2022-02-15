@@ -1,6 +1,8 @@
 import { CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import {
+	CHAIR_FORMATION,
+	EQUIPMENT,
 	EVENT_TYPES,
 	INTERACTABLE_MESH_NAMES,
 	RoomFetchedDataType,
@@ -163,8 +165,8 @@ const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelection
 	};
 
 	const handleAdditionsOnChange = (
-		toggledRoomName: string,
-		toggledMeshName: string,
+		toggledRoomName: INTERACTABLE_MESH_NAMES,
+		toggledMeshName: CHAIR_FORMATION | EQUIPMENT,
 		category: ROOM_ADDITIONS_CATEGORY
 	) => {
 		handleRoomAdditionsChange(toggledRoomName, toggledMeshName, category);

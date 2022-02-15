@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 export type RoomFetchedDataType = {
 	model: {
-		meshName: string;
+		meshName: INTERACTABLE_MESH_NAMES;
 		camPos: THREE.Vector3;
 		camTarget: THREE.Vector3;
 	};
@@ -15,7 +15,7 @@ export type RoomFetchedDataType = {
 		equipment?: EQUIPMENT[];
 		fittings?: ROOM_FITTINGS[];
 		fittingEventTypes?: EVENT_TYPES[];
-		fittingSideRooms?: string[];
+		fittingSideRooms?: INTERACTABLE_MESH_NAMES[];
 		bookedDates: { start: string; end: string }[];
 	};
 };

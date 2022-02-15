@@ -1,18 +1,22 @@
 import styles from './MeshVisibilityButton.module.scss';
 import cn from 'classnames';
-import { ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
+import { CHAIR_FORMATION, EQUIPMENT, INTERACTABLE_MESH_NAMES, ROOM_ADDITIONS_CATEGORY } from '../../../data/roomData';
 import { Tooltip } from '@mui/material';
 import { getEquipmentText, getFormationText } from '../../../utils/room';
 
 type MeshVisiblityButtonProps = {
-	toggledRoomName: string;
-	toggledMeshName: string;
+	toggledRoomName: INTERACTABLE_MESH_NAMES;
+	toggledMeshName: CHAIR_FORMATION | EQUIPMENT;
 	toggleIcon: React.ReactNode;
 	category: ROOM_ADDITIONS_CATEGORY;
 	isActive: boolean;
 	isDisabled?: boolean;
 	isFixed?: boolean;
-	onClick: (toggledRoomName: string, toggledMeshName: string, category: ROOM_ADDITIONS_CATEGORY) => void;
+	onClick: (
+		toggledRoomName: INTERACTABLE_MESH_NAMES,
+		toggledMeshName: CHAIR_FORMATION | EQUIPMENT,
+		category: ROOM_ADDITIONS_CATEGORY
+	) => void;
 };
 
 const MeshVisibilityButton = ({

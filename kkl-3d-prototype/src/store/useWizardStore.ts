@@ -1,5 +1,11 @@
 import create from 'zustand';
-import { EVENT_TYPES, INTERACTABLE_MESH_NAMES, ROOM_ADDITIONS_CATEGORY } from '../data/roomData';
+import {
+	CHAIR_FORMATION,
+	EQUIPMENT,
+	EVENT_TYPES,
+	INTERACTABLE_MESH_NAMES,
+	ROOM_ADDITIONS_CATEGORY,
+} from '../data/roomData';
 import { getMeshObjectByMeshName } from '../utils/room';
 
 export type WizardRoomDataType = {
@@ -59,7 +65,7 @@ export const resetWizardData = () => {
 			personNum: '',
 			startDate: null,
 			endDate: null,
-			additionalRooms: false,
+			additionalRooms: true,
 			additionalService: '',
 			mainRooms: [],
 			sideRooms: [],
@@ -112,8 +118,8 @@ export const handleRoomDataChange = (toggledRoomName: string) => {
 // Room additions can only be changed on rooms which are already inside either mainRoom[] or sideRoom[]
 // Therefore, the AccordionItem must be already opened to click on the MeshVisibilityButtons and to selected either Equipment or ChairFormation
 export const handleRoomAdditionsChange = (
-	toggledRoomName: string,
-	toggledMeshName: string,
+	toggledRoomName: INTERACTABLE_MESH_NAMES,
+	toggledMeshName: CHAIR_FORMATION | EQUIPMENT,
 	category: ROOM_ADDITIONS_CATEGORY
 ) => {
 	const wizardData = useWizardStore.getState().wizardData;
