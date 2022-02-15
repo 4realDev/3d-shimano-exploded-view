@@ -175,7 +175,9 @@ const RoomSelection = () => {
 					)}
 				</div>
 			</div>
-			<div className={styles.card}>{<DebugControlPanel />}</div>
+			<div className={styles.card}>
+				<DebugControlPanel />
+			</div>
 		</div>
 	);
 };

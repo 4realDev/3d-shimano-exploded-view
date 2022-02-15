@@ -11,7 +11,7 @@ const CameraPositionMarkers = ({ markerPositions, targetPoints }: RoomPositionMa
 			return (
 				<mesh key={index} position={markerPos} scale={0.5}>
 					<boxGeometry />
-					<meshStandardMaterial />
+					<meshStandardMaterial color='black' />
 				</mesh>
 			);
 		});

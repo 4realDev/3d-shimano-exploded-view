@@ -14,6 +14,8 @@ type CameraControlsProps = {
 
 const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }: CameraControlsProps) => {
 	const idleState = useCameraStore((state) => state.idleState);
+	// Each time user clicks on a room,
+	// cameraPosition and cameraTarget are updated with the camPos and camTarget defined in the roomList data for each room
 	const cameraPosition = useCameraStore((state) => state.cameraPosition);
 	const cameraTarget = useCameraStore((state) => state.cameraTarget);
 	const dampSpeed = 2;
@@ -53,8 +55,6 @@ const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }:
 				maxPolarAngle={Math.PI / 2}
 				autoRotate={idleState}
 				autoRotateSpeed={0.5}
-				minDistance={3}
-				maxDistance={20}
 			/>
 		</>
 	);

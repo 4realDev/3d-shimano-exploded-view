@@ -42,7 +42,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 	const wizardStep = useWizardStore((state) => state.step);
 
 	const group = useRef<GroupProps>();
-	const model = useGLTF('/house-model.glb') as DreiGLTF;
+	const model = useGLTF('/model/house-model.glb') as DreiGLTF;
 
 	const colorModelDefault = '#D4D4D4';
 	const colorModelChildrenDefault = '#5d5d5d';
@@ -54,7 +54,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 	useEffect(() => {
 		const initialMeshList = convertGLTFToMeshList(model.nodes);
 		setMeshList(initialMeshList);
-	}, []);
+	}, [model.nodes]);
 
 	/**
 	 * Returns color hex value according to mesh objects state and wizardStep (hovered, selected, included in filteredMeshes array).
@@ -123,11 +123,12 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 			// For the naming of the meshes, we use the "Custom Properties" from the Blender Software
 			// These "Custom Properties" are stored in the glTF model inside every mesh as "userData"
 			// Therefore mesh.userData.customName meta information are used instead of mesh.name
-			// This keeps the naming of the meshes independed from the naming conventions in the code
-			// If the customName inside the userData is not defined, use the original mesh.name as fallback
-			// Additionally we store the userData inside the mesh itself
-			// This allows us to differentiate inside the onMouseOver and onMouseDown Events,
-			// between custom named meshes, which are interactable and other non interactable meshes
+			// This keeps the naming of the meshes in the 3D Software independed from the naming conventions in the React Application
+			// If userData.customName does not exist in the mesh,
+			// use the original mesh.name as fallback and set the mesh visible at initialization
+			// If it exist, store the userData inside the mesh itself
+			// This allows us to differentiate inside the onPointerOver, onPointerOut and onPointerDown Event Handlers,
+			// between interactable meshes with a custonName and non-interactable meshen without a customName
 
 			if (mesh.children.length !== 0) {
 				Object.values(mesh.children).forEach((child: any) => {

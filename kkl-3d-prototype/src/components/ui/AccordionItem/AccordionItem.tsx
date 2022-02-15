@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import cn from 'classnames';
 import Chevron from '../../icons/Chevron';
 import CheckMark from '../../icons/CheckMark';
@@ -38,27 +38,34 @@ const AccordionItem = ({
 	const [contentHeight, setContentHeight] = useState(0);
 
 	const { width } = useWindowDimensions();
-	const [additionalDistanceToScreenTop, setAdditionalDistanceToScreenTop] = useState(0);
 
 	const calculateViewportHeight = (v: number) => {
 		var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 		return (v * h) / 100;
 	};
 
-	// On first render scroll to top
-	// On tablet and mobile ModelCanvas is above RoomSelection -> therefore scroll value must be a high negative number to scroll "really" to the top
-	useEffect(() => {
-		setAdditionalDistanceToScreenTop(
+	// Distance which results of the className={styles.canvas} applied to ModelCanvas
+	// ModelCanvas is placed above the RoomSelection className={styles.container} on mobile and tablet
+	// and moves the RoomSelection content according to the screen viewport height some pixels down
+	// To scroll to the top of the AccordionItems this additional distance to the screen top must be calculated
+	// with attention to the screen viewport, since the viewport influence the viewport height of the ModelCanvas
+	const additionalDistanceToScreenTop = useMemo(
+		() =>
 			width < 480
 				? calculateViewportHeight(25)
 				: width < 768
 				? calculateViewportHeight(30)
 				: width < 992
 				? calculateViewportHeight(40)
-				: 0
-		);
+				: 0,
+		[width]
+	);
+
+	// On first render scroll to top
+	// On tablet and mobile ModelCanvas is above RoomSelection -> therefore scroll value must be a high negative number to scroll "really" to the top
+	useEffect(() => {
 		window.scrollTo({
-			top: 0 - additionalDistanceToScreenTop,
+			top: 0,
 			behavior: 'smooth',
 		});
 	}, []);
@@ -89,7 +96,7 @@ const AccordionItem = ({
 		}
 	}, [activeRoom]);
 
-	// Manipulate activeRoom and will be catched in useEffect([selectedMeshes]) above
+	// Manipulate activeRoom and will be catched in useEffect([activeRoom]) above
 	const handleClick = (content: any) => {
 		if (contentHeight === 0) {
 			content.current && setContentHeight(content.current.scrollHeight);
