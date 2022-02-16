@@ -1,0 +1,40 @@
+@import '../../../styles/colors.scss';
+
+.editButton {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	text-align: start;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 18px;
+	width: fit-content;
+	padding-right: 12px;
+	outline: none;
+	border: none;
+	background: transparent;
+	color: rgba(255, 255, 255, 0.5);
+	cursor: pointer;
+	transition: color 0.25s ease;
+
+	&:hover {
+		color: $color-dark-yellow;
+
+		.summaryCard__editIcon {
+			fill: $color-dark-yellow;
+		}
+	}
+
+	&__icon {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 26px;
+		width: 26px;
+		padding: 6px;
+		margin-right: 6px;
+		fill: rgba(255, 255, 255, 0.5);
+	}
+}

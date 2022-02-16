@@ -21,6 +21,7 @@ type RoomCardProps = {
 	equipment: string;
 	chairFormation: string;
 	roomType: string;
+	editButton?: React.ReactNode;
 };
 
 const RoomCard = ({
@@ -32,6 +33,7 @@ const RoomCard = ({
 	equipment,
 	chairFormation,
 	roomType,
+	editButton,
 }: RoomCardProps) => {
 	const renderDetails = (hasSeats?: boolean) => {
 		return (
@@ -104,6 +106,7 @@ const RoomCard = ({
 						<div className={stylesFromRoomCard.roomCard__roomAdditions__icon}>{getFormationIcon(chairFormation)}</div>
 					</div>
 				)}
+				<div className={stylesFromRoomCard.roomCard__editButtonColumn}>{editButton && <>{editButton}</>}</div>
 			</div>
 		</div>
 	);

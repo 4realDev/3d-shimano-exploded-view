@@ -17,29 +17,29 @@ const steps = [
 		title: 'Finde den passenden Raum',
 		description:
 			'Nutze die Filterfunktionen um den passenden Raum für deinen Anlass zu finden. Sag uns nur, was du für einen Event planst, wie viele Leute daran teilnehmen und wann es startet und endet. Falls dir eine oder mehrere Informationen nicht bekannt sind, kannst du diese leer lassen.',
-		hint: 'Hinweis: Du kannst auch mit dem 3D Model interagieren. Durch die Rotation des Models oder das Anklicken einzelner Räume, kannst du dir einen besseren Eindruck von den Räumen, deren Position sowie Proportionen verschaffen.',
+		hint: 'Hinweis: Du kannst auch mit dem 3D Modell interagieren. Durch die Rotation des Modelles oder das Anklicken einzelner Räume, kannst du dir einen besseren Eindruck von den Räumen, deren Position sowie Proportionen verschaffen.',
 		prevButton: '',
 		nextButton: 'Passende Räume suchen',
 	},
 	{
 		title: 'Wähle und Konfiguriere einen Hauptraum',
 		description:
-			'Alle verfügbaren Haupträume werden in der Liste unten angezeigt und im Model rot markiert. Wähle und konfiguriere einen Hauptraum nach Belieben.',
+			'Alle verfügbaren Haupträume werden in der Liste unten angezeigt und im Modell rot markiert. Wähle und konfiguriere einen Hauptraum nach Belieben.',
 		prevButton: 'Zurück',
 		nextButton: 'Weiter',
 	},
 	{
 		title: 'Wähle und Konfiguriere einen Nebenraum',
 		description:
-			'Alle zum Hauptraum dazu passenden Nebenräume werden in der Liste unten angezeigt und im 3D Model grün markiert. Gerne kannst du einen Nebenraum optional als Breakout Room oder als Versammlungsraum dazu wählen.',
+			'Alle zum Hauptraum dazu passenden Nebenräume werden in der Liste unten angezeigt und im 3D Modell grün markiert. Gerne kannst du einen Nebenraum optional als Breakout Room oder als Versammlungsraum dazu wählen.',
 		prevButton: 'Zurück',
 		nextButton: 'Weiter',
 	},
 	{
 		title: 'Überprüfe deine Auswahl & Buche',
 		description:
-			'Der ausgewählte Hauptraum, sowie der ausgewählte Nebenraum (falls vorhanden) werden in der Liste unten angezeigt und im 3D Model markiert.',
-		hint: 'Hinweis: Du kannst den ausgewählten Haupt- und Nebenraum im 3D Model auswählen, um eine Nahansicht vom Raum mit den ausgewählten Konfigurationen zu erhalten.',
+			'Der ausgewählte Hauptraum, sowie der ausgewählte Nebenraum (falls vorhanden) werden in der Liste unten angezeigt und im 3D Modell markiert.',
+		hint: 'Hinweis: Du kannst den ausgewählten Haupt- und Nebenraum im 3D Modell auswählen, um eine Nahansicht vom Raum mit den ausgewählten Konfigurationen zu erhalten.',
 		prevButton: 'Zurück',
 		nextButton: 'Buchen',
 	},
@@ -149,6 +149,17 @@ const RoomSelection = () => {
 					</Stepper>
 					{steps[step].description && <p className={styles.card__description}>{steps[step].description}</p>}
 					{steps[step].hint && <p className={styles.card__hint}>{steps[step].hint}</p>}
+					{/* TODO: Remove Lean UI test after Usability Tests are finished */}
+					{step === 0 && (
+						<a
+							href={'https://www.youtube.com/channel/UChMXLvodc3Oqo4KALX6X45w'}
+							target='_blank'
+							className={styles.card__link}
+							rel='noreferrer'
+						>
+							Optionales Tutorial Video (3 min.)
+						</a>
+					)}
 				</div>
 			</div>
 			<div className={styles.card}>{renderWizardStep()}</div>
@@ -175,9 +186,9 @@ const RoomSelection = () => {
 					)}
 				</div>
 			</div>
-			<div className={styles.card}>
+			{/* <div className={styles.card}>
 				<DebugControlPanel />
-			</div>
+			</div> */}
 		</div>
 	);
 };
