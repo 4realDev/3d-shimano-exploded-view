@@ -5,10 +5,12 @@ This repository shows a feasibility study of the use of 3D rendering on the web 
 
 ### **IMPORTANT**
 **This is the reduced software documentation.**
-**You can find the complete detailed documentation here:** \_\_\_\_
+**You can find the complete detailed documentation [here](./kkl-3d-prototype/public/readme/technicalSoftwareDocumentation.pdf).**
+<a href="./kkl-3d-prototype/public/readme/technicalSoftwareDocumentation.pdf"> HERE A-Tag </a>
 
 The complete documentation describes the topics listed here in much more detail and covers other topics like issues and solutions, naming conventions, the glTF model hierarchy, the logic behind the camera movement, the logic of the 3D model interactions and the interactions between the wizard and the model and vice versa, the toggling of mesh visibility, the state management with zustand, performance optimizations, outlooks and ideas for improvement as well as other important topics for further development and understanding of the code.
-Furthermore, there is an optional, non-technical software documentation, which describes the background behind the project here: \_\_\_\_
+Furthermore, there is an optional, non-technical software documentation, which describes the background behind the project [here](./kkl-3d-prototype/public/readme/theoreticalSoftwareDocumentation.pdf).
+<a href="./kkl-3d-prototype/public/readme/theoreticalSoftwareDocumentation.pdf"> HERE A-Tag </a>
 The knowledge of the non-technical software documentation is not needed, to understand the code.
 
 # **Installation**
@@ -319,9 +321,12 @@ export type MeshObjectType = {
 # **Connection between the wizard and the 3d model**
 The lower Figure shows the 3D model with the main room selected. The ThreeJsDataDebugger is activated and shows the currently selected filteredMeshes and selectedMeshes. In the wizard as well as in the model the Lzernen Saal (room\_2) was selected as the active room and therefore added to the selectedMeshes array. Additionally, the two rooms Luzerner Saal and Konzertsaal remained after filtering and were therefore added to the filteredMeshes array. 
 
-![](Aspose.Words.494af03b-6758-4790-8ec4-6482fe98aa06.001.png)
+![](./kkl-3d-prototype/public/readme/connectionBetweenWizardAndModel.png)
 
 # **Camera movement after interactions**
 Each room has a room specific camera position (model.camPos) and a room specific camera target point (model.camTarget). This is used to ensure that each room has its own individual close-up view, which is displayed as soon as the room is selected in the room list or clicked on in the 3D model. This view allows the user to better see the room and its room details in the 3D model. In the figure below, the camPos and camTarget are shown using Cube and Sphere meshes by using the CameraPositionMarkers Option from the DebugControlPanel.tsx. The Cube is the camera and looks towards the Sphere Mesh, which is the target.
 
-![](Aspose.Words.494af03b-6758-4790-8ec4-6482fe98aa06.002.png)
+![](./kkl-3d-prototype/public/readme/cameraMovementCaptions.png)
+![](./kkl-3d-prototype/public/readme/cameraMovementMeshList.png)
+<img src="./kkl-3d-prototype/public/readme/cameraMovementCaptions.png" width=600>
+<img src="./kkl-3d-prototype/public/readme/cameraMovementMeshList.png" width=600>
