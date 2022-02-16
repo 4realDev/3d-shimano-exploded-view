@@ -4,16 +4,17 @@
 
 This repository shows a feasibility study of the use of 3D rendering on the web for the selection and configuration of event spaces using the example "KKL Luzern". For the realization of the interactive 3D model of the building and its configurable rooms mainly the packages React-Three-Fiber and React-Drei were used.
 
-### **IMPORTANT**
+## **IMPORTANT**
 
-**This is the reduced software documentation.**
+### **This is the reduced software documentation.**
 **You can find the complete detailed documentation
 <a href="./kkl-3d-prototype/public/readme/technicalSoftwareDocumentation.pdf">here</a> (currently only in german)**
 
 The complete documentation describes the topics listed here in much more detail and covers other topics like issues and solutions, naming conventions, the glTF model hierarchy, the logic behind the camera movement, the logic of the 3D model interactions and the interactions between the wizard and the model and vice versa, the toggling of mesh visibility, the state management with zustand, performance optimizations, outlooks and ideas for improvement as well as other important topics for further development and understanding of the code.
-Furthermore, there is an optional, non-technical software documentation, which describes the background behind the project
-<a href="./kkl-3d-prototype/public/readme/theoreticalSoftwareDocumentation.pdf">here</a> (currently only in german).
-The knowledge of the non-technical software documentation is not needed, to understand the code.
+
+Furthermore, there is an optional, non-technical software documentation, which describes the background behind the project. The knowledge of the non-technical software documentation is not needed, to understand the code. </br>
+You can find it <a href="./kkl-3d-prototype/public/readme/theoreticalSoftwareDocumentation.pdf">here</a> (currently only in german). </br>
+
 
 # **Installation**
 
@@ -54,12 +55,11 @@ In the project, during development, some debug options were developed in the UI,
 # **File structure**
 
 ```bash
+.
 │   .gitignore
 │   package-lock.json
 │   package.json
-│   README.md
 │   tsconfig.json
-│   yarn-error.log
 │   yarn.lock
 │
 ├───public
@@ -68,7 +68,6 @@ In the project, during development, some debug options were developed in the UI,
 │   │   logo192.png
 │   │   logo512.png
 │   │   manifest.json
-│   │   robots.txt
 │   │
 │   ├───images
 │   │       Auditorium.jpg
@@ -82,194 +81,124 @@ In the project, during development, some debug options were developed in the UI,
 │           house-model.glb
 │
 └───src
-`    `│   App.js
-`    `│   App.scss
-`    `│   index.css
-`    `│   index.js
-`    `│   react-app-env.d.ts
-`    `│   theme.tsx
-`    `│
-`    `├───components
-`    `│   ├───blocks
-`    `│   │   ├───ModelCanvas
-`    `│   │   │       ModelCanvas.module.scss
-`    `│   │   │       ModelCanvas.tsx
-`    `│   │   │
-`    `│   │   └───RoomSelection
-`    `│   │           RoomSelection.module.scss
-`    `│   │           RoomSelection.tsx
-`    `│   │
-`    `│   ├───debug
-`    `│   │   ├───DebugControlPanel
-`    `│   │   │       DebugControlPanel.module.scss
-`    `│   │   │       DebugControlPanel.tsx
-`    `│   │   │
-`    `│   │   ├───ThreeJsDataDebugger
-`    `│   │   │       ThreeJsDataDebugger.module.scss
-`    `│   │   │       ThreeJsDataDebugger.tsx
-`    `│   │   │
-`    `│   │   └───WizardDataDebugger
-`    `│   │           WizardDataDebugger.module.scss
-`    `│   │           WizardDataDebugger.tsx
-`    `│   │
-`    `│   ├───icons
-`    `│   │       Accessibility.tsx
-`    `│   │       Apero.tsx
-`    `│   │       Beamer.tsx
-`    `│   │       Catering.tsx
-`    `│   │       ChairFormationBankett.tsx
-`    `│   │       ChairFormationConcert.tsx
-`    `│   │       ChairFormationSeminar.tsx
-
-`    `│   │       CheckMark.tsx
-
-`    `│   │       Chevron.tsx
-
-`    `│   │       EmptySearch.tsx
-
-`    `│   │       Exhibition.tsx
-
-`    `│   │       NoSeats.tsx
-
-`    `│   │       Notification.tsx
-
-`    `│   │       Overview.tsx
-
-`    `│   │       Podium.tsx
-
-`    `│   │       Seats.tsx
-
-`    `│   │       Stage.tsx
-
-`    `│   │
-
-`    `│   ├───threeJs
-
-`    `│   │       CameraControls.tsx
-
-`    `│   │       CameraPositionMarkers.tsx
-
-`    `│   │       Lights.tsx
-
-`    `│   │       Model.tsx
-
-`    `│   │
-
-`    `│   ├───ui
-
-`    `│   │   ├───Accordion
-
-`    `│   │   │       Accordion.module.scss
-
-`    `│   │   │       Accordion.tsx
-
-`    `│   │   │
-
-`    `│   │   ├───AccordionItem
-
-`    `│   │   │       AccordionItem.module.scss
-
-`    `│   │   │       AccordionItem.tsx
-
-`    `│   │   │
-
-`    `│   │   ├───Cursor
-
-`    `│   │   │       Cursor.tsx
-
-`    `│   │   │
-
-`    `│   │   ├───MeshVisibilityButton
-
-`    `│   │   │       MeshVisibilityButton.module.scss
-
-`    `│   │   │       MeshVisibilityButton.tsx
-
-`    `│   │   │
-
-`    `│   │   ├───NoResults
-
-`    `│   │   │       NoResults.module.scss
-
-`    `│   │   │       NoResults.tsx
-
-`    `│   │   │
-
-`    `│   │   └───RoomCard
-
-`    `│   │           RoomCard.module.scss
-
-`    `│   │           RoomCard.tsx
-
-`    `│   │
-
-`    `│   └───wizard
-
-`    `│       ├───RoomFilteringWizard
-
-`    `│       │       RoomFilteringWizard.module.scss
-
-`    `│       │       RoomFilteringWizard.tsx
-
-`    `│       │
-
-`    `│       ├───RoomMainSelectionWizard
-
-`    `│       │       RoomMainSelectionWizard.tsx
-
-`    `│       │
-
-`    `│       ├───RoomSideSelectionWizard
-
-`    `│       │       RoomSideSelectionWizard.tsx
-
-`    `│       │
-
-`    `│       └───RoomSummaryWizard
-
-`    `│               RoomSummaryWizard.module.scss
-
-`    `│               RoomSummaryWizard.tsx
-
-`    `│
-
-`    `├───data
-
-`    `│       roomData.ts
-
-`    `│
-
-`    `├───hooks
-
-`    `│       useLongPress.ts
-
-`    `│       useWindowDimensions.ts
-
-`    `│
-
-`    `├───store
-
-`    `│       useCameraStore.ts
-
-`    `│       useDebugStore.ts
-
-`    `│       useMeshStore.ts
-
-`    `│       useWizardStore.ts
-
-`    `│
-
-`    `├───styles
-
-`    `│       colors.scss
-
-`    `│       viewport.scss
-
-`    `│
-
-`    `└───utils
-
-`            `room.tsx
+    │   App.js
+    │   App.scss
+    │   index.css
+    │   index.js
+    │   react-app-env.d.ts
+    │   theme.tsx
+    │
+    ├───components
+    │   ├───blocks
+    │   │   ├───ModelCanvas
+    │   │   │       ModelCanvas.module.scss
+    │   │   │       ModelCanvas.tsx
+    │   │   │
+    │   │   └───RoomSelection
+    │   │           RoomSelection.module.scss
+    │   │           RoomSelection.tsx
+    │   │
+    │   ├───debug
+    │   │   ├───DebugControlPanel
+    │   │   │       DebugControlPanel.module.scss
+    │   │   │       DebugControlPanel.tsx
+    │   │   │
+    │   │   ├───ThreeJsDataDebugger
+    │   │   │       ThreeJsDataDebugger.module.scss
+    │   │   │       ThreeJsDataDebugger.tsx
+    │   │   │
+    │   │   └───WizardDataDebugger
+    │   │           WizardDataDebugger.module.scss
+    │   │           WizardDataDebugger.tsx
+    │   │
+    │   ├───icons
+    │   │       Accessibility.tsx
+    │   │       Apero.tsx
+    │   │       Beamer.tsx
+    │   │       Catering.tsx
+    │   │       ChairFormationBankett.tsx
+    │   │       ChairFormationConcert.tsx
+    │   │       ChairFormationSeminar.tsx
+    │   │       CheckMark.tsx
+    │   │       Chevron.tsx
+    │   │       Edit.tsx
+    │   │       EmptySearch.tsx
+    │   │       Exhibition.tsx
+    │   │       NoSeats.tsx
+    │   │       Notification.tsx
+    │   │       Overview.tsx
+    │   │       Podium.tsx
+    │   │       Seats.tsx
+    │   │       Stage.tsx
+    │   │
+    │   ├───threeJs
+    │   │       CameraControls.tsx
+    │   │       CameraPositionMarkers.tsx
+    │   │       Lights.tsx
+    │   │       Model.tsx
+    │   │
+    │   ├───ui
+    │   │   ├───Accordion
+    │   │   │       Accordion.module.scss
+    │   │   │       Accordion.tsx
+    │   │   │
+    │   │   ├───AccordionItem
+    │   │   │       AccordionItem.module.scss
+    │   │   │       AccordionItem.tsx
+    │   │   │
+    │   │   ├───Cursor
+    │   │   │       Cursor.tsx
+    │   │   │
+    │   │   ├───EditButton
+    │   │   │       EditButton.module.scss
+    │   │   │       EditButton.tsx
+    │   │   │
+    │   │   ├───MeshVisibilityButton
+    │   │   │       MeshVisibilityButton.module.scss
+    │   │   │       MeshVisibilityButton.tsx
+    │   │   │
+    │   │   ├───NoResults
+    │   │   │       NoResults.module.scss
+    │   │   │       NoResults.tsx
+    │   │   │
+    │   │   └───RoomCard
+    │   │           RoomCard.module.scss
+    │   │           RoomCard.tsx
+    │   │
+    │   └───wizard
+    │       ├───RoomFilteringWizard
+    │       │       RoomFilteringWizard.module.scss
+    │       │       RoomFilteringWizard.tsx
+    │       │
+    │       ├───RoomMainSelectionWizard
+    │       │       RoomMainSelectionWizard.tsx
+    │       │
+    │       ├───RoomSideSelectionWizard
+    │       │       RoomSideSelectionWizard.tsx
+    │       │
+    │       └───RoomSummaryWizard
+    │               RoomSummaryWizard.module.scss
+    │               RoomSummaryWizard.tsx
+    │
+    ├───data
+    │       roomData.ts
+    │
+    ├───hooks
+    │       useLongPress.ts
+    │       useWindowDimensions.ts
+    │
+    ├───store
+    │       useCameraStore.ts
+    │       useDebugStore.ts
+    │       useMeshStore.ts
+    │       useWizardStore.ts
+    │
+    ├───styles
+    │       colors.scss
+    │       viewport.scss
+    │
+    └───utils
+            room.tsx
 ```
 
 # **Converting GLTF-File into own, global accessive, state-based data structure**
@@ -340,5 +269,4 @@ The lower Figure shows the 3D model with the main room selected. The ThreeJsData
 
 Each room has a room specific camera position (model.camPos) and a room specific camera target point (model.camTarget). This is used to ensure that each room has its own individual close-up view, which is displayed as soon as the room is selected in the room list or clicked on in the 3D model. This view allows the user to better see the room and its room details in the 3D model. In the figure below, the camPos and camTarget are shown using Cube and Sphere meshes by using the CameraPositionMarkers Option from the DebugControlPanel.tsx. The Cube is the camera and looks towards the Sphere Mesh, which is the target.
 
-<img src="./kkl-3d-prototype/public/readme/cameraMovementCaptions.png">
 <img src="./kkl-3d-prototype/public/readme/cameraMovementMeshList.png">
