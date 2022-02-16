@@ -149,17 +149,6 @@ const RoomSelection = () => {
 					</Stepper>
 					{steps[step].description && <p className={styles.card__description}>{steps[step].description}</p>}
 					{steps[step].hint && <p className={styles.card__hint}>{steps[step].hint}</p>}
-					{/* TODO: Remove Lean UI test after Usability Tests are finished */}
-					{step === 0 && (
-						<a
-							href={'https://www.youtube.com/channel/UChMXLvodc3Oqo4KALX6X45w'}
-							target='_blank'
-							className={styles.card__link}
-							rel='noreferrer'
-						>
-							Optionales Tutorial Video (3 min.)
-						</a>
-					)}
 				</div>
 			</div>
 			<div className={styles.card}>{renderWizardStep()}</div>

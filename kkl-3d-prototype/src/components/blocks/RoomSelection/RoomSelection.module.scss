@@ -79,20 +79,6 @@
 				color: rgba(255, 255, 255, 0.5);
 				margin-top: 16px;
 			}
-
-			.card__link {
-				font-size: 14px;
-				line-height: 24px;
-				color: $color-dark-yellow;
-				margin-top: 16px;
-				align-self: flex-start;
-				transition: color 0.25s ease;
-				text-decoration: none;
-
-				&:hover {
-					color: $color-main-yellow;
-				}
-			}
 		}
 
 		.card__buttonContainer {
