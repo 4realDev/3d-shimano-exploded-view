@@ -71,8 +71,11 @@ const RoomSelection = () => {
 	};
 
 	const submitForm = () => {
+		// POST REQUEST MOCK
+		// console.log simulates the post request to the backend server with booking data
 		console.log('SUBMITTING TO SERVER', wizardData);
-		// reset all data
+
+		// Afterwards the application, the model, and the data is resetted
 		setStep(0);
 		resetScene();
 		resetWizardData();
@@ -175,9 +178,9 @@ const RoomSelection = () => {
 					)}
 				</div>
 			</div>
-			{/* <div className={styles.card}>
+			<div className={styles.card}>
 				<DebugControlPanel />
-			</div> */}
+			</div>
 		</div>
 	);
 };
