@@ -34,8 +34,8 @@ const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }:
 			camera.current && damp(camera.current.position, cameraPosition, dampSpeed, delta);
 			controls.current && damp(controls.current.target, cameraTarget, dampSpeed, delta);
 		}
-		controls?.current?.update!!(); // Workaround
-		camera?.current?.updateProjectionMatrix!!(); // Workaround
+		controls?.current?.update!(); // Workaround
+		camera?.current?.updateProjectionMatrix!(); // Workaround
 	});
 
 	return (
