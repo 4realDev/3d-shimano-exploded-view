@@ -72,7 +72,7 @@ const RoomCard = ({
 	};
 
 	return (
-		<div className={stylesFromAccordionItem.accordionItem}>
+		<div className={stylesFromAccordionItem.accordionItem} styles={{ cursor: 'default' }}>
 			<div className={stylesFromAccordionItem.accordionItem__header}>
 				<div className={stylesFromAccordionItem.accordionItem__infoColumn}>
 					<h1 className={stylesFromAccordionItem.accordionItem__title}>
