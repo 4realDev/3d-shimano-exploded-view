@@ -12,8 +12,8 @@ This repository shows a feasibility study of the use of 3D rendering on the web 
 
 The complete documentation describes the topics listed here in much more detail and covers other topics like issues and solutions, naming conventions, the glTF model hierarchy, the logic behind the camera movement, the logic of the 3D model interactions and the interactions between the wizard and the model and vice versa, the toggling of mesh visibility, the state management with zustand, performance optimizations, outlooks and ideas for improvement as well as other important topics for further development and understanding of the code.
 
-Furthermore, there is an optional, non-technical software documentation, which describes the background behind the project. The knowledge of the non-technical software documentation is not needed, to understand the code. </br>
-You can find it <a href="./kkl-3d-prototype/public/readme/theoreticalSoftwareDocumentation.pdf">here</a> (currently only in german). </br>
+Furthermore, there is an optional, non-technical project documentation, which describes the background behind the project, the initial requirements, idea and the goal of the project as well as the figma prototype and the useability tests and their results. The knowledge of the non-technical project documentation is not needed, to understand the code. </br>
+You can find it <a href="./kkl-3d-prototype/public/readme/projectDocumentation.pdf">here</a> (currently only in german). </br>
 
 
 # **Installation**
