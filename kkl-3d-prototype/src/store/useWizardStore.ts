@@ -6,7 +6,7 @@ import {
 	INTERACTABLE_MESH_NAMES,
 	ROOM_ADDITIONS_CATEGORY,
 } from '../data/roomData';
-import { getMeshObjectByMeshName } from '../utils/room';
+import { getMeshObjectInformationsByMeshName } from '../utils/room';
 
 export type WizardRoomDataType = {
 	room: string;
@@ -82,7 +82,7 @@ export const updateWizardData = (value: any, inputField: any) => {
 
 export const handleRoomDataChange = (toggledRoomName: string) => {
 	const wizardData = useWizardStore.getState().wizardData;
-	const roomType = getMeshObjectByMeshName(toggledRoomName)?.info.fittingSideRooms
+	const roomType = getMeshObjectInformationsByMeshName(toggledRoomName)?.info.fittingSideRooms
 		? ROOM_TYPE.mainRooms
 		: ROOM_TYPE.sideRooms;
 
@@ -98,7 +98,7 @@ export const handleRoomDataChange = (toggledRoomName: string) => {
 		updateWizardData(mainRoomAdditions, roomType);
 	} else {
 		// CHECK OF NEW ROOM ITEM HAS ONLY ONE POSSIBLE CHAIR_FORMATION
-		const newRoomChairFormation = getMeshObjectByMeshName(toggledRoomName)?.info.chairFormations;
+		const newRoomChairFormation = getMeshObjectInformationsByMeshName(toggledRoomName)?.info.chairFormations;
 		// IF YES, SET IT AS THE DEFAULT VALUE
 		const newRoomChairFormationValue = newRoomChairFormation?.length === 1 ? newRoomChairFormation[0].name : '';
 		// ADD NEW ROOM ITEM
@@ -123,7 +123,7 @@ export const handleRoomAdditionsChange = (
 	category: ROOM_ADDITIONS_CATEGORY
 ) => {
 	const wizardData = useWizardStore.getState().wizardData;
-	const roomType = getMeshObjectByMeshName(toggledRoomName)?.info.fittingSideRooms
+	const roomType = getMeshObjectInformationsByMeshName(toggledRoomName)?.info.fittingSideRooms
 		? ROOM_TYPE.mainRooms
 		: ROOM_TYPE.sideRooms;
 	const newRoomAdditions = wizardData[roomType];
@@ -143,9 +143,9 @@ export const handleRoomAdditionsChange = (
 		// UPDATING EXISTING ITEM IF VALUE IS NEW
 		// if chair_formation is selected, update the room personCapacity value as well
 		if (category === ROOM_ADDITIONS_CATEGORY.chair_formation) {
-			const toggledChairFormationCapacity = getMeshObjectByMeshName(toggledRoomName)?.info.chairFormations?.find(
-				(chairFormation) => chairFormation.name === toggledMeshName
-			)?.capacity;
+			const toggledChairFormationCapacity = getMeshObjectInformationsByMeshName(
+				toggledRoomName
+			)?.info.chairFormations?.find((chairFormation) => chairFormation.name === toggledMeshName)?.capacity;
 			newRoomAdditions[index] = {
 				...wizardData[roomType][index], // e.g. wizardData.mainRoom[2]
 				room: toggledRoomName,

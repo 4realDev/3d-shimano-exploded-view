@@ -17,7 +17,7 @@ import {
 } from '../../../store/useCameraStore';
 import { toggleMeshChildVisibility } from '../../../store/useMeshStore';
 import { handleRoomAdditionsChange, handleRoomDataChange, WizardDataType } from '../../../store/useWizardStore';
-import { getMeshObjectByMeshName } from '../../../utils/room';
+import { getMeshObjectInformationsByMeshName } from '../../../utils/room';
 import Accordion from '../../ui/Accordion/Accordion';
 import NoResults from '../../ui/NoResults/NoResults';
 import { filterAfterDate } from '../RoomMainSelectionWizard/RoomMainSelectionWizard';
@@ -34,7 +34,7 @@ const RoomSideSelectionWizard = ({ wizardData, handleChange }: RoomSideSelection
 	const [fittingSideRooms, setFittingSideRooms] = useState<RoomFetchedDataType[]>([]);
 
 	useEffect(() => {
-		const activeMainRoom = getMeshObjectByMeshName(wizardData.activeMainRoom);
+		const activeMainRoom = getMeshObjectInformationsByMeshName(wizardData.activeMainRoom);
 		const fittingSideRooms = roomList.filter((room) => {
 			return activeMainRoom?.info.fittingSideRooms?.includes(room.model.meshName);
 		});

@@ -10,7 +10,7 @@ import MeshVisibilityButton from '../MeshVisibilityButton/MeshVisibilityButton';
 import AccordionItem from '../AccordionItem/AccordionItem';
 import styles from './Accordion.module.scss';
 import { useWizardStore, WizardRoomDataType } from '../../../store/useWizardStore';
-import { getFormationIcon, getEquipmentIcon, getMeshObjectByMeshName } from '../../../utils/room';
+import { getFormationIcon, getEquipmentIcon, getMeshObjectInformationsByMeshName } from '../../../utils/room';
 
 type AccordionProps = {
 	roomList: RoomFetchedDataType[];
@@ -78,7 +78,7 @@ const Accordion = ({
 		if (accordionItemRoom.info.fittingSideRooms === undefined) return false;
 
 		// get the person capacity (seats) of the passed chair formation related to the passed accordionItemRoom
-		const toggledChairFormationCapacity = getMeshObjectByMeshName(
+		const toggledChairFormationCapacity = getMeshObjectInformationsByMeshName(
 			accordionItemRoom.model.meshName
 		)?.info.chairFormations?.find((chairFormation) => chairFormation.name === formation.name)?.capacity;
 

@@ -18,7 +18,7 @@ export const getRoomTitleByMeshName = (meshName: string) => {
 };
 
 // Takes meshname like "room_3" and returns the MeshObjectType of the room
-export const getMeshObjectByMeshName = (meshName: string) => {
+export const getMeshObjectInformationsByMeshName = (meshName: string) => {
 	return roomList.find((room) => room.model.meshName === meshName);
 };
 
