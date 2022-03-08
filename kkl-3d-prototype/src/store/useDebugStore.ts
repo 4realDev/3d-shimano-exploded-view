@@ -7,6 +7,7 @@ interface DebugStore {
 	isStatesActive: boolean;
 	isAxisHelperActive: boolean;
 	isBoxHelperActive: boolean;
+	isLineSegementMaterialActive: boolean;
 }
 
 export const useDebugStore = create<DebugStore>((set) => ({
@@ -16,6 +17,7 @@ export const useDebugStore = create<DebugStore>((set) => ({
 	isStatesActive: false,
 	isAxisHelperActive: false,
 	isBoxHelperActive: false,
+	isLineSegementMaterialActive: false,
 }));
 
 export const toggleIsWizardDataDebuggerActive = () => {
@@ -51,5 +53,11 @@ export const toggleIsAxisHelperActive = () => {
 export const toggleIsBoxHelperActive = () => {
 	useDebugStore.setState({
 		isBoxHelperActive: !useDebugStore.getState().isBoxHelperActive,
+	});
+};
+
+export const toggleIsLineSegmentMaterialActive = () => {
+	useDebugStore.setState({
+		isLineSegementMaterialActive: !useDebugStore.getState().isLineSegementMaterialActive,
 	});
 };

@@ -7,6 +7,7 @@ import {
 	toggleIsBoxHelperActive,
 	toggleIsWizardDataDebuggerActive,
 	toggleIsThreeJsDataDebuggerActive,
+	toggleIsLineSegmentMaterialActive,
 } from '../../../store/useDebugStore';
 
 import styles from './DebugControlPanel.module.scss';
@@ -16,6 +17,7 @@ const DebugControlPanel = () => {
 	const isStatesActive = useDebugStore((state) => state.isStatesActive);
 	const isAxisHelperActive = useDebugStore((state) => state.isAxisHelperActive);
 	const isBoxHelperActive = useDebugStore((state) => state.isBoxHelperActive);
+	const isLineSegementMaterialActive = useDebugStore((state) => state.isLineSegementMaterialActive);
 	return (
 		<div className={styles.debugger__container}>
 			<div>
@@ -40,6 +42,12 @@ const DebugControlPanel = () => {
 					<FormControlLabel
 						label='Three JS Box Helper'
 						control={<Checkbox checked={isBoxHelperActive} onChange={() => toggleIsBoxHelperActive()} />}
+					/>
+					<FormControlLabel
+						label='Line Segment Material'
+						control={
+							<Checkbox checked={isLineSegementMaterialActive} onChange={() => toggleIsLineSegmentMaterialActive()} />
+						}
 					/>
 				</div>
 			</div>

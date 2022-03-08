@@ -49,6 +49,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
 	const filteredMeshes = useCameraStore((state) => state.filteredMeshes);
 	const wizardStep = useWizardStore((state) => state.step);
+	const isLineSegmentMaterialActive = useDebugStore((state) => state.isLineSegementMaterialActive);
 
 	const group = useRef<GroupProps>();
 	const model = useGLTF('/model/house-model.glb') as DreiGLTF;
@@ -198,7 +199,13 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 					visible={childMeshObject.isVisible}
 					opacity={getMeshMaterialOpacity(parentMeshObject)}
 					metalness={0.5}
-				/>
+				/> */}
+				{isLineSegmentMaterialActive && (
+					<lineSegments>
+						<edgesGeometry attach='geometry' args={[childMeshObject.geometry]} />
+						<lineBasicMaterial color='black' attach='material' transparent />
+					</lineSegments>
+				)}
 			</mesh>
 		);
 	};
@@ -273,7 +280,14 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 					visible={meshObject.isVisible}
 					opacity={getMeshMaterialOpacity(meshObject)}
 					metalness={0.5}
-				/>
+				/> */}
+				{isLineSegmentMaterialActive && (
+					<lineSegments>
+						<edgesGeometry attach='geometry' args={[meshObject.geometry]} />
+						<lineBasicMaterial color='black' attach='material' transparent />
+					</lineSegments>
+				)}
+				<ModelHtmlAnnotation title={meshObject.name} description='TEST DESCRIPTION' position={meshObject.position} />
 			</mesh>
 		);
 	};
