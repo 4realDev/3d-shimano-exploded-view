@@ -1,7 +1,8 @@
 import { PerspectiveCameraProps, useFrame, Vector3 } from '@react-three/fiber';
 import * as THREE from 'three';
 import { OrbitControls, OrbitControlsProps, PerspectiveCamera } from '@react-three/drei';
-import { useCameraStore } from '../../store/useCameraStore';
+import { defaultCameraPosition, setHasAnimation, useCameraStore } from '../../store/useCameraStore';
+import { useDebugStore } from '../../store/useDebugStore';
 
 type CameraControlsProps = {
 	camera: React.MutableRefObject<PerspectiveCameraProps | undefined>;
@@ -18,6 +19,7 @@ const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }:
 	// cameraPosition and cameraTarget are updated with the camPos and camTarget defined in the roomList data for each room
 	const cameraPosition = useCameraStore((state) => state.cameraPosition);
 	const cameraTarget = useCameraStore((state) => state.cameraTarget);
+	const isCameraBackLerpingActive = useDebugStore((state) => state.isCameraBackLerpingActive);
 	const dampSpeed = 2;
 
 	const damp = (target: Vector3 | undefined, to: THREE.Vector3, speed: number, delta: number) => {
@@ -28,11 +30,26 @@ const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }:
 		}
 	};
 
+	const checkAnimationFinished = (target: Vector3 | undefined) => {
+		if (
+			target instanceof THREE.Vector3 &&
+			target.x > cameraPosition.x - 0.15 &&
+			target.y > cameraPosition.y - 0.15 &&
+			target.z > cameraPosition.z - 0.15 &&
+			target.x < cameraPosition.x + 0.15 &&
+			target.y < cameraPosition.y + 0.15 &&
+			target.z < cameraPosition.z + 0.15
+		) {
+			setHasAnimation(false);
+		}
+	};
+
 	// Hook which allow to render 3D component (mesh objects animation, effects, transformation...) based on every frame update
 	useFrame((state, delta) => {
-		if (!mouseDown && hasAnimation && !idleState) {
-			camera.current && damp(camera.current.position, cameraPosition, dampSpeed, delta);
-			controls.current && damp(controls.current.target, cameraTarget, dampSpeed, delta);
+		if (!mouseDown && hasAnimation && !idleState && camera.current && controls.current) {
+			damp(camera.current.position, cameraPosition, dampSpeed, delta);
+			damp(controls.current.target, cameraTarget, dampSpeed, delta);
+			!isCameraBackLerpingActive && checkAnimationFinished(camera.current.position);
 		}
 		controls?.current?.update!(); // Workaround
 		camera?.current?.updateProjectionMatrix!(); // Workaround
@@ -43,7 +60,7 @@ const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }:
 			<PerspectiveCamera
 				ref={camera as any}
 				makeDefault
-				position={[20, 15, 0]}
+				position={defaultCameraPosition}
 				fov={fov}
 				far={far}
 				aspect={window.innerWidth / window.innerHeight}

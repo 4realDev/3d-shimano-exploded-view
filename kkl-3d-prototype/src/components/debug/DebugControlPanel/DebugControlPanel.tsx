@@ -1,4 +1,5 @@
 import { FormControlLabel, Checkbox } from '@mui/material';
+import { setHasAnimation } from '../../../store/useCameraStore';
 import {
 	useDebugStore,
 	toggleIsCameraPositionMarkersActive,
@@ -8,6 +9,7 @@ import {
 	toggleIsWizardDataDebuggerActive,
 	toggleIsThreeJsDataDebuggerActive,
 	toggleIsLineSegmentMaterialActive,
+	toggleIsCameraBackLerpingActive,
 } from '../../../store/useDebugStore';
 
 import styles from './DebugControlPanel.module.scss';
@@ -18,6 +20,7 @@ const DebugControlPanel = () => {
 	const isAxisHelperActive = useDebugStore((state) => state.isAxisHelperActive);
 	const isBoxHelperActive = useDebugStore((state) => state.isBoxHelperActive);
 	const isLineSegementMaterialActive = useDebugStore((state) => state.isLineSegementMaterialActive);
+	const isCameraBackLerpingActive = useDebugStore((state) => state.isCameraBackLerpingActive);
 	return (
 		<div className={styles.debugger__container}>
 			<div>
@@ -47,6 +50,18 @@ const DebugControlPanel = () => {
 						label='Line Segment Material'
 						control={
 							<Checkbox checked={isLineSegementMaterialActive} onChange={() => toggleIsLineSegmentMaterialActive()} />
+						}
+					/>
+					<FormControlLabel
+						label='Camera Back Lerping'
+						control={
+							<Checkbox
+								checked={isCameraBackLerpingActive}
+								onChange={() => {
+									toggleIsCameraBackLerpingActive();
+									setHasAnimation(true);
+								}}
+							/>
 						}
 					/>
 				</div>

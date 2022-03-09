@@ -8,6 +8,7 @@ interface DebugStore {
 	isAxisHelperActive: boolean;
 	isBoxHelperActive: boolean;
 	isLineSegementMaterialActive: boolean;
+	isCameraBackLerpingActive: boolean;
 }
 
 export const useDebugStore = create<DebugStore>((set) => ({
@@ -18,6 +19,7 @@ export const useDebugStore = create<DebugStore>((set) => ({
 	isAxisHelperActive: false,
 	isBoxHelperActive: false,
 	isLineSegementMaterialActive: false,
+	isCameraBackLerpingActive: false,
 }));
 
 export const toggleIsWizardDataDebuggerActive = () => {
@@ -59,5 +61,11 @@ export const toggleIsBoxHelperActive = () => {
 export const toggleIsLineSegmentMaterialActive = () => {
 	useDebugStore.setState({
 		isLineSegementMaterialActive: !useDebugStore.getState().isLineSegementMaterialActive,
+	});
+};
+
+export const toggleIsCameraBackLerpingActive = () => {
+	useDebugStore.setState({
+		isCameraBackLerpingActive: !useDebugStore.getState().isCameraBackLerpingActive,
 	});
 };
