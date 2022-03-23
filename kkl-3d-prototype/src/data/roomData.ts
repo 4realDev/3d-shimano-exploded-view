@@ -102,6 +102,7 @@ export const roomList: RoomFetchedDataType[] = [
 			meshName: INTERACTABLE_MESH_NAMES.luzernerRoom,
 			camPos: new THREE.Vector3(-7.8, -6.5 + camHeightOffset, -8),
 			camTarget: new THREE.Vector3(-3.8, -0.5, -4),
+			markerPos: new THREE.Vector3(-0.5, 0, 0),
 		},
 		info: {
 			title: 'Luzerner Saal',
@@ -139,6 +140,7 @@ export const roomList: RoomFetchedDataType[] = [
 			meshName: INTERACTABLE_MESH_NAMES.clubroom,
 			camPos: new THREE.Vector3(2.4, -6.5 + camHeightOffset, 6),
 			camTarget: new THREE.Vector3(0.4, -0.5, 4),
+			markerPos: new THREE.Vector3(-1, 0.5, 1),
 		},
 		info: {
 			title: 'Clubraum',
@@ -195,6 +197,7 @@ export const roomList: RoomFetchedDataType[] = [
 			meshName: INTERACTABLE_MESH_NAMES.auditorium,
 			camPos: new THREE.Vector3(4.4, -6.5 + camHeightOffset, -8),
 			camTarget: new THREE.Vector3(0.4, -0.5, -4),
+			markerPos: new THREE.Vector3(0, 0, 0),
 		},
 		info: {
 			title: 'Auditorium',
@@ -218,6 +221,7 @@ export const roomList: RoomFetchedDataType[] = [
 			meshName: INTERACTABLE_MESH_NAMES.entryFoyer,
 			camPos: new THREE.Vector3(4, -4.5 + camHeightOffset, -4),
 			camTarget: new THREE.Vector3(3.9, -0.5, -4),
+			markerPos: new THREE.Vector3(0, 0, 0),
 		},
 		info: {
 			title: 'Eingangsfoyer',
