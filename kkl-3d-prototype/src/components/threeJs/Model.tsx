@@ -287,7 +287,6 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 						<lineBasicMaterial color='black' attach='material' transparent />
 					</lineSegments>
 				)}
-				{/* <ModelHtmlAnnotation title={meshObject.name} description='TEST DESCRIPTION' position={meshObject.position} /> */}
 			</mesh>
 		);
 	};
