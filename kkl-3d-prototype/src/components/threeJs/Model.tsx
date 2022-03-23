@@ -199,7 +199,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 					visible={childMeshObject.isVisible}
 					opacity={getMeshMaterialOpacity(parentMeshObject)}
 					metalness={0.5}
-				/> */}
+				/>
 				{isLineSegmentMaterialActive && (
 					<lineSegments>
 						<edgesGeometry attach='geometry' args={[childMeshObject.geometry]} />
@@ -280,14 +280,14 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 					visible={meshObject.isVisible}
 					opacity={getMeshMaterialOpacity(meshObject)}
 					metalness={0.5}
-				/> */}
+				/>
 				{isLineSegmentMaterialActive && (
 					<lineSegments>
 						<edgesGeometry attach='geometry' args={[meshObject.geometry]} />
 						<lineBasicMaterial color='black' attach='material' transparent />
 					</lineSegments>
 				)}
-				<ModelHtmlAnnotation title={meshObject.name} description='TEST DESCRIPTION' position={meshObject.position} />
+				{/* <ModelHtmlAnnotation title={meshObject.name} description='TEST DESCRIPTION' position={meshObject.position} /> */}
 			</mesh>
 		);
 	};
