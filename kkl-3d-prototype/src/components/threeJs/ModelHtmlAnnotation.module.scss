@@ -1,0 +1,73 @@
+.annotationAndMarkerContainer {
+	&:hover {
+		.annotation {
+			background: rgba(0, 0, 0, 1);
+			opacity: 1;
+		}
+
+		.marker {
+			background: rgba(0, 0, 0, 1);
+			opacity: 1;
+		}
+	}
+
+	&--lowOpacity {
+		.annotation {
+			opacity: 0.25;
+		}
+
+		.marker {
+			opacity: 0.25;
+		}
+	}
+
+	&--hoveredByModel {
+		.annotation {
+			background: rgba(0, 0, 0, 1) !important;
+			opacity: 1;
+		}
+
+		.marker {
+			background: rgba(0, 0, 0, 1) !important;
+			opacity: 1;
+		}
+	}
+
+	.annotation {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		margin-left: 15px;
+		margin-top: 15px;
+		padding: 10px 15px;
+		width: 200px;
+		color: #fff;
+		background: rgba(0, 0, 0, 0.8);
+		border-radius: 0.5em;
+		font-size: 12px;
+		line-height: 1.2;
+		transition: opacity 0.5s, background-color 0.25s;
+	}
+
+	.marker {
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		top: -10px;
+		left: -10px;
+		width: 30px;
+		height: 30px;
+		border: 2px solid #fff;
+		border-radius: 50%;
+		font-size: 16px;
+		color: #fff;
+		background: rgba(0, 0, 0, 0.8);
+		transition: opacity 0.5s, background-color 0.25s;
+
+		&--lowOpacity {
+			opacity: 0.25;
+		}
+	}
+}

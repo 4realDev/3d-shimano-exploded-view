@@ -10,6 +10,7 @@ import {
 	toggleIsThreeJsDataDebuggerActive,
 	toggleIsLineSegmentMaterialActive,
 	toggleIsCameraBackLerpingActive,
+	toggleIsAnnotationActive,
 } from '../../../store/useDebugStore';
 
 import styles from './DebugControlPanel.module.scss';
@@ -20,6 +21,7 @@ const DebugControlPanel = () => {
 	const isAxisHelperActive = useDebugStore((state) => state.isAxisHelperActive);
 	const isBoxHelperActive = useDebugStore((state) => state.isBoxHelperActive);
 	const isLineSegementMaterialActive = useDebugStore((state) => state.isLineSegementMaterialActive);
+	const isAnnotationActive = useDebugStore((state) => state.isAnnotationActive);
 	const isCameraBackLerpingActive = useDebugStore((state) => state.isCameraBackLerpingActive);
 	return (
 		<div className={styles.debugger__container}>
@@ -51,6 +53,10 @@ const DebugControlPanel = () => {
 						control={
 							<Checkbox checked={isLineSegementMaterialActive} onChange={() => toggleIsLineSegmentMaterialActive()} />
 						}
+					/>
+					<FormControlLabel
+						label='Activate Annotations'
+						control={<Checkbox checked={isAnnotationActive} onChange={() => toggleIsAnnotationActive()} />}
 					/>
 					<FormControlLabel
 						label='Camera Back Lerping'

@@ -3,15 +3,22 @@ import { Line } from '@react-three/drei';
 type RoomPositionMarkersProps = {
 	markerPositions: THREE.Vector3[];
 	targetPoints: THREE.Vector3[];
+	camPosColor?: string;
+	camTargetColor?: string;
 };
 
-const CameraPositionMarkers = ({ markerPositions, targetPoints }: RoomPositionMarkersProps) => {
+const CameraPositionMarkers = ({
+	markerPositions,
+	targetPoints,
+	camPosColor = 'black',
+	camTargetColor = 'red',
+}: RoomPositionMarkersProps) => {
 	const renderCameraPositionMarkers = () => {
 		return markerPositions.map((markerPos, index) => {
 			return (
 				<mesh key={index} position={markerPos} scale={0.5}>
 					<boxGeometry />
-					<meshStandardMaterial color='black' />
+					<meshStandardMaterial color={camPosColor} />
 				</mesh>
 			);
 		});
@@ -22,7 +29,7 @@ const CameraPositionMarkers = ({ markerPositions, targetPoints }: RoomPositionMa
 			return (
 				<mesh key={index} position={targetPoint} scale={0.25}>
 					<sphereGeometry />
-					<meshStandardMaterial color='red' />
+					<meshStandardMaterial color={camTargetColor} />
 				</mesh>
 			);
 		});
