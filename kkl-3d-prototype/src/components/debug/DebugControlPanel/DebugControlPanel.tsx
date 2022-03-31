@@ -1,5 +1,5 @@
 import { FormControlLabel, Checkbox } from '@mui/material';
-import { setHasAnimation } from '../../../store/useCameraStore';
+import { setHasAnimation, showRoomsOverview } from '../../../store/useCameraStore';
 import {
 	useDebugStore,
 	toggleIsCameraPositionMarkersActive,
@@ -10,6 +10,8 @@ import {
 	toggleIsThreeJsDataDebuggerActive,
 	toggleIsLineSegmentMaterialActive,
 	toggleIsCameraBackLerpingActive,
+	toggleIsExplodedViewActive,
+	toggleIsMaterialActive,
 	toggleIsAnnotationActive,
 } from '../../../store/useDebugStore';
 
@@ -21,8 +23,11 @@ const DebugControlPanel = () => {
 	const isAxisHelperActive = useDebugStore((state) => state.isAxisHelperActive);
 	const isBoxHelperActive = useDebugStore((state) => state.isBoxHelperActive);
 	const isLineSegementMaterialActive = useDebugStore((state) => state.isLineSegementMaterialActive);
+	const isExplodedViewActive = useDebugStore((state) => state.isExplodedViewActive);
+	const isMaterialActive = useDebugStore((state) => state.isMaterialActive);
 	const isAnnotationActive = useDebugStore((state) => state.isAnnotationActive);
 	const isCameraBackLerpingActive = useDebugStore((state) => state.isCameraBackLerpingActive);
+
 	return (
 		<div className={styles.debugger__container}>
 			<div>
@@ -53,6 +58,22 @@ const DebugControlPanel = () => {
 						control={
 							<Checkbox checked={isLineSegementMaterialActive} onChange={() => toggleIsLineSegmentMaterialActive()} />
 						}
+					/>
+					<FormControlLabel
+						label='Activate Exploded View'
+						control={
+							<Checkbox
+								checked={isExplodedViewActive}
+								onChange={() => {
+									toggleIsExplodedViewActive();
+									showRoomsOverview();
+								}}
+							/>
+						}
+					/>
+					<FormControlLabel
+						label='Activate Material'
+						control={<Checkbox checked={isMaterialActive} onChange={() => toggleIsMaterialActive()} />}
 					/>
 					<FormControlLabel
 						label='Activate Annotations'

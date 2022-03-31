@@ -4,7 +4,7 @@ import { Canvas, PerspectiveCameraProps } from '@react-three/fiber';
 import { Suspense, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { roomList } from '../../../data/roomData';
-import { setHoveredMesh, setIdleState, showRoomsOverview, useCameraStore } from '../../../store/useCameraStore';
+import { setIdleState, showRoomsOverview, useCameraStore } from '../../../store/useCameraStore';
 import { useDebugStore } from '../../../store/useDebugStore';
 import CameraControls from '../../threeJs/CameraControls';
 import CameraPositionMarkers from '../../threeJs/CameraPositionMarkers';
@@ -24,7 +24,6 @@ const Model = React.lazy(() =>
 
 const ModelCanvas = () => {
 	const hasAnimation = useCameraStore((state) => state.hasAnimation);
-	const hoveredMesh = useCameraStore((state) => state.hoveredMesh);
 	const [mouseDown, setMouseDown] = useState(false);
 	// used for mesh material highlighting on hover -> if long press don't highlight mesh material on hover
 	const [longPress, setLongPress] = useState(false);
@@ -73,6 +72,23 @@ const ModelCanvas = () => {
 					<Overview fill='#575B64' stroke='#575B64' />
 				</button>
 			</Tooltip>
+			{/* <div
+				style={{
+					zIndex: 999,
+					cursor: 'default',
+					width: 175 + 'px',
+					bottom: 5 + '%',
+					position: 'absolute',
+					right: 25 + '%',
+				}}
+			>
+				<div>camera position [x,y,z]:</div>
+				<div>
+					({cameraRef.current?.position instanceof THREE.Vector3 && cameraRef.current?.position?.x.toFixed(2)},{' '}
+					{cameraRef.current?.position instanceof THREE.Vector3 && cameraRef.current?.position?.y.toFixed(2)},{' '}
+					{cameraRef.current?.position instanceof THREE.Vector3 && cameraRef.current?.position?.z.toFixed(2)})
+				</div>
+			</div> */}
 			<Cursor />
 			{/* dpr = dynamic pixel ratio - sets pixel ratio based on device hardware capabilities */}
 			<Canvas dpr={window.devicePixelRatio} resize={{ polyfill: ResizeObserver }}>
@@ -88,12 +104,22 @@ const ModelCanvas = () => {
 				<Lights />
 
 				<Suspense fallback={null}>
-					<Model hoveredMesh={hoveredMesh} setHoveredMesh={setHoveredMesh} longPress={longPress} />
+					<Model longPress={longPress} />
 					{isCameraPositionMarkersActive && (
-						<CameraPositionMarkers
-							markerPositions={roomList.map((room) => room.model.camPos)}
-							targetPoints={roomList.map((room) => room.model.camTarget)}
-						/>
+						<>
+							<CameraPositionMarkers
+								markerPositions={roomList.map((room) => room.model.camPos)}
+								targetPoints={roomList.map((room) => room.model.camTarget)}
+								camPosColor={'black'}
+								camTargetColor={'red'}
+							/>
+							<CameraPositionMarkers
+								markerPositions={roomList.map((room) => room.model.camPosEv)}
+								targetPoints={roomList.map((room) => room.model.camTargetEv)}
+								camPosColor={'blue'}
+								camTargetColor={'orange'}
+							/>
+						</>
 					)}
 				</Suspense>
 

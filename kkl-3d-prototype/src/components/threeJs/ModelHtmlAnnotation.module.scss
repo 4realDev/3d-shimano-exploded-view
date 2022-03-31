@@ -1,24 +1,25 @@
-.annotationAndMarkerContainer {
-	&:hover {
-		.annotation {
-			background: rgba(0, 0, 0, 1);
-			opacity: 1;
-		}
+.annotationAndMarker {
+	transition: all 0.2s;
 
-		.marker {
-			background: rgba(0, 0, 0, 1);
-			opacity: 1;
-		}
+	&--visible {
+		opacity: 1;
+		transform: scale(1.0);
 	}
-
-	&--lowOpacity {
-		.annotation {
-			opacity: 0.25;
-		}
-
-		.marker {
-			opacity: 0.25;
-		}
+	&--invisible {
+		opacity: 0.25;
+		z-index: -1;
+		transform: scale(0.75);
+	
+	}
+	&--visibleAndHovered {
+		opacity: 1;
+		z-index: 99;
+		transform: scale(1.20);
+	
+	}
+	&--invisibleAndHovered {
+		opacity: 1;
+		transform: scale(1.20);
 	}
 
 	&--hoveredByModel {
@@ -29,6 +30,18 @@
 
 		.marker {
 			background: rgba(0, 0, 0, 1) !important;
+			opacity: 1;
+		}
+	}
+
+	&:hover {
+		.annotation {
+			background: rgba(0, 0, 0, 1);
+			opacity: 1;
+		}
+
+		.marker {
+			background: rgba(0, 0, 0, 1);
 			opacity: 1;
 		}
 	}
@@ -65,9 +78,5 @@
 		color: #fff;
 		background: rgba(0, 0, 0, 0.8);
 		transition: opacity 0.5s, background-color 0.25s;
-
-		&--lowOpacity {
-			opacity: 0.25;
-		}
 	}
 }

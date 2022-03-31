@@ -8,6 +8,8 @@ interface DebugStore {
 	isAxisHelperActive: boolean;
 	isBoxHelperActive: boolean;
 	isLineSegementMaterialActive: boolean;
+	isExplodedViewActive: boolean;
+	isMaterialActive: boolean;
 	isAnnotationActive: boolean;
 	isCameraBackLerpingActive: boolean;
 }
@@ -20,7 +22,9 @@ export const useDebugStore = create<DebugStore>((set) => ({
 	isAxisHelperActive: false,
 	isBoxHelperActive: false,
 	isLineSegementMaterialActive: false,
-	isAnnotationActive: false,
+	isExplodedViewActive: false,
+	isMaterialActive: false,
+	isAnnotationActive: true,
 	isCameraBackLerpingActive: false,
 }));
 
@@ -66,9 +70,27 @@ export const toggleIsLineSegmentMaterialActive = () => {
 	});
 };
 
-export const toggleIsAnnotationActive = () => {
+export const toggleIsExplodedViewActive = () => {
 	useDebugStore.setState({
-		isAnnotationActive: !useDebugStore.getState().isAnnotationActive,
+		isExplodedViewActive: !useDebugStore.getState().isExplodedViewActive,
+	});
+};
+
+export const toggleIsMaterialActive = () => {
+	useDebugStore.setState({
+		isMaterialActive: !useDebugStore.getState().isMaterialActive,
+	});
+};
+
+export const toggleIsAnnotationActive = (activeState?: boolean) => {
+	useDebugStore.setState({
+		isAnnotationActive: activeState ? activeState : !useDebugStore.getState().isAnnotationActive,
+	});
+};
+
+export const setIsAnnotationActive = (activeState: boolean) => {
+	useDebugStore.setState({
+		isAnnotationActive: activeState,
 	});
 };
 

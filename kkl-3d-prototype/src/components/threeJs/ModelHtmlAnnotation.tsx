@@ -4,6 +4,7 @@ import { Vector3 } from 'three';
 import styles from './ModelHtmlAnnotation.module.scss';
 import cn from 'classnames';
 import { setHoveredMesh, showAndSelectRoom, useCameraStore } from '../../store/useCameraStore';
+import { handleRoomDataChange } from '../../store/useWizardStore';
 
 type ModelHtmlAnnotationProps = {
 	index: number;
@@ -23,12 +24,13 @@ const ModelHtmlAnnotation = ({
 	annotationPosition,
 }: ModelHtmlAnnotationProps) => {
 	// This holds the local occluded state
-	const [isVisible, setIsVisible] = useState(true);
 	const hoveredMesh = useCameraStore((state) => state.hoveredMesh);
+	const [isVisible, setIsVisible] = useState(true);
+	const isHovered = meshName === hoveredMesh;
 
 	const handleOnPointerDown = () => {
 		showAndSelectRoom(meshName);
-		console.log(meshName);
+		handleRoomDataChange(meshName);
 	};
 
 	// useFrame((state) => {
@@ -53,6 +55,14 @@ const ModelHtmlAnnotation = ({
 	// }
 	// });
 
+	// const getAnnotationScale = () => {
+	// 	if (isVisible && isHovered) {
+	// 		return 1.25;
+	// 	} else if (isVisible || isHovered) {
+	// 		return 1;
+	// 	} else return 0.5;
+	// };
+
 	return (
 		<Html // Hide contents "behind" other meshes
 			occlude
@@ -61,19 +71,28 @@ const ModelHtmlAnnotation = ({
 				setIsVisible(!isVisible);
 				return null;
 			}}
+			// distanceFactor seems to have issues with late post rendering
 			distanceFactor={10}
 			position={annotationPosition ? annotationPosition : new Vector3(0, 0, 0)}
 			// We just interpolate the visible state into css opacity and transforms
-			style={{ transition: 'all 0.2s', opacity: isVisible ? 0.5 : 1, transform: `scale(${isVisible ? 0.75 : 1})` }}
 		>
 			<div
-				className={cn(styles.annotationAndMarkerContainer, {
-					// [styles['annotationAndMarkerContainer--lowOpacity']]: !isVisible,
-					[styles['annotationAndMarkerContainer--hoveredByModel']]: meshName === hoveredMesh,
+				// className={cn(styles.annotationAndMarkerContainer, {
+				// 	[styles['annotationAndMarkerContainer--hoveredByModel']]: meshName === hoveredMesh,
+				// })}
+				className={cn(styles.annotationAndMarker, {
+					[styles['annotationAndMarker--visible']]: isVisible,
+					[styles['annotationAndMarker--invisible']]: !isVisible,
+					[styles['annotationAndMarker--visibleAndHovered']]: isVisible && isHovered,
+					[styles['annotationAndMarker--invisibleAndHovered']]: !isVisible && isHovered,
 				})}
 				onPointerDown={() => handleOnPointerDown()}
-				onPointerOver={() => setHoveredMesh(meshName)}
-				onPointerOut={() => setHoveredMesh(null)}
+				onPointerOver={() => {
+					setHoveredMesh(meshName);
+				}}
+				onPointerOut={() => {
+					setHoveredMesh(null);
+				}}
 			>
 				<div className={styles.marker}>{index}</div>
 				<div className={styles.annotation}>

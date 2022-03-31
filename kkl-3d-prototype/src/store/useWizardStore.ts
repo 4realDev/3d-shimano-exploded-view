@@ -82,9 +82,12 @@ export const updateWizardData = (value: any, inputField: any) => {
 
 export const handleRoomDataChange = (toggledRoomName: string) => {
 	const wizardData = useWizardStore.getState().wizardData;
-	const roomType = getMeshObjectInformationsByMeshName(toggledRoomName)?.info.fittingSideRooms
-		? ROOM_TYPE.mainRooms
-		: ROOM_TYPE.sideRooms;
+
+	// ADJUSTED
+	// const roomType = getMeshObjectInformationsByMeshName(toggledRoomName)?.info.fittingSideRooms
+	// 	? ROOM_TYPE.mainRooms
+	// 	: ROOM_TYPE.sideRooms;
+	const roomType = ROOM_TYPE.mainRooms;
 
 	const mainRoomAdditions = wizardData[roomType];
 

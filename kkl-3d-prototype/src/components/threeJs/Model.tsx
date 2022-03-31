@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from 'react';
-import { Center, useGLTF } from '@react-three/drei';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useAnimations, useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import * as THREE from 'three';
 import { GroupProps } from '@react-three/fiber';
 import { setMeshList, useMeshStore } from '../../store/useMeshStore';
-import { showAndSelectRoom, showRoomsOverview, useCameraStore } from '../../store/useCameraStore';
+import { setHoveredMesh, showAndSelectRoom, showRoomsOverview, useCameraStore } from '../../store/useCameraStore';
 import { INTERACTABLE_MESH_NAMES, roomList } from '../../data/roomData';
 import { handleRoomDataChange, useWizardStore } from '../../store/useWizardStore';
 import { useDebugStore } from '../../store/useDebugStore';
@@ -32,8 +32,6 @@ export type MeshObjectType = {
 };
 
 type ModelProps = {
-	hoveredMesh: string | null;
-	setHoveredMesh: (value: string | null) => void;
 	longPress: boolean;
 };
 
@@ -46,16 +44,24 @@ export const isInteractable = (
 	return meshObject.userData && meshObject.userData.customName;
 };
 
-const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress }) => {
+const Model: React.FC<ModelProps> = ({ longPress }) => {
 	const meshList = useMeshStore((state) => state.meshList);
 	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
 	const filteredMeshes = useCameraStore((state) => state.filteredMeshes);
+	const hoveredMesh = useCameraStore((state) => state.hoveredMesh);
 	const wizardStep = useWizardStore((state) => state.step);
+
 	const isLineSegmentMaterialActive = useDebugStore((state) => state.isLineSegementMaterialActive);
+	const isExplodedViewActive = useDebugStore((state) => state.isExplodedViewActive);
+	const isMaterialActive = useDebugStore((state) => state.isMaterialActive);
 	const isAnnotationActive = useDebugStore((state) => state.isAnnotationActive);
+	const isBoxHelperActive = useDebugStore((state) => state.isBoxHelperActive);
 
 	const group = useRef<GroupProps>();
-	const model = useGLTF('/model/house-model.glb') as DreiGLTF;
+	const { nodes, animations } = useGLTF('/model/gear.glb') as DreiGLTF;
+	const { actions, names, mixer } = useAnimations(animations, group as any);
+	mixer.addEventListener('finished', function (e) {});
+	// const mixer = new THREE.AnimationMixer(group as any);
 
 	const colorModelDefault = '#D4D4D4';
 	const colorModelChildrenDefault = '#5d5d5d';
@@ -65,63 +71,127 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 	const colorSelectedOrHoveredSideRoom = '#cbd5ac';
 
 	useEffect(() => {
-		const initialMeshList = convertGLTFToMeshList(model.nodes);
+		const initialMeshList = convertGLTFToMeshList(nodes);
 		setMeshList(initialMeshList);
-	}, [model.nodes]);
+	}, [nodes]);
+
+	// I found a fix for animation.loop = false. You need to play() the animation first, then set the timeScale. If you want to play it from its current position, just do:
+
+	// INTERSECTED.animation.play(INTERSECTED.animation.currentTime);
+	// INTERSECTED.animation.timeScale = -animSpeed;
+
+	// https://gist.github.com/rtpHarry/2d41811d04825935039dfc075116d0ad
+	// https://www.youtube.com/watch?v=q7yH_ajINpA
+
+	useEffect(() => {
+		const clips = animations;
+		// Reset and fade in animation after an index has been changed
+		if (isExplodedViewActive) {
+			names.forEach((actionName, index) => {
+				const action = actions?.[actionName];
+				if (action) {
+					action.reset();
+					// action.setDuration(-1);
+					action.setEffectiveTimeScale(1);
+					action.setLoop(THREE.LoopOnce, 1);
+					action.clampWhenFinished = true;
+					action.play();
+				}
+			});
+			// clips.forEach((clip: THREE.AnimationClip) => {
+			// 	const action = mixer.clipAction(clip, group.current as any);
+			// 	action.clampWhenFinished = true;
+			// 	action.play();
+			// 	// effectiveTimeScale = mixer.clipAction(clip, group.current as any).getEffectiveTimeScale();
+			// });
+		} else {
+			names.forEach((actionName) => {
+				const action = actions?.[actionName];
+				if (action) {
+					// if (group.current && group.current.position) {
+					// 	if (group.current.position instanceof THREE.Vector3) {
+					// 		group.current.position.x = 0;
+					// 		group.current.position.y = -10;
+					// 		group.current.position.z = 0;
+					// 	}
+					// }
+					action.paused = false;
+					action.timeScale = -1;
+					action.setEffectiveTimeScale(-1);
+					action.setLoop(THREE.LoopOnce, 1);
+					action.clampWhenFinished = true;
+					action.play();
+				}
+			});
+			// mixer.stopAllAction();
+			// clips.forEach((clip: any) => {
+			// 	mixer.clipAction(clip, group.current as any).stop();
+			// 	mixer.clipAction(clip, group.current as any).setEffectiveTimeScale(effectiveTimeScale);
+			// });
+		}
+	}, [isExplodedViewActive]);
 
 	/**
 	 * Returns color hex value according to mesh objects state and wizardStep (hovered, selected, included in filteredMeshes array).
 	 * @param meshObject The mesh object from which the color will be determined.
 	 * @return The resulting color hex value according to meshObject's state.
 	 */
-	const getMeshColor = (meshObject: MeshObjectType) => {
-		let colorFiltered;
-		let colorSelectedOrHovered;
-		const hasFittingSideRoom = roomList.find((room) => room.model.meshName === meshObject.name)?.info.fittingSideRooms;
-		const isHovered = hoveredMesh === meshObject.name;
-		const isSelected = selectedMeshes.includes(meshObject.name);
+	const getMeshColor = useCallback(
+		(meshObject: MeshObjectType) => {
+			let colorFiltered;
+			let colorSelectedOrHovered;
+			const hasFittingSideRoom = roomList.find((room) => room.model.meshName === meshObject.name)?.info
+				.fittingSideRooms;
+			const isHovered = hoveredMesh === meshObject.name;
+			const isSelected = selectedMeshes.includes(meshObject.name);
 
-		// if room has fittingSideRooms, it is a mainRoom and receives the hovered / active color for main rooms
-		// else it is a sideRoom and receives the hovered / active color for side rooms
-		if (hasFittingSideRoom) {
-			colorFiltered = colorFilteredMainRoom;
-			colorSelectedOrHovered = colorSelectedOrHoveredMainRoom;
-		} else {
-			colorFiltered = colorFilteredSideRoom;
-			colorSelectedOrHovered = colorSelectedOrHoveredSideRoom;
-		}
+			// if room has fittingSideRooms, it is a mainRoom and receives the hovered / active color for main rooms
+			// else it is a sideRoom and receives the hovered / active color for side rooms
+			if (hasFittingSideRoom) {
+				colorFiltered = colorFilteredMainRoom;
+				colorSelectedOrHovered = colorSelectedOrHoveredMainRoom;
+			} else {
+				colorFiltered = colorFilteredSideRoom;
+				colorSelectedOrHovered = colorSelectedOrHoveredSideRoom;
+			}
 
-		// special state for the selection through the model, without filtering in the wizard before
-		if (wizardStep === 0) return isSelected || isHovered ? colorSelectedOrHovered : meshObject.color;
+			// special state for the selection through the model, without filtering in the wizard before
+			if (wizardStep === 0) return isSelected || isHovered ? colorSelectedOrHovered : meshObject.color;
 
-		// normal state which differentiates between filtered, hovered and selected meshes
-		if (filteredMeshes.includes(meshObject.name)) {
-			return isSelected || isHovered ? colorSelectedOrHovered : colorFiltered;
-		} else {
-			return meshObject.color;
-		}
-	};
+			// normal state which differentiates between filtered, hovered and selected meshes
+			if (filteredMeshes.includes(meshObject.name)) {
+				return isSelected || isHovered ? colorSelectedOrHovered : colorFiltered;
+			} else {
+				return meshObject.color;
+			}
+		},
+		[filteredMeshes, hoveredMesh, selectedMeshes, wizardStep]
+	);
 
 	/**
 	 * Returns float opacity value according to mesh objects state and wizardStep (hovered, selected, included in filteredMeshes array).
 	 * @param meshObject The mesh object from which the opacity will be determined.
 	 * @return The resulting opacity value according to meshObject's state.
 	 */
-	const getMeshMaterialOpacity = (meshObject: MeshObjectType) => {
-		const isHovered = hoveredMesh === meshObject.name;
-		const isSelected = selectedMeshes.includes(meshObject.name);
+	const getMeshMaterialOpacity = useCallback(
+		(meshObject: MeshObjectType) => {
+			const isHovered = hoveredMesh === meshObject.name;
+			const isSelected = selectedMeshes.includes(meshObject.name);
 
-		// default state, before a room was selected
-		if (selectedMeshes.length === 0) return 1.0;
-		// special state for the selection through the model, without filtering in the wizard before
-		if (wizardStep === 0) return isSelected || isHovered ? 1.0 : 0.35;
-		// normal state which differentiates between filtered, hovered and selected meshes
-		if (filteredMeshes.includes(meshObject.name)) {
-			return isSelected || isHovered ? 1.0 : 0.7;
-		} else {
-			return 0.35;
-		}
-	};
+			// default state, before a room was selected
+			if (selectedMeshes.length === 0) return 1.0;
+			// special state for the selection through the model, without filtering in the wizard before
+			if (wizardStep === 0) return isSelected || isHovered ? 1.0 : 0.35;
+			// normal state which differentiates between filtered, hovered and selected meshes
+			// if (filteredMeshes.includes(meshObject.name)) {
+			// 	return isSelected || isHovered ? 1.0 : 0.5;
+			// }
+			else {
+				return 0.35;
+			}
+		},
+		[filteredMeshes, hoveredMesh, selectedMeshes, wizardStep]
+	);
 
 	const convertGLTFToMeshList = (nodes: { [name: string]: THREE.Mesh }) => {
 		const initialMeshList: MeshObjectType[] = [];
@@ -146,7 +216,8 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 			if (mesh.children.length !== 0) {
 				mesh.children.forEach((child: any) => {
 					const converterMeshChild: MeshObjectType = {
-						name: isInteractable(child) ?? child.name,
+						// name: isInteractable(child) ?? child.name,
+						name: child.name,
 						geometry: child.geometry,
 						material: child.material as any,
 						color: colorModelChildrenDefault,
@@ -165,12 +236,16 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 
 			if (mesh.parent?.name === 'Scene') {
 				const convertedMeshParent: MeshObjectType = {
-					name: isInteractable(mesh) ?? mesh.name,
+					// name: isInteractable(mesh) ?? mesh.name,
+					name: mesh.name,
 					geometry: mesh.geometry,
 					material: mesh.material as any,
 					color: colorModelDefault,
 					opacity: 1,
 					isVisible: true,
+					position: mesh.position,
+					rotation: mesh.rotation,
+					scale: mesh.scale,
 					children: children,
 				};
 				isInteractable(mesh) && (convertedMeshParent.userData = { customName: mesh.userData.customName });
@@ -181,156 +256,206 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 		return initialMeshList;
 	};
 
+	const getMeshMaterialOpacityTwo = useCallback(
+		(meshObject: MeshObjectType) => {
+			const isHovered = hoveredMesh === meshObject.name;
+			const isSelected = selectedMeshes.includes(meshObject.name);
+			meshObject.material.needsUpdate = true;
+
+			// default state, before a room was selected
+			if (selectedMeshes.length === 0) return 1.0;
+			// special state for the selection through the model, without filtering in the wizard before
+			if (isSelected || isHovered) return 1.0;
+			else return 0.025;
+		},
+		[hoveredMesh, selectedMeshes]
+	);
+
 	// render rooms children elements (equipment & chair_formation)
-	const renderMeshChild = (childMeshObject: MeshObjectType, parentMeshObject: MeshObjectType) => {
-		return (
-			<mesh
-				key={childMeshObject.name}
-				name={childMeshObject.name}
-				visible={childMeshObject.isVisible}
-				userData={childMeshObject.userData}
-				material={childMeshObject.material}
-				position={childMeshObject.position}
-				rotation={childMeshObject.rotation}
-				scale={childMeshObject.scale}
-			>
-				<bufferGeometry attach='geometry' {...childMeshObject.geometry} />
-				<meshStandardMaterial
-					attach='material'
-					color={childMeshObject.color}
-					transparent
+	const renderMeshChild = useCallback(
+		(childMeshObject: MeshObjectType, parentMeshObject: MeshObjectType) => {
+			return (
+				<mesh
+					key={childMeshObject.name}
+					name={childMeshObject.name}
 					visible={childMeshObject.isVisible}
-					opacity={getMeshMaterialOpacity(parentMeshObject)}
-					metalness={0.5}
-				/> */}
-				{isLineSegmentMaterialActive && (
-					<lineSegments>
-						<edgesGeometry attach='geometry' args={[childMeshObject.geometry]} />
-						<lineBasicMaterial color='black' attach='material' transparent />
-					</lineSegments>
-				)}
-			</mesh>
-		);
-	};
-
-	const renderMesh = (meshObject: MeshObjectType) => {
-		return (
-			<mesh
-				key={meshObject.name}
-				name={meshObject.name}
-				visible={meshObject.isVisible}
-				userData={meshObject.userData}
-				material={meshObject.material}
-				// Pointer on mesh (similar to onHover)
-				onPointerOver={
-					meshObject.userData === undefined
-						? undefined
-						: (event) => {
-								// Only visible meshes with a userData.customName (defined inside 3D Software) can be hovered
-								if (event.object.visible && isInteractable(event.object) && longPress === false) {
-									event.stopPropagation();
-									setHoveredMesh(event.object.name);
-								}
-						  }
-				}
-				// Pointer outside of mesh
-				// if pointer is outside of a mesh and does not intersect with any other mesh
-				// set the hoveredElement to null
-				onPointerOut={
-					meshObject.userData === undefined
-						? undefined
-						: (event) => {
-								event.intersections.length === 0 && setHoveredMesh(null);
-						  }
-				}
-				// Pointer click on mesh (similar to onClick)
-				// stopPropagation and set current object inside state to the one clicked
-				onPointerDown={
-					meshObject.userData === undefined
-						? undefined
-						: (event) => {
-								// Only visible meshes with a userData.customName (defined inside 3D Software) can be clicked
-								if (event.object.visible) {
-									event.stopPropagation();
-									const customName = event.object.userData.customName;
-
-									// if the roof is clicked, show the rooms overview
-									if (customName === INTERACTABLE_MESH_NAMES.roof) {
-										showRoomsOverview();
-									}
-									// Do not set the clicked room as activeRoom in wizardData when wizardStep === 0
-									else if (wizardStep === 0 || wizardStep === 4) {
-										showAndSelectRoom(event.object.userData.customName);
-									}
-									// if clicked mesh is inside filteredMeshes
-									// Add or overwrite the wizardData with the clicked RoomData
-									// This will set the clicked room as activeRoom as well,
-									// which will trigger the opening and scrolling to the corresponding AccordionItem
-									else if (wizardStep > 0 && filteredMeshes.includes(customName)) {
-										handleRoomDataChange(customName);
-										// Select and show the clicked room
-										showAndSelectRoom(customName);
-									}
-								}
-						  }
-				}
-			>
-				<bufferGeometry attach='geometry' {...meshObject.geometry} />
-				<meshStandardMaterial
-					attach='material'
-					color={getMeshColor(meshObject)}
-					transparent
+					userData={childMeshObject.userData}
+					material={childMeshObject.material}
+					position={childMeshObject.position}
+					rotation={childMeshObject.rotation}
+					scale={childMeshObject.scale}
+				>
+					<bufferGeometry attach='geometry' {...childMeshObject.geometry} />
+					{!isMaterialActive && (
+						<meshStandardMaterial
+							attach='material'
+							color={childMeshObject.color}
+							transparent
+							visible={childMeshObject.isVisible}
+							opacity={getMeshMaterialOpacity(parentMeshObject)}
+							metalness={0.5}
+						/>
+					)}
+					{isLineSegmentMaterialActive && (
+						<lineSegments>
+							<edgesGeometry attach='geometry' args={[childMeshObject.geometry]} />
+							<lineBasicMaterial color='black' attach='material' transparent />
+						</lineSegments>
+					)}
+				</mesh>
+			);
+		},
+		[getMeshMaterialOpacity, isLineSegmentMaterialActive, isMaterialActive]
+	);
+	console.log(isAnnotationActive);
+	const renderMesh = useCallback(
+		(meshObject: MeshObjectType, index: number) => {
+			meshObject.material.transparent = true;
+			meshObject.material.opacity = getMeshMaterialOpacityTwo(meshObject);
+			meshObject.material.needsUpdate = true;
+			return (
+				<mesh
+					key={meshObject.name}
+					name={meshObject.name}
 					visible={meshObject.isVisible}
-					opacity={getMeshMaterialOpacity(meshObject)}
-					metalness={0.5}
-				/> */}
-				{isLineSegmentMaterialActive && (
-					<lineSegments>
-						<edgesGeometry attach='geometry' args={[meshObject.geometry]} />
-						<lineBasicMaterial color='black' attach='material' transparent />
-					</lineSegments>
-				)}
-				<ModelHtmlAnnotation title={meshObject.name} description='TEST DESCRIPTION' position={meshObject.position} />
-			</mesh>
+					userData={meshObject.userData}
+					material={meshObject.material}
+					position={meshObject.position}
+					rotation={meshObject.rotation}
+					scale={meshObject.scale}
+					// Pointer on mesh (similar to onHover)
+					onPointerOver={
+						meshObject.userData === undefined
+							? undefined
+							: (event) => {
+									// Only visible meshes with a userData.customName (defined inside 3D Software) can be hovered
+									// if (event.object.visible && isInteractable(event.object) && longPress === false) {
+									if (event.object.visible && longPress === false) {
+										event.stopPropagation();
+										setHoveredMesh(event.object.name);
+									}
+							  }
+					}
+					// Pointer outside of mesh
+					// if pointer is outside of a mesh and does not intersect with any other mesh
+					// set the hoveredElement to null
+					onPointerOut={
+						meshObject.userData === undefined
+							? undefined
+							: (event) => {
+									event.intersections.length === 0 && setHoveredMesh(null);
+							  }
+					}
+					// Pointer click on mesh (similar to onClick)
+					// stopPropagation and set current object inside state to the one clicked
+					onPointerDown={
+						meshObject.userData === undefined
+							? undefined
+							: (event) => {
+									// Only visible meshes with a userData.customName (defined inside 3D Software) can be clicked
+									if (event.object.visible) {
+										event.stopPropagation();
+										// const customName = event.object.userData.customName;
+
+										// *** NEW WITHOUT CUSTOMNAME ***/
+										handleRoomDataChange(meshObject.name);
+										showAndSelectRoom(meshObject.name);
+
+										// if the roof is clicked, show the rooms overview
+										// if (customName === INTERACTABLE_MESH_NAMES.roof) {
+										// 	showRoomsOverview();
+										// }
+
+										// Do not set the clicked room as activeRoom in wizardData when wizardStep === 0
+										// else if (wizardStep === 0 || wizardStep === 4) {
+										// 	showAndSelectRoom(event.object.userData.customName);
+										// }
+
+										// if clicked mesh is inside filteredMeshes
+										// Add or overwrite the wizardData with the clicked RoomData
+										// This will set the clicked room as activeRoom as well,
+										// which will trigger the opening and scrolling to the corresponding AccordionItem
+										// else if (wizardStep > 0 && filteredMeshes.includes(customName)) {
+										// 	handleRoomDataChange(customName);
+										// 	// Select and show the clicked room
+										// 	showAndSelectRoom(customName);
+										// }
+									}
+							  }
+					}
+				>
+					<bufferGeometry attach='geometry' {...meshObject.geometry} />
+					{isMaterialActive && (
+						<meshStandardMaterial
+							attach='material'
+							color={getMeshColor(meshObject)}
+							transparent
+							visible={meshObject.isVisible}
+							opacity={getMeshMaterialOpacity(meshObject)}
+							metalness={0.5}
+						/>
+					)}
+					{isLineSegmentMaterialActive && (
+						<lineSegments>
+							<edgesGeometry attach='geometry' args={[meshObject.geometry]} />
+							<lineBasicMaterial color='black' attach='material' transparent />
+						</lineSegments>
+					)}
 					{getMeshObjectInformationsByMeshName(meshObject.name)?.model.markerPos && isAnnotationActive && (
 						<ModelHtmlAnnotation
 							index={index}
-							title={meshObject.name}
+							title={getMeshObjectInformationsByMeshName(meshObject.name)?.info.title}
 							description='TEST DESCRIPTION'
 							meshName={meshObject.name}
 							meshPosition={meshObject.position!!}
-							annotationPosition={getMeshObjectInformationsByMeshName(meshObject.name)?.model.markerPos}
+							annotationPosition={
+								isExplodedViewActive
+									? getMeshObjectInformationsByMeshName(meshObject.name)?.model.markerPosEv
+									: getMeshObjectInformationsByMeshName(meshObject.name)?.model.markerPos
+							}
 						/>
 					)}
+				</mesh>
+			);
+		},
+		[
+			selectedMeshes,
+			getMeshMaterialOpacityTwo,
+			isMaterialActive,
+			getMeshColor,
+			getMeshMaterialOpacity,
+			isLineSegmentMaterialActive,
+			isAnnotationActive,
+			isExplodedViewActive,
+			longPress,
+		]
+	);
+
+	const modelHTML = useMemo(() => {
+		return meshList.length === 0 ? null : (
+			<group ref={group} dispose={null} position={[0, -5, 0]} scale={[0.5, 0.5, 0.5]}>
+				{meshList.map((parentMeshObject: MeshObjectType, index: number) => {
+					return (
+						<mesh key={index}>
+							{renderMesh(parentMeshObject, index)}
+							{parentMeshObject.children !== undefined &&
+								parentMeshObject.children?.length > 0 &&
+								parentMeshObject.children.map((childMeshObject) => renderMeshChild(childMeshObject, parentMeshObject))}
+						</mesh>
+					);
+				})}
+			</group>
 		);
-	};
+	}, [meshList, renderMesh, renderMeshChild]);
 
 	return (
 		<>
-			{useDebugStore((state) => state.isBoxHelperActive) && (
-				<primitive object={new THREE.BoxHelper(group.current as any, 'black')} />
-			)}
-			{/* // Drei Center: Calculates a boundary box and centers its children accordingly. */}
-			<Center>
-				<group scale={0.0075} position={[0, 0, 0]} ref={group}>
-					{meshList.map((parentMeshObject: MeshObjectType, index: number) => {
-						return (
-							<mesh key={index}>
-								{renderMesh(parentMeshObject)}
-								{parentMeshObject.children !== undefined &&
-									parentMeshObject.children?.length > 0 &&
-									parentMeshObject.children.map((childMeshObject) =>
-										renderMeshChild(childMeshObject, parentMeshObject)
-									)}
-							</mesh>
-						);
-					})}
-				</group>
-			</Center>
+			{isBoxHelperActive && <primitive object={new THREE.BoxHelper(group.current as any, 'black')} />}
+			{modelHTML}
 		</>
 	);
 };
 
 export default Model;
 
-useGLTF.preload('/model/house-model.glb');
+useGLTF.preload('/model/gear.glb');

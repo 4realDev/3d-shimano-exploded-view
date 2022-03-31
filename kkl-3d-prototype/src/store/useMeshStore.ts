@@ -1,5 +1,5 @@
 import create from 'zustand';
-import { isInteractable, MeshObjectType } from '../components/threeJs/Model';
+import { MeshObjectType } from '../components/threeJs/Model';
 import { CHAIR_FORMATION, EQUIPMENT, INTERACTABLE_MESH_NAMES, ROOM_ADDITIONS_CATEGORY } from '../data/roomData';
 
 interface MeshState {
@@ -35,7 +35,7 @@ export const resetMeshVisibility = () => {
 			...item,
 			isVisible: true,
 			children: array[i].children?.map((child) => {
-				return isInteractable(child) ? { ...child, isVisible: false } : { ...child };
+				return { ...child, isVisible: false };
 			}),
 		};
 	});
@@ -64,7 +64,7 @@ export const toggleMeshChildVisibility = (
 				isVisible:
 					child.name === toggledMeshName
 						? !child.isVisible
-						: child.name.substr(0, child.name.lastIndexOf('_')) === category && isInteractable(child)
+						: child.name.substr(0, child.name.lastIndexOf('_')) === category
 						? false
 						: child.isVisible,
 			};

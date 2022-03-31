@@ -178,22 +178,24 @@ const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelection
 		toggleMeshChildVisibility(toggledRoomName, toggledMeshName, category);
 	};
 
+	// ADJUSTED
 	const renderAccordionItems = () => {
 		if (accordionItemsLoading) {
 			return <CircularProgress size={60} />;
 		}
-		if (filteredMeshes.length === 0) {
-			return (
-				<NoResults
-					message='Leider entspricht kein Raum den angegebenen Filterkriterien.'
-					hint='Sie können aber jeder Zeit einen Schritt zurück gehen und ihre Filterkriterien anpassen.'
-				/>
-			);
-		}
+		// if (filteredMeshes.length === 0) {
+		// 	return (
+		// 		<NoResults
+		// 			message='Leider entspricht kein Raum den angegebenen Filterkriterien.'
+		// 			hint='Sie können aber jeder Zeit einen Schritt zurück gehen und ihre Filterkriterien anpassen.'
+		// 		/>
+		// 	);
+		// }
 
 		return (
 			<Accordion
-				roomList={filteredRoomMeshes}
+				// roomList={filteredRoomMeshes}
+				roomList={roomList}
 				activeRoom={wizardData.activeMainRoom}
 				roomAdditionsData={wizardData.mainRooms}
 				handleOnOpen={handleOnOpen}

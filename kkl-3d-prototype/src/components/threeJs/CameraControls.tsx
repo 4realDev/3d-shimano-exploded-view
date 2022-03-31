@@ -1,6 +1,6 @@
 import { PerspectiveCameraProps, useFrame, Vector3 } from '@react-three/fiber';
 import * as THREE from 'three';
-import { OrbitControls, OrbitControlsProps, PerspectiveCamera } from '@react-three/drei';
+import { Html, OrbitControls, OrbitControlsProps, PerspectiveCamera } from '@react-three/drei';
 import { defaultCameraPosition, setHasAnimation, useCameraStore } from '../../store/useCameraStore';
 import { useDebugStore } from '../../store/useDebugStore';
 
@@ -67,10 +67,10 @@ const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }:
 			/>
 			<OrbitControls
 				ref={controls as any}
-				enableZoom={false}
+				enableZoom={true}
 				enablePan={false}
-				maxPolarAngle={Math.PI / 2}
-				autoRotate={idleState}
+				// maxPolarAngle={Math.PI / 2}
+				// autoRotate={idleState}
 				autoRotateSpeed={0.5}
 			/>
 		</>
