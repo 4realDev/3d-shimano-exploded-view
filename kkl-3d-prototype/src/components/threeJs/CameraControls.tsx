@@ -31,14 +31,15 @@ const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }:
 	};
 
 	const checkAnimationFinished = (target: Vector3 | undefined) => {
+		const animationStopThreshold = 0.025;
 		if (
 			target instanceof THREE.Vector3 &&
-			target.x > cameraPosition.x - 0.15 &&
-			target.y > cameraPosition.y - 0.15 &&
-			target.z > cameraPosition.z - 0.15 &&
-			target.x < cameraPosition.x + 0.15 &&
-			target.y < cameraPosition.y + 0.15 &&
-			target.z < cameraPosition.z + 0.15
+			target.x > cameraPosition.x - animationStopThreshold &&
+			target.y > cameraPosition.y - animationStopThreshold &&
+			target.z > cameraPosition.z - animationStopThreshold &&
+			target.x < cameraPosition.x + animationStopThreshold &&
+			target.y < cameraPosition.y + animationStopThreshold &&
+			target.z < cameraPosition.z + animationStopThreshold
 		) {
 			setHasAnimation(false);
 		}

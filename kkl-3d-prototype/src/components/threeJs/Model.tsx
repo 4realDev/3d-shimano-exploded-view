@@ -8,8 +8,6 @@ import { showAndSelectRoom, showRoomsOverview, useCameraStore } from '../../stor
 import { INTERACTABLE_MESH_NAMES, roomList } from '../../data/roomData';
 import { handleRoomDataChange, useWizardStore } from '../../store/useWizardStore';
 import { useDebugStore } from '../../store/useDebugStore';
-import ModelHtmlAnnotation from './ModelHtmlAnnotation';
-import { getMeshObjectInformationsByMeshName } from '../../utils/room';
 
 // https://githubmemory.com/repo/pmndrs/drei/issuesF/469
 export type DreiGLTF = GLTF & {
@@ -52,7 +50,6 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 	const filteredMeshes = useCameraStore((state) => state.filteredMeshes);
 	const wizardStep = useWizardStore((state) => state.step);
 	const isLineSegmentMaterialActive = useDebugStore((state) => state.isLineSegementMaterialActive);
-	const isAnnotationActive = useDebugStore((state) => state.isAnnotationActive);
 
 	const group = useRef<GroupProps>();
 	const model = useGLTF('/model/house-model.glb') as DreiGLTF;
@@ -291,16 +288,6 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 					</lineSegments>
 				)}
 			</mesh>
-					{getMeshObjectInformationsByMeshName(meshObject.name)?.model.markerPos && isAnnotationActive && (
-						<ModelHtmlAnnotation
-							index={index}
-							title={meshObject.name}
-							description='TEST DESCRIPTION'
-							meshName={meshObject.name}
-							meshPosition={meshObject.position!!}
-							annotationPosition={getMeshObjectInformationsByMeshName(meshObject.name)?.model.markerPos}
-						/>
-					)}
 		);
 	};
 
