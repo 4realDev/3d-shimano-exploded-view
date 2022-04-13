@@ -62,6 +62,7 @@ const Model: React.FC<ModelProps> = ({ longPress }) => {
 	const { actions, names, mixer } = useAnimations(animations, group as any);
 	mixer.addEventListener('finished', function (e) {});
 	// const mixer = new THREE.AnimationMixer(group as any);
+	const { nodes, animations } = useGLTF('./model/gear.glb') as DreiGLTF;
 
 	const colorModelDefault = '#D4D4D4';
 	const colorModelChildrenDefault = '#5d5d5d';
@@ -458,4 +459,4 @@ const Model: React.FC<ModelProps> = ({ longPress }) => {
 
 export default Model;
 
-useGLTF.preload('/model/gear.glb');
+useGLTF.preload('./model/gear.glb');
