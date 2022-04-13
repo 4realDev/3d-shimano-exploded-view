@@ -52,7 +52,7 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 	const isLineSegmentMaterialActive = useDebugStore((state) => state.isLineSegementMaterialActive);
 
 	const group = useRef<GroupProps>();
-	const model = useGLTF('/model/house-model.glb') as DreiGLTF;
+	const model = useGLTF('./model/house-model.glb') as DreiGLTF;
 
 	const colorModelDefault = '#D4D4D4';
 	const colorModelChildrenDefault = '#5d5d5d';
@@ -319,4 +319,4 @@ const Model: React.FC<ModelProps> = ({ hoveredMesh, setHoveredMesh, longPress })
 
 export default Model;
 
-useGLTF.preload('/model/house-model.glb');
+useGLTF.preload('./model/house-model.glb');
