@@ -1,0 +1,78 @@
+@import '../../../styles/viewport.scss';
+@import '../../../styles/colors.scss';
+
+.accordionItem__content {
+	display: flex;
+	flex-direction: column;
+	color: black;
+	line-height: 20px;
+	text-align: start;
+
+	.title {
+		font-size: 16px;
+		line-height: 22px;
+		font-weight: 700;
+		color: $color-font-title;
+		padding-bottom: 8px;
+	}
+
+	.detailsRow {
+		display: flex;
+		color: $color-font-body;
+
+		&__name{
+			color: $color-font-body;
+			width: 120px;
+			font-size: 14px;
+		}
+
+		&__value {
+			color: $color-font-title;
+			font-size: 14px;
+		}
+
+		&__currency {
+			padding-top: 8px;
+			color: $color-font-title;
+			font-size: 18px;
+			line-height: 26px;
+			margin-right: 8px;
+		}
+
+		&__detailsPDF {
+			color: $color-primary;
+			font-size: 14px;
+		}
+
+		&__price {
+			margin-top: 8px;
+			color: $color-font-title;
+			font-size: 18px;
+			line-height: 26px;
+			font-weight: 700;
+		}
+	}
+
+	.annotationButtonContainer{
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: flex-end;
+
+		&--extraButtonPadding {
+			padding-top: 12px;
+		}
+
+		.cartButton {
+			cursor: pointer;
+			border: none;
+			outline: none;
+			height: 40px;
+			width: 40px;
+			background-color: #2364C2;
+		}
+	}
+
+
+
+}

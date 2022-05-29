@@ -1,18 +1,15 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import cn from 'classnames';
 import Chevron from '../../icons/Chevron';
-import CheckMark from '../../icons/CheckMark';
 import styles from './AccordionItem.module.scss';
-import { ROOM_FITTINGS } from '../../../data/roomData';
 import useWindowDimensions from '../../../hooks/useWindowDimensions';
-import { getFittingIcon, getFittingText } from '../../../utils/room';
+import { toggleIsAnnotationActive, useDebugStore } from '../../../store/useDebugStore';
+import { style } from '@mui/system';
 
 type AccordionItemProps = {
 	title: string;
-	personCapacity: number | number[];
-	area: number;
-	img: string;
-	roomFittings: ROOM_FITTINGS[] | undefined;
+	articleIndex: number;
+	articleNr: string;
 	roomMeshName: string;
 	activeRoom: string | null;
 	handleOnOpen: (meshNameCorrespondingToId: string) => void;
@@ -22,10 +19,8 @@ type AccordionItemProps = {
 
 const AccordionItem = ({
 	title,
-	personCapacity,
-	area,
-	img,
-	roomFittings,
+	articleIndex,
+	articleNr,
 	roomMeshName,
 	activeRoom,
 	handleOnOpen,
@@ -43,6 +38,8 @@ const AccordionItem = ({
 		var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 		return (v * h) / 100;
 	};
+
+	const isExplodedViewActive = useDebugStore((state) => state.isExplodedViewActive);
 
 	// Distance which results of the className={styles.canvas} applied to ModelCanvas
 	// ModelCanvas is placed above the RoomSelection className={styles.container} on mobile and tablet
@@ -101,72 +98,38 @@ const AccordionItem = ({
 		if (contentHeight === 0) {
 			content.current && setContentHeight(content.current.scrollHeight);
 			handleOnOpen(roomMeshName);
+			toggleIsAnnotationActive(false);
 		} else {
 			setContentHeight(0);
 			handleOnClose(roomMeshName);
+			isExplodedViewActive && toggleIsAnnotationActive(true);
 		}
 	};
 
-	const renderDetails = (hasSeats?: boolean) => {
-		return (
-			<div className={styles.accordionItem__roomInfoContainer}>
-				<div className={styles.accordionItem__roomInfoItem}>
-					<CheckMark className={styles.accordionItem__roomInfoCheckMark} width={16} fill='#ffffff' />
-					<span>
-						{Array.isArray(personCapacity) ? `${personCapacity[0]} - ${personCapacity[1]}` : personCapacity}
-						{hasSeats ? ' Sitzplätze' : ' Stehplätze'}
-					</span>
-				</div>
-				<div className={styles.accordionItem__roomInfoItem}>
-					<CheckMark className={styles.accordionItem__roomInfoCheckMark} width={16} fill='#ffffff' />
-					<span>{area} m²</span>
-				</div>
-			</div>
-		);
-	};
-
-	const renderDetailsIcons = () => {
-		return (
-			<div className={styles.accordionItem__fittingsContainer}>
-				{roomFittings?.map((fitting, index) => {
-					// do not render seats icon but keep it inside ROOM_FITTINGS
-					return fitting.includes(ROOM_FITTINGS.seats) ? null : (
-						<div key={index} className={styles.accordionItem__fittingsItem}>
-							<div key={index} className={styles.accordionItem__fittingsIcon}>
-								{getFittingIcon(fitting)}
-							</div>
-							<span>{getFittingText(fitting)}</span>
-						</div>
-					);
-				})}
-			</div>
-		);
-	};
-
 	return (
-		<>
-			<button className={cn(styles.accordionItem, { [styles['accordionItem--active']]: activeRoom === roomMeshName })}>
-				<div className={styles.accordionItem__header} onClick={() => handleClick(content)}>
-					<div className={styles.accordionItem__infoColumn}>
-						<h1 className={styles.accordionItem__title}>{title}</h1>
-						{renderDetails(roomFittings?.includes(ROOM_FITTINGS.seats))}
-						{renderDetailsIcons()}
-					</div>
-					<img className={styles.accordionItem__image} src={img} alt={title} />
-					<Chevron
-						className={cn(styles.accordionItem__chevronIcon, {
-							[styles['accordionItem--rotate']]: contentHeight === 0,
-						})}
-						width={24}
-						fill={contentHeight === 0 ? '#fff' : '#ffef00bf'}
-					/>
+		<button className={cn(styles.accordionItem, { [styles['accordionItem--active']]: activeRoom === roomMeshName })}>
+			<div className={styles.accordionItem__header} onClick={() => handleClick(content)}>
+				<div className={styles.accordionItem__infoColumn}>
+					<h1 className={styles.accordionItem__title}>
+						<span className={styles.accordionItem__articleIndex}>{articleIndex}. </span>
+						{title}
+					</h1>
+					{/* {renderDetails(roomFittings?.includes(ROOM_FITTINGS.seats))} */}
+					{/* {renderDetailsIcons()} */}
 				</div>
+				<Chevron
+					className={cn(styles.accordionItem__chevronIcon, {
+						[styles['accordionItem--rotate']]: contentHeight === 0,
+					})}
+					width={16}
+					fill={contentHeight === 0 ? '#fff' : '#ffef00bf'}
+				/>
+			</div>
 
-				<div ref={content} className={cn(styles.accordionItem__content)} style={{ maxHeight: `${contentHeight}px` }}>
-					{children}
-				</div>
-			</button>
-		</>
+			<div ref={content} className={cn(styles.accordionItem__content)} style={{ maxHeight: `${contentHeight}px` }}>
+				{children}
+			</div>
+		</button>
 	);
 };
 

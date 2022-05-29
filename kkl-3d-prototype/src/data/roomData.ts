@@ -12,15 +12,11 @@ export type RoomFetchedDataType = {
 	};
 	info: {
 		title: string;
-		personCapacity: number | [number, number];
-		area: number;
-		img: string;
-		chairFormations?: { name: CHAIR_FORMATION; capacity: number }[];
-		equipment?: EQUIPMENT[];
-		fittings?: ROOM_FITTINGS[];
-		fittingEventTypes?: EVENT_TYPES[];
-		fittingSideRooms?: INTERACTABLE_MESH_NAMES[];
-		bookedDates: { start: string; end: string }[];
+		articleIndex: number;
+		articleNr: string;
+		category: string;
+		group: string;
+		price: number;
 	};
 };
 
@@ -36,6 +32,7 @@ export enum INTERACTABLE_MESH_NAMES {
 	businessMediaRoom = 'derailleur03',
 	auditorium = 'derailleur05',
 	entryFoyer = 'derailleur04',
+	newPart = 'derailleur15',
 	roof = 'roof',
 }
 
@@ -90,93 +87,75 @@ export const roomList: RoomFetchedDataType[] = [
 		},
 		info: {
 			title: 'Unteres Zahnrad',
-			personCapacity: 1898,
-			area: 17823,
-			chairFormations: [{ name: CHAIR_FORMATION.concert, capacity: 1898 }],
-			img: './images/Konzertsaal.jpg',
-			equipment: [EQUIPMENT.stage, EQUIPMENT.podium],
-			fittings: [ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.seats],
-			fittingEventTypes: [EVENT_TYPES.concert],
-			// fittingSideRooms: [INTERACTABLE_MESH_NAMES.clubroom, INTERACTABLE_MESH_NAMES.businessMediaRoom],
-			bookedDates: [
-				{ start: '2022-02-10', end: '2022-02-12' },
-				{ start: '2022-02-14', end: '2022-02-16' },
-				{ start: '2022-02-22', end: '2022-02-24' },
-			],
+			articleIndex: 1,
+			articleNr: '5UG 9801',
+			price: 23.5,
+			category: 'Bike-Parts',
+			group: 'Mechanical',
 		},
 	},
 	{
 		model: {
 			meshName: INTERACTABLE_MESH_NAMES.luzernerRoom,
-			camPos: new THREE.Vector3(0.35, -0.5, -6.35),
-			camTarget: new THREE.Vector3(0.35, -0.5, -1.35),
+			camPos: new THREE.Vector3(0.35, -0.5, 6.35),
+			camTarget: new THREE.Vector3(0.35, -0.5, -1),
 			camPosEv: new THREE.Vector3(-0.65, -0.5, 4.35),
-			camTargetEv: new THREE.Vector3(-0.65, -0.5, -1.35),
+			camTargetEv: new THREE.Vector3(-0.65, -0.5, -1),
 			markerPos: new THREE.Vector3(-1.5, 0, 0),
 			markerPosEv: new THREE.Vector3(1, 0, 0),
 		},
 		info: {
 			title: 'Oberes Zahnrad',
-			personCapacity: [470, 1044],
-			area: 760,
-			img: './images/LuzernerSaal.jpg',
-			equipment: [EQUIPMENT.stage, EQUIPMENT.podium, EQUIPMENT.beamer],
-			chairFormations: [
-				{ name: CHAIR_FORMATION.bankett, capacity: 940 },
-				{ name: CHAIR_FORMATION.seminar, capacity: 470 },
-				{ name: CHAIR_FORMATION.concert, capacity: 1044 },
-			],
-			fittings: [
-				ROOM_FITTINGS.catering,
-				ROOM_FITTINGS.apero,
-				ROOM_FITTINGS.accessibleEnv,
-				ROOM_FITTINGS.seats,
-				ROOM_FITTINGS.exhibition,
-			],
-			fittingEventTypes: [EVENT_TYPES.concert, EVENT_TYPES.congress, EVENT_TYPES.apero],
-			// fittingSideRooms: [
-			// 	INTERACTABLE_MESH_NAMES.entryFoyer,
-			// 	INTERACTABLE_MESH_NAMES.clubroom,
-			// 	INTERACTABLE_MESH_NAMES.businessMediaRoom,
-			// ],
-			bookedDates: [
-				{ start: '2022-02-10', end: '2022-02-12' },
-				{ start: '2022-02-14', end: '2022-02-16' },
-				{ start: '2022-02-22', end: '2022-02-24' },
-			],
+			articleIndex: 2,
+			articleNr: '5UG 9801',
+			price: 23.5,
+			category: 'Bike-Parts',
+			group: 'Mechanical',
+		},
+	},
+	{
+		model: {
+			meshName: INTERACTABLE_MESH_NAMES.newPart,
+			camPos: new THREE.Vector3(2.75, 1, 5.4),
+			camTarget: new THREE.Vector3(1, -0.25, 0.4),
+			camPosEv: new THREE.Vector3(1.25, 4.5, 3.75),
+			camTargetEv: new THREE.Vector3(0.1, 3.5, 0.75),
+			markerPos: new THREE.Vector3(-1.75, 0, 0),
+			markerPosEv: new THREE.Vector3(-0.75, 0, 0),
+		},
+		info: {
+			title: 'Connector #0',
+			articleIndex: 3,
+			articleNr: '5UG 9801',
+			price: 23.5,
+			category: 'Bike-Parts',
+			group: 'Mechanical',
 		},
 	},
 	{
 		model: {
 			meshName: INTERACTABLE_MESH_NAMES.businessMediaRoom,
-			camPos: new THREE.Vector3(2, 1, 4.75),
+			camPos: new THREE.Vector3(1.25, 1, 5.25),
 			camTarget: new THREE.Vector3(0, 0, 1.25),
 			camPosEv: new THREE.Vector3(-1.75, 4.5, 4.9),
 			camTargetEv: new THREE.Vector3(-1.75, 4, 0.9),
 			markerPos: new THREE.Vector3(-1, 0, 0),
-			markerPosEv: new THREE.Vector3(-1, 0.25, 0),
+			markerPosEv: new THREE.Vector3(-1.25, 0.25, 0),
 		},
 		info: {
 			title: 'Connector #1',
-			personCapacity: 200,
-			area: 520,
-			img: './images/EingangsFoyer.jpg',
-			equipment: [EQUIPMENT.podium, EQUIPMENT.beamer],
-			fittings: [ROOM_FITTINGS.apero, ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.noSeats],
-			fittingEventTypes: [EVENT_TYPES.apero],
-			// fittingSideRooms: [INTERACTABLE_MESH_NAMES.entryFoyer, INTERACTABLE_MESH_NAMES.businessMediaRoom],
-			bookedDates: [
-				{ start: '2022-02-10', end: '2022-02-12' },
-				{ start: '2022-02-14', end: '2022-02-16' },
-				{ start: '2022-02-22', end: '2022-02-24' },
-			],
+			articleIndex: 4,
+			articleNr: '5UG 9801',
+			price: 23.5,
+			category: 'Bike-Parts',
+			group: 'Mechanical',
 		},
 	},
 	{
 		model: {
 			meshName: INTERACTABLE_MESH_NAMES.auditorium,
-			camPos: new THREE.Vector3(-4, 3.4, 6),
-			camTarget: new THREE.Vector3(-1, 0.4, 1),
+			camPos: new THREE.Vector3(-2, 1.4, 6),
+			camTarget: new THREE.Vector3(-1.5, 0.8, 1),
 			camPosEv: new THREE.Vector3(-3.75, 5.5, 5),
 			camTargetEv: new THREE.Vector3(-3.75, 5, 1),
 			markerPos: new THREE.Vector3(-1.25, 0, 0),
@@ -184,19 +163,11 @@ export const roomList: RoomFetchedDataType[] = [
 		},
 		info: {
 			title: 'Connector #2',
-			personCapacity: 271,
-			area: 200,
-			img: './images/Auditorium.jpg',
-			equipment: [EQUIPMENT.podium],
-			chairFormations: [{ name: CHAIR_FORMATION.concert, capacity: 200 }],
-			fittings: [ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.seats],
-			fittingEventTypes: [EVENT_TYPES.congress, EVENT_TYPES.exhibition, EVENT_TYPES.workshop],
-			// fittingSideRooms: [INTERACTABLE_MESH_NAMES.entryFoyer, INTERACTABLE_MESH_NAMES.businessMediaRoom],
-			bookedDates: [
-				{ start: '2022-02-10', end: '2022-02-12' },
-				{ start: '2022-02-14', end: '2022-02-16' },
-				{ start: '2022-02-22', end: '2022-02-24' },
-			],
+			articleIndex: 5,
+			articleNr: '5UG 9801',
+			price: 23.5,
+			category: 'Bike-Parts',
+			group: 'Mechanical',
 		},
 	},
 	{
@@ -204,61 +175,37 @@ export const roomList: RoomFetchedDataType[] = [
 			meshName: INTERACTABLE_MESH_NAMES.clubroom,
 			camPos: new THREE.Vector3(3.9, -0.8, 4),
 			camTarget: new THREE.Vector3(1.9, -1.3, 1),
-			camPosEv: new THREE.Vector3(2.59, 3.63, 4.29),
+			camPosEv: new THREE.Vector3(3.25, 3.63, 4.29),
 			camTargetEv: new THREE.Vector3(1.9, 2.3, 1),
 			markerPos: new THREE.Vector3(-1, 0.5, 1),
 			markerPosEv: new THREE.Vector3(-1.5, 1, 0.75),
 		},
 		info: {
 			title: 'Akkumulator',
-			personCapacity: [120, 300],
-			area: 250,
-			img: './images/Clubraeume.jpg',
-			equipment: [EQUIPMENT.podium, EQUIPMENT.beamer],
-			chairFormations: [
-				{ name: CHAIR_FORMATION.seminar, capacity: 120 },
-				{ name: CHAIR_FORMATION.bankett, capacity: 160 },
-			],
-			fittings: [
-				ROOM_FITTINGS.catering,
-				ROOM_FITTINGS.apero,
-				ROOM_FITTINGS.accessibleEnv,
-				ROOM_FITTINGS.seats,
-				ROOM_FITTINGS.exhibition,
-			],
-			fittingEventTypes: [EVENT_TYPES.apero, EVENT_TYPES.exhibition, EVENT_TYPES.meeting, EVENT_TYPES.workshop],
-			// fittingSideRooms: [INTERACTABLE_MESH_NAMES.entryFoyer, INTERACTABLE_MESH_NAMES.businessMediaRoom],
-			bookedDates: [
-				{ start: '2022-02-10', end: '2022-02-12' },
-				{ start: '2022-02-14', end: '2022-02-16' },
-				{ start: '2022-02-22', end: '2022-02-24' },
-			],
+			articleIndex: 6,
+			articleNr: '5UG 9801',
+			price: 23.5,
+			category: 'Bike-Parts',
+			group: 'Mechanical',
 		},
 	},
 	{
 		model: {
 			meshName: INTERACTABLE_MESH_NAMES.entryFoyer,
-			camPos: new THREE.Vector3(1.75, 0, 1.4),
-			camTarget: new THREE.Vector3(1.75, -0.25, 0.4),
+			camPos: new THREE.Vector3(1, 0.25, 4.4),
+			camTarget: new THREE.Vector3(1, -0.25, 0.4),
 			camPosEv: new THREE.Vector3(1.3022, 4.848, 3.176),
 			camTargetEv: new THREE.Vector3(0.75, 5, 0.75),
 			markerPos: new THREE.Vector3(0, 0, 0),
-			markerPosEv: new THREE.Vector3(0.5, 0, 0),
+			markerPosEv: new THREE.Vector3(-0.75, 0, -0.75),
 		},
 		info: {
 			title: 'Schutzplatte',
-			personCapacity: 200,
-			area: 520,
-			img: './images/EingangsFoyer.jpg',
-			equipment: [EQUIPMENT.podium, EQUIPMENT.beamer],
-			fittings: [ROOM_FITTINGS.apero, ROOM_FITTINGS.accessibleEnv, ROOM_FITTINGS.noSeats],
-			fittingEventTypes: [EVENT_TYPES.apero],
-			// fittingSideRooms: [INTERACTABLE_MESH_NAMES.entryFoyer, INTERACTABLE_MESH_NAMES.businessMediaRoom],
-			bookedDates: [
-				{ start: '2022-02-10', end: '2022-02-12' },
-				{ start: '2022-02-14', end: '2022-02-16' },
-				{ start: '2022-02-22', end: '2022-02-24' },
-			],
+			articleIndex: 7,
+			articleNr: '5UG 9801',
+			price: 23.5,
+			category: 'Bike-Parts',
+			group: 'Mechanical',
 		},
 	},
 ];

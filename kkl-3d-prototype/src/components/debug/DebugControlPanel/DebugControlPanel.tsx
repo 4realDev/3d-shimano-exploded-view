@@ -1,8 +1,9 @@
 import { FormControlLabel, Checkbox } from '@mui/material';
-import { setHasAnimation, showRoomsOverview } from '../../../store/useCameraStore';
+import { setHasAnimation } from '../../../store/useCameraStore';
 import {
 	useDebugStore,
 	toggleIsCameraPositionMarkersActive,
+	toggleIsCameraPositionMarkersEvActive,
 	toggleIsStatesActive,
 	toggleIsAxisHelperActive,
 	toggleIsBoxHelperActive,
@@ -10,22 +11,19 @@ import {
 	toggleIsThreeJsDataDebuggerActive,
 	toggleIsLineSegmentMaterialActive,
 	toggleIsCameraBackLerpingActive,
-	toggleIsExplodedViewActive,
 	toggleIsMaterialActive,
-	toggleIsAnnotationActive,
 } from '../../../store/useDebugStore';
 
 import styles from './DebugControlPanel.module.scss';
 
 const DebugControlPanel = () => {
 	const isCameraPositionMarkersActive = useDebugStore((state) => state.isCameraPositionMarkersActive);
+	const isCameraPositionMarkersEvActive = useDebugStore((state) => state.isCameraPositionMarkersEvActive);
 	const isStatesActive = useDebugStore((state) => state.isStatesActive);
 	const isAxisHelperActive = useDebugStore((state) => state.isAxisHelperActive);
 	const isBoxHelperActive = useDebugStore((state) => state.isBoxHelperActive);
 	const isLineSegementMaterialActive = useDebugStore((state) => state.isLineSegementMaterialActive);
-	const isExplodedViewActive = useDebugStore((state) => state.isExplodedViewActive);
 	const isMaterialActive = useDebugStore((state) => state.isMaterialActive);
-	const isAnnotationActive = useDebugStore((state) => state.isAnnotationActive);
 	const isCameraBackLerpingActive = useDebugStore((state) => state.isCameraBackLerpingActive);
 
 	return (
@@ -38,6 +36,15 @@ const DebugControlPanel = () => {
 							<Checkbox
 								checked={isCameraPositionMarkersActive}
 								onChange={() => toggleIsCameraPositionMarkersActive()}
+							/>
+						}
+					/>
+					<FormControlLabel
+						label='Camera Position Markers EV'
+						control={
+							<Checkbox
+								checked={isCameraPositionMarkersEvActive}
+								onChange={() => toggleIsCameraPositionMarkersEvActive()}
 							/>
 						}
 					/>
@@ -60,24 +67,8 @@ const DebugControlPanel = () => {
 						}
 					/>
 					<FormControlLabel
-						label='Activate Exploded View'
-						control={
-							<Checkbox
-								checked={isExplodedViewActive}
-								onChange={() => {
-									toggleIsExplodedViewActive();
-									showRoomsOverview();
-								}}
-							/>
-						}
-					/>
-					<FormControlLabel
 						label='Activate Material'
 						control={<Checkbox checked={isMaterialActive} onChange={() => toggleIsMaterialActive()} />}
-					/>
-					<FormControlLabel
-						label='Activate Annotations'
-						control={<Checkbox checked={isAnnotationActive} onChange={() => toggleIsAnnotationActive()} />}
 					/>
 					<FormControlLabel
 						label='Camera Back Lerping'

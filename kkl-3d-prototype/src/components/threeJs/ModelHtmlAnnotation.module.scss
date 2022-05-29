@@ -1,66 +1,47 @@
+@import '../../styles/colors.scss';
+@import '../../styles/viewport.scss';
+
 .annotationAndMarker {
 	transition: all 0.2s;
 
-	&--visible {
-		opacity: 1;
-		transform: scale(1.0);
-	}
-	&--invisible {
-		opacity: 0.25;
-		z-index: -1;
-		transform: scale(0.75);
-	
-	}
-	&--visibleAndHovered {
-		opacity: 1;
-		z-index: 99;
-		transform: scale(1.20);
-	
-	}
-	&--invisibleAndHovered {
-		opacity: 1;
-		transform: scale(1.20);
-	}
-
-	&--hoveredByModel {
-		.annotation {
-			background: rgba(0, 0, 0, 1) !important;
-			opacity: 1;
-		}
-
-		.marker {
-			background: rgba(0, 0, 0, 1) !important;
-			opacity: 1;
-		}
-	}
-
 	&:hover {
 		.annotation {
-			background: rgba(0, 0, 0, 1);
 			opacity: 1;
+			pointer-events: all;
 		}
 
 		.marker {
-			background: rgba(0, 0, 0, 1);
 			opacity: 1;
+			border: 2px solid $color-primary;
 		}
 	}
 
 	.annotation {
 		position: absolute;
+		flex-direction: column;
+		padding: 8px 12px;
 		top: 0;
 		left: 0;
-		z-index: 1;
 		margin-left: 15px;
 		margin-top: 15px;
-		padding: 10px 15px;
-		width: 200px;
-		color: #fff;
-		background: rgba(0, 0, 0, 0.8);
+		min-width: 175px;
+		background: $color-foreground;
+		box-shadow: 0rem 2px 0.5rem $color-shadow-dark;
 		border-radius: 0.5em;
-		font-size: 12px;
-		line-height: 1.2;
-		transition: opacity 0.5s, background-color 0.25s;
+		overflow: hidden;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.2s ease-in-out;
+		display: none;
+
+		&--visible {
+			opacity: 1;
+			pointer-events: all;
+		}
+
+		@include lg {
+			display: block;
+		}
 	}
 
 	.marker {
@@ -68,15 +49,48 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		margin: auto;
 		top: -10px;
 		left: -10px;
-		width: 30px;
-		height: 30px;
-		border: 2px solid #fff;
+		width: 20px;
+		height: 20px;
 		border-radius: 50%;
-		font-size: 16px;
-		color: #fff;
-		background: rgba(0, 0, 0, 0.8);
-		transition: opacity 0.5s, background-color 0.25s;
+		font-size: 14px;
+		font-weight: 700;
+		color: white;
+		background: rgba(69,159,216,0.5);
+		transition: transform 0.2s, opacity 0.5s, background-color 0.25s;
+
+		@include sm {
+			width: 30px;
+			height: 30px;
+		}
+
+		&--visible {
+			opacity: 1;
+			transform: scale(1.0);
+		}
+	
+		&--invisible {
+			opacity: 0.25;
+			transform: scale(0.75);
+		
+		}
+	
+		&--visibleAndHovered {
+			opacity: 1;
+			transform: scale(1.20);
+			border: 2px solid $color-primary;
+		}
+	
+		&--invisibleAndHovered {
+			opacity: 1;
+			transform: scale(1.20);
+			border: 2px solid $color-primary;
+		}
+
+		&--adjustedZIndex {
+			opacity: 0;
+		}
 	}
 }

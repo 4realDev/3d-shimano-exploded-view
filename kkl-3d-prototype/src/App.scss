@@ -1,5 +1,9 @@
 @import './styles/viewport.scss';
 @import './styles/colors.scss';
+body {
+	background: $color-background;
+	font-family: 'Helvetica', 'Arial', sans-serif;
+}
 
 .container {
 	display: flex;
@@ -7,8 +11,6 @@
 	align-items: center;
 	justify-content: center;
 	color: black;
-	background-color: $color-main-background;
-	font-family: 'Circular Std', sans-serif;
 	font-size: 14px;
 	font-weight: 300;
 	line-height: 25px;

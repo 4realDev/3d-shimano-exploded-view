@@ -1,6 +1,6 @@
 import { PerspectiveCameraProps, useFrame, Vector3 } from '@react-three/fiber';
 import * as THREE from 'three';
-import { Html, OrbitControls, OrbitControlsProps, PerspectiveCamera } from '@react-three/drei';
+import { OrbitControls, OrbitControlsProps, PerspectiveCamera } from '@react-three/drei';
 import { defaultCameraPosition, setHasAnimation, useCameraStore } from '../../store/useCameraStore';
 import { useDebugStore } from '../../store/useDebugStore';
 
@@ -31,14 +31,15 @@ const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }:
 	};
 
 	const checkAnimationFinished = (target: Vector3 | undefined) => {
+		const stopThreshold = 0.025;
 		if (
 			target instanceof THREE.Vector3 &&
-			target.x > cameraPosition.x - 0.15 &&
-			target.y > cameraPosition.y - 0.15 &&
-			target.z > cameraPosition.z - 0.15 &&
-			target.x < cameraPosition.x + 0.15 &&
-			target.y < cameraPosition.y + 0.15 &&
-			target.z < cameraPosition.z + 0.15
+			target.x > cameraPosition.x - stopThreshold &&
+			target.y > cameraPosition.y - stopThreshold &&
+			target.z > cameraPosition.z - stopThreshold &&
+			target.x < cameraPosition.x + stopThreshold &&
+			target.y < cameraPosition.y + stopThreshold &&
+			target.z < cameraPosition.z + stopThreshold
 		) {
 			setHasAnimation(false);
 		}
@@ -70,7 +71,7 @@ const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }:
 				enableZoom={true}
 				enablePan={false}
 				// maxPolarAngle={Math.PI / 2}
-				// autoRotate={idleState}
+				autoRotate={idleState}
 				autoRotateSpeed={0.5}
 			/>
 		</>

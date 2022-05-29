@@ -4,7 +4,7 @@ import { Canvas, PerspectiveCameraProps } from '@react-three/fiber';
 import { Suspense, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { roomList } from '../../../data/roomData';
-import { setIdleState, showRoomsOverview, useCameraStore } from '../../../store/useCameraStore';
+import { setIdleState, useCameraStore } from '../../../store/useCameraStore';
 import { useDebugStore } from '../../../store/useDebugStore';
 import CameraControls from '../../threeJs/CameraControls';
 import CameraPositionMarkers from '../../threeJs/CameraPositionMarkers';
@@ -12,9 +12,8 @@ import styles from './ModelCanvas.module.scss';
 import Lights from '../../threeJs/Lights';
 import useLongPress from '../../../hooks/useLongPress';
 import Cursor from '../../ui/Cursor/Cursor';
-import Overview from '../../icons/Overview';
 import { ResizeObserver } from '@juggle/resize-observer';
-import { Tooltip } from '@mui/material';
+import ModelCanvasButtons from '../../ui/ModelCanvasButtons/ModelCanvasButtons';
 
 const Model = React.lazy(() =>
 	import('../../threeJs/Model').then((module) => ({
@@ -35,6 +34,7 @@ const ModelCanvas = () => {
 	const cameraRef = useRef<PerspectiveCameraProps>();
 
 	const isCameraPositionMarkersActive = useDebugStore((state) => state.isCameraPositionMarkersActive);
+	const isCameraPositionMarkersEvActive = useDebugStore((state) => state.isCameraPositionMarkersEvActive);
 	const isStatesActive = useDebugStore((state) => state.isStatesActive);
 	const isAxisHelperActive = useDebugStore((state) => state.isAxisHelperActive);
 
@@ -57,21 +57,7 @@ const ModelCanvas = () => {
 			}}
 			{...longPressEvent}
 		>
-			<Tooltip
-				title={<div style={{ textAlign: 'center' }}>Raumübersicht anzeigen</div>}
-				placement='top'
-				arrow
-				enterNextDelay={1000}
-			>
-				<button
-					className={styles.overViewButton}
-					onClick={() => {
-						showRoomsOverview();
-					}}
-				>
-					<Overview fill='#575B64' stroke='#575B64' />
-				</button>
-			</Tooltip>
+			<ModelCanvasButtons />
 			{/* <div
 				style={{
 					zIndex: 999,
@@ -113,10 +99,14 @@ const ModelCanvas = () => {
 								camPosColor={'black'}
 								camTargetColor={'red'}
 							/>
+						</>
+					)}
+					{isCameraPositionMarkersEvActive && (
+						<>
 							<CameraPositionMarkers
 								markerPositions={roomList.map((room) => room.model.camPosEv)}
 								targetPoints={roomList.map((room) => room.model.camTargetEv)}
-								camPosColor={'blue'}
+								camPosColor={'grey'}
 								camTargetColor={'orange'}
 							/>
 						</>

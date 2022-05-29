@@ -4,6 +4,7 @@ interface DebugStore {
 	isWizardDataDebuggerActive: boolean;
 	isThreeJsDataDebuggerActive: boolean;
 	isCameraPositionMarkersActive: boolean;
+	isCameraPositionMarkersEvActive: boolean;
 	isStatesActive: boolean;
 	isAxisHelperActive: boolean;
 	isBoxHelperActive: boolean;
@@ -18,13 +19,14 @@ export const useDebugStore = create<DebugStore>((set) => ({
 	isWizardDataDebuggerActive: false,
 	isThreeJsDataDebuggerActive: false,
 	isCameraPositionMarkersActive: false,
+	isCameraPositionMarkersEvActive: false,
 	isStatesActive: false,
 	isAxisHelperActive: false,
 	isBoxHelperActive: false,
 	isLineSegementMaterialActive: false,
 	isExplodedViewActive: false,
 	isMaterialActive: false,
-	isAnnotationActive: true,
+	isAnnotationActive: false,
 	isCameraBackLerpingActive: false,
 }));
 
@@ -43,6 +45,12 @@ export const toggleIsThreeJsDataDebuggerActive = () => {
 export const toggleIsCameraPositionMarkersActive = () => {
 	useDebugStore.setState({
 		isCameraPositionMarkersActive: !useDebugStore.getState().isCameraPositionMarkersActive,
+	});
+};
+
+export const toggleIsCameraPositionMarkersEvActive = () => {
+	useDebugStore.setState({
+		isCameraPositionMarkersEvActive: !useDebugStore.getState().isCameraPositionMarkersEvActive,
 	});
 };
 
@@ -84,7 +92,7 @@ export const toggleIsMaterialActive = () => {
 
 export const toggleIsAnnotationActive = (activeState?: boolean) => {
 	useDebugStore.setState({
-		isAnnotationActive: activeState ? activeState : !useDebugStore.getState().isAnnotationActive,
+		isAnnotationActive: activeState !== undefined ? activeState : !useDebugStore.getState().isAnnotationActive,
 	});
 };
 

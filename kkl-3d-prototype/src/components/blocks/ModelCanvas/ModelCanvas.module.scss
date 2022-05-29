@@ -7,7 +7,7 @@
 	width: 100vw;
 	height: 25vh;
 	z-index: 99;
-	background: $color-main-background;
+	background: $color-background;
 	border-bottom-left-radius: 4rem;
 	border-bottom-right-radius: 4rem;
 	box-shadow: 0.5rem 2px 0.5rem $color-shadow-dark;
@@ -32,64 +32,3 @@
 	}
 }
 
-.overViewButton {
-	position: absolute;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	outline: none;
-	border: none;
-	height: 36px;
-	width: 36px;
-	right: 24px;
-	top: 24px;
-	z-index: 999;
-	background-color: white;
-	box-shadow: 0rem 2px 0.5rem $color-shadow;
-	border-radius: 6rem;
-	transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
-
-	@include xs {
-		height: 48px;
-		width: 48px;
-	}
-
-	&:hover {
-		background-color: $color-main-yellow-hovered;
-	}
-
-	&:active {
-		transform: scale(0.9);
-	}
-
-	& > svg {
-		height: 24px;
-
-		@include xs {
-			height: 32px;
-		}
-	}
-
-	@include xs {
-		right: 32px;
-		top: 32px;
-	}
-
-	@include sm {
-		right: 22%;
-		top: 32px;
-	}
-
-	@include md {
-		right: 28%;
-		top: 32px;
-	}
-
-	@include lg {
-		top: 48px;
-	}
-
-	@include xl {
-		right: 20%;
-	}
-}
