@@ -5,19 +5,21 @@
 	position: fixed;
 	top: 0;
 	width: 100vw;
-	height: 25vh;
+	height: 35vh;
 	z-index: 99;
 	background: $color-background;
 	border-bottom-left-radius: 4rem;
 	border-bottom-right-radius: 4rem;
 	box-shadow: 0.5rem 2px 0.5rem $color-shadow-dark;
 
+	// !!! adjustments in height must be done in AccordionItem additionalDistanceToScreenTop function !!!
+	// !!! & RoomSelection.module.scss .container & ModelCanvas.module.scss .canvas as well !!!
 	@include xs {
-		height: 30vh;
+		height: 40vh;
 	}
 
 	@include sm {
-		height: 40vh;
+		height: 50vh;
 	}
 
 	@include lg {

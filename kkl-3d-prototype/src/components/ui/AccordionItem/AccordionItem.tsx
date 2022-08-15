@@ -41,6 +41,10 @@ const AccordionItem = ({
 
 	const isExplodedViewActive = useDebugStore((state) => state.isExplodedViewActive);
 
+	// !!! adjustments in height must be done in AccordionItem additionalDistanceToScreenTop function !!!
+	// !!! & RoomSelection.module.scss .container & ModelCanvas.module.scss .canvas as well !!!
+	// when canvas height = 50vh, roomselection container must have margin-top = 55vh, and additional distance to top = 40vh
+
 	// Distance which results of the className={styles.canvas} applied to ModelCanvas
 	// ModelCanvas is placed above the RoomSelection className={styles.container} on mobile and tablet
 	// and moves the RoomSelection content according to the screen viewport height some pixels down
@@ -49,11 +53,11 @@ const AccordionItem = ({
 	const additionalDistanceToScreenTop = useMemo(
 		() =>
 			width < 480
-				? calculateViewportHeight(25)
+				? calculateViewportHeight(15)
 				: width < 768
-				? calculateViewportHeight(30)
+				? calculateViewportHeight(20)
 				: width < 992
-				? calculateViewportHeight(40)
+				? calculateViewportHeight(30)
 				: 0,
 		[width]
 	);

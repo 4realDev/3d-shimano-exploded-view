@@ -10,16 +10,18 @@
 	align-items: center;
 	width: 100%;
 	transition: margin 0.25s ease;
-	margin-top: calc(25vh + 32px);
+	margin-top: calc(35vh + 32px);
 
+	// !!! adjustments in height must be done in AccordionItem additionalDistanceToScreenTop function !!!
+	// !!! & RoomSelection.module.scss .container & ModelCanvas.module.scss .canvas as well !!!
 	@include xs {
 		padding: 0 32px !important;
-		margin-top: calc(30vh + 32px);
+		margin-top: calc(40vh + 32px);
 	}
 
 	@include sm {
 		padding: 0 48px !important;
-		margin-top: calc(40vh + 32px);
+		margin-top: calc(50vh + 32px);
 	}
 
 	@include lg {
