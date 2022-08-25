@@ -14,7 +14,19 @@ body {
 	line-height: 25px;
 
 	overflow: hidden;
-	width: 100%;
+	width: 100vw;
+
+	// fix for mobile viewports instead of 100vh, because "CSS3 100vh not constant in mobile browser"
+	height: 100vh;
+	height: -webkit-fill-available;
+	
+	// TODO: FIND REAL ISSUE AND FIX IT DIFFERNETLY
+	position: fixed;
+	// padding-bottom: 50px;
+
+	@include xs {
+		padding-bottom: 0px;
+	}
 
 	// fix for mobile viewports instead of 100vh, because "CSS3 100vh not constant in mobile browser"
 	height: 100%;

@@ -27,7 +27,7 @@
 	// and take the full-width while being positioned slightly to the right
 	@include lg {
 		position: absolute;
-		// right: 22.5%;
+		left: 22.5%;
 		height: 100vh;
 		z-index: 0;
 		border-radius: none;
