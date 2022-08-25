@@ -5,15 +5,14 @@ import { Suspense, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { roomList } from '../../../data/roomData';
 import { setIdleState, useCameraStore } from '../../../store/useCameraStore';
-import { useDebugStore } from '../../../store/useDebugStore';
 import CameraControls from '../../threeJs/CameraControls';
 import CameraPositionMarkers from '../../threeJs/CameraPositionMarkers';
 import styles from './ModelCanvas.module.scss';
 import Lights from '../../threeJs/Lights';
 import useLongPress from '../../../hooks/useLongPress';
-import Cursor from '../../ui/Cursor/Cursor';
 import { ResizeObserver } from '@juggle/resize-observer';
 import ModelCanvasButtons from '../../ui/ModelCanvasButtons/ModelCanvasButtons';
+import { useDebugStore } from '../../../store/useDebugStore';
 
 const Model = React.lazy(() =>
 	import('../../threeJs/Model').then((module) => ({
@@ -38,10 +37,11 @@ const ModelCanvas = () => {
 	const isStatesActive = useDebugStore((state) => state.isStatesActive);
 	const isAxisHelperActive = useDebugStore((state) => state.isAxisHelperActive);
 
+	// TODO: Move this in separated store and not in DEBUG STORE
+	const isResizedContentClosed = useDebugStore((state) => state.isResizedContentClosed);
+
 	return (
-		// id for better getting the element with document.getElementById() inside Cursor.tsx
 		<div
-			id='canvas'
 			className={styles.canvas}
 			onPointerDown={() => {
 				setIdleState(false);
@@ -57,16 +57,8 @@ const ModelCanvas = () => {
 			}}
 			{...longPressEvent}
 		>
-			<ModelCanvasButtons />
+			{!isResizedContentClosed && <ModelCanvasButtons />}
 			{/* <div
-				style={{
-					zIndex: 999,
-					cursor: 'default',
-					width: 175 + 'px',
-					bottom: 5 + '%',
-					position: 'absolute',
-					right: 25 + '%',
-				}}
 			>
 				<div>camera position [x,y,z]:</div>
 				<div>
@@ -75,9 +67,12 @@ const ModelCanvas = () => {
 					{cameraRef.current?.position instanceof THREE.Vector3 && cameraRef.current?.position?.z.toFixed(2)})
 				</div>
 			</div> */}
-			<Cursor />
 			{/* dpr = dynamic pixel ratio - sets pixel ratio based on device hardware capabilities */}
-			<Canvas dpr={window.devicePixelRatio} resize={{ polyfill: ResizeObserver }}>
+			<Canvas
+				dpr={window.devicePixelRatio}
+				resize={{ polyfill: ResizeObserver }}
+				// style={{ borderBottomLeftRadius: 4 + 'rem', borderBottomRightRadius: 4 + 'rem', width: 100 + 'vw' }}
+			>
 				<CameraControls
 					camera={cameraRef}
 					controls={controlsRef}

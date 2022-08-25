@@ -10,23 +10,36 @@
 	align-items: center;
 	width: 100%;
 	transition: margin 0.25s ease;
-	margin-top: calc(35vh + 32px);
+	// overflow: scroll;
+	// overflow-y: hidden; /* Hide vertical scrollbar */
+	// overflow-x: hidden; /* Hide horizontal scrollbar */
+	// margin-top: calc(35vh + 32px);
+
+	overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+
+	&::-webkit-scrollbar { /* WebKit */
+		width: 0;
+		height: 0;
+	}
 
 	// !!! adjustments in height must be done in AccordionItem additionalDistanceToScreenTop function !!!
 	// !!! & RoomSelection.module.scss .container & ModelCanvas.module.scss .canvas as well !!!
 	@include xs {
 		padding: 0 32px !important;
-		margin-top: calc(40vh + 32px);
+		// margin-top: calc(40vh + 32px);
 	}
 
 	@include sm {
 		padding: 0 48px !important;
-		margin-top: calc(50vh + 32px);
+		// margin-top: calc(50vh + 32px);
 	}
 
 	@include lg {
+		position: relative;
 		width: auto;
-		padding: 0 50px !important;
+		padding: 0 100px !important;
 		margin-top: 48px;
 	}
 
@@ -38,10 +51,8 @@
 		width: 100%;
 		height: auto;
 		padding-bottom: 16px;
-		margin-left: 50px;
-		margin-right: 50px;
 		overflow-wrap: break-word;
-		z-index: 2;
+		z-index: 1;
 
 		@include sm {
 			width: 375px;

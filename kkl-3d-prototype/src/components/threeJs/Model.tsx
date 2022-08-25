@@ -53,6 +53,7 @@ const Model: React.FC<ModelProps> = ({ longPress }) => {
 	const isLineSegmentMaterialActive = useDebugStore((state) => state.isLineSegementMaterialActive);
 	const isExplodedViewActive = useDebugStore((state) => state.isExplodedViewActive);
 	const isMaterialActive = useDebugStore((state) => state.isMaterialActive);
+	// TODO: Move out of Debug inside Mesh because it has important usage through buttons
 	const isAnnotationActive = useDebugStore((state) => state.isAnnotationActive);
 	const isBoxHelperActive = useDebugStore((state) => state.isBoxHelperActive);
 

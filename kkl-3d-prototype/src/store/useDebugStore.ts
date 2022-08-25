@@ -13,6 +13,7 @@ interface DebugStore {
 	isMaterialActive: boolean;
 	isAnnotationActive: boolean;
 	isCameraBackLerpingActive: boolean;
+	isResizedContentClosed: boolean;
 }
 
 export const useDebugStore = create<DebugStore>((set) => ({
@@ -28,6 +29,7 @@ export const useDebugStore = create<DebugStore>((set) => ({
 	isMaterialActive: false,
 	isAnnotationActive: false,
 	isCameraBackLerpingActive: false,
+	isResizedContentClosed: false,
 }));
 
 export const toggleIsWizardDataDebuggerActive = () => {
@@ -105,5 +107,11 @@ export const setIsAnnotationActive = (activeState: boolean) => {
 export const toggleIsCameraBackLerpingActive = () => {
 	useDebugStore.setState({
 		isCameraBackLerpingActive: !useDebugStore.getState().isCameraBackLerpingActive,
+	});
+};
+
+export const toggleIsResizedContentClosed = (activeState: boolean) => {
+	useDebugStore.setState({
+		isResizedContentClosed: activeState,
 	});
 };
