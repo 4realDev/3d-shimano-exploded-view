@@ -1,8 +1,8 @@
 # KKL-3D-Prototype
 
 # **Projects**
-- There are two projects in this repository, which are both based on similar packages and therefore originated in the same repo.
-- The two projects are placed in the two branches: "kkl-room-configurator" and "shimano-explosive-view".
+- There are ***two projects*** in this repository, which are both based on similar packages and therefore originated in the same repo.
+- The two projects are placed in the two branches: ***"kkl-room-configurator"*** and ***"shimano-explosive-view"***.
 - The branches "main" and "kkl-room-configurator" currently contain the same code and are identical.
 - The branch "shimano-explosive-view" is a simplification of the branch "main"/"kkl-room-configurator". However, the branch "shimano-explosive-view" shows some new features and adjustments, which are not in "main"/"kkl-room-configurator". Some of them are: explosive-view-animation, resizable-3d-model-window for mobile and tablet, more interaction possibilities, UI design adapted to Cando Image GmbH Branding
 
