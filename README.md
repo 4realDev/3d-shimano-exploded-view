@@ -6,8 +6,8 @@
 - The branches "main" and "kkl-room-configurator" currently contain the same code and are identical.
 - The branch "shimano-explosive-view" is a simplification of the branch "main"/"kkl-room-configurator". However, the branch "shimano-explosive-view" shows some new features and adjustments, which are not in "main"/"kkl-room-configurator". Some of them are: explosive-view-animation, resizable-3d-model-window for mobile and tablet, more interaction possibilities, UI design adapted to Cando Image GmbH Branding.
 
-Shimano-Explosive-View (left) and KKL-Room-Configurator (right) Preview
 <img src="./kkl-3d-prototype/public/readme/shimano-and-kkl-preview.png">
+Shimano-Explosive-View (left) and KKL-Room-Configurator (right) Preview
 
 # **Foreword**
 
