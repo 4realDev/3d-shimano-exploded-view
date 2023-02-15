@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls, OrbitControlsProps, PerspectiveCamera } from '@react-three/drei';
 import { defaultCameraPosition, setHasAnimation, useCameraStore } from '../../store/useCameraStore';
 import { useDebugStore } from '../../store/useDebugStore';
+import { useEffect } from 'react';
 
 type CameraControlsProps = {
 	camera: React.MutableRefObject<PerspectiveCameraProps | undefined>;
@@ -55,6 +56,20 @@ const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }:
 		controls?.current?.update!(); // Workaround
 		camera?.current?.updateProjectionMatrix!(); // Workaround
 	});
+
+	// For roomData to read custom camera position and targets more easily
+	// In camera, set enablePan to true for better camera configuration/navigation
+	// if (camera.current?.position instanceof THREE.Vector3 && controls.current?.target instanceof THREE.Vector3) {
+	// 	console.log(
+	// 		`camera position: [${camera.current?.position.x}, ${camera.current?.position.y}, ${camera.current?.position.z}]`
+	// 	);
+
+	// 	console.log(
+	// 		`target position: [${controls.current?.target.x}, ${controls.current?.target.y}, ${controls.current?.target.z}]`
+	// 	);
+
+	// 	console.log('camera zoom: ', camera.current?.zoom);
+	// }
 
 	return (
 		<>

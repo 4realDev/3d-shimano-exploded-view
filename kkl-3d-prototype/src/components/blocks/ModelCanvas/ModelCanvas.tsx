@@ -10,7 +10,7 @@ import CameraPositionMarkers from '../../threeJs/CameraPositionMarkers';
 import styles from './ModelCanvas.module.scss';
 import Lights from '../../threeJs/Lights';
 import useLongPress from '../../../hooks/useLongPress';
-import { ResizeObserver } from '@juggle/resize-observer';
+// import { ResizeObserver } from '@juggle/resize-observer';
 import ModelCanvasButtons from '../../ui/ModelCanvasButtons/ModelCanvasButtons';
 import { useDebugStore } from '../../../store/useDebugStore';
 
@@ -38,7 +38,7 @@ const ModelCanvas = () => {
 	const isAxisHelperActive = useDebugStore((state) => state.isAxisHelperActive);
 
 	// TODO: Move this in separated store and not in DEBUG STORE
-	const isResizedContentClosed = useDebugStore((state) => state.isResizedContentClosed);
+	// const isResizedContentClosed = useDebugStore((state) => state.isResizedContentClosed);
 
 	return (
 		<div
@@ -57,7 +57,7 @@ const ModelCanvas = () => {
 			}}
 			{...longPressEvent}
 		>
-			{!isResizedContentClosed && <ModelCanvasButtons />}
+			<ModelCanvasButtons />
 			{/* <div
 			>
 				<div>camera position [x,y,z]:</div>

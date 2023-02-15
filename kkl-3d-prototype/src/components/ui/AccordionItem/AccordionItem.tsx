@@ -4,7 +4,6 @@ import Chevron from '../../icons/Chevron';
 import styles from './AccordionItem.module.scss';
 import useWindowDimensions from '../../../hooks/useWindowDimensions';
 import { toggleIsAnnotationActive, useDebugStore } from '../../../store/useDebugStore';
-import { style } from '@mui/system';
 
 type AccordionItemProps = {
 	title: string;

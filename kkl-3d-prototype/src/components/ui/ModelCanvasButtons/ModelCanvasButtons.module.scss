@@ -3,29 +3,30 @@
 
 .canvasButtonContainer {
 	position: absolute;
-	right: 8%;
-	top: 16px;
+	// left: 8%;
+	top: 10vh;
 	width: auto;
 	height: auto;
 	z-index: 3;
+	left: 27.25%;
 
-	@include xs {
-		right: 8%;
-		top: 28px;
-	}
+	// @include xs {
+	// 	// left: 8%;
+	// 	top: 28px;
+	// }
 
-	@include md {
-		right:4%;
-	}
+	// @include md {
+	// 	// left:4%;
+	// }
 
-	@include lg {
-		right:26%;
-		top: 42px;
-	}
+	// @include lg {
+	// 	// left:26%;
+	// 	top: 42px;
+	// }
 
-	@include xl {
-		right:18%;
-	}
+	// @include xl {
+	// 	// left:18%;
+	// }
 
 	.overviewButtonContainer {
 		display: flex;

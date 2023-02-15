@@ -39,14 +39,14 @@
 	@include lg {
 		position: relative;
 		width: auto;
-		padding: 0 100px !important;
-		margin-top: 48px;
+		padding: 0 48px !important;
+		// margin-top: 48px;
 	}
 
 	.card {
 		display: flex;
 		flex-direction: column;
-		justify-content: flex-start;
+		justify-content: flex-end;
 		align-items: center;
 		width: 100%;
 		height: auto;
@@ -54,9 +54,9 @@
 		overflow-wrap: break-word;
 		z-index: 1;
 
-		@include sm {
-			width: 375px;
-		}
+		// @include sm {
+		// 	width: 375px;
+		// }
 
 		.card__headingStepperContainer {
 			display: flex;

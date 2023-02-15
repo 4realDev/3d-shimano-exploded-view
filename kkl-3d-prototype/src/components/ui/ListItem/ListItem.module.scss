@@ -1,0 +1,272 @@
+@import '../../../styles/colors.scss';
+@import '../../../styles/viewport.scss';
+
+// styling is used in AccordionItem.tsx and RoomCard.tsx
+// .active and .rotate will be passed to React state on Accordion.js
+
+.accordionItem {
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+	width: 100%;
+	// padding: 0px 24px 0px 24px;
+	// margin-bottom: 2px;
+	font-size: 1.6rem;
+	border-bottom: 1px solid #DEDEDE;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+	outline: none;
+	background-color: $color-foreground;
+	color: rgba(255, 255, 255, 0.8);
+	// box-shadow: 0.5rem 2px 0.5rem $color-shadow;
+	transition: background-color 0.6s ease, margin 0.6s ease;
+
+	// cursor pointer as click and hovering side effects on some mobile and tablet devices
+	@include lg {
+		cursor: pointer;
+	}
+
+	&:first-child {
+		border-top-left-radius: 4px;
+		border-top-right-radius: 4px;
+	}
+
+	&:last-child {
+		border-top-left-radius: 4px;
+		border-top-right-radius: 4px;
+	}
+
+	/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+
+	&--active {
+		background-color: $color-foreground;
+		outline: 3px solid $color-primary;
+		border-radius: 4px;
+		margin-top: 12px;
+		margin-bottom: 14px;
+
+		.accordionItem__fittingsContainer {
+			margin-bottom: 16px !important;
+		}
+		.accordionItem__content {
+			margin-top: 16px !important;
+		}
+	}
+
+	// check if component is button to ensure that hover does not work on RoomCard.tsx
+	// &:is(button):hover {
+	// 	background-color: $color-foreground-hovered;
+	// }
+
+	// Style to rotate icon when state is active
+	// &--rotate {
+	// 	transform: rotate(0deg) !important;
+	// }
+
+	// necessary for deactivating hover on RoomCard
+	&--noHover {
+		.accordionItem:hover {
+			background-color: $color-foreground !important;
+		}
+	}
+
+	&__header {
+		width: 100%;
+
+		@include xs {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+		}
+
+
+
+		.accordionItem__infoRow {
+			display: flex;
+			// flex-wrap: wrap;
+			// flex-direction: column;
+			align-items: flex-start;
+			width: 100%;
+			margin-right: 20px;
+
+            .accordionItem__imgColumn {
+                display: flex;
+                height: 100%;
+                justify-content: center;
+                margin: auto;
+                margin-left: 24px;
+                margin-right: 24px;
+                margin-top: 8px;
+                margin-bottom: 8px;
+
+                .accordionItem__img {
+                    width: 56px;
+                    height: 56px;
+                }
+            }
+
+            .accordionItem__titleColumn {
+                width: 260px;
+                display: flex;
+                height: 100%;
+                justify-content: center;
+                margin: auto;
+                margin-left: 16px;
+                margin-right: 16px;
+            }
+
+            .accordionItem__articleNrColumn {
+                width: 160px;
+                display: flex;
+                height: 100%;
+                justify-content: center;
+                margin: auto;
+                margin-left: 16px;
+                margin-right: 16px;
+            }
+
+            .accordionItem__priceColumn {
+                width: 160px;
+                display: flex;
+                height: 100%;
+                justify-content: center;
+                margin: auto;
+                margin-left: 16px;
+            }
+
+            .accordionItem__favoritButtonColumn {
+                display: flex;
+                height: 100%;
+                justify-content: center;
+                margin: auto;
+
+                .favoritButton {
+                    cursor: pointer;
+                    border: none;
+                    outline: none;
+                    height: 40px;
+                    width: 40px;
+                    background-color: white;
+                    margin-right: 16px;
+                }
+            }
+
+            .quantitySwitcherColumn {
+                margin: auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 90px;
+                margin-right: 8px;
+
+                input {
+                    width: 40px;
+                    height: 40px;
+                    border: solid #999999 1px;
+                    line-height: 24px;
+                    font-size: 16px;
+                    font-family: Heebo-Bold;
+                    text-align: center;
+                    color: #333333;
+                    appearance: none;
+                    outline: 0;
+                }
+                
+                span {
+                    display: flex;
+                    justify-content: center;
+                    padding: 0 8px;
+                    cursor: pointer;
+                    user-select: none;
+                }
+            }
+
+            .accordionItem__cartButtonColumn {
+                display: flex;
+                height: 100%;
+                justify-content: center;
+                margin: auto;
+
+                .cartButton {
+                    cursor: pointer;
+                    border: none;
+                    outline: none;
+                    height: 40px;
+                    width: 40px;
+                    background-color: #44A0D9;
+                }
+            }
+
+
+
+			/* Style the accordion content title */
+			.accordionItem__title__prefix {
+				text-align: start;
+				font-weight: 400;
+				font-size: 16px;
+                font-family: Heebo-Regular;
+				line-height: 24px;
+				color: $color-font-body;
+                padding-right: 4px;
+                white-space: pre;
+			}
+
+			/* Style the accordion content title */
+			.accordionItem__title {
+				width: 100%;
+				text-align: start;
+				font-weight: 500;
+				font-size: 16px;
+                font-family: Heebo-Medium;
+				line-height: 24px;
+				color: $color-font-title;
+			}
+
+			.accordionItem__articleIndex {
+				font-weight: 700;
+				padding-right: 8px;
+			}
+		}
+
+		/* Style the accordion chevron icon */
+		.accordionItem__chevronIcon {
+			transform: rotate(-180deg);
+			display: none;
+			transition: transform 0.6s ease;
+			fill: $color-primary;
+
+			@include xs {
+				display: block;
+			}
+		}
+	}
+
+	&__content {
+		/* hide description text */
+		width: 100%;
+		overflow: hidden;
+		max-height: 0;
+		/* for sudo decoration line */
+		position: relative;
+		transition: max-height 0.6s ease;
+
+		// &::before {
+		// 	content: '';
+		// 	position: absolute;
+		// 	width: 0.4rem;
+		// 	height: 90%;
+		// 	background-color: $color-primary;
+		// 	left: 0;
+		// 	top: 50%;
+		// 	transform: translateY(-50%);
+		// }
+
+		// & p {
+		// 	font-size: 1.4rem;
+		// 	color: rgba(255, 255, 255, 0.6);
+		// 	padding: 2rem;
+		// }
+	}
+}

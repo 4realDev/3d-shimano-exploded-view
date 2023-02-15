@@ -8,3 +8,24 @@
 	margin: 0;
 	padding: 0;
 }
+
+@font-face {
+	font-family: "Heebo-Medium";
+	src: local("Heebo-Medium"),
+	 url("./fonts/Heebo/Heebo-Medium.ttf") format("truetype");
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: "Heebo-Regular";
+	src: local("Heebo-Regular"),
+	 url("./fonts/Heebo/Heebo-Regular.ttf") format("truetype");
+	font-weight: medium;
+}
+
+@font-face {
+	font-family: "Heebo-Bold";
+	src: local("Heebo-Bold"),
+	 url("./fonts/Heebo/Heebo-Bold.ttf") format("truetype");
+	font-weight: bold;
+}

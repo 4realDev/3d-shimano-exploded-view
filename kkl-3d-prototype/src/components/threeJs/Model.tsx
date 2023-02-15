@@ -307,7 +307,7 @@ const Model: React.FC<ModelProps> = ({ longPress }) => {
 
 	const modelHTML = useMemo(() => {
 		return meshList.length === 0 ? null : (
-			<group ref={group} dispose={null} position={[0, -5, 0]} scale={[0.5, 0.5, 0.5]}>
+			<group ref={group} dispose={null} position={[0, -4.25, 0]} scale={[0.5, 0.5, 0.5]}>
 				{meshList.map((parentMeshObject: MeshObjectType, index: number) => {
 					return <mesh key={index}>{renderMesh(parentMeshObject, index)}</mesh>;
 				})}

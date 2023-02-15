@@ -7,7 +7,6 @@ import ModelCanvas from './components/blocks/ModelCanvas/ModelCanvas';
 import ThreeJsDataDebugger from './components/debug/ThreeJsDataDebugger/ThreeJsDataDebugger';
 import WizardDataDebugger from './components/debug/WizardDataDebugger/WizardDataDebugger';
 import { useDebugStore } from './store/useDebugStore';
-import ResizablePanel from './components/ui/ResizablePanel/ResizablePanel';
 
 function App() {
 	const isThreeJsDataDebuggerActive = useDebugStore((state) => state.isThreeJsDataDebuggerActive);
@@ -15,9 +14,7 @@ function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<div className='container'>
-				<ResizablePanel>
-					<ModelCanvas />
-				</ResizablePanel>
+				<ModelCanvas />
 				<RoomSelection />
 				{isThreeJsDataDebuggerActive && <ThreeJsDataDebugger />}
 				{isWizardDataDebuggerActive && <WizardDataDebugger />}
