@@ -62,12 +62,12 @@
 				width: 48px;
 			}
 		
-			&:hover {
-				& > svg {
-					fill: $color-primary;
-					stroke: $color-primary;
-				}
-			}
+			// &:hover {
+			// 	& > svg {
+			// 		fill: $color-primary;
+			// 		stroke: $color-primary;
+			// 	}
+			// }
 		
 			&:active {
 				transform: scale(0.9);

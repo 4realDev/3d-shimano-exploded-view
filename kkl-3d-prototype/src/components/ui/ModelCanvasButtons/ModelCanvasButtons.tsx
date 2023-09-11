@@ -1,19 +1,24 @@
 import Tooltip from '@mui/material/Tooltip';
-import { showAndSelectRoom, showRoomsOverview, useCameraStore } from '../../../store/useCameraStore';
+import { setSelectedMeshes, showAndSelectRoom, showRoomsOverview, useCameraStore } from '../../../store/useCameraStore';
 import { toggleIsExplodedViewActive, toggleIsAnnotationActive, useDebugStore } from '../../../store/useDebugStore';
-import Lamp from '../../icons/Lamp';
-import Overview from '../../icons/Overview';
-import Tool from '../../icons/Tool';
+import { updateWizardData } from '../../../store/useWizardStore';
+import ExplosiveViewActive from '../../icons/ExplosiveViewActive';
+import ExplosiveViewInactive from '../../icons/ExplosiveViewInactive';
+import HotspotActive from '../../icons/HotspotActive';
+import HotspotInactive from '../../icons/HotspotInactive';
+import MoveBackToOverview from '../../icons/MoveBackToOverview';
 import styles from './ModelCanvasButtons.module.scss';
 
 const ModelCanvasButtons = () => {
 	const isExplodedViewActive = useDebugStore((state) => state.isExplodedViewActive);
+	const isAnnotationActive = useDebugStore((state) => state.isAnnotationActive);
 	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
+
 	return (
 		<div className={styles.canvasButtonContainer}>
 			<Tooltip
 				title={
-					<div style={{ textAlign: 'center', fontSize: 14 + 'px', lineHeight: 22 + 'px' }}>Übersicht anzeigen</div>
+					<div style={{ textAlign: 'center', fontSize: 14 + 'px', lineHeight: 22 + 'px' }}>Auswahl zurücksetzen</div>
 				}
 				placement='left'
 				enterNextDelay={1000}
@@ -22,18 +27,23 @@ const ModelCanvasButtons = () => {
 					{/* <div className={styles.overviewButtonText}>ÜBERSICHT ANZEIGEN</div> */}
 					<button
 						className={styles.overViewButton}
+						style={{ background: '#2364c2' }}
 						onClick={() => {
+							setSelectedMeshes([]);
 							showRoomsOverview();
+							updateWizardData('', 'activeMainRoom');
 							isExplodedViewActive && toggleIsAnnotationActive(true);
 						}}
 					>
-						<Overview fill='#666666' stroke='#666666' />
+						<MoveBackToOverview />
 					</button>
 				</div>
 			</Tooltip>
 			<Tooltip
 				title={
-					<div style={{ textAlign: 'center', fontSize: 14 + 'px', lineHeight: 22 + 'px' }}>Exploded View anzeigen</div>
+					<div style={{ textAlign: 'center', fontSize: 14 + 'px', lineHeight: 22 + 'px' }}>
+						{isExplodedViewActive ? 'Exploded View deaktivieren' : 'Exploded View aktivieren'}
+					</div>
 				}
 				placement='left'
 				enterNextDelay={1000}
@@ -53,14 +63,16 @@ const ModelCanvasButtons = () => {
 							}
 						}}
 					>
-						<Tool width='16' fill='#666666' stroke='#666666' />
+						{isExplodedViewActive ? <ExplosiveViewInactive /> : <ExplosiveViewActive />}
 					</button>
 				</div>
 			</Tooltip>
 			{isExplodedViewActive && (
 				<Tooltip
 					title={
-						<div style={{ textAlign: 'center', fontSize: 14 + 'px', lineHeight: 22 + 'px' }}>Annotations anzeigen</div>
+						<div style={{ textAlign: 'center', fontSize: 14 + 'px', lineHeight: 22 + 'px' }}>
+							{isAnnotationActive ? 'Hotspots deaktivieren' : 'Hotspots aktivieren'}
+						</div>
 					}
 					placement='left'
 					enterNextDelay={1000}
@@ -79,7 +91,7 @@ const ModelCanvasButtons = () => {
 								toggleIsAnnotationActive();
 							}}
 						>
-							<Lamp width='16' fill='#666666' stroke='#666666' />
+							{isAnnotationActive ? <HotspotInactive /> : <HotspotActive />}
 						</button>
 					</div>
 				</Tooltip>

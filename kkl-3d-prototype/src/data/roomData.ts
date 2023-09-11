@@ -256,7 +256,7 @@ export const roomList: RoomFetchedDataType[] = [
 			price: 29.9,
 			category: 'Ersatzteile',
 			group: 'Deore XT',
-			img: './outsideBaffle.jpg',
+			img: './outsideBaffle.png',
 		},
 	},
 	{

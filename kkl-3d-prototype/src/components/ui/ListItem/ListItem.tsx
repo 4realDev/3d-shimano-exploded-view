@@ -5,6 +5,7 @@ import Basket from '../../icons/Basket';
 import Heart from '../../icons/Heart';
 import Plus from '../../icons/Plus';
 import Minus from '../../icons/Minus';
+import { useCameraStore } from '../../../store/useCameraStore';
 
 type AccordionItemProps = {
 	title: string;
@@ -36,11 +37,14 @@ const ListItem = ({
 	};
 
 	const [quantityCount, setQuantityCount] = useState(1);
+	const hoveredMesh = useCameraStore((state) => state.hoveredMesh);
 
 	return (
 		<div
 			onClick={() => handleClick()}
-			className={cn(styles.accordionItem, { [styles['accordionItem--active']]: activeRoom === roomMeshName })}
+			className={cn(styles.accordionItem, {
+				[styles['accordionItem--active']]: activeRoom === roomMeshName || hoveredMesh === roomMeshName,
+			})}
 		>
 			<div className={styles.accordionItem__header}>
 				<div className={styles.accordionItem__infoRow}>
@@ -55,7 +59,7 @@ const ListItem = ({
 						<div className={styles.accordionItem__title}>{articleNr}</div>
 					</div>
 					<div className={styles.accordionItem__priceColumn}>
-						<div className={styles.accordionItem__title__prefix}>UVP CHF</div>
+						<div className={styles.accordionItem__title__prefix}>CHF</div>
 						<div className={styles.accordionItem__title}>{price}</div>
 					</div>
 					<div className={styles.accordionItem__favoritButtonColumn}>

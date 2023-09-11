@@ -7,7 +7,6 @@ body {
 
 .container {
 	display: flex;
-	// flex-direction: column;
 	align-items: center;
 	color: black;
 	font-size: 14px;
@@ -15,13 +14,16 @@ body {
 	line-height: 25px;
 
 	overflow: hidden;
-	width: 100vw;
+	width: 100%;
 
 	// fix for mobile viewports instead of 100vh, because "CSS3 100vh not constant in mobile browser"
-	height: 100vh;
+	height: 100%;
 	height: -webkit-fill-available;
 
 	justify-content: center;
+
+	flex-direction: column;
+	align-items: flex-end;
 	
 	// TODO: FIND REAL ISSUE AND FIX IT DIFFERNETLY
 	// position: fixed;
@@ -31,40 +33,8 @@ body {
 	// 	padding-bottom: 0px;
 	// }
 
-	@include lg {
-		flex-direction: column;
-		align-items: flex-end;
+	@include xl {
+		flex-direction: row;
+		justify-content: right;
 	}
-}
-
-/* Overriding specific properties in MUI components, which are difficult to override inside theme.tsx */
-
-.MuiOutlinedInput-notchedOutline {
-	border-color: white !important;
-}
-
-/* left arrow inside open MuiCalendarPicker */
-.css-ezjjhh-MuiButtonBase-root-MuiIconButton-root {
-	color: black !important;
-}
-
-.css-ezjjhh-MuiButtonBase-root-MuiIconButton-root.Mui-disabled {
-	color: rgba(0, 0, 0, 0.5) !important;
-}
-
-/* right arrow inside open MuiCalendarPicker */
-.css-72as13-MuiButtonBase-root-MuiIconButton-root {
-	color: black !important;
-}
-
-.css-72as13-MuiButtonBase-root-MuiIconButton-root.Mui-disabled {
-	color: rgba(0, 0, 0, 0.25) !important;
-}
-
-.MuiStepIcon-root.Mui-active > text {
-	fill: black !important;
-}
-
-.MuiStepIcon-root > text {
-	fill: white !important;
 }
