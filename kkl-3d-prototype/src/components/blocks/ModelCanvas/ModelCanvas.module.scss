@@ -3,39 +3,22 @@
 
 .canvas {
 	position: relative;
-	width: 100vw;
-	// height: 35vh;
+	width: 100%;
 	height: inherit;
 	z-index: 2;
 	overflow: hidden;
 	border-bottom-left-radius: 4rem;
 	border-bottom-right-radius: 4rem;
 
-	// !!! adjustments in height must be done in AccordionItem additionalDistanceToScreenTop function !!!
-	// !!! & RoomSelection.module.scss .container & ModelCanvas.module.scss .canvas as well !!!
-	@include xs {
-		// height: 40vh;
-		height: inherit;
-	}
-
-	@include sm {
-		// height: 50vh;
-		height: inherit;
-	}
-
 	// on desktop the model should be always beneath the list
 	// and take the full-width while being positioned slightly to the right
-	@include lg {
+	@include xl {
+		right: 20%;
 		position: absolute;
-		left: 22.5%;
 		height: 100vh;
 		z-index: 0;
 		border-radius: none;
 		box-shadow: none;
-	}
-
-	@include xl {
-		right: 25%;
 	}
 }
 

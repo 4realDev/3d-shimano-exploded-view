@@ -1,5 +1,4 @@
 import styles from './RoomSelection.module.scss';
-import DebugControlPanel from '../../debug/DebugControlPanel/DebugControlPanel';
 import { updateWizardData, useWizardStore } from '../../../store/useWizardStore';
 import RoomMainSelectionWizard from '../../wizard/RoomMainSelectionWizard/RoomMainSelectionWizard';
 

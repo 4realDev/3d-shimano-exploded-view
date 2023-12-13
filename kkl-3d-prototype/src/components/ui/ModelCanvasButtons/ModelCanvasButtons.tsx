@@ -45,6 +45,7 @@ const ModelCanvasButtons = () => {
 						{isExplodedViewActive ? 'Exploded View deaktivieren' : 'Exploded View aktivieren'}
 					</div>
 				}
+				style={{ left: 0 + '%' }}
 				placement='left'
 				enterNextDelay={1000}
 			>
@@ -74,6 +75,7 @@ const ModelCanvasButtons = () => {
 							{isAnnotationActive ? 'Hotspots deaktivieren' : 'Hotspots aktivieren'}
 						</div>
 					}
+					style={{ left: 0 + '%' }}
 					placement='left'
 					enterNextDelay={1000}
 				>

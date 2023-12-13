@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { roomList } from '../../../data/roomData';
 import { setSelectedMeshes, showAndSelectRoom, showRoomsOverview } from '../../../store/useCameraStore';
 import { handleRoomDataChange, WizardDataType } from '../../../store/useWizardStore';
-import Accordion from '../../ui/Accordion/Accordion';
 import List from '../../ui/List/List';
 
 interface RoomMainSelectionWizardProps {

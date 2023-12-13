@@ -52,7 +52,7 @@ const ResizablePanel = ({ children }: ResizablePanelType) => {
 			maxConstraints={[0, height]}
 			axis='y'
 			handle={
-				width <= 1240 && (
+				width <= 1440 && (
 					<div className={cn([styles.resizeHandle], { [styles['resizeHandle--touched']]: resizeHandleTouched })} />
 				)
 			}

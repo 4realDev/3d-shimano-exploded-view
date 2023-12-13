@@ -3,30 +3,26 @@
 
 .canvasButtonContainer {
 	position: absolute;
-	// left: 8%;
-	top: 10vh;
-	width: auto;
+	right: 5%;
+	top: 16px;
+	// necessary for the tooltips, so they are generated directly on the right-hand side of the buttons
+	width: fit-content;
 	height: auto;
 	z-index: 3;
-	left: 27.25%;
 
-	// @include xs {
-	// 	// left: 8%;
-	// 	top: 28px;
-	// }
+	@include xs {
+		right: 5%;
+		top: 28px;
+	}
 
-	// @include md {
-	// 	// left:4%;
-	// }
+	@include md {
+		right:4%;
+	}
 
-	// @include lg {
-	// 	// left:26%;
-	// 	top: 42px;
-	// }
-
-	// @include xl {
-	// 	// left:18%;
-	// }
+	@include xl {
+		left:22.5%;
+		top: 54px;
+	}
 
 	.overviewButtonContainer {
 		display: flex;

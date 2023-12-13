@@ -2,13 +2,15 @@
 @import '../../../styles/viewport.scss';
 
 .container {
+	// necessary to position the list below the resizing panel
 	position: relative;
+	// necessary to make the list take the full width of screen on tablet and mobile
+	width: 100%;
 	padding: 0 24px !important;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
 	align-items: center;
-	width: 100%;
 	transition: margin 0.25s ease;
 	// overflow: scroll;
 	// overflow-y: hidden; /* Hide vertical scrollbar */
@@ -28,18 +30,19 @@
 	// !!! & RoomSelection.module.scss .container & ModelCanvas.module.scss .canvas as well !!!
 	@include xs {
 		padding: 0 32px !important;
-		// margin-top: calc(40vh + 32px);
 	}
 
 	@include sm {
 		padding: 0 48px !important;
-		// margin-top: calc(50vh + 32px);
 	}
 
-	@include lg {
-		position: relative;
+	@include xl {
+		// necessary to position the list to the right
+		position:absolute;
+		right:0%;
+		// make list take space which is necessary
 		width: auto;
-		padding: 0 100px !important;
+		padding: 0 28px !important;
 		margin-top: 48px;
 	}
 
@@ -50,10 +53,8 @@
 		align-items: center;
 		width: 100%;
 		height: auto;
-		padding-bottom: 16px;
 		overflow-wrap: break-word;
 		z-index: 1;
-
 		// @include sm {
 		// 	width: 375px;
 		// }
