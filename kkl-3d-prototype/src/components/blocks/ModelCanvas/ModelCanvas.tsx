@@ -1,18 +1,14 @@
 import React from 'react';
-import { OrbitControlsProps, Stats } from '@react-three/drei';
+import { OrbitControlsProps } from '@react-three/drei';
 import { Canvas, PerspectiveCameraProps } from '@react-three/fiber';
 import { Suspense, useRef, useState } from 'react';
-import * as THREE from 'three';
-import { roomList } from '../../../data/roomData';
 import { setIdleState, useCameraStore } from '../../../store/useCameraStore';
 import CameraControls from '../../threeJs/CameraControls';
-import CameraPositionMarkers from '../../threeJs/CameraPositionMarkers';
 import styles from './ModelCanvas.module.scss';
 import Lights from '../../threeJs/Lights';
 import useLongPress from '../../../hooks/useLongPress';
 import { ResizeObserver } from '@juggle/resize-observer';
 import ModelCanvasButtons from '../../ui/ModelCanvasButtons/ModelCanvasButtons';
-import { useDebugStore } from '../../../store/useDebugStore';
 
 const Model = React.lazy(() =>
 	import('../../threeJs/Model').then((module) => ({
@@ -32,14 +28,6 @@ const ModelCanvas = () => {
 	const controlsRef = useRef<OrbitControlsProps>();
 	const cameraRef = useRef<PerspectiveCameraProps>();
 
-	const isCameraPositionMarkersActive = useDebugStore((state) => state.isCameraPositionMarkersActive);
-	const isCameraPositionMarkersEvActive = useDebugStore((state) => state.isCameraPositionMarkersEvActive);
-	const isStatesActive = useDebugStore((state) => state.isStatesActive);
-	const isAxisHelperActive = useDebugStore((state) => state.isAxisHelperActive);
-
-	// TODO: Move this in separated store and not in DEBUG STORE
-	const isResizedContentClosed = useDebugStore((state) => state.isResizedContentClosed);
-
 	return (
 		<div
 			className={styles.canvas}
@@ -55,9 +43,8 @@ const ModelCanvas = () => {
 				setMouseDown(false);
 				setLongPress(false);
 			}}
-			{...longPressEvent}
-		>
-			{!isResizedContentClosed && <ModelCanvasButtons />}
+			{...longPressEvent}>
+			<ModelCanvasButtons />
 			{/* <div
 			>
 				<div>camera position [x,y,z]:</div>
@@ -86,30 +73,7 @@ const ModelCanvas = () => {
 
 				<Suspense fallback={null}>
 					<Model longPress={longPress} />
-					{isCameraPositionMarkersActive && (
-						<>
-							<CameraPositionMarkers
-								markerPositions={roomList.map((room) => room.model.camPos)}
-								targetPoints={roomList.map((room) => room.model.camTarget)}
-								camPosColor={'black'}
-								camTargetColor={'red'}
-							/>
-						</>
-					)}
-					{isCameraPositionMarkersEvActive && (
-						<>
-							<CameraPositionMarkers
-								markerPositions={roomList.map((room) => room.model.camPosEv)}
-								targetPoints={roomList.map((room) => room.model.camTargetEv)}
-								camPosColor={'grey'}
-								camTargetColor={'orange'}
-							/>
-						</>
-					)}
 				</Suspense>
-
-				{isStatesActive && <Stats />}
-				{isAxisHelperActive && <primitive object={new THREE.AxesHelper(100)} />}
 			</Canvas>
 		</div>
 	);

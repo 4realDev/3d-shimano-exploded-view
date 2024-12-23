@@ -1,12 +1,10 @@
 import { Html } from '@react-three/drei';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styles from './ModelHtmlAnnotation.module.scss';
 import cn from 'classnames';
 import { setHoveredMesh, showAndSelectRoom, useCameraStore } from '../../store/useCameraStore';
 import { handleRoomDataChange } from '../../store/useWizardStore';
-import { toggleIsAnnotationActive } from '../../store/useDebugStore';
 import PriceCard from '../ui/PriceCard/PriceCard';
-import { roomList } from '../../data/roomData';
 import { Vector3 } from 'three';
 
 type ModelHtmlAnnotationProps = {
@@ -40,7 +38,6 @@ const ModelHtmlAnnotation = ({
 	const handleOnPointerDown = () => {
 		showAndSelectRoom(meshName);
 		handleRoomDataChange(meshName);
-		toggleIsAnnotationActive(false);
 	};
 
 	return (
@@ -64,8 +61,7 @@ const ModelHtmlAnnotation = ({
 				}}
 				onPointerOut={() => {
 					setHoveredMesh(null);
-				}}
-			>
+				}}>
 				<div
 					className={cn(styles.marker, {
 						[styles['marker--visible']]: isVisible,
@@ -73,15 +69,13 @@ const ModelHtmlAnnotation = ({
 						[styles['marker--visibleAndHovered']]: isVisible && isHovered,
 						[styles['marker--invisibleAndHovered']]: !isVisible && isHovered,
 						[styles['marker--adjustedZIndex']]: hoveredMesh && !isHovered,
-					})}
-				>
+					})}>
 					{articleIndex}
 				</div>
 				<div
 					className={cn(styles.annotation, {
 						[styles['annotation--visible']]: (isVisible && isHovered) || (!isVisible && isHovered),
-					})}
-				>
+					})}>
 					<PriceCard
 						title={title}
 						articleNr={articleNr}

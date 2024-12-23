@@ -24,14 +24,20 @@ const ResizablePanel = ({ children }: ResizablePanelType) => {
 	const onResize = (event: React.SyntheticEvent, { node, size, handle }: ResizeCallbackData) => {
 		setDim({ width: size.width, height: size.height });
 	};
-	const onResizeStart = (event: React.SyntheticEvent, { node, size, handle }: ResizeCallbackData) => {
+	const onResizeStart = (
+		event: React.SyntheticEvent,
+		{ node, size, handle }: ResizeCallbackData
+	) => {
 		setResizeHandleTouched(true);
 		// start resizing from the closed state
 		if (size.height === resizeContentClosedHeight) {
 			toggleIsResizedContentClosed(false);
 		}
 	};
-	const onResizeStop = (event: React.SyntheticEvent, { node, size, handle }: ResizeCallbackData) => {
+	const onResizeStop = (
+		event: React.SyntheticEvent,
+		{ node, size, handle }: ResizeCallbackData
+	) => {
 		setResizeHandleTouched(false);
 
 		if (size.height < resizeContentAutoCloseOrOpenBreakPoint) {
@@ -53,17 +59,19 @@ const ResizablePanel = ({ children }: ResizablePanelType) => {
 			axis='y'
 			handle={
 				width <= 1440 && (
-					<div className={cn([styles.resizeHandle], { [styles['resizeHandle--touched']]: resizeHandleTouched })} />
+					<div
+						className={cn([styles.resizeHandle], {
+							[styles['resizeHandle--touched']]: resizeHandleTouched,
+						})}
+					/>
 				)
-			}
-		>
+			}>
 			<div
 				className={styles.resizeContent}
 				style={{
 					height: dim.height + 'px',
 					transition: isResizedContentClosed ? 'all 0.2s' : '',
-				}}
-			>
+				}}>
 				<div className={styles.resizeHandleBlurGradient} />
 				{children}
 			</div>

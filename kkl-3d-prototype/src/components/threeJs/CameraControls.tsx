@@ -3,7 +3,6 @@ import * as THREE from 'three';
 import { OrbitControls, OrbitControlsProps, PerspectiveCamera } from '@react-three/drei';
 import { defaultCameraPosition, setHasAnimation, useCameraStore } from '../../store/useCameraStore';
 import { useDebugStore } from '../../store/useDebugStore';
-import { useEffect } from 'react';
 
 type CameraControlsProps = {
 	camera: React.MutableRefObject<PerspectiveCameraProps | undefined>;
@@ -14,12 +13,20 @@ type CameraControlsProps = {
 	far: number;
 };
 
-const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }: CameraControlsProps) => {
+const CameraControls = ({
+	camera,
+	controls,
+	hasAnimation,
+	mouseDown,
+	fov,
+	far,
+}: CameraControlsProps) => {
 	const idleState = useCameraStore((state) => state.idleState);
 	// Each time user clicks on a room,
 	// cameraPosition and cameraTarget are updated with the camPos and camTarget defined in the roomList data for each room
 	const cameraPosition = useCameraStore((state) => state.cameraPosition);
 	const cameraTarget = useCameraStore((state) => state.cameraTarget);
+	// Flag can currently only be set in the DebugStore (not in UI)
 	const isCameraBackLerpingActive = useDebugStore((state) => state.isCameraBackLerpingActive);
 	const dampSpeed = 2;
 

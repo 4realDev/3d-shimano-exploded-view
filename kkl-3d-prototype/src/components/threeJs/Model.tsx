@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { GroupProps } from '@react-three/fiber';
 import { setMeshList, useMeshStore } from '../../store/useMeshStore';
 import { setHoveredMesh, showAndSelectRoom, useCameraStore } from '../../store/useCameraStore';
-import { handleRoomDataChange, useWizardStore } from '../../store/useWizardStore';
+import { handleRoomDataChange } from '../../store/useWizardStore';
 import { toggleIsAnnotationActive, useDebugStore } from '../../store/useDebugStore';
 import ModelHtmlAnnotation from './ModelHtmlAnnotation';
 import { getMeshObjectInformationsByMeshName } from '../../utils/room';
@@ -46,16 +46,12 @@ export const isInteractable = (
 const Model: React.FC<ModelProps> = ({ longPress }) => {
 	const meshList = useMeshStore((state) => state.meshList);
 	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
-	const filteredMeshes = useCameraStore((state) => state.filteredMeshes);
 	const hoveredMesh = useCameraStore((state) => state.hoveredMesh);
-	const wizardStep = useWizardStore((state) => state.step);
 
-	const isLineSegmentMaterialActive = useDebugStore((state) => state.isLineSegementMaterialActive);
 	const isExplodedViewActive = useDebugStore((state) => state.isExplodedViewActive);
-	const isMaterialActive = useDebugStore((state) => state.isMaterialActive);
+
 	// TODO: Move out of Debug inside Mesh because it has important usage through buttons
 	const isAnnotationActive = useDebugStore((state) => state.isAnnotationActive);
-	const isBoxHelperActive = useDebugStore((state) => state.isBoxHelperActive);
 
 	const group = useRef<GroupProps>();
 	const { nodes, animations } = useGLTF('./model/gear.glb') as DreiGLTF;
@@ -100,56 +96,6 @@ const Model: React.FC<ModelProps> = ({ longPress }) => {
 		}
 	}, [actions, animations, isExplodedViewActive, names]);
 
-	/**
-	 * Returns color hex value according to mesh objects state and wizardStep (hovered, selected, included in filteredMeshes array).
-	 * @param meshObject The mesh object from which the color will be determined.
-	 * @return The resulting color hex value according to meshObject's state.
-	 */
-	const getMeshColor = useCallback(
-		(meshObject: MeshObjectType) => {
-			let colorFiltered;
-			let colorSelectedOrHovered;
-			const isHovered = hoveredMesh === meshObject.name;
-			const isSelected = selectedMeshes.includes(meshObject.name);
-
-			// special state for the selection through the model, without filtering in the wizard before
-			if (wizardStep === 0) return isSelected || isHovered ? colorSelectedOrHovered : meshObject.color;
-
-			// normal state which differentiates between filtered, hovered and selected meshes
-			if (filteredMeshes.includes(meshObject.name)) {
-				return isSelected || isHovered ? colorSelectedOrHovered : colorFiltered;
-			} else {
-				return meshObject.color;
-			}
-		},
-		[filteredMeshes, hoveredMesh, selectedMeshes, wizardStep]
-	);
-
-	/**
-	 * Returns float opacity value according to mesh objects state and wizardStep (hovered, selected, included in filteredMeshes array).
-	 * @param meshObject The mesh object from which the opacity will be determined.
-	 * @return The resulting opacity value according to meshObject's state.
-	 */
-	const getMeshMaterialOpacity = useCallback(
-		(meshObject: MeshObjectType) => {
-			const isHovered = hoveredMesh === meshObject.name;
-			const isSelected = selectedMeshes.includes(meshObject.name);
-
-			// default state, before a room was selected
-			if (selectedMeshes.length === 0) return 1.0;
-			// special state for the selection through the model, without filtering in the wizard before
-			if (wizardStep === 0) return isSelected || isHovered ? 1.0 : 0.35;
-			// normal state which differentiates between filtered, hovered and selected meshes
-			// if (filteredMeshes.includes(meshObject.name)) {
-			// 	return isSelected || isHovered ? 1.0 : 0.5;
-			// }
-			else {
-				return 0.35;
-			}
-		},
-		[hoveredMesh, selectedMeshes, wizardStep]
-	);
-
 	const convertGLTFToMeshList = (nodes: { [name: string]: THREE.Mesh }) => {
 		const initialMeshList: MeshObjectType[] = [];
 		delete nodes.Scene;
@@ -170,7 +116,8 @@ const Model: React.FC<ModelProps> = ({ longPress }) => {
 					rotation: mesh.rotation,
 					scale: mesh.scale,
 				};
-				isInteractable(mesh) && (convertedMeshParent.userData = { customName: mesh.userData.customName });
+				isInteractable(mesh) &&
+					(convertedMeshParent.userData = { customName: mesh.userData.customName });
 				initialMeshList.push(convertedMeshParent);
 			}
 		});
@@ -258,25 +205,12 @@ const Model: React.FC<ModelProps> = ({ longPress }) => {
 										toggleIsAnnotationActive(false);
 									}
 							  }
-					}
-				>
-					<bufferGeometry attach='geometry' {...meshObject.geometry} />
-					{isMaterialActive && (
-						<meshStandardMaterial
-							attach='material'
-							color={getMeshColor(meshObject)}
-							transparent
-							visible={meshObject.isVisible}
-							opacity={getMeshMaterialOpacity(meshObject)}
-							metalness={0.5}
-						/>
-					)}
-					{isLineSegmentMaterialActive && (
-						<lineSegments>
-							<edgesGeometry attach='geometry' args={[meshObject.geometry]} />
-							<lineBasicMaterial color='black' attach='material' transparent />
-						</lineSegments>
-					)}
+					}>
+					<bufferGeometry
+						attach='geometry'
+						{...meshObject.geometry}
+					/>
+
 					{meshData?.model.markerPos && isAnnotationActive && (
 						<ModelHtmlAnnotation
 							title={meshData?.info.title}
@@ -287,27 +221,24 @@ const Model: React.FC<ModelProps> = ({ longPress }) => {
 							price={meshData?.info.price}
 							meshName={meshObject.name}
 							meshPosition={meshObject.position!!}
-							annotationPosition={isExplodedViewActive ? meshData?.model.markerPosEv : meshData?.model.markerPos}
+							annotationPosition={
+								isExplodedViewActive ? meshData?.model.markerPosEv : meshData?.model.markerPos
+							}
 						/>
 					)}
 				</mesh>
 			);
 		},
-		[
-			getMeshMaterialOpacityTwo,
-			isMaterialActive,
-			getMeshColor,
-			getMeshMaterialOpacity,
-			isLineSegmentMaterialActive,
-			isAnnotationActive,
-			isExplodedViewActive,
-			longPress,
-		]
+		[getMeshMaterialOpacityTwo, isAnnotationActive, isExplodedViewActive, longPress]
 	);
 
 	const modelHTML = useMemo(() => {
 		return meshList.length === 0 ? null : (
-			<group ref={group} dispose={null} position={[0, -4.25, 0]} scale={[0.5, 0.5, 0.5]}>
+			<group
+				ref={group}
+				dispose={null}
+				position={[0, -4.25, 0]}
+				scale={[0.5, 0.5, 0.5]}>
 				{meshList.map((parentMeshObject: MeshObjectType, index: number) => {
 					return <mesh key={index}>{renderMesh(parentMeshObject, index)}</mesh>;
 				})}
@@ -315,12 +246,7 @@ const Model: React.FC<ModelProps> = ({ longPress }) => {
 		);
 	}, [meshList, renderMesh]);
 
-	return (
-		<>
-			{isBoxHelperActive && <primitive object={new THREE.BoxHelper(group.current as any, 'black')} />}
-			{modelHTML}
-		</>
-	);
+	return <>{modelHTML}</>;
 };
 
 export default Model;

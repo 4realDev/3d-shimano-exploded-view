@@ -1,6 +1,15 @@
 import Tooltip from '@mui/material/Tooltip';
-import { setSelectedMeshes, showAndSelectRoom, showRoomsOverview, useCameraStore } from '../../../store/useCameraStore';
-import { toggleIsExplodedViewActive, toggleIsAnnotationActive, useDebugStore } from '../../../store/useDebugStore';
+import {
+	setSelectedMeshes,
+	showAndSelectRoom,
+	showRoomsOverview,
+	useCameraStore,
+} from '../../../store/useCameraStore';
+import {
+	toggleIsExplodedViewActive,
+	toggleIsAnnotationActive,
+	useDebugStore,
+} from '../../../store/useDebugStore';
 import { updateWizardData } from '../../../store/useWizardStore';
 import ExplosiveViewActive from '../../icons/ExplosiveViewActive';
 import ExplosiveViewInactive from '../../icons/ExplosiveViewInactive';
@@ -18,11 +27,12 @@ const ModelCanvasButtons = () => {
 		<div className={styles.canvasButtonContainer}>
 			<Tooltip
 				title={
-					<div style={{ textAlign: 'center', fontSize: 14 + 'px', lineHeight: 22 + 'px' }}>Auswahl zurücksetzen</div>
+					<div style={{ textAlign: 'center', fontSize: 14 + 'px', lineHeight: 22 + 'px' }}>
+						Auswahl zurücksetzen
+					</div>
 				}
 				placement='left'
-				enterNextDelay={1000}
-			>
+				enterNextDelay={1000}>
 				<div className={styles.overviewButtonContainer}>
 					{/* <div className={styles.overviewButtonText}>ÜBERSICHT ANZEIGEN</div> */}
 					<button
@@ -33,8 +43,7 @@ const ModelCanvasButtons = () => {
 							showRoomsOverview();
 							updateWizardData('', 'activeMainRoom');
 							isExplodedViewActive && toggleIsAnnotationActive(true);
-						}}
-					>
+						}}>
 						<MoveBackToOverview />
 					</button>
 				</div>
@@ -47,14 +56,15 @@ const ModelCanvasButtons = () => {
 				}
 				style={{ left: 0 + '%' }}
 				placement='left'
-				enterNextDelay={1000}
-			>
+				enterNextDelay={1000}>
 				<div className={styles.overviewButtonContainer}>
 					{/* <div className={styles.overviewButtonText}>EXPLODED VIEW</div> */}
 					<button
 						className={styles.overViewButton}
 						onClick={() => {
-							!isExplodedViewActive ? toggleIsAnnotationActive(true) : toggleIsAnnotationActive(false);
+							!isExplodedViewActive
+								? toggleIsAnnotationActive(true)
+								: toggleIsAnnotationActive(false);
 							toggleIsExplodedViewActive();
 							if (selectedMeshes.length >= 1 && isExplodedViewActive) {
 								showAndSelectRoom(selectedMeshes[0]);
@@ -62,8 +72,7 @@ const ModelCanvasButtons = () => {
 							} else {
 								showRoomsOverview();
 							}
-						}}
-					>
+						}}>
 						{isExplodedViewActive ? <ExplosiveViewInactive /> : <ExplosiveViewActive />}
 					</button>
 				</div>
@@ -77,8 +86,7 @@ const ModelCanvasButtons = () => {
 					}
 					style={{ left: 0 + '%' }}
 					placement='left'
-					enterNextDelay={1000}
-				>
+					enterNextDelay={1000}>
 					<div className={styles.overviewButtonContainer}>
 						{/* <div className={styles.overviewButtonText}>HOTSPOTS ANZEIGEN</div> */}
 						<button
@@ -91,8 +99,7 @@ const ModelCanvasButtons = () => {
 								// 		: showRoomsOverview();
 								// }
 								toggleIsAnnotationActive();
-							}}
-						>
+							}}>
 							{isAnnotationActive ? <HotspotInactive /> : <HotspotActive />}
 						</button>
 					</div>
