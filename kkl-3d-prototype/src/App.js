@@ -1,6 +1,6 @@
 import './App.scss';
 
-import RoomSelection from './components/blocks/RoomSelection/RoomSelection';
+import Selection from './components/blocks/Selection/Selection';
 import { ThemeProvider } from '@mui/material/styles';
 import { theme } from './theme';
 import ModelCanvas from './components/blocks/ModelCanvas/ModelCanvas';
@@ -13,7 +13,7 @@ function App() {
 				<ResizablePanel>
 					<ModelCanvas />
 				</ResizablePanel>
-				<RoomSelection />
+				<Selection />
 			</div>
 		</ThemeProvider>
 	);

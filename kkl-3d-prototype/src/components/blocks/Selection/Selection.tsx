@@ -1,18 +1,24 @@
+import styles from './Selection.module.scss';
+import {
+	handleRoomDataChange,
+	updateWizardData,
+	useWizardStore,
+} from '../../../store/useWizardStore';
 import { roomList } from '../../../data/roomData';
 import {
-	setSelectedMeshes,
 	showAndSelectRoom,
+	setSelectedMeshes,
 	showRoomsOverview,
 } from '../../../store/useCameraStore';
-import { handleRoomDataChange, WizardDataType } from '../../../store/useWizardStore';
 import List from '../../ui/List/List';
 
-interface RoomMainSelectionWizardProps {
-	wizardData: WizardDataType;
-	handleChange: (value: any, inputField: any) => void;
-}
+const Selection = () => {
+	const wizardData = useWizardStore((state) => state.wizardData);
 
-const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelectionWizardProps) => {
+	const handleChange = (value: any, inputField: any) => {
+		updateWizardData(value, inputField);
+	};
+
 	const handleOnOpen = (toggledMeshName: string) => {
 		handleRoomDataChange(toggledMeshName);
 		showAndSelectRoom(toggledMeshName);
@@ -36,7 +42,11 @@ const RoomMainSelectionWizard = ({ wizardData, handleChange }: RoomMainSelection
 		);
 	};
 
-	return renderAccordionItems();
+	return (
+		<div className={styles.container}>
+			<div className={styles.card}>{renderAccordionItems()}</div>
+		</div>
+	);
 };
 
-export default RoomMainSelectionWizard;
+export default Selection;
