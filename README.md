@@ -1,8 +1,14 @@
+# Extra info regarding projects
+
+**main**: KKL
+**feature/shimano-simplified**: Explosive View
+
 # KKL-3D-Prototype
 
 # **Projects**
-- There are ***two projects*** in this repository, which are both based on similar packages and therefore originated in the same repo.
-- The two projects are placed in the two branches: ***"kkl-room-configurator"*** and ***"shimano-explosive-view"***.
+
+- There are **_two projects_** in this repository, which are both based on similar packages and therefore originated in the same repo.
+- The two projects are placed in the two branches: **_"kkl-room-configurator"_** and **_"shimano-explosive-view"_**.
 - The branches "main" and "kkl-room-configurator" currently contain the same code and are identical.
 - The branch "shimano-explosive-view" is a simplification of the branch "main"/"kkl-room-configurator". However, the branch "shimano-explosive-view" shows some new features and adjustments, which are not in "main"/"kkl-room-configurator". Some of them are: explosive-view-animation, resizable-3d-model-window for mobile and tablet, more interaction possibilities, UI design adapted to Cando Image GmbH Branding.
 
@@ -16,6 +22,7 @@ This repository shows a feasibility study of the use of 3D rendering on the web 
 ## **IMPORTANT**
 
 ### **This is the reduced software documentation.**
+
 **You can find the complete detailed documentation
 <a href="./kkl-3d-prototype/public/readme/technicalSoftwareDocumentation.pdf">here</a> (currently only in german)**
 
@@ -23,7 +30,6 @@ The complete documentation describes the topics listed here in much more detail 
 
 Furthermore, there is an optional, non-technical project documentation, which describes the background behind the project, the initial requirements, idea and the goal of the project as well as the figma prototype and the useability tests and their results. The knowledge of the non-technical project documentation is not needed, to understand the code. </br>
 You can find it <a href="./kkl-3d-prototype/public/readme/projectDocumentation.pdf">here</a> (currently only in german). </br>
-
 
 # **Installation**
 
