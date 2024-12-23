@@ -1,0 +1,82 @@
+@import '../../../styles/colors.scss';
+@import '../../../styles/viewport.scss';
+
+.canvasButtonContainer {
+	position: absolute;
+	right: 5%;
+	top: 16px;
+	// necessary for the tooltips, so they are generated directly on the right-hand side of the buttons
+	width: fit-content;
+	height: auto;
+	z-index: 3;
+
+	@include xs {
+		right: 5%;
+		top: 28px;
+	}
+
+	@include md {
+		right:4%;
+	}
+
+	@include xl {
+		left:22.5%;
+		top: 54px;
+	}
+
+	.overviewButtonContainer {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		.overviewButtonText {
+			font-size: 12px;
+			padding-right: 16px;
+			font-weight: 700;
+			color: $color-font-title;
+			max-width: 75px;
+			line-height: 1.25;
+		}
+	
+		.overViewButton {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-top: 6px;
+			margin-bottom: 6px;
+			outline: none;
+			border: none;
+			height: 36px;
+			width: 36px;
+			background-color: $color-foreground;
+			box-shadow: 0rem 2px 0.5rem $color-shadow-dark;
+			border-radius: 6rem;
+			transition: background-color 0.2s eapse-in-out, transform 0.1s ease-in-out;
+		
+			@include xs {
+				height: 48px;
+				width: 48px;
+			}
+		
+			// &:hover {
+			// 	& > svg {
+			// 		fill: $color-primary;
+			// 		stroke: $color-primary;
+			// 	}
+			// }
+		
+			&:active {
+				transform: scale(0.9);
+			}
+		
+			& > svg {
+				height: 24px;
+				transition: all 0.2s ease-in-out;
+				@include xs {
+					height: 32px;
+				}
+			}
+		}
+	}	
+}
+

@@ -1,0 +1,97 @@
+@import '../../styles/colors.scss';
+@import '../../styles/viewport.scss';
+
+.annotationAndMarker {
+	transition: all 0.2s;
+	z-index: 999 !important;
+
+	&:hover {
+		.annotation {
+			opacity: 1;
+			pointer-events: all;
+		}
+
+		.marker {
+			opacity: 1;
+			border: 2px solid $color-primary;
+		}
+	}
+
+	.annotation {
+		position: absolute;
+		flex-direction: column;
+		padding: 8px 12px;
+		top: 0;
+		left: 0;
+		margin-left: 15px;
+		margin-top: 15px;
+		min-width: 175px;
+		background: $color-foreground;
+		box-shadow: 0rem 2px 0.5rem $color-shadow-dark;
+		border-radius: 0.5em;
+		overflow: hidden;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.2s ease-in-out;
+		display: none;
+
+		&--visible {
+			opacity: 1;
+			pointer-events: all;
+		}
+
+		@include lg {
+			display: block;
+		}
+	}
+
+	.marker {
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin: auto;
+		top: -10px;
+		left: -10px;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		font-size: 14px;
+		font-weight: 700;
+		color: white;
+		background: rgba(69,159,216,0.5);
+		transition: transform 0.2s, opacity 0.5s, background-color 0.25s;
+
+		@include sm {
+			width: 30px;
+			height: 30px;
+		}
+
+		&--visible {
+			opacity: 1;
+			transform: scale(1.0);
+		}
+	
+		&--invisible {
+			opacity: 0.25;
+			transform: scale(0.75);
+		
+		}
+	
+		&--visibleAndHovered {
+			opacity: 1;
+			transform: scale(1.20);
+			border: 2px solid $color-primary;
+		}
+	
+		&--invisibleAndHovered {
+			opacity: 1;
+			transform: scale(1.20);
+			border: 2px solid $color-primary;
+		}
+
+		&--adjustedZIndex {
+			opacity: 0;
+		}
+	}
+}

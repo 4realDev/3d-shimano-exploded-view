@@ -13,12 +13,20 @@ type CameraControlsProps = {
 	far: number;
 };
 
-const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }: CameraControlsProps) => {
+const CameraControls = ({
+	camera,
+	controls,
+	hasAnimation,
+	mouseDown,
+	fov,
+	far,
+}: CameraControlsProps) => {
 	const idleState = useCameraStore((state) => state.idleState);
 	// Each time user clicks on a room,
 	// cameraPosition and cameraTarget are updated with the camPos and camTarget defined in the roomList data for each room
 	const cameraPosition = useCameraStore((state) => state.cameraPosition);
 	const cameraTarget = useCameraStore((state) => state.cameraTarget);
+	// Flag can currently only be set in the DebugStore (not in UI)
 	const isCameraBackLerpingActive = useDebugStore((state) => state.isCameraBackLerpingActive);
 	const dampSpeed = 2;
 
@@ -31,15 +39,15 @@ const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }:
 	};
 
 	const checkAnimationFinished = (target: Vector3 | undefined) => {
-		const animationStopThreshold = 0.025;
+		const stopThreshold = 0.025;
 		if (
 			target instanceof THREE.Vector3 &&
-			target.x > cameraPosition.x - animationStopThreshold &&
-			target.y > cameraPosition.y - animationStopThreshold &&
-			target.z > cameraPosition.z - animationStopThreshold &&
-			target.x < cameraPosition.x + animationStopThreshold &&
-			target.y < cameraPosition.y + animationStopThreshold &&
-			target.z < cameraPosition.z + animationStopThreshold
+			target.x > cameraPosition.x - stopThreshold &&
+			target.y > cameraPosition.y - stopThreshold &&
+			target.z > cameraPosition.z - stopThreshold &&
+			target.x < cameraPosition.x + stopThreshold &&
+			target.y < cameraPosition.y + stopThreshold &&
+			target.z < cameraPosition.z + stopThreshold
 		) {
 			setHasAnimation(false);
 		}
@@ -56,6 +64,20 @@ const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }:
 		camera?.current?.updateProjectionMatrix!(); // Workaround
 	});
 
+	// For roomData to read custom camera position and targets more easily
+	// In camera, set enablePan to true for better camera configuration/navigation
+	// if (camera.current?.position instanceof THREE.Vector3 && controls.current?.target instanceof THREE.Vector3) {
+	// 	console.log(
+	// 		`camera position: [${camera.current?.position.x}, ${camera.current?.position.y}, ${camera.current?.position.z}]`
+	// 	);
+
+	// 	console.log(
+	// 		`target position: [${controls.current?.target.x}, ${controls.current?.target.y}, ${controls.current?.target.z}]`
+	// 	);
+
+	// 	console.log('camera zoom: ', camera.current?.zoom);
+	// }
+
 	return (
 		<>
 			<PerspectiveCamera
@@ -68,9 +90,9 @@ const CameraControls = ({ camera, controls, hasAnimation, mouseDown, fov, far }:
 			/>
 			<OrbitControls
 				ref={controls as any}
-				enableZoom={false}
+				enableZoom={true}
 				enablePan={false}
-				maxPolarAngle={Math.PI / 2}
+				// maxPolarAngle={Math.PI / 2}
 				autoRotate={idleState}
 				autoRotateSpeed={0.5}
 			/>

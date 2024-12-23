@@ -1,0 +1,88 @@
+@import '../../../styles/colors.scss';
+@import '../../../styles/viewport.scss';
+
+.resizeContent {
+	position:relative;
+	width: 100%;
+	z-index: 2;
+	// overflow:hidden;
+	background: $color-background;
+	border-bottom-left-radius: 4rem;
+	border-bottom-right-radius: 4rem;
+	box-shadow: 0rem 2px 0.5rem $color-shadow-dark;
+	margin-bottom: 32px;
+
+	@include xl {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 0;
+		// overflow: visible;
+		background: transparent;
+		box-shadow: none;
+		margin-bottom: 0;
+	}
+}
+
+.resizeHandle {
+	width: calc(100% - 160px);
+	height: 6px;
+	background-color: #999999;
+	position: absolute;
+	bottom: 0;
+	left: 0; 
+	right: 0; 
+	margin-left: auto; 
+	margin-right: auto;
+	margin-bottom: 16px;
+	margin-top: 16px;
+	border-radius: 0.25rem;
+	transform-style: preserve-3d;
+	transition: all 0.2s ease-in-out;
+	z-index: 5;
+
+	&:hover {
+		background-color: #459fd8 !important;
+		width: calc(100% - 160px - 24px);
+	}
+
+	&--touched {
+		background-color: #459fd8 !important;
+		width: calc(100% - 160px - 24px);
+	}
+
+	// enlarge clicking and hovering area of the resizeHandle
+	&::after {
+		content: "";
+		height: 40px;
+		bottom: -16px;
+		left: -24px;
+		width: calc(100% + 48px);
+		position:absolute;
+		border-radius: 4rem;
+	}
+}
+
+
+  .resizeHandleBlurGradient {
+	width: 100%;
+	height: 60px;
+	bottom: 0;
+	position:absolute;
+	z-index: 4;
+	
+	/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffffff+1,ffffff+50&0+0,1+50 */
+	background: -moz-linear-gradient(top,  rgba(243,243,243,0) 0%, rgba(243,243,243,1) 50%, rgba(243,243,243,1) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top,  rgba(243,243,243,0) 0%,rgba(243,243,243,1) 50%, rgba(243,243,243,1) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom,  rgba(243,243,243,0) 0%,rgba(243,243,243,1) 50%, rgba(243,243,243,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
+	// adjust gradient to the form of the container
+
+	border-bottom-left-radius: 4rem;
+	border-bottom-right-radius: 4rem;
+
+
+	@include xl {
+		display: none;
+	}
+  }

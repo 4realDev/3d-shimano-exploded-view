@@ -1,66 +1,41 @@
 import create from 'zustand';
 
 interface DebugStore {
-	isWizardDataDebuggerActive: boolean;
-	isThreeJsDataDebuggerActive: boolean;
-	isCameraPositionMarkersActive: boolean;
-	isStatesActive: boolean;
-	isAxisHelperActive: boolean;
-	isBoxHelperActive: boolean;
-	isLineSegementMaterialActive: boolean;
+	isExplodedViewActive: boolean;
+	isAnnotationActive: boolean;
+	isResizedContentClosed: boolean;
 	isCameraBackLerpingActive: boolean;
 }
 
 export const useDebugStore = create<DebugStore>((set) => ({
-	isWizardDataDebuggerActive: false,
-	isThreeJsDataDebuggerActive: false,
-	isCameraPositionMarkersActive: false,
-	isStatesActive: false,
-	isAxisHelperActive: false,
-	isBoxHelperActive: false,
-	isLineSegementMaterialActive: false,
+	isExplodedViewActive: false,
+	isAnnotationActive: false,
+	isResizedContentClosed: false,
 	isCameraBackLerpingActive: false,
 }));
 
-export const toggleIsWizardDataDebuggerActive = () => {
+export const toggleIsExplodedViewActive = () => {
 	useDebugStore.setState({
-		isWizardDataDebuggerActive: !useDebugStore.getState().isWizardDataDebuggerActive,
+		isExplodedViewActive: !useDebugStore.getState().isExplodedViewActive,
 	});
 };
 
-export const toggleIsThreeJsDataDebuggerActive = () => {
+export const toggleIsAnnotationActive = (activeState?: boolean) => {
 	useDebugStore.setState({
-		isThreeJsDataDebuggerActive: !useDebugStore.getState().isThreeJsDataDebuggerActive,
+		isAnnotationActive:
+			activeState !== undefined ? activeState : !useDebugStore.getState().isAnnotationActive,
 	});
 };
 
-export const toggleIsCameraPositionMarkersActive = () => {
+export const setIsAnnotationActive = (activeState: boolean) => {
 	useDebugStore.setState({
-		isCameraPositionMarkersActive: !useDebugStore.getState().isCameraPositionMarkersActive,
+		isAnnotationActive: activeState,
 	});
 };
 
-export const toggleIsStatesActive = () => {
+export const toggleIsResizedContentClosed = (activeState: boolean) => {
 	useDebugStore.setState({
-		isStatesActive: !useDebugStore.getState().isStatesActive,
-	});
-};
-
-export const toggleIsAxisHelperActive = () => {
-	useDebugStore.setState({
-		isAxisHelperActive: !useDebugStore.getState().isAxisHelperActive,
-	});
-};
-
-export const toggleIsBoxHelperActive = () => {
-	useDebugStore.setState({
-		isBoxHelperActive: !useDebugStore.getState().isBoxHelperActive,
-	});
-};
-
-export const toggleIsLineSegmentMaterialActive = () => {
-	useDebugStore.setState({
-		isLineSegementMaterialActive: !useDebugStore.getState().isLineSegementMaterialActive,
+		isResizedContentClosed: activeState,
 	});
 };
 

@@ -1,54 +1,45 @@
 @import './styles/viewport.scss';
 @import './styles/colors.scss';
+body {
+	background: $color-main-background;
+	font-family: 'Helvetica', 'Arial', sans-serif;
+}
 
 .container {
 	display: flex;
-	flex-direction: column;
 	align-items: center;
-	justify-content: center;
 	color: black;
-	background-color: $color-main-background;
-	font-family: 'Circular Std', sans-serif;
 	font-size: 14px;
 	font-weight: 300;
 	line-height: 25px;
+
 	overflow: hidden;
-	width: 100%;
+	width: 100vw;
 
-	@include lg {
-		flex-direction: column;
-		align-items: flex-start;
+	// fix for mobile viewports instead of 100vh, because "CSS3 100vh not constant in mobile browser"
+	height: 100vh;
+	height: -webkit-fill-available;
+	
+	// TODO: FIND REAL ISSUE AND FIX IT DIFFERNETLY
+	position: fixed;
+	// padding-bottom: 50px;
+
+	@include xs {
+		padding-bottom: 0px;
 	}
-}
 
-/* Overriding specific properties in MUI components, which are difficult to override inside theme.tsx */
+	// fix for mobile viewports instead of 100vh, because "CSS3 100vh not constant in mobile browser"
+	height: -webkit-fill-available;
 
-.MuiOutlinedInput-notchedOutline {
-	border-color: white !important;
-}
+	flex-direction: column;
+	align-items: flex-end;
+	
+	// TODO: FIND REAL ISSUE AND FIX IT DIFFERNETLY
+	// position: fixed;
+	// padding-bottom: 50px;
 
-/* left arrow inside open MuiCalendarPicker */
-.css-ezjjhh-MuiButtonBase-root-MuiIconButton-root {
-	color: black !important;
-}
-
-.css-ezjjhh-MuiButtonBase-root-MuiIconButton-root.Mui-disabled {
-	color: rgba(0, 0, 0, 0.5) !important;
-}
-
-/* right arrow inside open MuiCalendarPicker */
-.css-72as13-MuiButtonBase-root-MuiIconButton-root {
-	color: black !important;
-}
-
-.css-72as13-MuiButtonBase-root-MuiIconButton-root.Mui-disabled {
-	color: rgba(0, 0, 0, 0.25) !important;
-}
-
-.MuiStepIcon-root.Mui-active > text {
-	fill: black !important;
-}
-
-.MuiStepIcon-root > text {
-	fill: white !important;
+	// @include xl {
+	// 	flex-direction: row;
+	// 	justify-content: center;
+	// }
 }

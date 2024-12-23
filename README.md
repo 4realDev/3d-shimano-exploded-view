@@ -5,6 +5,12 @@
 
 # KKL-3D-Prototype
 
+# **node & npm Version**
+
+In Node.js v17, the Node.js developers closed a security hole in the SSL provider. This fix was a breaking change that corresponded with similar breaking changes in the SSL packages in NPM. When you attempt to use SSL in Node.js v17 or later without also upgrading those SSL packages in your package.json, then you will see this error.
+Currently this project can only be used with a node version <=17.
+(used version for developing and testing: node: v16.20.2, npm: 8.19.4).
+
 # **Projects**
 
 - There are **_two projects_** in this repository, which are both based on similar packages and therefore originated in the same repo.
