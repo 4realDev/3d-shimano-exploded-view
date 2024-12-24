@@ -2,12 +2,8 @@ import { Html } from '@react-three/drei';
 import { useState } from 'react';
 import styles from './ModelHtmlAnnotation.module.scss';
 import cn from 'classnames';
-import {
-	setHoveredMesh,
-	setSelectedMesh,
-	showAndSelectRoom,
-	useCameraStore,
-} from '../../store/useCameraStore';
+import { setHoveredMesh, setSelectedMesh, useMeshStore } from '../../store/useMeshStore';
+import { showAndSelectRoom } from '../../store/useCameraStore';
 import PriceCard from '../ui/PriceCard/PriceCard';
 import { Vector3 } from 'three';
 
@@ -35,7 +31,7 @@ const ModelHtmlAnnotation = ({
 	annotationPosition,
 }: ModelHtmlAnnotationProps) => {
 	// This holds the local occluded state
-	const hoveredMesh = useCameraStore((state) => state.hoveredMesh);
+	const hoveredMesh = useMeshStore((state) => state.hoveredMesh);
 	const [isVisible, setIsVisible] = useState(true);
 	const isHovered = meshName === hoveredMesh;
 

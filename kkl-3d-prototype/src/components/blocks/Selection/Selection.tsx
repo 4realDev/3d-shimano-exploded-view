@@ -1,11 +1,7 @@
 import styles from './Selection.module.scss';
 import { INTERACTABLE_MESH_NAMES, roomList } from '../../../data/roomData';
-import {
-	showAndSelectRoom,
-	setSelectedMeshes,
-	showRoomsOverview,
-	setSelectedMesh,
-} from '../../../store/useCameraStore';
+import { setSelectedMeshes, setSelectedMesh } from '../../../store/useMeshStore';
+import { showAndSelectRoom, showRoomsOverview } from '../../../store/useCameraStore';
 import List from '../../ui/List/List';
 
 const Selection = () => {

@@ -1,10 +1,5 @@
 import Tooltip from '@mui/material/Tooltip';
-import {
-	setSelectedMeshes,
-	showAndSelectRoom,
-	showRoomsOverview,
-	useCameraStore,
-} from '../../../store/useCameraStore';
+import { setSelectedMeshes } from '../../../store/useMeshStore';
 import {
 	toggleIsExplodedViewActive,
 	toggleIsAnnotationActive,
@@ -16,11 +11,12 @@ import HotspotActive from '../../icons/HotspotActive';
 import HotspotInactive from '../../icons/HotspotInactive';
 import MoveBackToOverview from '../../icons/MoveBackToOverview';
 import styles from './ModelCanvasButtons.module.scss';
+import { showAndSelectRoom, showRoomsOverview } from '../../../store/useCameraStore';
 
 const ModelCanvasButtons = () => {
 	const isExplodedViewActive = useMeshStore((state) => state.isExplodedViewActive);
 	const isAnnotationActive = useMeshStore((state) => state.isAnnotationActive);
-	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
+	const selectedMeshes = useMeshStore((state) => state.selectedMeshes);
 
 	return (
 		<div className={styles.canvasButtonContainer}>

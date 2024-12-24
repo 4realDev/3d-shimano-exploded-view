@@ -3,13 +3,9 @@ import { useAnimations, useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import * as THREE from 'three';
 import { GroupProps } from '@react-three/fiber';
-import { toggleIsAnnotationActive, useMeshStore } from '../../store/useMeshStore';
-import {
-	setHoveredMesh,
-	setSelectedMesh,
-	showAndSelectRoom,
-	useCameraStore,
-} from '../../store/useCameraStore';
+import { setHoveredMesh, toggleIsAnnotationActive, useMeshStore } from '../../store/useMeshStore';
+import { setSelectedMesh } from '../../store/useMeshStore';
+import { showAndSelectRoom } from '../../store/useCameraStore';
 import ModelHtmlAnnotation from './ModelHtmlAnnotation';
 import { getMeshObjectInformationsByMeshName } from '../../utils/room';
 
@@ -47,8 +43,8 @@ export const isInteractable = (
 };
 
 const Model: React.FC<ModelProps> = ({ longPress }) => {
-	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
-	const hoveredMesh = useCameraStore((state) => state.hoveredMesh);
+	const selectedMeshes = useMeshStore((state) => state.selectedMeshes);
+	const hoveredMesh = useMeshStore((state) => state.hoveredMesh);
 
 	const isExplodedViewActive = useMeshStore((state) => state.isExplodedViewActive);
 

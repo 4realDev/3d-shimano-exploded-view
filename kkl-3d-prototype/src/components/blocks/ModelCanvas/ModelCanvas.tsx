@@ -9,6 +9,8 @@ import Lights from '../../threeJs/Lights';
 import useLongPress from '../../../hooks/useLongPress';
 import { ResizeObserver } from '@juggle/resize-observer';
 import ModelCanvasButtons from '../../ui/ModelCanvasButtons/ModelCanvasButtons';
+import { roomList } from '../../../data/roomData';
+import CameraPositionMarkers from '../../threeJs/CameraPositionMarkers';
 
 const Model = React.lazy(() =>
 	import('../../threeJs/Model').then((module) => ({
@@ -27,6 +29,13 @@ const ModelCanvas = () => {
 
 	const controlsRef = useRef<OrbitControlsProps>();
 	const cameraRef = useRef<PerspectiveCameraProps>();
+
+	const isCameraPositionMarkersActive = useCameraStore(
+		(state) => state.isCameraPositionMarkersActive
+	);
+	const isCameraPositionMarkersExplodedViewActive = useCameraStore(
+		(state) => state.isCameraPositionMarkersExplodedViewActive
+	);
 
 	return (
 		<div
@@ -73,6 +82,26 @@ const ModelCanvas = () => {
 
 				<Suspense fallback={null}>
 					<Model longPress={longPress} />
+					{isCameraPositionMarkersActive && (
+						<>
+							<CameraPositionMarkers
+								markerPositions={roomList.map((room) => room.model.camPos)}
+								targetPoints={roomList.map((room) => room.model.camTarget)}
+								camPosColor={'black'}
+								camTargetColor={'red'}
+							/>
+						</>
+					)}
+					{isCameraPositionMarkersExplodedViewActive && (
+						<>
+							<CameraPositionMarkers
+								markerPositions={roomList.map((room) => room.model.camPosEv)}
+								targetPoints={roomList.map((room) => room.model.camTargetEv)}
+								camPosColor={'grey'}
+								camTargetColor={'orange'}
+							/>
+						</>
+					)}
 				</Suspense>
 			</Canvas>
 		</div>

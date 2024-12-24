@@ -5,7 +5,7 @@ import Basket from '../../icons/Basket';
 import Heart from '../../icons/Heart';
 import Plus from '../../icons/Plus';
 import Minus from '../../icons/Minus';
-import { useCameraStore } from '../../../store/useCameraStore';
+import { useMeshStore } from '../../../store/useMeshStore';
 import { INTERACTABLE_MESH_NAMES } from '../../../data/roomData';
 
 type ListItemProps = {
@@ -30,8 +30,8 @@ const ListItem = ({
 	handleOnClose,
 }: ListItemProps) => {
 	const [quantityCount, setQuantityCount] = useState(1);
-	const hoveredMesh = useCameraStore((state) => state.hoveredMesh);
-	const selectedMesh = useCameraStore((state) => state.selectedMesh);
+	const hoveredMesh = useMeshStore((state) => state.hoveredMesh);
+	const selectedMesh = useMeshStore((state) => state.selectedMesh);
 
 	const isHovered = roomMeshName === hoveredMesh;
 	const isSelected = roomMeshName === selectedMesh;

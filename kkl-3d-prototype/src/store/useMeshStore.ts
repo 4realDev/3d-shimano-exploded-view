@@ -4,7 +4,11 @@ interface MeshState {
 	isExplodedViewActive: boolean;
 	isAnnotationActive: boolean;
 	isResizedContentClosed: boolean;
-	isCameraBackLerpingActive: boolean;
+
+	hoveredMesh: string | null;
+	selectedMesh: string | null;
+	selectedMeshes: string[];
+	filteredMeshes: string[];
 }
 
 export const useMeshStore = create<MeshState>((set, get) => ({
@@ -12,7 +16,25 @@ export const useMeshStore = create<MeshState>((set, get) => ({
 	isAnnotationActive: false,
 	isResizedContentClosed: false,
 	isCameraBackLerpingActive: false,
+	hoveredMesh: null,
+	selectedMesh: null,
+	selectedMeshes: [],
+	filteredMeshes: [],
 }));
+
+export const setSelectedMeshes = (selectedMeshes: string[]) =>
+	useMeshStore.setState((state) => ({ selectedMeshes: selectedMeshes }));
+
+export const setFilteredMeshes = (filteredMeshes: string[]) =>
+	useMeshStore.setState((state) => ({ filteredMeshes: filteredMeshes }));
+
+export const setHoveredMesh = (hoveredMesh: string | null) =>
+	useMeshStore.setState((state) => ({ hoveredMesh: hoveredMesh }));
+
+export const setSelectedMesh = (selectedMesh: string | null) =>
+	useMeshStore.setState((state) => ({
+		selectedMesh: selectedMesh === state.selectedMesh ? null : selectedMesh,
+	}));
 
 export const toggleIsExplodedViewActive = () => {
 	useMeshStore.setState({
@@ -36,11 +58,5 @@ export const setIsAnnotationActive = (activeState: boolean) => {
 export const toggleIsResizedContentClosed = (activeState: boolean) => {
 	useMeshStore.setState({
 		isResizedContentClosed: activeState,
-	});
-};
-
-export const toggleIsCameraBackLerpingActive = () => {
-	useMeshStore.setState({
-		isCameraBackLerpingActive: !useMeshStore.getState().isCameraBackLerpingActive,
 	});
 };
