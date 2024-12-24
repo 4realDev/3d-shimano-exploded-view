@@ -98,4 +98,4 @@ export type MeshObjectType = {
 
 Each room has a room specific camera position (model.camPos) and a room specific camera target point (model.camTarget). This is used to ensure that each room has its own individual close-up view, which is displayed as soon as the room is selected in the room list or clicked on in the 3D model. This view allows the user to better see the room and its room details in the 3D model. In the figure below, the camPos and camTarget are shown using Cube and Sphere meshes by using the CameraPositionMarkers Option from the DebugControlPanel.tsx. The Cube is the camera and looks towards the Sphere Mesh, which is the target.
 
-<img src="./kkl-3d-prototype/public/readme/cameraMovementMeshList.png">
+<img src="./public/readme/cameraMovementMeshList.png">
