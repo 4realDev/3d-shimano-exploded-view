@@ -6,17 +6,17 @@ import Heart from '../../icons/Heart';
 import Plus from '../../icons/Plus';
 import Minus from '../../icons/Minus';
 import { useCameraStore } from '../../../store/useCameraStore';
+import { INTERACTABLE_MESH_NAMES } from '../../../data/roomData';
 
-type AccordionItemProps = {
+type ListItemProps = {
 	title: string;
 	articleIndex: number;
 	articleNr: string;
 	price: string;
 	img: string;
-	roomMeshName: string;
-	activeRoom: string | null;
-	handleOnOpen: (meshNameCorrespondingToId: string) => void;
-	handleOnClose: (meshNameCorrespondingToId: string) => void;
+	roomMeshName: INTERACTABLE_MESH_NAMES;
+	handleOnOpen: (meshNameCorrespondingToId: INTERACTABLE_MESH_NAMES) => void;
+	handleOnClose: () => void;
 };
 
 const ListItem = ({
@@ -26,30 +26,36 @@ const ListItem = ({
 	price,
 	img,
 	roomMeshName,
-	activeRoom,
 	handleOnOpen,
 	handleOnClose,
-}: AccordionItemProps) => {
+}: ListItemProps) => {
+	const [quantityCount, setQuantityCount] = useState(1);
+	const hoveredMesh = useCameraStore((state) => state.hoveredMesh);
+	const selectedMesh = useCameraStore((state) => state.selectedMesh);
+
+	const isHovered = roomMeshName === hoveredMesh;
+	const isSelected = roomMeshName === selectedMesh;
+
 	// Manipulate activeRoom and will be catched in useEffect([activeRoom]) above
 	const handleClick = () => {
 		handleOnOpen(roomMeshName);
-		if (roomMeshName === activeRoom) handleOnClose(roomMeshName);
+		if (roomMeshName === selectedMesh) handleOnClose();
 	};
-
-	const [quantityCount, setQuantityCount] = useState(1);
-	const hoveredMesh = useCameraStore((state) => state.hoveredMesh);
 
 	return (
 		<div
 			onClick={() => handleClick()}
 			className={cn(styles.accordionItem, {
-				[styles['accordionItem--active']]: activeRoom === roomMeshName || hoveredMesh === roomMeshName,
-			})}
-		>
+				[styles['accordionItem--active']]: isSelected || isHovered,
+			})}>
 			<div className={styles.accordionItem__header}>
 				<div className={styles.accordionItem__infoRow}>
 					<div className={styles.accordionItem__imgColumn}>
-						<img src={img} alt='' className={styles.accordionItem__img} />
+						<img
+							src={img}
+							alt=''
+							className={styles.accordionItem__img}
+						/>
 					</div>
 					<div className={styles.accordionItem__titleColumn}>
 						<div className={styles.accordionItem__title}>{title}</div>
@@ -67,8 +73,7 @@ const ListItem = ({
 							onClick={(event) => {
 								event.stopPropagation();
 							}}
-							className={styles.favoritButton}
-						>
+							className={styles.favoritButton}>
 							<Heart />
 						</button>
 					</div>
@@ -78,8 +83,7 @@ const ListItem = ({
 								event.stopPropagation();
 								setQuantityCount((prevState) => prevState - 1);
 							}}
-							style={{ visibility: quantityCount > 1 ? 'visible' : 'hidden' }}
-						>
+							style={{ visibility: quantityCount > 1 ? 'visible' : 'hidden' }}>
 							<Minus />
 						</span>
 						<input
@@ -95,8 +99,7 @@ const ListItem = ({
 							onClick={(event) => {
 								event.stopPropagation();
 								setQuantityCount((prevState) => prevState + 1);
-							}}
-						>
+							}}>
 							<Plus />
 						</span>
 					</div>
@@ -105,8 +108,7 @@ const ListItem = ({
 							onClick={(event) => {
 								event.stopPropagation();
 							}}
-							className={styles.cartButton}
-						>
+							className={styles.cartButton}>
 							<Basket />
 						</button>
 					</div>

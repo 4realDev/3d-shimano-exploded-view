@@ -21,11 +21,6 @@ export type RoomFetchedDataType = {
 	};
 };
 
-export type ChairFormationType = {
-	name: CHAIR_FORMATION;
-	capacity: number;
-};
-
 export enum INTERACTABLE_MESH_NAMES {
 	concertRoom = 'derailleur26',
 	luzernerRoom = 'derailleur27',
@@ -38,42 +33,6 @@ export enum INTERACTABLE_MESH_NAMES {
 	insideBaffle = 'derailleur09',
 	outsideBaffle = 'derailleur02',
 	boltSet = 'derailleur06',
-}
-
-export enum CHAIR_FORMATION {
-	concert = 'chair_formation_concert',
-	seminar = 'chair_formation_seminar',
-	bankett = 'chair_formation_bankett',
-}
-
-export enum EQUIPMENT {
-	stage = 'equipment_stage',
-	podium = 'equipment_podium',
-	beamer = 'equipment_beamer',
-}
-
-export enum ROOM_FITTINGS {
-	catering = 'catering',
-	apero = 'apero',
-	accessibleEnv = 'accessibleEnv',
-	seats = 'seats',
-	noSeats = 'noSeats',
-	exhibition = 'exhibition',
-}
-
-export enum ROOM_ADDITIONS_CATEGORY {
-	chair_formation = 'chair_formation',
-	equipment = 'equipment',
-}
-
-export enum EVENT_TYPES {
-	all = 'all',
-	concert = 'concert',
-	apero = 'apero',
-	congress = 'congress',
-	exhibition = 'exhibition',
-	meeting = 'meeting',
-	workshop = 'workshop',
 }
 
 export const camHeightOffset = 15;

@@ -2,8 +2,12 @@ import { Html } from '@react-three/drei';
 import { useState } from 'react';
 import styles from './ModelHtmlAnnotation.module.scss';
 import cn from 'classnames';
-import { setHoveredMesh, showAndSelectRoom, useCameraStore } from '../../store/useCameraStore';
-import { handleRoomDataChange } from '../../store/useWizardStore';
+import {
+	setHoveredMesh,
+	setSelectedMesh,
+	showAndSelectRoom,
+	useCameraStore,
+} from '../../store/useCameraStore';
 import PriceCard from '../ui/PriceCard/PriceCard';
 import { Vector3 } from 'three';
 
@@ -36,8 +40,8 @@ const ModelHtmlAnnotation = ({
 	const isHovered = meshName === hoveredMesh;
 
 	const handleOnPointerDown = () => {
+		setSelectedMesh(meshName);
 		showAndSelectRoom(meshName);
-		handleRoomDataChange(meshName);
 	};
 
 	return (

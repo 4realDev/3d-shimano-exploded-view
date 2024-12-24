@@ -8,9 +8,8 @@ import {
 import {
 	toggleIsExplodedViewActive,
 	toggleIsAnnotationActive,
-	useDebugStore,
-} from '../../../store/useDebugStore';
-import { updateWizardData } from '../../../store/useWizardStore';
+	useMeshStore,
+} from '../../../store/useMeshStore';
 import ExplosiveViewActive from '../../icons/ExplosiveViewActive';
 import ExplosiveViewInactive from '../../icons/ExplosiveViewInactive';
 import HotspotActive from '../../icons/HotspotActive';
@@ -19,8 +18,8 @@ import MoveBackToOverview from '../../icons/MoveBackToOverview';
 import styles from './ModelCanvasButtons.module.scss';
 
 const ModelCanvasButtons = () => {
-	const isExplodedViewActive = useDebugStore((state) => state.isExplodedViewActive);
-	const isAnnotationActive = useDebugStore((state) => state.isAnnotationActive);
+	const isExplodedViewActive = useMeshStore((state) => state.isExplodedViewActive);
+	const isAnnotationActive = useMeshStore((state) => state.isAnnotationActive);
 	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
 
 	return (
@@ -41,7 +40,6 @@ const ModelCanvasButtons = () => {
 						onClick={() => {
 							setSelectedMeshes([]);
 							showRoomsOverview();
-							updateWizardData('', 'activeMainRoom');
 							isExplodedViewActive && toggleIsAnnotationActive(true);
 						}}>
 						<MoveBackToOverview />

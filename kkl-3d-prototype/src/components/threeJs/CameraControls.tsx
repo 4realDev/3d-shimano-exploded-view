@@ -2,7 +2,7 @@ import { PerspectiveCameraProps, useFrame, Vector3 } from '@react-three/fiber';
 import * as THREE from 'three';
 import { OrbitControls, OrbitControlsProps, PerspectiveCamera } from '@react-three/drei';
 import { defaultCameraPosition, setHasAnimation, useCameraStore } from '../../store/useCameraStore';
-import { useDebugStore } from '../../store/useDebugStore';
+import { useMeshStore } from '../../store/useMeshStore';
 
 type CameraControlsProps = {
 	camera: React.MutableRefObject<PerspectiveCameraProps | undefined>;
@@ -27,7 +27,7 @@ const CameraControls = ({
 	const cameraPosition = useCameraStore((state) => state.cameraPosition);
 	const cameraTarget = useCameraStore((state) => state.cameraTarget);
 	// Flag can currently only be set in the DebugStore (not in UI)
-	const isCameraBackLerpingActive = useDebugStore((state) => state.isCameraBackLerpingActive);
+	const isCameraBackLerpingActive = useMeshStore((state) => state.isCameraBackLerpingActive);
 	const dampSpeed = 2;
 
 	const damp = (target: Vector3 | undefined, to: THREE.Vector3, speed: number, delta: number) => {

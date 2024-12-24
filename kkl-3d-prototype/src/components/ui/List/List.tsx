@@ -1,14 +1,13 @@
-import { RoomFetchedDataType } from '../../../data/roomData';
+import { INTERACTABLE_MESH_NAMES, RoomFetchedDataType } from '../../../data/roomData';
 import ListItem from '../ListItem/ListItem';
 
-type AccordionProps = {
+type ListProps = {
 	roomList: RoomFetchedDataType[];
-	activeRoom: string | null;
-	handleOnOpen: (meshNameCorrespondingToId: string) => void;
-	handleOnClose: (meshNameCorrespondingToId: string) => void;
+	handleOnOpen: (meshNameCorrespondingToId: INTERACTABLE_MESH_NAMES) => void;
+	handleOnClose: () => void;
 };
 
-const List = ({ roomList, activeRoom, handleOnOpen, handleOnClose }: AccordionProps) => {
+const List = ({ roomList, handleOnOpen, handleOnClose }: ListProps) => {
 	return (
 		<>
 			{roomList.map((room, roomIndex) => (
@@ -20,7 +19,6 @@ const List = ({ roomList, activeRoom, handleOnOpen, handleOnClose }: AccordionPr
 					price={room.info.price.toFixed(2)}
 					img={room.info.img}
 					roomMeshName={room.model.meshName}
-					activeRoom={activeRoom}
 					handleOnOpen={handleOnOpen}
 					handleOnClose={handleOnClose}
 				/>

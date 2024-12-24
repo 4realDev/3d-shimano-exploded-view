@@ -3,10 +3,13 @@ import { useAnimations, useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import * as THREE from 'three';
 import { GroupProps } from '@react-three/fiber';
-import { setMeshList, useMeshStore } from '../../store/useMeshStore';
-import { setHoveredMesh, showAndSelectRoom, useCameraStore } from '../../store/useCameraStore';
-import { handleRoomDataChange } from '../../store/useWizardStore';
-import { toggleIsAnnotationActive, useDebugStore } from '../../store/useDebugStore';
+import { toggleIsAnnotationActive, useMeshStore } from '../../store/useMeshStore';
+import {
+	setHoveredMesh,
+	setSelectedMesh,
+	showAndSelectRoom,
+	useCameraStore,
+} from '../../store/useCameraStore';
 import ModelHtmlAnnotation from './ModelHtmlAnnotation';
 import { getMeshObjectInformationsByMeshName } from '../../utils/room';
 
@@ -44,29 +47,19 @@ export const isInteractable = (
 };
 
 const Model: React.FC<ModelProps> = ({ longPress }) => {
-	const meshList = useMeshStore((state) => state.meshList);
 	const selectedMeshes = useCameraStore((state) => state.selectedMeshes);
 	const hoveredMesh = useCameraStore((state) => state.hoveredMesh);
 
-	const isExplodedViewActive = useDebugStore((state) => state.isExplodedViewActive);
+	const isExplodedViewActive = useMeshStore((state) => state.isExplodedViewActive);
 
 	// TODO: Move out of Debug inside Mesh because it has important usage through buttons
-	const isAnnotationActive = useDebugStore((state) => state.isAnnotationActive);
+	const isAnnotationActive = useMeshStore((state) => state.isAnnotationActive);
 
 	const group = useRef<GroupProps>();
 	const { nodes, animations } = useGLTF('./model/gear.glb') as DreiGLTF;
 	const { actions, names } = useAnimations(animations, group as any);
 
 	const colorModelDefault = '#ababab';
-	// const colorFilteredMainRoom = '#c4aeae';
-	// const colorFilteredSideRoom = '#c7d0af';
-	// const colorSelectedOrHoveredMainRoom = '#ceadad';
-	// const colorSelectedOrHoveredSideRoom = '#cbd5ac';
-
-	useEffect(() => {
-		const initialMeshList = convertGLTFToMeshList(nodes);
-		setMeshList(initialMeshList);
-	}, [nodes]);
 
 	useEffect(() => {
 		// Reset and fade in animation after an index has been changed
@@ -96,7 +89,7 @@ const Model: React.FC<ModelProps> = ({ longPress }) => {
 		}
 	}, [actions, animations, isExplodedViewActive, names]);
 
-	const convertGLTFToMeshList = (nodes: { [name: string]: THREE.Mesh }) => {
+	const convertGLTFToMeshList = useCallback((nodes: { [name: string]: THREE.Mesh }) => {
 		const initialMeshList: MeshObjectType[] = [];
 		delete nodes.Scene;
 		delete nodes.Camera;
@@ -123,9 +116,9 @@ const Model: React.FC<ModelProps> = ({ longPress }) => {
 		});
 
 		return initialMeshList;
-	};
+	}, []);
 
-	const getMeshMaterialOpacityTwo = useCallback(
+	const getMeshMaterialOpacity = useCallback(
 		(meshObject: MeshObjectType) => {
 			const isHovered = hoveredMesh === meshObject.name;
 			const isSelected = selectedMeshes.includes(meshObject.name);
@@ -152,7 +145,7 @@ const Model: React.FC<ModelProps> = ({ longPress }) => {
 		(meshObject: MeshObjectType, index: number) => {
 			if (meshObject.material && meshObject.material instanceof THREE.Material) {
 				meshObject.material.transparent = true;
-				meshObject.material.opacity = getMeshMaterialOpacityTwo(meshObject);
+				meshObject.material.opacity = getMeshMaterialOpacity(meshObject);
 				meshObject.material.needsUpdate = true;
 			}
 
@@ -197,13 +190,11 @@ const Model: React.FC<ModelProps> = ({ longPress }) => {
 						meshObject.userData === undefined
 							? undefined
 							: (event) => {
-									// Only visible meshes with a userData.customName (defined inside 3D Software) can be clicked
-									if (event.object.visible) {
-										event.stopPropagation();
-										handleRoomDataChange(meshObject.name);
-										showAndSelectRoom(meshObject.name);
-										toggleIsAnnotationActive(false);
-									}
+									console.log('TEST', meshObject.name);
+									event.stopPropagation();
+									setSelectedMesh(meshObject.name);
+									showAndSelectRoom(meshObject.name);
+									toggleIsAnnotationActive(false);
 							  }
 					}>
 					<bufferGeometry
@@ -229,22 +220,22 @@ const Model: React.FC<ModelProps> = ({ longPress }) => {
 				</mesh>
 			);
 		},
-		[getMeshMaterialOpacityTwo, isAnnotationActive, isExplodedViewActive, longPress]
+		[getMeshMaterialOpacity, isAnnotationActive, isExplodedViewActive, longPress]
 	);
 
 	const modelHTML = useMemo(() => {
-		return meshList.length === 0 ? null : (
+		return (
 			<group
 				ref={group}
 				dispose={null}
 				position={[0, -4.25, 0]}
 				scale={[0.5, 0.5, 0.5]}>
-				{meshList.map((parentMeshObject: MeshObjectType, index: number) => {
+				{convertGLTFToMeshList(nodes).map((parentMeshObject: MeshObjectType, index: number) => {
 					return <mesh key={index}>{renderMesh(parentMeshObject, index)}</mesh>;
 				})}
 			</group>
 		);
-	}, [meshList, renderMesh]);
+	}, [convertGLTFToMeshList, nodes, renderMesh]);
 
 	return <>{modelHTML}</>;
 };

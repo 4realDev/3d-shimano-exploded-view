@@ -6,7 +6,7 @@ import { Resizable, ResizeCallbackData } from 'react-resizable';
 import useWindowDimensions from '../../../hooks/useWindowDimensions';
 import cn from 'classnames';
 import styles from './ResizablePanel.module.scss';
-import { toggleIsResizedContentClosed, useDebugStore } from '../../../store/useDebugStore';
+import { toggleIsResizedContentClosed, useMeshStore } from '../../../store/useMeshStore';
 
 type ResizablePanelType = {
 	children: React.ReactNode;
@@ -19,7 +19,7 @@ const ResizablePanel = ({ children }: ResizablePanelType) => {
 	const resizeContentAutoCloseOrOpenBreakPoint = 230;
 	const [dim, setDim] = useState({ width: 0, height: resizeContentAutoCloseOrOpenBreakPoint });
 	const [resizeHandleTouched, setResizeHandleTouched] = useState(false);
-	const isResizedContentClosed = useDebugStore((state) => state.isResizedContentClosed);
+	const isResizedContentClosed = useMeshStore((state) => state.isResizedContentClosed);
 
 	const onResize = (event: React.SyntheticEvent, { node, size, handle }: ResizeCallbackData) => {
 		setDim({ width: size.width, height: size.height });

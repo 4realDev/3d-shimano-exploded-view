@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import create from 'zustand';
 import { getMeshObjectInformationsByMeshName } from '../utils/room';
-import { useDebugStore } from './useDebugStore';
+import { useMeshStore } from './useMeshStore';
 
 export const defaultCameraPosition = new THREE.Vector3(0, 0, 20);
 export const defaultCameraTarget = new THREE.Vector3(0, 0, 0);
@@ -14,6 +14,7 @@ interface CameraStore {
 	hasAnimation: boolean;
 	idleState: boolean;
 	hoveredMesh: string | null;
+	selectedMesh: string | null;
 	selectedMeshes: string[];
 	filteredMeshes: string[];
 }
@@ -24,6 +25,7 @@ export const useCameraStore = create<CameraStore>((set) => ({
 	hasAnimation: false, // initially false so idleRotation in idleState works
 	idleState: true,
 	hoveredMesh: null,
+	selectedMesh: null,
 	selectedMeshes: [],
 	filteredMeshes: [],
 }));
@@ -37,6 +39,11 @@ export const setFilteredMeshes = (filteredMeshes: string[]) =>
 export const setHoveredMesh = (hoveredMesh: string | null) =>
 	useCameraStore.setState((state) => ({ hoveredMesh: hoveredMesh }));
 
+export const setSelectedMesh = (selectedMesh: string | null) =>
+	useCameraStore.setState((state) => ({
+		selectedMesh: selectedMesh === state.selectedMesh ? null : selectedMesh,
+	}));
+
 export const setCameraPosition = (cameraPosition: THREE.Vector3) =>
 	useCameraStore.setState((state) => ({ cameraPosition: cameraPosition }));
 
@@ -46,7 +53,8 @@ export const setCameraTarget = (cameraTarget: THREE.Vector3) =>
 export const setHasAnimation = (hasAnimation: boolean) =>
 	useCameraStore.setState((state) => ({ hasAnimation: hasAnimation }));
 
-export const setIdleState = (idleState: boolean) => useCameraStore.setState((state) => ({ idleState: idleState }));
+export const setIdleState = (idleState: boolean) =>
+	useCameraStore.setState((state) => ({ idleState: idleState }));
 
 export const showAndSelectRoom = (selectedMesh: string) => {
 	setIdleState(false);
@@ -55,9 +63,11 @@ export const showAndSelectRoom = (selectedMesh: string) => {
 	if (typeof clickedRoom != 'undefined') {
 		setSelectedMeshes([clickedRoom.model.meshName]);
 
-		let isExplodedViewActive = useDebugStore.getState().isExplodedViewActive;
+		let isExplodedViewActive = useMeshStore.getState().isExplodedViewActive;
 		setCameraPosition(isExplodedViewActive ? clickedRoom.model.camPosEv : clickedRoom.model.camPos);
-		setCameraTarget(isExplodedViewActive ? clickedRoom.model.camTargetEv : clickedRoom.model.camTarget);
+		setCameraTarget(
+			isExplodedViewActive ? clickedRoom.model.camTargetEv : clickedRoom.model.camTarget
+		);
 	}
 };
 
@@ -71,17 +81,20 @@ export const showAndSelectRooms = (
 	setHasAnimation(true);
 	setSelectedMeshes(selectedMeshes);
 
-	let isExplodedViewActive = useDebugStore.getState().isExplodedViewActive;
+	let isExplodedViewActive = useMeshStore.getState().isExplodedViewActive;
 	setCameraPosition(isExplodedViewActive ? defaultCameraPositionEv : camPos);
 	setCameraTarget(isExplodedViewActive ? defaultCameraTargetEv : camTarget);
 };
 
 // TODO: ADJUST CAMPOS AND CAMTAGET TO EXPLODED VIEW AS WELL
-export const showRoomsOverview = (camPos = defaultCameraPosition, camTarget = defaultCameraTarget) => {
+export const showRoomsOverview = (
+	camPos = defaultCameraPosition,
+	camTarget = defaultCameraTarget
+) => {
 	setIdleState(false);
 	setHasAnimation(true);
 
-	let isExplodedViewActive = useDebugStore.getState().isExplodedViewActive;
+	let isExplodedViewActive = useMeshStore.getState().isExplodedViewActive;
 	setCameraPosition(isExplodedViewActive ? defaultCameraPositionEv : camPos);
 	setCameraTarget(isExplodedViewActive ? defaultCameraTargetEv : camTarget);
 };

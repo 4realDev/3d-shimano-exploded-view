@@ -1,33 +1,23 @@
 import styles from './Selection.module.scss';
-import {
-	handleRoomDataChange,
-	updateWizardData,
-	useWizardStore,
-} from '../../../store/useWizardStore';
-import { roomList } from '../../../data/roomData';
+import { INTERACTABLE_MESH_NAMES, roomList } from '../../../data/roomData';
 import {
 	showAndSelectRoom,
 	setSelectedMeshes,
 	showRoomsOverview,
+	setSelectedMesh,
 } from '../../../store/useCameraStore';
 import List from '../../ui/List/List';
 
 const Selection = () => {
-	const wizardData = useWizardStore((state) => state.wizardData);
-
-	const handleChange = (value: any, inputField: any) => {
-		updateWizardData(value, inputField);
-	};
-
-	const handleOnOpen = (toggledMeshName: string) => {
-		handleRoomDataChange(toggledMeshName);
+	const handleOnOpen = (toggledMeshName: INTERACTABLE_MESH_NAMES) => {
+		setSelectedMesh(toggledMeshName);
 		showAndSelectRoom(toggledMeshName);
 	};
 
-	const handleOnClose = (toggledMeshName: string) => {
+	const handleOnClose = () => {
+		setSelectedMesh(null);
 		setSelectedMeshes([]);
 		showRoomsOverview();
-		wizardData.activeMainRoom === toggledMeshName && handleChange('', 'activeMainRoom');
 	};
 
 	// ADJUSTED
@@ -35,7 +25,6 @@ const Selection = () => {
 		return (
 			<List
 				roomList={roomList}
-				activeRoom={wizardData.activeMainRoom}
 				handleOnOpen={handleOnOpen}
 				handleOnClose={handleOnClose}
 			/>
