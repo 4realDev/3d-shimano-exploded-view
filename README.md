@@ -1,5 +1,8 @@
 # Shimano 3D Exploded View
 
+## Preview URL:
+[https://brazhnik.de/room-configurator/](https://brazhnik.de/exploded-view/)
+
 # **node & npm Version**
 
 In Node.js v17, the Node.js developers closed a security hole in the SSL provider. This fix was a breaking change that corresponded with similar breaking changes in the SSL packages in NPM. When you attempt to use SSL in Node.js v17 or later without also upgrading those SSL packages in your package.json, then you will see this error.
@@ -9,6 +12,13 @@ Currently this project can only be used with a node version <=17.
 # **Foreword**
 
 This repository shows a feasibility study of the use of 3D rendering on the web for a shimano gear shift. For the realization of the interactive 3D model and its exploded view mainly the packages React-Three-Fiber and React-Drei were used.
+
+Technologies:
+- ReactJS (Framework)
+- React-Three-Fiber/React-Drei/ThreeJS (3D rendering and web animation)
+- Zustand (State Management)
+- SASS (Styling)
+- MUI (Component UI-Library)
 
 # **Installation**
 
