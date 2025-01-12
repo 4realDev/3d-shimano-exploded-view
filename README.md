@@ -1,6 +1,6 @@
 # Shimano 3D Exploded View
 
-## Preview URL:
+## Preview URL
 [https://brazhnik.de/room-configurator/](https://brazhnik.de/exploded-view/)
 
 # **node & npm Version**
